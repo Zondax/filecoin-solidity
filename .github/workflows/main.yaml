@@ -20,6 +20,8 @@ jobs:
         run: cd hardhat && yarn install
       - name: Deploy contract
         run: make deploy_simple_coin > deploy.log
+        env:
+          PRIVATE_KEY: ${{ secrets.WALLET_PRIVATE_KEY }}
       - name: Get addresses from deployed contract
         run: |
           export WALLET_ADDRESS=$(awk '/Wallet Ethereum Address:/{print $NF}' deploy.log)
@@ -28,5 +30,7 @@ jobs:
           echo $CONTRACT_ADDRESS
       - name: Test contract
         run: cd hardhat && yarn hardhat get-balance --contract $CONTRACT_ADDRESS --account $WALLET_ADDRESS
+        env:
+          PRIVATE_KEY: ${{ secrets.WALLET_PRIVATE_KEY }}
 
 
