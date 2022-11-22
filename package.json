@@ -1,0 +1,40 @@
+{
+  "name": "@zondax/filecoin-solidity-api",
+  "version": "0.0.0",
+  "description": "Filecoin EVM Solidity APIs",
+  "main": "",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Zondax/fevm-solidity-api.git"
+  },
+  "keywords": [
+    "FEVM",
+    "EVM",
+    "Solidity",
+    "Filecoin"
+  ],
+  "author": "Zondax AG <hello@zondax.ch>",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/Zondax/fevm-solidity-api/issues"
+  },
+  "homepage": "https://github.com/Zondax/fevm-solidity-api#readme",
+  "files": [
+    "contracts"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+    "prettier": "^2.7.1",
+    "prettier-plugin-solidity": "^1.0.0"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^4.8.0",
+    "solidity-cborutils": "^2.0.0"
+  }
+}

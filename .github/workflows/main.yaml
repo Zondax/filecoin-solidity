@@ -1,0 +1,263 @@
+name: "Build contracts"
+on:
+  - push
+
+jobs:
+  simplecoin-checks:
+    name: "SimpleCoin: end-to-end tests"
+    timeout-minutes: 20
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Install node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16.16.0'
+      - name: Install yarn
+        run: npm install -g yarn
+      - name: Install dependencies
+        run: cd hardhat && yarn install
+      - name: Deploy contract
+        run: |
+          make deploy_simple_coin > deploy.log
+          cat deploy.log
+        env:
+          PRIVATE_KEY: ${{ secrets.WALLET_PRIVATE_KEY }}
+      - name: Test contract
+        run: |
+          WALLET_ADDRESS=$(awk '/Wallet Ethereum Address:/{print $NF}' deploy.log)
+          CONTRACT_ADDRESS=$(sed -nr 's/.*deployed at ([^ ]+).*/\1/p' deploy.log)
+          echo $WALLET_ADDRESS
+          echo $CONTRACT_ADDRESS
+          cd hardhat && yarn hardhat get-balance --contract $CONTRACT_ADDRESS --account $WALLET_ADDRESS
+        env:
+          PRIVATE_KEY: ${{ secrets.WALLET_PRIVATE_KEY }}
+  api-deploy:
+    name: "Filecoin APIs: deploy"
+    timeout-minutes: 20
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Install node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16.16.0'
+      - name: Install yarn
+        run: npm install -g yarn
+      - name: Install dependencies
+        run: |
+          yarn install
+          cd hardhat && yarn install
+      - name: Deploy contracts
+        run: |
+          make deploy_miner_api > deploy_miner.log
+          make deploy_market_api > deploy_market.log
+          make deploy_verifreg_api > deploy_verifreg.log
+          make deploy_power_api > deploy_power.log
+          cat deploy_miner.log
+          cat deploy_market.log
+          cat deploy_verifreg.log
+          cat deploy_power.log
+        env:
+          PRIVATE_KEY: ${{ secrets.WALLET_PRIVATE_KEY }}
+  miner-integration:
+    name: "Miner API: integration tests"
+    timeout-minutes: 20
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Install node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16.16.0'
+      - name: Install yarn
+        run: npm install -g yarn
+      - name: Install latest stable
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: nightly
+          override: true
+      - name: Install dependencies
+        run:  |
+          yarn install
+          make install_solc_linux
+      - name: Restore crates
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+          key: ${{ runner.os }}-cargo-${{ hashFiles('./testing/miner/Cargo.lock') }}
+      - name: Build contracts
+        run: make
+      - name: Run tests on miner
+        run: |
+          cd testing/miner
+          rustup target add wasm32-unknown-unknown
+          RUST_BACKTRACE=1 cargo r
+      - name: Save crates
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+          key: ${{ runner.os }}-cargo-${{ hashFiles('./testing/miner/Cargo.lock') }}
+
+  market-integration:
+    name: "Market API: integration tests"
+    timeout-minutes: 20
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Install node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16.16.0'
+      - name: Install yarn
+        run: npm install -g yarn
+      - name: Install latest stable
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: nightly
+          override: true
+      - name: Install dependencies
+        run:  |
+          yarn install
+          make install_solc_linux
+      - name: Restore crates
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+          key: ${{ runner.os }}-cargo-${{ hashFiles('./testing/market/Cargo.lock') }}
+      - name: Build contracts
+        run: make
+      - name: Run tests on market
+        run: |
+          cd testing/market
+          rustup target add wasm32-unknown-unknown
+          RUST_BACKTRACE=1 cargo r
+      - name: Save crates
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+          key: ${{ runner.os }}-cargo-${{ hashFiles('./testing/market/Cargo.lock') }}
+
+
+
+  power-integration:
+    name: "Power API: integration tests"
+    timeout-minutes: 20
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Install node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16.16.0'
+      - name: Install yarn
+        run: npm install -g yarn
+      - name: Install latest stable
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: nightly
+          override: true
+      - name: Install dependencies
+        run: |
+          yarn install
+          make install_solc_linux
+      - name: Restore crates
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+          key: ${{ runner.os }}-cargo-${{ hashFiles('./testing/power/Cargo.lock') }}
+      - name: Build contracts
+        run: make
+      - name: Run tests on power
+        run: |
+          cd testing/power
+          rustup target add wasm32-unknown-unknown
+          RUST_BACKTRACE=1 cargo r
+      - name: Save crates
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+          key: ${{ runner.os }}-cargo-${{ hashFiles('./testing/power/Cargo.lock') }}
+
+
+
+  verifreg-integration:
+    name: "VerifReg API: integration tests"
+    timeout-minutes: 20
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Install node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16.16.0'
+      - name: Install yarn
+        run: npm install -g yarn
+      - name: Install latest stable
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: nightly
+          override: true
+      - name: Install dependencies
+        run: |
+          yarn install
+          make install_solc_linux
+      - name: Restore crates
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+          key: ${{ runner.os }}-cargo-${{ hashFiles('./testing/verifreg/Cargo.lock') }}
+      - name: Build contracts
+        run: make
+      - name: Run tests on verifreg
+        run: |
+          cd testing/verifreg
+          rustup target add wasm32-unknown-unknown
+          RUST_BACKTRACE=1 cargo r
+      - name: Save crates
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+          key: ${{ runner.os }}-cargo-${{ hashFiles('./testing/verifreg/Cargo.lock') }}
+
+
+
+
