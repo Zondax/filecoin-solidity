@@ -1,0 +1,9 @@
+.idea
+**/*.bin
+**/*.signatures
+**/*.opcode
+**/bin/*
+!**/bin/.gitkeep
+**/target/
+**/build
+node_modules/
