@@ -48,6 +48,8 @@ jobs:
         run: npm install -g yarn
       - name: Install dependencies
         run: cd hardhat && yarn install
+      - name: Install solc
+        run: make install_solc_linux
       - name: Build contracts
         run: make build_api
       - name: Deploy contracts
