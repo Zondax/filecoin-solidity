@@ -16,15 +16,17 @@ jobs:
           node-version: '16.16.0'
       - name: Install yarn
         run: npm install -g yarn
-      - name: Deploy
+      - name: Install dependencies
+        run: cd hardhat && yarn install
+      - name: Deploy contract
         run: make deploy_simple_coin > deploy.log
-      - name: Get addresses
+      - name: Get addresses from deployed contract
         run: |
           export WALLET_ADDRESS=$(awk '/Wallet Ethereum Address:/{print $NF}' deploy.log)
           echo $WALLET_ADDRESS
           export CONTRACT_ADDRESS=$(sed -nr 's/.*deployed at ([^ ]+).*/\1/p' deploy.log)
           echo $CONTRACT_ADDRESS
-      - name: Test SimpleCoin contract
+      - name: Test contract
         run: cd hardhat && yarn hardhat get-balance --contract $CONTRACT_ADDRESS --account $WALLET_ADDRESS
 
 
