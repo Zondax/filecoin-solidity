@@ -1,0 +1,30 @@
+name: "Build contracts"
+on:
+  - push
+
+jobs:
+  checks:
+    name: "Build, deploy and test contract"
+    timeout-minutes: 20
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Install node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16.16.0'
+      - name: Install yarn
+        run: npm install -g yarn
+      - name: Deploy
+        run: make deploy_simple_coin > deploy.log
+      - name: Get addresses
+        run: |
+          export WALLET_ADDRESS=$(awk '/Wallet Ethereum Address:/{print $NF}' deploy.log)
+          echo $WALLET_ADDRESS
+          export CONTRACT_ADDRESS=$(sed -nr 's/.*deployed at ([^ ]+).*/\1/p' deploy.log)
+          echo $CONTRACT_ADDRESS
+      - name: Test SimpleCoin contract
+        run: cd hardhat && yarn hardhat get-balance --contract $CONTRACT_ADDRESS --account $WALLET_ADDRESS
+
+

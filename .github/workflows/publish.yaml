@@ -1,0 +1,38 @@
+name: "Publish package"
+
+on:
+  release:
+    types:
+      - created
+    tags:
+      - "v[0-9]+(\\.[0-9]+)*"
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Install node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16.13.0'
+          registry-url: "https://registry.npmjs.org"
+          scope: "@zondax"
+      - name: Install dependencies
+        run: make install_solc_linux
+      - name: Compile contract file
+        run: make
+      - name: Install yarn
+        run: npm install -g yarn
+      - name: Get latest release version number
+        id: get_version
+        uses: battila7/get-version-action@v2
+      - name: Update tag
+        run: |
+          echo Publishing as ${{ steps.get_version.outputs.version }}
+          npm --allow-same-version --no-git-tag-version version ${{ steps.get_version.outputs.version }}
+      - name: Publish package
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN_PUBLISH_AUTO }}
