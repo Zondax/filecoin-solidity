@@ -2,11 +2,12 @@
 pragma solidity >=0.4.25 <=0.8.17;
 
 import "./types/MinerTypes.sol";
+import "./cbor/MinerCbor.sol";
 
 /// @title This contract is a proxy to a built-in Miner actor. Calling one of its methods will result in a cross-actor call being performed
 /// @author Zondax AG
 contract MinerAPI {
-    string owner;
+    using ChangeBeneficiaryParamsCBOR for MinerTypes.ChangeBeneficiaryParams;
 
     /// @notice Income and returned collateral are paid to this address
     /// @notice This address is also allowed to change the worker address for the miner
@@ -79,7 +80,7 @@ contract MinerAPI {
     function change_beneficiary(
         MinerTypes.ChangeBeneficiaryParams memory params
     ) public {
-        if (!isBeneficiarySet) {
+        bytes memory raw_request = params.serialize();
 
         // FIXME make actual call to the miner actor
     }
