@@ -47,7 +47,9 @@ jobs:
       - name: Install yarn
         run: npm install -g yarn
       - name: Install dependencies
-        run: cd hardhat && yarn install
+        run: |
+          yarn install
+          cd hardhat && yarn install
       - name: Deploy contracts
         run: |
           make deploy_api > deploy.log
