@@ -48,10 +48,6 @@ jobs:
         run: npm install -g yarn
       - name: Install dependencies
         run: cd hardhat && yarn install
-      - name: Install solc
-        run: make install_solc_linux
-      - name: Build contracts
-        run: make build_api
       - name: Deploy contracts
         run: |
           make deploy_api > deploy.log
@@ -64,7 +60,7 @@ jobs:
           CONTRACT_ADDRESS=$(sed -nr 's/.*deployed at ([^ ]+).*/\1/p' deploy.log)
           echo $WALLET_ADDRESS
           echo $CONTRACT_ADDRESS
-#          cd hardhat && yarn hardhat get-balance --contract $CONTRACT_ADDRESS --account $WALLET_ADDRESS
+          make test_cbor_serialization
         env:
           PRIVATE_KEY: ${{ secrets.WALLET_PRIVATE_KEY }}
 

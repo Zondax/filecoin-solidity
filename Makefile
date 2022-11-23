@@ -1,14 +1,14 @@
-build: build_api
-
-build_api:
-	./bin/solc contracts/v0.8/MarketAPI.sol --output-dir ./build/v0.8 --overwrite --bin --hashes --opcodes --abi
-	./bin/solc contracts/v0.8/MinerAPI.sol --output-dir ./build/v0.8 --overwrite --bin --hashes --opcodes --abi
+compile:
+	mkdir -p hardhat/contracts && cp -rf contracts/* hardhat/contracts/. && cd hardhat && yarn hardhat compile
 
 deploy_api:
 	mkdir -p hardhat/contracts && cp -rf contracts/* hardhat/contracts/. && cd hardhat && yarn hardhat deploy --tags MinerAPI,MarketAPI
 
 deploy_simple_coin:
 	cd hardhat && yarn hardhat deploy --tags SimpleCoin
+
+test_cbor_serialization:
+	cd hardhat && yarn hardhat change-beneficiary --beneficiary 0xaaaa12 --quota 12222 --expiration 1111 --contractaddress $(CONTRACT_ADDRESS)
 
 install_solc_linux:
 	wget https://binaries.soliditylang.org/linux-amd64/solc-linux-amd64-v0.8.15+commit.e14f2714
