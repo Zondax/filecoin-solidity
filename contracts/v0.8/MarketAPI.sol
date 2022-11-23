@@ -2,10 +2,13 @@
 pragma solidity >=0.4.25 <=0.8.15;
 
 import "./types/MarketTypes.sol";
+import "./cbor/MarketCbor.sol";
 
 /// @title This contract is a proxy to the singleton Storage Market actor (address: f05). Calling one of its methods will result in a cross-actor call being performed.
 /// @author Zondax AG
 contract MarketAPI {
+    using WithdrawBalanceParamsCBOR for MarketTypes.WithdrawBalanceParams;
+
     /// @notice Deposits the received value into the balance held in escrow.
     function add_balance(MarketTypes.AddBalanceParams memory params) public {}
 
@@ -14,6 +17,8 @@ contract MarketAPI {
     function withdraw_balance(
         MarketTypes.WithdrawBalanceParams memory params
     ) public returns (MarketTypes.WithdrawBalanceReturn memory) {
+        bytes memory raw_request = params.serialize();
+
         return MarketTypes.WithdrawBalanceReturn(11);
     }
 
