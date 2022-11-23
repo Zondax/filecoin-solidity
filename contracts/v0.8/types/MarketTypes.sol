@@ -4,29 +4,12 @@ pragma solidity >=0.4.25 <=0.8.15;
 /// @title Filecoin market actor types for Solidity.
 /// @author Zondax AG
 library MarketTypes {
-    struct MockDeal {
-        uint64 id;
-        string cid;
-        uint64 size;
-        bool verified;
-        string client;
-        string provider;
-        string label;
-        int64 start;
-        int64 end;
-        uint256 price_per_epoch;
-        uint256 provider_collateral;
-        uint256 client_collateral;
-        int64 activated;
-        int64 terminated;
-    }
-
     struct AddBalanceParams {
-        string provider_or_client;
+        bytes provider_or_client;
     }
 
     struct WithdrawBalanceParams {
-        string provider_or_client;
+        bytes provider_or_client;
         uint256 tokenAmount;
     }
 
@@ -53,7 +36,7 @@ library MarketTypes {
     }
 
     struct GetDealClientReturn {
-        string client;
+        bytes client;
     }
 
     struct GetDealProviderParams {
@@ -61,7 +44,7 @@ library MarketTypes {
     }
 
     struct GetDealProviderReturn {
-        string provider;
+        bytes provider;
     }
 
     struct GetDealLabelParams {
