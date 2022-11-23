@@ -2,6 +2,7 @@
 pragma solidity >=0.4.25 <=0.8.17;
 
 import "solidity-cborutils/contracts/CBOR.sol";
+
 import {MinerTypes} from "../types/MinerTypes.sol";
 
 /// @title FIXME
@@ -9,7 +10,10 @@ import {MinerTypes} from "../types/MinerTypes.sol";
 library ChangeBeneficiaryParamsCBOR {
     using CBOR for CBOR.CBORBuffer;
 
-    function serialize(MinerTypes.ChangeBeneficiaryParams memory params) internal pure returns (bytes memory){
+    function serialize(
+        MinerTypes.ChangeBeneficiaryParams memory params
+    ) internal pure returns (bytes memory) {
+        // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
         buf.startArray();
