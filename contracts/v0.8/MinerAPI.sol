@@ -15,13 +15,40 @@ contract MinerAPI {
     using GetAvailableBalanceCBOR for MinerTypes.GetAvailableBalanceReturn;
     using GetVestingFundsCBOR for MinerTypes.GetVestingFundsReturn;
     using GetBeneficiaryCBOR for MinerTypes.GetBeneficiaryReturn;
+    using ChangeBeneficiaryParamsCBOR for MinerTypes.ChangeBeneficiaryParams;
+    uint32 actor_id;
+
+    constructor(uint32 _actor_id) {
+        actor_id = _actor_id
+    }
 
     /// @notice Income and returned collateral are paid to this address
     /// @notice This address is also allowed to change the worker address for the miner
     /// @return the owner address of a Miner
-    function get_owner() public view returns (MinerTypes.GetOwnerReturn memory) {
-        // FIXME make actual call to the miner actor
-        bytes memory raw_response = hex"81480111010213123122";
+    function get_owner()
+        public
+        view
+        returns (MinerTypes.GetOwnerReturn memory)
+    {
+
+        // FIXME: https://github.com/filecoin-project/builtin-actors/pull/811/files#diff-fbcb2ec1a9d82b18f146c728cafd643df0e7ae47a04d84be7644913fe89236e5R130
+        let uint64 method_num = 0;
+        let uint64 codec = 0x71;
+
+        bytes memory result = new bytes(86+1);
+
+        assembly {
+            let input := mload(0x40)
+            mstore(input, method_num)
+            mstore(add(input, 0x20), codec)
+            mstore(add(input, 0x40), actor_id)
+            // no params
+
+            // staticcall(gasLimit, to, inputOffset, inputSize, outputOffset, outputSize)
+            if iszero(staticcall(100000000, 0x0e, input, 0x60, result, 86+1)) {
+                revert(0,0)
+            }
+        }
 
         MinerTypes.GetOwnerReturn memory response;
         response.deserialize(raw_response);
@@ -40,11 +67,28 @@ contract MinerAPI {
 
     /// @param addr The "controlling" addresses are the Owner, the Worker, and all Control Addresses.
     /// @return Whether the provided address is "controlling".
-    function is_controlling_address(bytes memory addr) public pure returns (MinerTypes.IsControllingAddressReturn memory) {
-        bytes memory raw_request = addr.serializeAddress();
+    function is_controlling_address(
+        bytes memory addr
+    ) public pure returns (MinerTypes.IsControllingAddressReturn memory) {
+        
+        // FIXME: https://github.com/filecoin-project/builtin-actors/pull/811/files#diff-fbcb2ec1a9d82b18f146c728cafd643df0e7ae47a04d84be7644913fe89236e5R131
+        let uint64 method_num = 0;
+        let uint64 codec = 0x71;
+        
+        bytes memory result = new bytes(0x20);
 
-        // FIXME make actual call to the miner actor
-        bytes memory raw_response = hex"81F5";
+        assembly {
+            let input := mload(0x40)
+            mstore(input, method_num)
+            mstore(add(input, 0x20), codec)
+            mstore(add(input, 0x40), actor_id)
+            // no params
+
+            // staticcall(gasLimit, to, inputOffset, inputSize, outputOffset, outputSize)
+            if iszero(staticcall(100000000, 0x0e, input, 0x60, result, 0x20)) {
+                revert(0,0)
+            }
+        }
 
         MinerTypes.IsControllingAddressReturn memory response;
         response.deserialize(raw_response);
