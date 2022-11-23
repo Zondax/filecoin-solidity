@@ -1,8 +1,13 @@
 compile:
 	mkdir -p hardhat/contracts && cp -rf contracts/* hardhat/contracts/. && cd hardhat && yarn hardhat compile
 
-deploy_api:
-	mkdir -p hardhat/contracts && cp -rf contracts/* hardhat/contracts/. && cd hardhat && yarn hardhat deploy --tags MinerAPI,MarketAPI
+deploy_api: deploy_miner_api deploy_market_api
+
+deploy_miner_api:
+	mkdir -p hardhat/contracts && cp -rf contracts/* hardhat/contracts/. && cd hardhat && yarn hardhat deploy --tags MinerAPI
+
+deploy_market_api:
+	mkdir -p hardhat/contracts && cp -rf contracts/* hardhat/contracts/. && cd hardhat && yarn hardhat deploy --tags MarketAPI
 
 deploy_simple_coin:
 	cd hardhat && yarn hardhat deploy --tags SimpleCoin

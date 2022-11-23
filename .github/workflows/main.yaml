@@ -52,14 +52,16 @@ jobs:
           cd hardhat && yarn install
       - name: Deploy contracts
         run: |
-          make deploy_api > deploy.log
-          cat deploy.log
+          make deploy_miner_api > deploy_miner.log
+          make deploy_market_api > deploy_market.log
+          cat deploy_miner.log
+          cat deploy_market.log
         env:
           PRIVATE_KEY: ${{ secrets.WALLET_PRIVATE_KEY }}
       - name: Test contracts
         run: |
-          WALLET_ADDRESS=$(awk '/Wallet Ethereum Address:/{print $NF}' deploy.log)
-          CONTRACT_ADDRESS=$(sed -nr 's/.*deployed at ([^ ]+).*/\1/p' deploy.log)
+          WALLET_ADDRESS=$(awk '/Wallet Ethereum Address:/{print $NF}' deploy_miner.log)
+          CONTRACT_ADDRESS=$(sed -nr 's/.*deployed at ([^ ]+).*/\1/p' deploy_miner.log)
           echo "WALLET_ADDRESS $WALLET_ADDRESS"
           echo "CONTRACT_ADDRESS $CONTRACT_ADDRESS"
           CONTRACT_ADDRESS=$CONTRACT_ADDRESS make test_cbor_serialization
