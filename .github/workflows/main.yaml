@@ -60,9 +60,9 @@ jobs:
         run: |
           WALLET_ADDRESS=$(awk '/Wallet Ethereum Address:/{print $NF}' deploy.log)
           CONTRACT_ADDRESS=$(sed -nr 's/.*deployed at ([^ ]+).*/\1/p' deploy.log)
-          echo $WALLET_ADDRESS
-          echo $CONTRACT_ADDRESS
-          make test_cbor_serialization
+          echo "WALLET_ADDRESS $WALLET_ADDRESS"
+          echo "CONTRACT_ADDRESS $CONTRACT_ADDRESS"
+          CONTRACT_ADDRESS=$CONTRACT_ADDRESS make test_cbor_serialization
         env:
           PRIVATE_KEY: ${{ secrets.WALLET_PRIVATE_KEY }}
 
