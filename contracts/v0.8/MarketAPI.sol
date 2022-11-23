@@ -7,13 +7,10 @@ import "./types/MarketTypes.sol";
 /// @author Zondax AG
 contract MarketAPI {
     /// @notice Deposits the received value into the balance held in escrow.
-    /// @dev Because this is a mock method, no real balance is being deducted from the caller, nor incremented in the Storage Market actor (f05).
     function add_balance(MarketTypes.AddBalanceParams memory params) public {}
 
     /// @notice Attempt to withdraw the specified amount from the balance held in escrow.
     /// @notice If less than the specified amount is available, yields the entire available balance.
-    /// @dev This method should be called by an approved address, but the mock does not check that the caller is an approved party.
-    /// @dev Because this is a mock method, no real balance is deposited in the designated address, nor decremented from the Storage Market actor (f05).
     function withdraw_balance(
         MarketTypes.WithdrawBalanceParams memory params
     ) public returns (MarketTypes.WithdrawBalanceReturn memory) {
@@ -29,7 +26,6 @@ contract MarketAPI {
 
     /// @return the data commitment and size of a deal proposal.
     /// @notice This will be available after the deal is published (whether or not is is activated) and up until some undefined period after it is terminated.
-    /// @dev set data values correctly, currently returning fixed data, feel free to adjust in your local mock.
     function get_deal_data_commitment(
         MarketTypes.GetDealDataCommitmentParams memory params
     ) public view returns (MarketTypes.GetDealDataCommitmentReturn memory) {
