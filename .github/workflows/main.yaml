@@ -58,13 +58,22 @@ jobs:
           cat deploy_market.log
         env:
           PRIVATE_KEY: ${{ secrets.WALLET_PRIVATE_KEY }}
-      - name: Test contracts
+      - name: Test miner contract
         run: |
           WALLET_ADDRESS=$(awk '/Wallet Ethereum Address:/{print $NF}' deploy_miner.log)
           CONTRACT_ADDRESS=$(sed -nr 's/.*deployed at ([^ ]+).*/\1/p' deploy_miner.log)
           echo "WALLET_ADDRESS $WALLET_ADDRESS"
           echo "CONTRACT_ADDRESS $CONTRACT_ADDRESS"
-          CONTRACT_ADDRESS=$CONTRACT_ADDRESS make test_cbor_serialization
+          CONTRACT_ADDRESS=$CONTRACT_ADDRESS make test_miner_cbor_serialization
+        env:
+          PRIVATE_KEY: ${{ secrets.WALLET_PRIVATE_KEY }}
+      - name: Test market contract
+        run: |
+          WALLET_ADDRESS=$(awk '/Wallet Ethereum Address:/{print $NF}' deploy_market.log)
+          CONTRACT_ADDRESS=$(sed -nr 's/.*deployed at ([^ ]+).*/\1/p' deploy_market.log)
+          echo "WALLET_ADDRESS $WALLET_ADDRESS"
+          echo "CONTRACT_ADDRESS $CONTRACT_ADDRESS"
+          CONTRACT_ADDRESS=$CONTRACT_ADDRESS make test_market_cbor_serialization
         env:
           PRIVATE_KEY: ${{ secrets.WALLET_PRIVATE_KEY }}
 

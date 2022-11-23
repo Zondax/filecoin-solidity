@@ -12,8 +12,11 @@ deploy_market_api:
 deploy_simple_coin:
 	cd hardhat && yarn hardhat deploy --tags SimpleCoin
 
-test_cbor_serialization:
+test_miner_cbor_serialization:
 	cd hardhat && yarn hardhat change-beneficiary --beneficiary 0xaaaa12 --quota 12222 --expiration 1111 --contractaddress $(CONTRACT_ADDRESS)
+
+test_market_cbor_serialization:
+	cd hardhat && yarn hardhat withdraw_balance --providerorclient 0xaaaa12 --tokenamount 12222 --contractaddress $(CONTRACT_ADDRESS)
 
 install_solc_linux:
 	wget https://binaries.soliditylang.org/linux-amd64/solc-linux-amd64-v0.8.15+commit.e14f2714
