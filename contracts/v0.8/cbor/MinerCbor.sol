@@ -18,7 +18,6 @@ library ChangeBeneficiaryParamsCBOR {
         buf.writeBytes(params.new_beneficiary);
         buf.writeInt256(params.new_quota);
         buf.writeUInt64(params.new_expiration);
-        buf.endSequence();
 
         return buf.data();
     }

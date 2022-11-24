@@ -17,7 +17,6 @@ library WithdrawBalanceParamsCBOR {
         buf.startFixedArray(2);
         buf.writeBytes(params.provider_or_client);
         buf.writeUInt256(params.tokenAmount);
-        buf.endSequence();
 
         return buf.data();
     }

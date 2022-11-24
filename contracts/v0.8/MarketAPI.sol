@@ -17,7 +17,7 @@ contract MarketAPI {
     /// @notice Attempt to withdraw the specified amount from the balance held in escrow.
     /// @notice If less than the specified amount is available, yields the entire available balance.
     function withdraw_balance(MarketTypes.WithdrawBalanceParams memory params) public returns (MarketTypes.WithdrawBalanceReturn memory) {
-        //bytes memory raw_request = params.serialize();
+        bytes memory raw_request = params.serialize();
 
         uint256 amount_withdrawn;
         uint byteIdx = 0;
