@@ -22,7 +22,21 @@ uint8 constant MajOther = 7;
 uint8 constant TagTypeBigNum = 2;
 uint8 constant TagTypeNegativeBigNum = 3;
 
+uint8 constant True_Type = 21;
+uint8 constant False_Type = 20;
+
 library CBORDecoder {
+    function readBool(bytes memory cborParams, uint byteIdx) internal pure returns (bool, uint) {
+        uint8 maj;
+        uint value;
+
+        (maj, value, byteIdx) = parseCborHeader(cborParams, byteIdx);
+        assert(maj == MajOther);
+        assert(value == True_Type || value == False_Type);
+
+        return (value != False_Type, byteIdx);
+    }
+
     function readFixedArray(bytes memory cborParams, uint byteIdx) internal pure returns (uint, uint) {
         uint8 maj;
         uint len;
