@@ -9,6 +9,7 @@ import "./cbor/MarketCbor.sol";
 contract MarketAPI {
     using WithdrawBalanceParamsCBOR for MarketTypes.WithdrawBalanceParams;
     using WithdrawBalanceParamsCBOR for MarketTypes.WithdrawBalanceReturn;
+    using GetBalanceCBOR for MarketTypes.GetBalanceReturn;
 
     /// @notice Deposits the received value into the balance held in escrow.
     function add_balance(bytes memory provider_or_client) public {}
@@ -28,7 +29,13 @@ contract MarketAPI {
 
     /// @return the escrow balance and locked amount for an address.
     function get_balance(bytes memory addr) public view returns (MarketTypes.GetBalanceReturn memory) {
-        return MarketTypes.GetBalanceReturn(111, 0);
+        // FIXME replace this with the real actor call
+        bytes memory raw_response = hex"821A0012D6871A0074CBB1";
+
+        MarketTypes.GetBalanceReturn memory response;
+        response.deserialize(raw_response);
+
+        return response;
     }
 
     /// @return the data commitment and size of a deal proposal.

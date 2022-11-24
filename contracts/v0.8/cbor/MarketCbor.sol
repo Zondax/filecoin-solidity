@@ -36,3 +36,23 @@ library WithdrawBalanceParamsCBOR {
         ret.amount_withdrawn = amount_withdrawn;
     }
 }
+
+library GetBalanceCBOR {
+    using CBORDecoder for bytes;
+
+    function deserialize(MarketTypes.GetBalanceReturn memory ret, bytes memory rawResp) internal pure {
+        uint256 balance;
+        uint256 locked;
+        uint byteIdx = 0;
+        uint len;
+
+        (len, byteIdx) = rawResp.readFixedArray(byteIdx);
+        assert(len == 2);
+
+        (balance, byteIdx) = rawResp.readUInt256(byteIdx);
+        (locked, byteIdx) = rawResp.readUInt256(byteIdx);
+
+        ret.balance = balance;
+        ret.locked = locked;
+    }
+}
