@@ -7,8 +7,29 @@ import "./cbor/MarketCbor.sol";
 /// @title This contract is a proxy to the singleton Storage Market actor (address: f05). Calling one of its methods will result in a cross-actor call being performed.
 /// @author Zondax AG
 contract MarketAPI {
-    using WithdrawBalanceParamsCBOR for MarketTypes.WithdrawBalanceParams;
-    using WithdrawBalanceParamsCBOR for MarketTypes.WithdrawBalanceReturn;
+    using WithdrawBalanceCBOR for MarketTypes.WithdrawBalanceParams;
+    using WithdrawBalanceCBOR for MarketTypes.WithdrawBalanceReturn;
+    using GetBalanceCBOR for MarketTypes.GetBalanceReturn;
+    using GetDealDataCommitmentCBOR for MarketTypes.GetDealDataCommitmentParams;
+    using GetDealDataCommitmentCBOR for MarketTypes.GetDealDataCommitmentReturn;
+    using GetDealClientCBOR for MarketTypes.GetDealClientParams;
+    using GetDealClientCBOR for MarketTypes.GetDealClientReturn;
+    using GetDealProviderCBOR for MarketTypes.GetDealProviderParams;
+    using GetDealProviderCBOR for MarketTypes.GetDealProviderReturn;
+    using GetDealLabelCBOR for MarketTypes.GetDealLabelParams;
+    using GetDealLabelCBOR for MarketTypes.GetDealLabelReturn;
+    using GetDealTermCBOR for MarketTypes.GetDealTermParams;
+    using GetDealTermCBOR for MarketTypes.GetDealTermReturn;
+    using GetDealEpochPriceCBOR for MarketTypes.GetDealEpochPriceParams;
+    using GetDealEpochPriceCBOR for MarketTypes.GetDealEpochPriceReturn;
+    using GetDealClientCollateralCBOR for MarketTypes.GetDealClientCollateralParams;
+    using GetDealClientCollateralCBOR for MarketTypes.GetDealClientCollateralReturn;
+    using GetDealProviderCollateralCBOR for MarketTypes.GetDealProviderCollateralParams;
+    using GetDealProviderCollateralCBOR for MarketTypes.GetDealProviderCollateralReturn;
+    using GetDealVerifiedCBOR for MarketTypes.GetDealVerifiedParams;
+    using GetDealVerifiedCBOR for MarketTypes.GetDealVerifiedReturn;
+    using GetDealActivationCBOR for MarketTypes.GetDealActivationParams;
+    using GetDealActivationCBOR for MarketTypes.GetDealActivationReturn;
 
     /// @notice Deposits the received value into the balance held in escrow.
     function add_balance(bytes memory provider_or_client) public {}
@@ -28,7 +49,13 @@ contract MarketAPI {
 
     /// @return the escrow balance and locked amount for an address.
     function get_balance(bytes memory addr) public view returns (MarketTypes.GetBalanceReturn memory) {
-        return MarketTypes.GetBalanceReturn(111, 0);
+        // FIXME replace this with the real actor call
+        bytes memory raw_response = hex"821A0012D6871A0074CBB1";
+
+        MarketTypes.GetBalanceReturn memory response;
+        response.deserialize(raw_response);
+
+        return response;
     }
 
     /// @return the data commitment and size of a deal proposal.
@@ -36,50 +63,114 @@ contract MarketAPI {
     function get_deal_data_commitment(
         MarketTypes.GetDealDataCommitmentParams memory params
     ) public view returns (MarketTypes.GetDealDataCommitmentReturn memory) {
-        return MarketTypes.GetDealDataCommitmentReturn(bytes("0x111111"), 1);
+        bytes memory raw_request = params.serialize();
+
+        // FIXME replace this with the real actor call
+        bytes memory raw_response = hex"82441111111103";
+
+        MarketTypes.GetDealDataCommitmentReturn memory response;
+        response.deserialize(raw_response);
+
+        return response;
     }
 
     /// @return the client of a deal proposal.
     function get_deal_client(MarketTypes.GetDealClientParams memory params) public view returns (MarketTypes.GetDealClientReturn memory) {
-        return MarketTypes.GetDealClientReturn(hex"111111");
+        bytes memory raw_request = params.serialize();
+
+        // FIXME replace this with the real actor call
+        bytes memory raw_response = hex"814411111111";
+
+        MarketTypes.GetDealClientReturn memory response;
+        response.deserialize(raw_response);
+
+        return response;
     }
 
     /// @return the provider of a deal proposal.
     function get_deal_provider(
         MarketTypes.GetDealProviderParams memory params
     ) public view returns (MarketTypes.GetDealProviderReturn memory) {
-        return MarketTypes.GetDealProviderReturn(hex"111111");
+        bytes memory raw_request = params.serialize();
+
+        // FIXME replace this with the real actor call
+        bytes memory raw_response = hex"814411111111";
+
+        MarketTypes.GetDealProviderReturn memory response;
+        response.deserialize(raw_response);
+
+        return response;
     }
 
     /// @return the label of a deal proposal.
     function get_deal_label(MarketTypes.GetDealLabelParams memory params) public view returns (MarketTypes.GetDealLabelReturn memory) {
-        return MarketTypes.GetDealLabelReturn("test");
+        bytes memory raw_request = params.serialize();
+
+        // FIXME replace this with the real actor call
+        bytes memory raw_response = hex"816474657374";
+
+        MarketTypes.GetDealLabelReturn memory response;
+        response.deserialize(raw_response);
+
+        return response;
     }
 
     /// @return the start epoch and duration (in epochs) of a deal proposal.
     function get_deal_term(MarketTypes.GetDealTermParams memory params) public view returns (MarketTypes.GetDealTermReturn memory) {
-        return MarketTypes.GetDealTermReturn(1, 1);
+        bytes memory raw_request = params.serialize();
+
+        // FIXME replace this with the real actor call
+        bytes memory raw_response = hex"82386E386E";
+
+        MarketTypes.GetDealTermReturn memory response;
+        response.deserialize(raw_response);
+
+        return response;
     }
 
     /// @return the per-epoch price of a deal proposal.
     function get_deal_total_price(
         MarketTypes.GetDealEpochPriceParams memory params
     ) public view returns (MarketTypes.GetDealEpochPriceReturn memory) {
-        return MarketTypes.GetDealEpochPriceReturn(1);
+        bytes memory raw_request = params.serialize();
+
+        // FIXME replace this with the real actor call
+        bytes memory raw_response = hex"811B01B56BD40163F3B3";
+
+        MarketTypes.GetDealEpochPriceReturn memory response;
+        response.deserialize(raw_response);
+
+        return response;
     }
 
     /// @return the client collateral requirement for a deal proposal.
     function get_deal_client_collateral(
         MarketTypes.GetDealClientCollateralParams memory params
     ) public view returns (MarketTypes.GetDealClientCollateralReturn memory) {
-        return MarketTypes.GetDealClientCollateralReturn(1);
+        bytes memory raw_request = params.serialize();
+
+        // FIXME replace this with the real actor call
+        bytes memory raw_response = hex"811B01B56BD40163F3B3";
+
+        MarketTypes.GetDealClientCollateralReturn memory response;
+        response.deserialize(raw_response);
+
+        return response;
     }
 
     /// @return the provider collateral requirement for a deal proposal.
     function get_deal_provider_collateral(
         MarketTypes.GetDealProviderCollateralParams memory params
     ) public view returns (MarketTypes.GetDealProviderCollateralReturn memory) {
-        return MarketTypes.GetDealProviderCollateralReturn(1);
+        bytes memory raw_request = params.serialize();
+
+        // FIXME replace this with the real actor call
+        bytes memory raw_response = hex"811B01B56BD40163F3B3";
+
+        MarketTypes.GetDealProviderCollateralReturn memory response;
+        response.deserialize(raw_response);
+
+        return response;
     }
 
     /// @return the verified flag for a deal proposal.
@@ -87,7 +178,15 @@ contract MarketAPI {
     function get_deal_verified(
         MarketTypes.GetDealVerifiedParams memory params
     ) public view returns (MarketTypes.GetDealVerifiedReturn memory) {
-        return MarketTypes.GetDealVerifiedReturn(false);
+        bytes memory raw_request = params.serialize();
+
+        // FIXME replace this with the real actor call
+        bytes memory raw_response = hex"81F4";
+
+        MarketTypes.GetDealVerifiedReturn memory response;
+        response.deserialize(raw_response);
+
+        return response;
     }
 
     /// @notice Fetches activation state for a deal.
@@ -96,7 +195,15 @@ contract MarketAPI {
     function get_deal_activation(
         MarketTypes.GetDealActivationParams memory params
     ) public view returns (MarketTypes.GetDealActivationReturn memory) {
-        return MarketTypes.GetDealActivationReturn(1, 0);
+        bytes memory raw_request = params.serialize();
+
+        // FIXME replace this with the real actor call
+        bytes memory raw_response = hex"823A0001E0F23A0756BADA";
+
+        MarketTypes.GetDealActivationReturn memory response;
+        response.deserialize(raw_response);
+
+        return response;
     }
 
     /// @notice Publish a new set of storage deals (not yet included in a sector).

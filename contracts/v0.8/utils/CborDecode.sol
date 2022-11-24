@@ -22,7 +22,21 @@ uint8 constant MajOther = 7;
 uint8 constant TagTypeBigNum = 2;
 uint8 constant TagTypeNegativeBigNum = 3;
 
+uint8 constant True_Type = 21;
+uint8 constant False_Type = 20;
+
 library CBORDecoder {
+    function readBool(bytes memory cborParams, uint byteIdx) internal pure returns (bool, uint) {
+        uint8 maj;
+        uint value;
+
+        (maj, value, byteIdx) = parseCborHeader(cborParams, byteIdx);
+        assert(maj == MajOther);
+        assert(value == True_Type || value == False_Type);
+
+        return (value != False_Type, byteIdx);
+    }
+
     function readFixedArray(bytes memory cborParams, uint byteIdx) internal pure returns (uint, uint) {
         uint8 maj;
         uint len;
@@ -33,14 +47,42 @@ library CBORDecoder {
         return (len, byteIdx);
     }
 
-    function readBytes(bytes calldata cborParams, uint byteIdx) internal pure returns (bytes memory, uint) {
+    function readString(bytes memory cborParams, uint byteIdx) internal pure returns (string memory, uint) {
+        uint8 maj;
+        uint len;
+
+        (maj, len, byteIdx) = parseCborHeader(cborParams, byteIdx);
+        assert(maj == MajTextString);
+
+        uint max_len = byteIdx + len;
+        bytes memory slice = new bytes(len);
+        for (uint256 i = byteIdx; i < max_len; ) {
+            slice[i] = cborParams[i];
+            unchecked {
+                ++i;
+            }
+        }
+
+        return (string(slice), byteIdx + len);
+    }
+
+    function readBytes(bytes memory cborParams, uint byteIdx) internal pure returns (bytes memory, uint) {
         uint8 maj;
         uint len;
 
         (maj, len, byteIdx) = parseCborHeader(cborParams, byteIdx);
         assert(maj == MajByteString);
 
-        return (cborParams[byteIdx:byteIdx + len], byteIdx + len);
+        uint max_len = byteIdx + len;
+        bytes memory slice = new bytes(len);
+        for (uint256 i = byteIdx; i < max_len; ) {
+            slice[i] = cborParams[i];
+            unchecked {
+                ++i;
+            }
+        }
+
+        return (slice, byteIdx + len);
     }
 
     function readUInt256(bytes memory cborParams, uint byteIdx) internal pure returns (uint256, uint) {
