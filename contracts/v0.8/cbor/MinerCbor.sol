@@ -10,9 +10,7 @@ import {MinerTypes} from "../types/MinerTypes.sol";
 library ChangeBeneficiaryParamsCBOR {
     using CBOR for CBOR.CBORBuffer;
 
-    function serialize(
-        MinerTypes.ChangeBeneficiaryParams memory params
-    ) internal pure returns (bytes memory) {
+    function serialize(MinerTypes.ChangeBeneficiaryParams memory params) internal pure returns (bytes memory) {
         // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 

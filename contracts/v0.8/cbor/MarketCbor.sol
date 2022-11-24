@@ -10,9 +10,7 @@ import {MarketTypes} from "../types/MarketTypes.sol";
 library WithdrawBalanceParamsCBOR {
     using CBOR for CBOR.CBORBuffer;
 
-    function serialize(
-        MarketTypes.WithdrawBalanceParams memory params
-    ) internal pure returns (bytes memory) {
+    function serialize(MarketTypes.WithdrawBalanceParams memory params) internal pure returns (bytes memory) {
         // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
