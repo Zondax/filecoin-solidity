@@ -8,7 +8,7 @@ import "../utils/CborDecode.sol";
 
 /// @title FIXME
 /// @author Zondax AG
-library WithdrawBalanceParamsCBOR {
+library WithdrawBalanceCBOR {
     using CBOR for CBOR.CBORBuffer;
     using CBORDecoder for bytes;
 

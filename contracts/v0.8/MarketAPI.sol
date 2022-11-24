@@ -7,8 +7,8 @@ import "./cbor/MarketCbor.sol";
 /// @title This contract is a proxy to the singleton Storage Market actor (address: f05). Calling one of its methods will result in a cross-actor call being performed.
 /// @author Zondax AG
 contract MarketAPI {
-    using WithdrawBalanceParamsCBOR for MarketTypes.WithdrawBalanceParams;
-    using WithdrawBalanceParamsCBOR for MarketTypes.WithdrawBalanceReturn;
+    using WithdrawBalanceCBOR for MarketTypes.WithdrawBalanceParams;
+    using WithdrawBalanceCBOR for MarketTypes.WithdrawBalanceReturn;
     using GetBalanceCBOR for MarketTypes.GetBalanceReturn;
 
     /// @notice Deposits the received value into the balance held in escrow.
