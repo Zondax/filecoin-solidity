@@ -33,14 +33,23 @@ library CBORDecoder {
         return (len, byteIdx);
     }
 
-    function readBytes(bytes calldata cborParams, uint byteIdx) internal pure returns (bytes memory, uint) {
+    function readBytes(bytes memory cborParams, uint byteIdx) internal pure returns (bytes memory, uint) {
         uint8 maj;
         uint len;
 
         (maj, len, byteIdx) = parseCborHeader(cborParams, byteIdx);
         assert(maj == MajByteString);
 
-        return (cborParams[byteIdx:byteIdx + len], byteIdx + len);
+        uint max_len = byteIdx + len;
+        bytes memory slice = new bytes(len);
+        for (uint256 i = byteIdx; i < max_len; ) {
+            slice[i] = cborParams[i];
+            unchecked {
+                ++i;
+            }
+        }
+
+        return (slice, byteIdx + len);
     }
 
     function readUInt256(bytes memory cborParams, uint byteIdx) internal pure returns (uint256, uint) {
