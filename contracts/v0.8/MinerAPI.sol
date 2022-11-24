@@ -4,7 +4,9 @@ pragma solidity >=0.4.25 <=0.8.17;
 import "./types/MinerTypes.sol";
 import "./cbor/MinerCbor.sol";
 
-/// @title This contract is a proxy to a built-in Miner actor. Calling one of its methods will result in a cross-actor call being performed
+uint64 constant ADDRESS_MAX_LEN = 86;
+
+/// @title This contract is a proxy to a built-in Miner actor. Calling one of its methods will result in a cross-actor call being performed. However, in this mock library, no actual call is performed.
 /// @author Zondax AG
 contract MinerAPI {
     using ChangeBeneficiaryCBOR for MinerTypes.ChangeBeneficiaryParams;
@@ -16,11 +18,11 @@ contract MinerAPI {
     using GetVestingFundsCBOR for MinerTypes.GetVestingFundsReturn;
     using GetBeneficiaryCBOR for MinerTypes.GetBeneficiaryReturn;
     using ChangeBeneficiaryParamsCBOR for MinerTypes.ChangeBeneficiaryParams;
-    uint32 actor_id;
+    /*uint32 actor_id;
 
     constructor(uint32 _actor_id) {
         actor_id = _actor_id
-    }
+    }*/
 
     /// @notice Income and returned collateral are paid to this address
     /// @notice This address is also allowed to change the worker address for the miner
@@ -30,12 +32,13 @@ contract MinerAPI {
         view
         returns (MinerTypes.GetOwnerReturn memory)
     {
+        uint32 actor_id = 101;
 
         // FIXME: https://github.com/filecoin-project/builtin-actors/pull/811/files#diff-fbcb2ec1a9d82b18f146c728cafd643df0e7ae47a04d84be7644913fe89236e5R130
-        let uint64 method_num = 0;
-        let uint64 codec = 0x71;
+        uint64 method_num = 0;
+        uint64 codec = 0x71;
 
-        bytes memory result = new bytes(86+1);
+        bytes memory result = new bytes(ADDRESS_MAX_LEN+1);
 
         assembly {
             let input := mload(0x40)
@@ -45,7 +48,7 @@ contract MinerAPI {
             // no params
 
             // staticcall(gasLimit, to, inputOffset, inputSize, outputOffset, outputSize)
-            if iszero(staticcall(100000000, 0x0e, input, 0x60, result, 86+1)) {
+            if iszero(staticcall(100000000, 0x0e, input, 0x60, result, 87)) {
                 revert(0,0)
             }
         }
@@ -65,15 +68,15 @@ contract MinerAPI {
         // FIXME make actual call to the miner actor
     }
 
-    /// @param addr The "controlling" addresses are the Owner, the Worker, and all Control Addresses.
+    /// @param params The "controlling" addresses are the Owner, the Worker, and all Control Addresses.
     /// @return Whether the provided address is "controlling".
     function is_controlling_address(
-        bytes memory addr
+        MinerTypes.IsControllingAddressParam memory params
     ) public pure returns (MinerTypes.IsControllingAddressReturn memory) {
         
         // FIXME: https://github.com/filecoin-project/builtin-actors/pull/811/files#diff-fbcb2ec1a9d82b18f146c728cafd643df0e7ae47a04d84be7644913fe89236e5R131
-        let uint64 method_num = 0;
-        let uint64 codec = 0x71;
+        uint64 method_num = 0;
+        uint64 codec = 0x71;
         
         bytes memory result = new bytes(0x20);
 
@@ -153,4 +156,3 @@ contract MinerAPI {
 
         return response;
     }
-}
