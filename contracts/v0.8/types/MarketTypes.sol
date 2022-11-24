@@ -4,10 +4,6 @@ pragma solidity >=0.4.25 <=0.8.15;
 /// @title Filecoin market actor types for Solidity.
 /// @author Zondax AG
 library MarketTypes {
-    struct AddBalanceParams {
-        bytes provider_or_client;
-    }
-
     struct WithdrawBalanceParams {
         bytes provider_or_client;
         uint256 tokenAmount;

@@ -8,24 +8,26 @@ import "./cbor/MarketCbor.sol";
 /// @author Zondax AG
 contract MarketAPI {
     using WithdrawBalanceParamsCBOR for MarketTypes.WithdrawBalanceParams;
+    using WithdrawBalanceParamsCBOR for MarketTypes.WithdrawBalanceReturn;
 
     /// @notice Deposits the received value into the balance held in escrow.
-    function add_balance(MarketTypes.AddBalanceParams memory params) public {}
+    function add_balance(bytes memory provider_or_client) public {}
 
     /// @notice Attempt to withdraw the specified amount from the balance held in escrow.
     /// @notice If less than the specified amount is available, yields the entire available balance.
-    function withdraw_balance(
-        MarketTypes.WithdrawBalanceParams memory params
-    ) public returns (MarketTypes.WithdrawBalanceReturn memory) {
+    function withdraw_balance(MarketTypes.WithdrawBalanceParams memory params) public returns (MarketTypes.WithdrawBalanceReturn memory) {
         bytes memory raw_request = params.serialize();
 
-        return MarketTypes.WithdrawBalanceReturn(11);
+        bytes memory raw_response = hex"811A00989AD8";
+
+        MarketTypes.WithdrawBalanceReturn memory response;
+        response.deserialize(raw_response);
+
+        return response;
     }
 
     /// @return the escrow balance and locked amount for an address.
-    function get_balance(
-        bytes memory addr
-    ) public view returns (MarketTypes.GetBalanceReturn memory) {
+    function get_balance(bytes memory addr) public view returns (MarketTypes.GetBalanceReturn memory) {
         return MarketTypes.GetBalanceReturn(111, 0);
     }
 
@@ -38,9 +40,7 @@ contract MarketAPI {
     }
 
     /// @return the client of a deal proposal.
-    function get_deal_client(
-        MarketTypes.GetDealClientParams memory params
-    ) public view returns (MarketTypes.GetDealClientReturn memory) {
+    function get_deal_client(MarketTypes.GetDealClientParams memory params) public view returns (MarketTypes.GetDealClientReturn memory) {
         return MarketTypes.GetDealClientReturn(hex"111111");
     }
 
@@ -52,16 +52,12 @@ contract MarketAPI {
     }
 
     /// @return the label of a deal proposal.
-    function get_deal_label(
-        MarketTypes.GetDealLabelParams memory params
-    ) public view returns (MarketTypes.GetDealLabelReturn memory) {
+    function get_deal_label(MarketTypes.GetDealLabelParams memory params) public view returns (MarketTypes.GetDealLabelReturn memory) {
         return MarketTypes.GetDealLabelReturn("test");
     }
 
     /// @return the start epoch and duration (in epochs) of a deal proposal.
-    function get_deal_term(
-        MarketTypes.GetDealTermParams memory params
-    ) public view returns (MarketTypes.GetDealTermReturn memory) {
+    function get_deal_term(MarketTypes.GetDealTermParams memory params) public view returns (MarketTypes.GetDealTermReturn memory) {
         return MarketTypes.GetDealTermReturn(1, 1);
     }
 
@@ -104,18 +100,10 @@ contract MarketAPI {
     }
 
     /// @notice Publish a new set of storage deals (not yet included in a sector).
-    function publish_storage_deals(
-        bytes memory raw_auth_params,
-        address callee
-    ) public {
+    function publish_storage_deals(bytes memory raw_auth_params, address callee) public {
         // calls standard filecoin receiver on message authentication api method number
         (bool success, ) = callee.call(
-            abi.encodeWithSignature(
-                "handle_filecoin_method(uint64,uint64,bytes)",
-                0,
-                2643134072,
-                raw_auth_params
-            )
+            abi.encodeWithSignature("handle_filecoin_method(uint64,uint64,bytes)", 0, 2643134072, raw_auth_params)
         );
         require(success, "client contract failed to authorize deal publish");
     }
