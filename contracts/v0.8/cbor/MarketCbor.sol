@@ -16,7 +16,7 @@ library WithdrawBalanceParamsCBOR {
         // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
-        buf.startArray();
+        buf.startFixedArray(2);
         buf.writeBytes(params.provider_or_client);
         buf.writeUInt256(params.tokenAmount);
         buf.endSequence();

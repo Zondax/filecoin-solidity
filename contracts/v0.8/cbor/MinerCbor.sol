@@ -16,7 +16,7 @@ library ChangeBeneficiaryParamsCBOR {
         // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
-        buf.startArray();
+        buf.startFixedArray(3);
         buf.writeBytes(params.new_beneficiary);
         buf.writeInt256(params.new_quota);
         buf.writeUInt64(params.new_expiration);
