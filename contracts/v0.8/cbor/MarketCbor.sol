@@ -171,3 +171,34 @@ library GetDealLabelCBOR {
         ret.label = label;
     }
 }
+
+library GetDealTermCBOR {
+    using CBOR for CBOR.CBORBuffer;
+    using CBORDecoder for bytes;
+
+    function serialize(MarketTypes.GetDealTermParams memory params) internal pure returns (bytes memory) {
+        // FIXME what should the max length be on the buffer?
+        CBOR.CBORBuffer memory buf = CBOR.create(64);
+
+        buf.startFixedArray(1);
+        buf.writeUInt64(params.id);
+
+        return buf.data();
+    }
+
+    function deserialize(MarketTypes.GetDealTermReturn memory ret, bytes memory rawResp) internal pure {
+        int64 start;
+        int64 end;
+        uint byteIdx = 0;
+        uint len;
+
+        (len, byteIdx) = rawResp.readFixedArray(byteIdx);
+        assert(len == 2);
+
+        (start, byteIdx) = rawResp.readInt64(byteIdx);
+        (end, byteIdx) = rawResp.readInt64(byteIdx);
+
+        ret.start = start;
+        ret.end = end;
+    }
+}
