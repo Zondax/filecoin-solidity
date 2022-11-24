@@ -258,3 +258,31 @@ library GetDealClientCollateralCBOR {
         ret.collateral = collateral;
     }
 }
+
+library GetDealProviderCollateralCBOR {
+    using CBOR for CBOR.CBORBuffer;
+    using CBORDecoder for bytes;
+
+    function serialize(MarketTypes.GetDealProviderCollateralParams memory params) internal pure returns (bytes memory) {
+        // FIXME what should the max length be on the buffer?
+        CBOR.CBORBuffer memory buf = CBOR.create(64);
+
+        buf.startFixedArray(1);
+        buf.writeUInt64(params.id);
+
+        return buf.data();
+    }
+
+    function deserialize(MarketTypes.GetDealProviderCollateralReturn memory ret, bytes memory rawResp) internal pure {
+        uint256 collateral;
+        uint byteIdx = 0;
+        uint len;
+
+        (len, byteIdx) = rawResp.readFixedArray(byteIdx);
+        assert(len == 2);
+
+        (collateral, byteIdx) = rawResp.readUInt256(byteIdx);
+
+        ret.collateral = collateral;
+    }
+}
