@@ -3,23 +3,31 @@ pragma solidity >=0.4.25 <=0.8.15;
 
 import "./types/MarketTypes.sol";
 import "./cbor/MarketCbor.sol";
+import "./utils/cbor_decode.sol";
 
 /// @title This contract is a proxy to the singleton Storage Market actor (address: f05). Calling one of its methods will result in a cross-actor call being performed.
 /// @author Zondax AG
 contract MarketAPI {
     using WithdrawBalanceParamsCBOR for MarketTypes.WithdrawBalanceParams;
+    using CBORDecoder for bytes;
 
     /// @notice Deposits the received value into the balance held in escrow.
     function add_balance(bytes memory provider_or_client) public {}
 
     /// @notice Attempt to withdraw the specified amount from the balance held in escrow.
     /// @notice If less than the specified amount is available, yields the entire available balance.
-    function withdraw_balance(
-        MarketTypes.WithdrawBalanceParams memory params
-    ) public returns (MarketTypes.WithdrawBalanceReturn memory) {
-        bytes memory raw_request = params.serialize();
+    function withdraw_balance(MarketTypes.WithdrawBalanceParams memory params) public returns (MarketTypes.WithdrawBalanceReturn memory) {
+        //bytes memory raw_request = params.serialize();
 
-        return MarketTypes.WithdrawBalanceReturn(11);
+        uint256 amount_withdrawn;
+        uint byteIdx = 0;
+        uint len;
+        bytes memory raw_response = hex"811A00989AD8";
+
+        (len, byteIdx) = raw_response.readFixedArray(byteIdx);
+        assert(len == 1)(amount_withdrawn, byteIdx) = raw_response.readUInt256(byteIdx);
+
+        return MarketTypes.WithdrawBalanceReturn(amount_withdrawn);
     }
 
     /// @return the escrow balance and locked amount for an address.
