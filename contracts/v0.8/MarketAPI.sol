@@ -25,7 +25,9 @@ contract MarketAPI {
         bytes memory raw_response = hex"811A00989AD8";
 
         (len, byteIdx) = raw_response.readFixedArray(byteIdx);
-        assert(len == 1)(amount_withdrawn, byteIdx) = raw_response.readUInt256(byteIdx);
+        assert(len == 1);
+
+        (amount_withdrawn, byteIdx) = raw_response.readUInt256(byteIdx);
 
         return MarketTypes.WithdrawBalanceReturn(amount_withdrawn);
     }
