@@ -28,6 +28,8 @@ contract MarketAPI {
     using GetDealProviderCollateralCBOR for MarketTypes.GetDealProviderCollateralReturn;
     using GetDealVerifiedCBOR for MarketTypes.GetDealVerifiedParams;
     using GetDealVerifiedCBOR for MarketTypes.GetDealVerifiedReturn;
+    using GetDealActivationCBOR for MarketTypes.GetDealActivationParams;
+    using GetDealActivationCBOR for MarketTypes.GetDealActivationReturn;
 
     /// @notice Deposits the received value into the balance held in escrow.
     function add_balance(bytes memory provider_or_client) public {}
@@ -193,7 +195,15 @@ contract MarketAPI {
     function get_deal_activation(
         MarketTypes.GetDealActivationParams memory params
     ) public view returns (MarketTypes.GetDealActivationReturn memory) {
-        return MarketTypes.GetDealActivationReturn(1, 0);
+        bytes memory raw_request = params.serialize();
+
+        // FIXME replace this with the real actor call
+        bytes memory raw_response = hex"823A0001E0F23A0756BADA";
+
+        MarketTypes.GetDealActivationReturn memory response;
+        response.deserialize(raw_response);
+
+        return response;
     }
 
     /// @notice Publish a new set of storage deals (not yet included in a sector).
