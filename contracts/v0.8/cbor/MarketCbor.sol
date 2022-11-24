@@ -56,3 +56,34 @@ library GetBalanceCBOR {
         ret.locked = locked;
     }
 }
+
+library GetDealDataCommitmentCBOR {
+    using CBOR for CBOR.CBORBuffer;
+    using CBORDecoder for bytes;
+
+    function serialize(MarketTypes.GetDealDataCommitmentParams memory params) internal pure returns (bytes memory) {
+        // FIXME what should the max length be on the buffer?
+        CBOR.CBORBuffer memory buf = CBOR.create(64);
+
+        buf.startFixedArray(1);
+        buf.writeUInt64(params.id);
+
+        return buf.data();
+    }
+
+    function deserialize(MarketTypes.GetDealDataCommitmentReturn memory ret, bytes memory rawResp) internal pure {
+        bytes memory data;
+        uint64 size;
+        uint byteIdx = 0;
+        uint len;
+
+        (len, byteIdx) = rawResp.readFixedArray(byteIdx);
+        assert(len == 2);
+
+        (data, byteIdx) = rawResp.readBytes(byteIdx);
+        (size, byteIdx) = rawResp.readUInt64(byteIdx);
+
+        ret.data = data;
+        ret.size = size;
+    }
+}
