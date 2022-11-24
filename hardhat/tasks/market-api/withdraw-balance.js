@@ -41,10 +41,12 @@ task("withdraw_balance", "")
 
 
     const marketAPIContract = new ethers.Contract(contractAddr, MarketAPI.interface, signer)
-    await marketAPIContract.withdraw_balance([providerorclient, tokenamount], {
+    const result = await marketAPIContract.withdraw_balance([providerorclient, tokenamount], {
       gasLimit: 1000000000,
       maxPriorityFeePerGas: priorityFee
     })
+
+    console.log(result.hash)
   })
 
 module.exports = {}
