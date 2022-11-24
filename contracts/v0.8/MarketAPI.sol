@@ -22,6 +22,8 @@ contract MarketAPI {
     using GetDealTermCBOR for MarketTypes.GetDealTermReturn;
     using GetDealEpochPriceCBOR for MarketTypes.GetDealEpochPriceParams;
     using GetDealEpochPriceCBOR for MarketTypes.GetDealEpochPriceReturn;
+    using GetDealClientCollateralCBOR for MarketTypes.GetDealClientCollateralParams;
+    using GetDealClientCollateralCBOR for MarketTypes.GetDealClientCollateralReturn;
 
     /// @notice Deposits the received value into the balance held in escrow.
     function add_balance(bytes memory provider_or_client) public {}
@@ -139,7 +141,15 @@ contract MarketAPI {
     function get_deal_client_collateral(
         MarketTypes.GetDealClientCollateralParams memory params
     ) public view returns (MarketTypes.GetDealClientCollateralReturn memory) {
-        return MarketTypes.GetDealClientCollateralReturn(1);
+        bytes memory raw_request = params.serialize();
+
+        // FIXME replace this with the real actor call
+        bytes memory raw_response = hex"811B01B56BD40163F3B3";
+
+        MarketTypes.GetDealClientCollateralReturn memory response;
+        response.deserialize(raw_response);
+
+        return response;
     }
 
     /// @return the provider collateral requirement for a deal proposal.
