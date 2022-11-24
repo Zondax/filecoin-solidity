@@ -87,3 +87,31 @@ library GetDealDataCommitmentCBOR {
         ret.size = size;
     }
 }
+
+library GetDealClientCBOR {
+    using CBOR for CBOR.CBORBuffer;
+    using CBORDecoder for bytes;
+
+    function serialize(MarketTypes.GetDealClientParams memory params) internal pure returns (bytes memory) {
+        // FIXME what should the max length be on the buffer?
+        CBOR.CBORBuffer memory buf = CBOR.create(64);
+
+        buf.startFixedArray(1);
+        buf.writeUInt64(params.id);
+
+        return buf.data();
+    }
+
+    function deserialize(MarketTypes.GetDealClientReturn memory ret, bytes memory rawResp) internal pure {
+        bytes memory client;
+        uint byteIdx = 0;
+        uint len;
+
+        (len, byteIdx) = rawResp.readFixedArray(byteIdx);
+        assert(len == 2);
+
+        (client, byteIdx) = rawResp.readBytes(byteIdx);
+
+        ret.client = client;
+    }
+}

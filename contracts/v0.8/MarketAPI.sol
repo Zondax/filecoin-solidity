@@ -12,6 +12,8 @@ contract MarketAPI {
     using GetBalanceCBOR for MarketTypes.GetBalanceReturn;
     using GetDealDataCommitmentCBOR for MarketTypes.GetDealDataCommitmentParams;
     using GetDealDataCommitmentCBOR for MarketTypes.GetDealDataCommitmentReturn;
+    using GetDealClientCBOR for MarketTypes.GetDealClientParams;
+    using GetDealClientCBOR for MarketTypes.GetDealClientReturn;
 
     /// @notice Deposits the received value into the balance held in escrow.
     function add_balance(bytes memory provider_or_client) public {}
@@ -58,7 +60,15 @@ contract MarketAPI {
 
     /// @return the client of a deal proposal.
     function get_deal_client(MarketTypes.GetDealClientParams memory params) public view returns (MarketTypes.GetDealClientReturn memory) {
-        return MarketTypes.GetDealClientReturn(hex"111111");
+        bytes memory raw_request = params.serialize();
+
+        // FIXME replace this with the real actor call
+        bytes memory raw_response = hex"814411111111";
+
+        MarketTypes.GetDealClientReturn memory response;
+        response.deserialize(raw_response);
+
+        return response;
     }
 
     /// @return the provider of a deal proposal.
