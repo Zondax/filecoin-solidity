@@ -10,7 +10,7 @@ contract MarketAPI {
     using WithdrawBalanceParamsCBOR for MarketTypes.WithdrawBalanceParams;
 
     /// @notice Deposits the received value into the balance held in escrow.
-    function add_balance(MarketTypes.AddBalanceParams memory params) public {}
+    function add_balance(bytes memory provider_or_client) public {}
 
     /// @notice Attempt to withdraw the specified amount from the balance held in escrow.
     /// @notice If less than the specified amount is available, yields the entire available balance.
