@@ -26,6 +26,8 @@ contract MarketAPI {
     using GetDealClientCollateralCBOR for MarketTypes.GetDealClientCollateralReturn;
     using GetDealProviderCollateralCBOR for MarketTypes.GetDealProviderCollateralParams;
     using GetDealProviderCollateralCBOR for MarketTypes.GetDealProviderCollateralReturn;
+    using GetDealVerifiedCBOR for MarketTypes.GetDealVerifiedParams;
+    using GetDealVerifiedCBOR for MarketTypes.GetDealVerifiedReturn;
 
     /// @notice Deposits the received value into the balance held in escrow.
     function add_balance(bytes memory provider_or_client) public {}
@@ -174,7 +176,15 @@ contract MarketAPI {
     function get_deal_verified(
         MarketTypes.GetDealVerifiedParams memory params
     ) public view returns (MarketTypes.GetDealVerifiedReturn memory) {
-        return MarketTypes.GetDealVerifiedReturn(false);
+        bytes memory raw_request = params.serialize();
+
+        // FIXME replace this with the real actor call
+        bytes memory raw_response = hex"81F4";
+
+        MarketTypes.GetDealVerifiedReturn memory response;
+        response.deserialize(raw_response);
+
+        return response;
     }
 
     /// @notice Fetches activation state for a deal.
