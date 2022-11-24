@@ -3,7 +3,7 @@ pragma solidity >=0.4.25 <=0.8.15;
 
 import "./types/MarketTypes.sol";
 import "./cbor/MarketCbor.sol";
-import "./utils/cbor_decode.sol";
+import "./utils/CborDecode.sol";
 
 /// @title This contract is a proxy to the singleton Storage Market actor (address: f05). Calling one of its methods will result in a cross-actor call being performed.
 /// @author Zondax AG
