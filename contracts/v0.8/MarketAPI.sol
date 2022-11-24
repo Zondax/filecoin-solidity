@@ -16,6 +16,8 @@ contract MarketAPI {
     using GetDealClientCBOR for MarketTypes.GetDealClientReturn;
     using GetDealProviderCBOR for MarketTypes.GetDealProviderParams;
     using GetDealProviderCBOR for MarketTypes.GetDealProviderReturn;
+    using GetDealLabelCBOR for MarketTypes.GetDealLabelParams;
+    using GetDealLabelCBOR for MarketTypes.GetDealLabelReturn;
 
     /// @notice Deposits the received value into the balance held in escrow.
     function add_balance(bytes memory provider_or_client) public {}
@@ -90,7 +92,15 @@ contract MarketAPI {
 
     /// @return the label of a deal proposal.
     function get_deal_label(MarketTypes.GetDealLabelParams memory params) public view returns (MarketTypes.GetDealLabelReturn memory) {
-        return MarketTypes.GetDealLabelReturn("test");
+        bytes memory raw_request = params.serialize();
+
+        // FIXME replace this with the real actor call
+        bytes memory raw_response = hex"816474657374";
+
+        MarketTypes.GetDealLabelReturn memory response;
+        response.deserialize(raw_response);
+
+        return response;
     }
 
     /// @return the start epoch and duration (in epochs) of a deal proposal.

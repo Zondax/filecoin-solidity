@@ -33,6 +33,25 @@ library CBORDecoder {
         return (len, byteIdx);
     }
 
+    function readString(bytes memory cborParams, uint byteIdx) internal pure returns (string memory, uint) {
+        uint8 maj;
+        uint len;
+
+        (maj, len, byteIdx) = parseCborHeader(cborParams, byteIdx);
+        assert(maj == MajTextString);
+
+        uint max_len = byteIdx + len;
+        bytes memory slice = new bytes(len);
+        for (uint256 i = byteIdx; i < max_len; ) {
+            slice[i] = cborParams[i];
+            unchecked {
+                ++i;
+            }
+        }
+
+        return (string(slice), byteIdx + len);
+    }
+
     function readBytes(bytes memory cborParams, uint byteIdx) internal pure returns (bytes memory, uint) {
         uint8 maj;
         uint len;
