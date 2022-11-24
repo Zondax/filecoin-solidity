@@ -23,9 +23,7 @@ contract MarketAPI {
     }
 
     /// @return the escrow balance and locked amount for an address.
-    function get_balance(
-        bytes memory addr
-    ) public view returns (MarketTypes.GetBalanceReturn memory) {
+    function get_balance(bytes memory addr) public view returns (MarketTypes.GetBalanceReturn memory) {
         return MarketTypes.GetBalanceReturn(111, 0);
     }
 
@@ -38,9 +36,7 @@ contract MarketAPI {
     }
 
     /// @return the client of a deal proposal.
-    function get_deal_client(
-        MarketTypes.GetDealClientParams memory params
-    ) public view returns (MarketTypes.GetDealClientReturn memory) {
+    function get_deal_client(MarketTypes.GetDealClientParams memory params) public view returns (MarketTypes.GetDealClientReturn memory) {
         return MarketTypes.GetDealClientReturn(hex"111111");
     }
 
@@ -52,16 +48,12 @@ contract MarketAPI {
     }
 
     /// @return the label of a deal proposal.
-    function get_deal_label(
-        MarketTypes.GetDealLabelParams memory params
-    ) public view returns (MarketTypes.GetDealLabelReturn memory) {
+    function get_deal_label(MarketTypes.GetDealLabelParams memory params) public view returns (MarketTypes.GetDealLabelReturn memory) {
         return MarketTypes.GetDealLabelReturn("test");
     }
 
     /// @return the start epoch and duration (in epochs) of a deal proposal.
-    function get_deal_term(
-        MarketTypes.GetDealTermParams memory params
-    ) public view returns (MarketTypes.GetDealTermReturn memory) {
+    function get_deal_term(MarketTypes.GetDealTermParams memory params) public view returns (MarketTypes.GetDealTermReturn memory) {
         return MarketTypes.GetDealTermReturn(1, 1);
     }
 
@@ -104,18 +96,10 @@ contract MarketAPI {
     }
 
     /// @notice Publish a new set of storage deals (not yet included in a sector).
-    function publish_storage_deals(
-        bytes memory raw_auth_params,
-        address callee
-    ) public {
+    function publish_storage_deals(bytes memory raw_auth_params, address callee) public {
         // calls standard filecoin receiver on message authentication api method number
         (bool success, ) = callee.call(
-            abi.encodeWithSignature(
-                "handle_filecoin_method(uint64,uint64,bytes)",
-                0,
-                2643134072,
-                raw_auth_params
-            )
+            abi.encodeWithSignature("handle_filecoin_method(uint64,uint64,bytes)", 0, 2643134072, raw_auth_params)
         );
         require(success, "client contract failed to authorize deal publish");
     }
