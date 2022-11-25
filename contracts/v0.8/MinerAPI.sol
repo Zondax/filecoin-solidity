@@ -13,6 +13,8 @@ contract MinerAPI {
     using IsControllingAddressCBOR for MinerTypes.IsControllingAddressReturn;
     using GetSectorSizeCBOR for MinerTypes.GetSectorSizeReturn;
     using GetAvailableBalanceCBOR for MinerTypes.GetAvailableBalanceReturn;
+    using GetVestingFundsCBOR for MinerTypes.GetVestingFundsReturn;
+    using GetBeneficiaryCBOR for MinerTypes.GetBeneficiaryReturn;
 
     /// @notice Income and returned collateral are paid to this address
     /// @notice This address is also allowed to change the worker address for the miner
@@ -77,10 +79,13 @@ contract MinerAPI {
     /// @return the funds vesting in this miner as a list of (vesting_epoch, vesting_amount) tuples.
     function get_vesting_funds() public pure returns (MinerTypes.GetVestingFundsReturn memory) {
         // FIXME make actual call to the miner actor
+        bytes
+            memory raw_response = hex"8482386E3B00000002DDDEF9F78239302C3B000000017A3B005A82392FE93B0000001CAAB746CD823902FC3B00000014E84E461C";
 
-        CommonTypes.VestingFunds[] memory vesting_funds;
+        MinerTypes.GetVestingFundsReturn memory response;
+        response.deserialize(raw_response);
 
-        return MinerTypes.GetVestingFundsReturn(vesting_funds);
+        return response;
     }
 
     /// @notice Proposes or confirms a change of beneficiary address.
@@ -96,9 +101,12 @@ contract MinerAPI {
     /// @notice Retrieves the currently active and proposed beneficiary information.
     function get_beneficiary() public view returns (MinerTypes.GetBeneficiaryReturn memory) {
         // FIXME make actual call to the miner actor
+        bytes
+            memory raw_response = hex"828246010121233322833A0001E0F23A002348771A0023488D86450111211111392F581B0000001CAAB5C3B31A0001E0F3F4F5";
 
-        CommonTypes.ActiveBeneficiary memory activeBeneficiary;
-        CommonTypes.PendingBeneficiaryChange memory proposed;
-        return MinerTypes.GetBeneficiaryReturn(activeBeneficiary, proposed);
+        MinerTypes.GetBeneficiaryReturn memory response;
+        response.deserialize(raw_response);
+
+        return response;
     }
 }

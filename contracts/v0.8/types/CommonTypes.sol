@@ -80,7 +80,7 @@ library CommonTypes {
     }
 
     struct ActiveBeneficiary {
-        string beneficiary;
+        bytes beneficiary;
         BeneficiaryTerm term;
     }
 
