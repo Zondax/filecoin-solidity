@@ -26,6 +26,7 @@ serde_tuple = "0.5"
 wabt = "0.10.0"
 hex = "0.4.3"
 cid = "0.8.6"
+multihash = { version = "0.16.1", default-features = false }
 
 actors-v10 = { package = "fil_builtin_actors_bundle", git = "https://github.com/filecoin-project/builtin-actors", branch = "next", features = ["m2-native"] }
 fil_actors_runtime = { version = "10.0.0-alpha.1", git = "https://github.com/filecoin-project/builtin-actors", branch = "next", features = ["m2-native"] }

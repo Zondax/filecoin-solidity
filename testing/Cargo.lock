@@ -3716,6 +3716,7 @@ dependencies = [
  "fvm_ipld_encoding 0.3.0",
  "fvm_shared 3.0.0-alpha.12",
  "hex",
+ "multihash",
  "rand_core",
  "serde",
  "serde_tuple",
