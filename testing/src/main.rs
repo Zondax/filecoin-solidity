@@ -10,6 +10,7 @@ use std::env;
 use fvm_shared::message::Message;
 use fvm::executor::{ApplyKind, Executor};
 use fil_actor_eam::Return;
+use fil_actor_init::ExecReturn;
 use fvm_ipld_encoding::RawBytes;
 use fil_actors_runtime::{EAM_ACTOR_ADDR, INIT_ACTOR_ADDR};
 use cid::Cid;
@@ -106,7 +107,7 @@ fn main() {
     };
 
     let exec_params = fil_actor_init::ExecParams{
-        code_cid: Cid::from_str("bafk2bzacec7gj7tiyiaanver7wxj6celzrbjo5f2qcrsattjtffhk32k3cl34").unwrap(),
+        code_cid: Cid::from_str("bafk2bzacebdaxwdyinugsqlxahvufhhw22t7py7wtwzhk4qyrkftbw67tap4g").unwrap(),
         constructor_params: RawBytes::serialize(constructor_params).unwrap(),
     };
 
@@ -122,6 +123,10 @@ fn main() {
     let res = executor
     .execute_message(message, ApplyKind::Explicit, 100)
     .unwrap();
+
+    let exec_return : ExecReturn = RawBytes::deserialize(&res.msg_receipt.return_data).unwrap();
+    //dbg!(&exec_return);
+    dbg!(hex::encode(&exec_return.id_address.to_bytes()));
 
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
 

@@ -30,25 +30,33 @@ contract MinerAPI {
     function get_owner()
         public
         view
-        returns (MinerTypes.GetOwnerReturn memory)
+        ///returns (MinerTypes.GetOwnerReturn memory)
+        returns (bytes memory)
     {
-        uint32 actor_id = 101;
-
         // FIXME: https://github.com/filecoin-project/builtin-actors/pull/811/files#diff-fbcb2ec1a9d82b18f146c728cafd643df0e7ae47a04d84be7644913fe89236e5R130
-        uint64 method_num = 0;
+        uint64 method_num = 0x07;
         uint64 codec = 0x71;
 
-        bytes memory result = new bytes(ADDRESS_MAX_LEN+1);
+        bytes memory result = new bytes(0x80);
+
+        // TODO: should be bytes
+        //uint64 actor_id = 0x0066;
+
 
         assembly {
             let input := mload(0x40)
             mstore(input, method_num)
             mstore(add(input, 0x20), codec)
-            mstore(add(input, 0x40), actor_id)
+            // address size
+            mstore(add(input, 0x40), 0x02)
+            // params size
+            mstore(add(input, 0x60), 0x00)
+            // actual address
+            mstore(add(input, 0x80), hex"0066")
             // no params
 
             // staticcall(gasLimit, to, inputOffset, inputSize, outputOffset, outputSize)
-            if iszero(staticcall(100000000, 0x0e, input, 0x60, result, 87)) {
+            if iszero(staticcall(100000000, 0x0e, input, 0x0100, result, 0x80)) {
                 revert(0,0)
             }
         }
