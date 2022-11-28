@@ -24,48 +24,47 @@ contract MinerAPI {
         actor_id = _actor_id
     }*/
 
-    /// @notice Income and returned collateral are paid to this address
-    /// @notice This address is also allowed to change the worker address for the miner
-    /// @return the owner address of a Miner
-    function get_owner()
-        public
-        view
-        ///returns (MinerTypes.GetOwnerReturn memory)
-        returns (bytes memory)
-    {
-        // FIXME: https://github.com/filecoin-project/builtin-actors/pull/811/files#diff-fbcb2ec1a9d82b18f146c728cafd643df0e7ae47a04d84be7644913fe89236e5R130
-        uint64 method_num = 0x07;
-        uint64 codec = 0x71;
+    // /// @notice Income and returned collateral are paid to this address
+    // /// @notice This address is also allowed to change the worker address for the miner
+    // /// @return the owner address of a Miner
+    // function get_owner()
+    //     public
+    //     view
+    //     returns (MinerTypes.GetOwnerReturn memory)
+    // {
+    //     // FIXME: https://github.com/filecoin-project/builtin-actors/pull/811/files#diff-fbcb2ec1a9d82b18f146c728cafd643df0e7ae47a04d84be7644913fe89236e5R130
+    //     uint64 method_num = 0x00;
+    //     uint64 codec = 0x71;
 
-        bytes memory result = new bytes(0x80);
+    //     bytes memory result = new bytes(0x80);
 
-        // TODO: should be bytes
-        //uint64 actor_id = 0x0066;
+    //     // TODO: should be bytes
+    //     //uint64 actor_id = 0x0066;
 
 
-        assembly {
-            let input := mload(0x40)
-            mstore(input, method_num)
-            mstore(add(input, 0x20), codec)
-            // address size
-            mstore(add(input, 0x40), 0x02)
-            // params size
-            mstore(add(input, 0x60), 0x00)
-            // actual address
-            mstore(add(input, 0x80), hex"0066")
-            // no params
+    //     assembly {
+    //         let input := mload(0x40)
+    //         mstore(input, method_num)
+    //         mstore(add(input, 0x20), codec)
+    //         // address size
+    //         mstore(add(input, 0x40), 0x02)
+    //         // params size
+    //         mstore(add(input, 0x60), 0x00)
+    //         // actual address
+    //         mstore(add(input, 0x80), hex"0066")
+    //         // no params
 
-            // staticcall(gasLimit, to, inputOffset, inputSize, outputOffset, outputSize)
-            if iszero(staticcall(100000000, 0x0e, input, 0x0100, result, 0x80)) {
-                revert(0,0)
-            }
-        }
+    //         // staticcall(gasLimit, to, inputOffset, inputSize, outputOffset, outputSize)
+    //         if iszero(staticcall(100000000, 0x0e, input, 0x0100, result, 0x80)) {
+    //             revert(0,0)
+    //         }
+    //     }
 
-        MinerTypes.GetOwnerReturn memory response;
-        response.deserialize(raw_response);
+    //     MinerTypes.GetOwnerReturn memory response;
+    //     response.deserialize(raw_response);
 
-        return response;
-    }
+    //     return response;
+    // }
 
     /// @param addr New owner address
     /// @notice Proposes or confirms a change of owner address.
@@ -73,8 +72,6 @@ contract MinerAPI {
     function change_owner_address(bytes memory addr) public {
         uint64 method_num = 23;
         uint64 codec = 0x71;
-
-        bytes memory result = new bytes(0x0100);
 
         assembly {
             let kek := mload(add(addr, 0x20))
@@ -92,7 +89,7 @@ contract MinerAPI {
 
 
             // staticcall(gasLimit, to, inputOffset, inputSize, outputOffset, outputSize)
-            if iszero(staticcall(100000000, 0x0e, input, 0x0120, result, 0x0100)) {
+            if iszero(staticcall(100000000, 0x0e, input, 0x0120, 0x00, 0x00)) {
                 revert(0,0)
             }
         }
@@ -100,16 +97,52 @@ contract MinerAPI {
         return ;
     }
 
-    /// @param params The "controlling" addresses are the Owner, the Worker, and all Control Addresses.
-    /// @return Whether the provided address is "controlling".
-    function is_controlling_address(
-        MinerTypes.IsControllingAddressParam memory params
-    ) public pure returns (MinerTypes.IsControllingAddressReturn memory) {
+    // /// @param params The "controlling" addresses are the Owner, the Worker, and all Control Addresses.
+    // /// @return Whether the provided address is "controlling".
+    // function is_controlling_address(
+    //     bytes memory addr
+    // ) public pure returns (bool result) {
         
-        // FIXME: https://github.com/filecoin-project/builtin-actors/pull/811/files#diff-fbcb2ec1a9d82b18f146c728cafd643df0e7ae47a04d84be7644913fe89236e5R131
-        uint64 method_num = 0;
+    //     // FIXME: https://github.com/filecoin-project/builtin-actors/pull/811/files#diff-fbcb2ec1a9d82b18f146c728cafd643df0e7ae47a04d84be7644913fe89236e5R131
+    //     uint64 method_num = 0x00;
+    //     uint64 codec = 0x71;
+        
+    //     bytes memory result = new bytes(0x20);
+
+    //     assembly {
+    //         let kek := mload(add(addr, 0x20))
+    //         let input := mload(0x40)
+    //         mstore(input, method_num)
+    //         mstore(add(input, 0x20), codec)
+    //         // address size
+    //         mstore(add(input, 0x40), 0x02)
+    //         // params size
+    //         mstore(add(input, 0x60), mload(addr))
+    //         // actual params
+    //         mstore(add(input, 0x80), kek)
+    //         // actual address
+    //         mstore(add(input, 0xa0), hex"0066")
+    //         // staticcall(gasLimit, to, inputOffset, inputSize, outputOffset, outputSize)
+    //         if iszero(staticcall(100000000, 0x0e, input, 0x0100, result, 0x20)) {
+    //             revert(0,0)
+    //         }
+    //     }
+
+    //     return true;
+    // }
+
+    /// @return the miner's sector size.
+    function get_sector_size()
+        public
+        view
+        ///returns (MinerTypes.GetSectorSizeReturn memory)
+        returns (bytes memory)
+    {
+
+        // TODO: find the method num
+        uint64 method_num = 0x00;
         uint64 codec = 0x71;
-        
+            
         bytes memory result = new bytes(0x20);
 
         assembly {
@@ -128,12 +161,13 @@ contract MinerAPI {
                 revert(0,0)
             }
         }
-
         MinerTypes.IsControllingAddressReturn memory response;
         response.deserialize(raw_response);
 
         return response;
     }
+
+
 
     /// @return the miner's sector size.
     function get_sector_size() public view returns (MinerTypes.GetSectorSizeReturn memory) {
