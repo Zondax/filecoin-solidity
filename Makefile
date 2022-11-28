@@ -1,8 +1,6 @@
-compile:
-	mkdir -p hardhat/contracts && cp -rf contracts/* hardhat/contracts/. && cd hardhat && yarn hardhat compile
-
-deploy_api: deploy_miner_api deploy_market_api
 build: build_api
+
+deploy_api: deploy_miner_api deploy_market_api deploy_verifreg_api
 
 deploy_miner_api:
 	mkdir -p hardhat/contracts && cp -rf contracts/* hardhat/contracts/. && cd hardhat && yarn hardhat deploy --tags MinerAPI
@@ -10,9 +8,13 @@ deploy_miner_api:
 deploy_market_api:
 	mkdir -p hardhat/contracts && cp -rf contracts/* hardhat/contracts/. && cd hardhat && yarn hardhat deploy --tags MarketAPI
 
+deploy_verifreg_api:
+	mkdir -p hardhat/contracts && cp -rf contracts/* hardhat/contracts/. && cd hardhat && yarn hardhat deploy --tags VerifRegAPI
+
 build_api:
 	./bin/solc solidity-cborutils=${PWD}/node_modules/solidity-cborutils/ @ensdomains=${PWD}/node_modules/@ensdomains/ contracts/v0.8/MarketAPI.sol --output-dir ./build/v0.8 --overwrite --bin --hashes --opcodes --abi
 	./bin/solc solidity-cborutils=${PWD}/node_modules/solidity-cborutils/ @ensdomains=${PWD}/node_modules/@ensdomains/ contracts/v0.8/MinerAPI.sol --output-dir ./build/v0.8 --overwrite --bin --hashes --opcodes --abi
+	./bin/solc solidity-cborutils=${PWD}/node_modules/solidity-cborutils/ @ensdomains=${PWD}/node_modules/@ensdomains/ contracts/v0.8/VerifRegAPI.sol --output-dir ./build/v0.8 --overwrite --bin --hashes --opcodes --abi
 
 build_simple_coin:
 	./bin/solc contracts/SimpleCoin.sol --output-dir ./build --overwrite --bin --hashes --opcodes --abi

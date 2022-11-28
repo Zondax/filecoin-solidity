@@ -54,8 +54,10 @@ jobs:
         run: |
           make deploy_miner_api > deploy_miner.log
           make deploy_market_api > deploy_market.log
+          make deploy_verifreg_api > deploy_verifreg.log
           cat deploy_miner.log
           cat deploy_market.log
+          cat deploy_verifreg.log
         env:
           PRIVATE_KEY: ${{ secrets.WALLET_PRIVATE_KEY }}
       - name: Test miner contract
