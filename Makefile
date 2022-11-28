@@ -1,6 +1,6 @@
 build: build_api
 
-deploy_api: deploy_miner_api deploy_market_api deploy_verifreg_api
+deploy_api: deploy_miner_api deploy_market_api deploy_verifreg_api deploy_power_api
 
 deploy_miner_api:
 	mkdir -p hardhat/contracts && cp -rf contracts/* hardhat/contracts/. && cd hardhat && yarn hardhat deploy --tags MinerAPI
