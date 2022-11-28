@@ -9,6 +9,9 @@ library MinerTypes {
     struct GetOwnerReturn {
         bytes owner;
     }
+    struct IsControllingAddressParam {
+        bytes addr;
+    }
 
     struct IsControllingAddressReturn {
         bool is_controlling;

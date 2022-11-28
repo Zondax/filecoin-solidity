@@ -2,12 +2,20 @@ compile:
 	mkdir -p hardhat/contracts && cp -rf contracts/* hardhat/contracts/. && cd hardhat && yarn hardhat compile
 
 deploy_api: deploy_miner_api deploy_market_api
+build: build_api
 
 deploy_miner_api:
 	mkdir -p hardhat/contracts && cp -rf contracts/* hardhat/contracts/. && cd hardhat && yarn hardhat deploy --tags MinerAPI
 
 deploy_market_api:
 	mkdir -p hardhat/contracts && cp -rf contracts/* hardhat/contracts/. && cd hardhat && yarn hardhat deploy --tags MarketAPI
+
+build_api:
+	./bin/solc solidity-cborutils=${PWD}/node_modules/solidity-cborutils/ @ensdomains=${PWD}/node_modules/@ensdomains/ contracts/v0.8/MarketAPI.sol --output-dir ./build/v0.8 --overwrite --bin --hashes --opcodes --abi
+	./bin/solc solidity-cborutils=${PWD}/node_modules/solidity-cborutils/ @ensdomains=${PWD}/node_modules/@ensdomains/ contracts/v0.8/MinerAPI.sol --output-dir ./build/v0.8 --overwrite --bin --hashes --opcodes --abi
+
+build_simple_coin:
+	./bin/solc contracts/SimpleCoin.sol --output-dir ./build --overwrite --bin --hashes --opcodes --abi
 
 deploy_simple_coin:
 	cd hardhat && yarn hardhat deploy --tags SimpleCoin
@@ -17,6 +25,9 @@ test_miner_cbor_serialization:
 
 test_market_cbor_serialization:
 	cd hardhat && yarn hardhat withdraw_balance --providerorclient 0xaaaa12 --tokenamount 12222 --contractaddress $(CONTRACT_ADDRESS)
+
+download_bundle_actor:
+	cd testing && wget https://github.com/filecoin-project/builtin-actors/releases/download/dev%2F20221123-fvm-m2/builtin-actors-devnet-wasm.car
 
 install_solc_linux:
 	wget https://binaries.soliditylang.org/linux-amd64/solc-linux-amd64-v0.8.15+commit.e14f2714
