@@ -18,6 +18,7 @@ contract MinerAPI {
     using GetAvailableBalanceCBOR for MinerTypes.GetAvailableBalanceReturn;
     using GetVestingFundsCBOR for MinerTypes.GetVestingFundsReturn;
     using GetBeneficiaryCBOR for MinerTypes.GetBeneficiaryReturn;
+
     /*uint32 actor_id;
 
     constructor(uint32 _actor_id) {
@@ -27,11 +28,7 @@ contract MinerAPI {
     /// @notice Income and returned collateral are paid to this address
     /// @notice This address is also allowed to change the worker address for the miner
     /// @return the owner address of a Miner
-    function get_owner()
-        public
-        view
-        returns (MinerTypes.GetOwnerReturn memory)
-    {
+    function get_owner() public view returns (MinerTypes.GetOwnerReturn memory) {
         // FIXME: https://github.com/filecoin-project/builtin-actors/pull/811/files#diff-fbcb2ec1a9d82b18f146c728cafd643df0e7ae47a04d84be7644913fe89236e5R130
         uint64 method_num = 0x00;
 
@@ -39,7 +36,6 @@ contract MinerAPI {
 
         // TODO: should be bytes
         //uint64 actor_id = 0x0066;
-
 
         assembly {
             let input := mload(0x40)
@@ -55,7 +51,7 @@ contract MinerAPI {
 
             // staticcall(gasLimit, to, inputOffset, inputSize, outputOffset, outputSize)
             if iszero(staticcall(100000000, 0x0e, input, 0x0100, raw_response, 0x80)) {
-                revert(0,0)
+                revert(0, 0)
             }
         }
 
@@ -85,25 +81,21 @@ contract MinerAPI {
             // actual address
             mstore(add(input, 0xa0), hex"0066")
 
-
             // staticcall(gasLimit, to, inputOffset, inputSize, outputOffset, outputSize)
             if iszero(staticcall(100000000, 0x0e, input, 0x0120, 0x00, 0x00)) {
-                revert(0,0)
+                revert(0, 0)
             }
         }
 
-        return ;
+        return;
     }
 
-    /// @param params The "controlling" addresses are the Owner, the Worker, and all Control Addresses.
+    /// @param addr The "controlling" addresses are the Owner, the Worker, and all Control Addresses.
     /// @return Whether the provided address is "controlling".
-    function is_controlling_address(
-        bytes memory addr
-    ) public pure returns (MinerTypes.IsControllingAddressReturn) {
-        
+    function is_controlling_address(bytes memory addr) public view returns (MinerTypes.IsControllingAddressReturn memory) {
         // FIXME: https://github.com/filecoin-project/builtin-actors/pull/811/files#diff-fbcb2ec1a9d82b18f146c728cafd643df0e7ae47a04d84be7644913fe89236e5R131
         uint64 method_num = 0x00;
-        
+
         bytes memory raw_response = new bytes(0x20);
 
         assembly {
@@ -121,27 +113,21 @@ contract MinerAPI {
             mstore(add(input, 0xa0), hex"0066")
             // staticcall(gasLimit, to, inputOffset, inputSize, outputOffset, outputSize)
             if iszero(staticcall(100000000, 0x0e, input, 0x0100, raw_response, 0x20)) {
-                revert(0,0)
+                revert(0, 0)
             }
         }
 
         MinerTypes.IsControllingAddressReturn memory response;
         response.deserialize(raw_response);
 
-
         return response;
     }
 
     /// @return the miner's sector size.
-    function get_sector_size()
-        public
-        view
-        returns (MinerTypes.GetSectorSizeReturn memory)
-    {
-
+    function get_sector_size() public view returns (MinerTypes.GetSectorSizeReturn memory) {
         // TODO: find the method num
         uint64 method_num = 0x00;
-            
+
         bytes memory raw_response = new bytes(0x20);
 
         assembly {
@@ -157,7 +143,7 @@ contract MinerAPI {
             // no params
             // staticcall(gasLimit, to, inputOffset, inputSize, outputOffset, outputSize)
             if iszero(staticcall(100000000, 0x0e, input, 0x0100, raw_response, 0x20)) {
-                revert(0,0)
+                revert(0, 0)
             }
         }
 
@@ -167,14 +153,13 @@ contract MinerAPI {
         return response;
     }
 
-
     /// @notice This is calculated as actor balance - (vesting funds + pre-commit deposit + initial pledge requirement + fee debt)
     /// @notice Can go negative if the miner is in IP debt.
     /// @return the available balance of this miner.
-    function get_available_balance() public pure returns (MinerTypes.GetAvailableBalanceReturn memory) {
+    function get_available_balance() public view returns (MinerTypes.GetAvailableBalanceReturn memory) {
         // TODO: find the method num
         uint64 method_num = 0x00;
-            
+
         bytes memory raw_response = new bytes(0x20);
 
         assembly {
@@ -190,7 +175,7 @@ contract MinerAPI {
             // no params
             // staticcall(gasLimit, to, inputOffset, inputSize, outputOffset, outputSize)
             if iszero(staticcall(100000000, 0x0e, input, 0x0100, raw_response, 0x20)) {
-                revert(0,0)
+                revert(0, 0)
             }
         }
 
@@ -201,10 +186,10 @@ contract MinerAPI {
     }
 
     /// @return the funds vesting in this miner as a list of (vesting_epoch, vesting_amount) tuples.
-    function get_vesting_funds() public pure returns (MinerTypes.GetVestingFundsReturn memory) {
+    function get_vesting_funds() public view returns (MinerTypes.GetVestingFundsReturn memory) {
         // TODO: find the method num
         uint64 method_num = 0x00;
-        
+
         // FIXME: unknown size for the response
         bytes memory raw_response = new bytes(0x0100);
 
@@ -221,7 +206,7 @@ contract MinerAPI {
             // no params
             // staticcall(gasLimit, to, inputOffset, inputSize, outputOffset, outputSize)
             if iszero(staticcall(100000000, 0x0e, input, 0x0100, raw_response, 0x0100)) {
-                revert(0,0)
+                revert(0, 0)
             }
         }
 
@@ -237,7 +222,7 @@ contract MinerAPI {
     function change_beneficiary(MinerTypes.ChangeBeneficiaryParams memory params) public {
         bytes memory raw_request = params.serialize();
         uint64 method_num = 0x1e;
-        
+
         // FIXME: unknown size for the response
         bytes memory raw_response = new bytes(0x0100);
 
@@ -257,11 +242,11 @@ contract MinerAPI {
             // no params
             // staticcall(gasLimit, to, inputOffset, inputSize, outputOffset, outputSize)
             if iszero(staticcall(100000000, 0x0e, input, 0x0100, raw_response, 0x0100)) {
-                revert(0,0)
+                revert(0, 0)
             }
         }
 
-        return ;
+        return;
     }
 
     /// @notice This method is for use by other actors (such as those acting as beneficiaries), and to abstract the state representation for clients.
@@ -269,7 +254,7 @@ contract MinerAPI {
     function get_beneficiary() public view returns (MinerTypes.GetBeneficiaryReturn memory) {
         // TODO: find the method num
         uint64 method_num = 0x1f;
-        
+
         // FIXME: unknown size for the response
         bytes memory raw_response = new bytes(0x0200);
 
@@ -286,7 +271,7 @@ contract MinerAPI {
             // no params
             // staticcall(gasLimit, to, inputOffset, inputSize, outputOffset, outputSize)
             if iszero(staticcall(100000000, 0x0e, input, 0x0100, raw_response, 0x0200)) {
-                revert(0,0)
+                revert(0, 0)
             }
         }
         MinerTypes.GetBeneficiaryReturn memory response;
