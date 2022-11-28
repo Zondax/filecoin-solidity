@@ -17,6 +17,9 @@ build_api:
 build_simple_coin:
 	./bin/solc contracts/SimpleCoin.sol --output-dir ./build --overwrite --bin --hashes --opcodes --abi
 
+deploy_simple_coin:
+	cd hardhat && yarn hardhat deploy --tags SimpleCoin
+
 test_miner_cbor_serialization:
 	cd hardhat && yarn hardhat change-beneficiary --beneficiary 0xaaaa12 --quota 12222 --expiration 1111 --contractaddress $(CONTRACT_ADDRESS)
 
