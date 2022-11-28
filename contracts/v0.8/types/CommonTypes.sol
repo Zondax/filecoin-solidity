@@ -250,4 +250,35 @@ library CommonTypes {
         uint64[] deal_ids;
         int64 sector_type;
     }
+
+    struct FailCode {
+        uint32 idx;
+        uint32 code;
+    }
+
+    struct BatchReturn {
+        // Total successes in batch
+        uint32 success_count;
+        // Failure code and index for each failure in batch
+        FailCode[] fail_codes;
+    }
+
+    struct Claim {
+        // The provider storing the data (from allocation).
+        uint64 provider;
+        // The client which allocated the DataCap (from allocation).
+        uint64 client;
+        // Identifier of the data committed (from allocation).
+        bytes data;
+        // The (padded) size of data (from allocation).
+        uint64 size;
+        // The min period after term_start which the provider must commit to storing data
+        int64 term_min;
+        // The max period after term_start for which provider can earn QA-power for the data
+        int64 term_max;
+        // The epoch at which the (first range of the) piece was committed.
+        int64 term_start;
+        // ID of the provider's sector in which the data is committed.
+        uint64 sector;
+    }
 }
