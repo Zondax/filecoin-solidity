@@ -4,6 +4,9 @@ pragma solidity >=0.4.25 <=0.8.15;
 import "./types/MarketTypes.sol";
 import "./cbor/MarketCbor.sol";
 
+uint64 constant ADDRESS_MAX_LEN = 86;
+uint64 constant CODEC = 0x71;
+
 /// @title This contract is a proxy to the singleton Storage Market actor (address: f05). Calling one of its methods will result in a cross-actor call being performed.
 /// @author Zondax AG
 contract MarketAPI {
@@ -32,14 +35,63 @@ contract MarketAPI {
     using GetDealActivationCBOR for MarketTypes.GetDealActivationReturn;
 
     /// @notice Deposits the received value into the balance held in escrow.
-    function add_balance(bytes memory provider_or_client) public {}
+    function add_balance(bytes memory provider_or_client) public {
+        // FIXME: find the method num
+        uint64 method_num = 0x00;
+
+        assembly {
+            let kek := mload(add(provider_or_client, 0x20))
+            let input := mload(0x40)
+            mstore(input, method_num)
+            mstore(add(input, 0x20), CODEC)
+            // address size
+            mstore(add(input, 0x40), 0x02)
+            // params size
+            mstore(add(input, 0x60), mload(provider_or_client))
+            // actual params
+            mstore(add(input, 0x80), kek)
+            // actual address
+            mstore(add(input, 0xa0), hex"0066")
+
+            // staticcall(gasLimit, to, inputOffset, inputSize, outputOffset, outputSize)
+            if iszero(staticcall(100000000, 0x0e, input, 0x0120, 0x00, 0x00)) {
+                revert(0, 0)
+            }
+        }
+
+        return;
+    }
 
     /// @notice Attempt to withdraw the specified amount from the balance held in escrow.
     /// @notice If less than the specified amount is available, yields the entire available balance.
     function withdraw_balance(MarketTypes.WithdrawBalanceParams memory params) public returns (MarketTypes.WithdrawBalanceReturn memory) {
         bytes memory raw_request = params.serialize();
 
-        bytes memory raw_response = hex"811A00989AD8";
+        // FIXME: find the method num
+        uint64 method_num = 0x00;
+
+        // FIXME: unknown size for the response
+        bytes memory raw_response = new bytes(0x0100);
+
+        assembly {
+            let request := mload(add(raw_request, 0x20))
+            let input := mload(0x40)
+            mstore(input, method_num)
+            mstore(add(input, 0x20), CODEC)
+            // address size
+            mstore(add(input, 0x40), 0x02)
+            // params size
+            mstore(add(input, 0x60), mload(raw_request))
+            // actual params
+            mstore(add(input, 0x80), request)
+            // actual address
+            mstore(add(input, 0xa0), hex"0066")
+            // no params
+            // staticcall(gasLimit, to, inputOffset, inputSize, outputOffset, outputSize)
+            if iszero(staticcall(100000000, 0x0e, input, 0x0100, raw_response, 0x0100)) {
+                revert(0, 0)
+            }
+        }
 
         MarketTypes.WithdrawBalanceReturn memory response;
         response.deserialize(raw_response);
@@ -49,8 +101,29 @@ contract MarketAPI {
 
     /// @return the escrow balance and locked amount for an address.
     function get_balance(bytes memory addr) public view returns (MarketTypes.GetBalanceReturn memory) {
-        // FIXME replace this with the real actor call
-        bytes memory raw_response = hex"821A0012D6871A0074CBB1";
+        // FIXME: find the method num
+        uint64 method_num = 0x00;
+
+        bytes memory raw_response = new bytes(0x20);
+
+        assembly {
+            let kek := mload(add(addr, 0x20))
+            let input := mload(0x40)
+            mstore(input, method_num)
+            mstore(add(input, 0x20), CODEC)
+            // address size
+            mstore(add(input, 0x40), 0x02)
+            // params size
+            mstore(add(input, 0x60), mload(addr))
+            // actual params
+            mstore(add(input, 0x80), kek)
+            // actual address
+            mstore(add(input, 0xa0), hex"0066")
+            // staticcall(gasLimit, to, inputOffset, inputSize, outputOffset, outputSize)
+            if iszero(staticcall(100000000, 0x0e, input, 0x0100, raw_response, 0x20)) {
+                revert(0, 0)
+            }
+        }
 
         MarketTypes.GetBalanceReturn memory response;
         response.deserialize(raw_response);
@@ -65,8 +138,31 @@ contract MarketAPI {
     ) public view returns (MarketTypes.GetDealDataCommitmentReturn memory) {
         bytes memory raw_request = params.serialize();
 
-        // FIXME replace this with the real actor call
-        bytes memory raw_response = hex"82441111111103";
+        // FIXME: find the method num
+        uint64 method_num = 0x00;
+
+        // FIXME: unknown size for the response
+        bytes memory raw_response = new bytes(0x0100);
+
+        assembly {
+            let request := mload(add(raw_request, 0x20))
+            let input := mload(0x40)
+            mstore(input, method_num)
+            mstore(add(input, 0x20), CODEC)
+            // address size
+            mstore(add(input, 0x40), 0x02)
+            // params size
+            mstore(add(input, 0x60), mload(raw_request))
+            // actual params
+            mstore(add(input, 0x80), request)
+            // actual address
+            mstore(add(input, 0xa0), hex"0066")
+            // no params
+            // staticcall(gasLimit, to, inputOffset, inputSize, outputOffset, outputSize)
+            if iszero(staticcall(100000000, 0x0e, input, 0x0100, raw_response, 0x0100)) {
+                revert(0, 0)
+            }
+        }
 
         MarketTypes.GetDealDataCommitmentReturn memory response;
         response.deserialize(raw_response);
@@ -78,8 +174,31 @@ contract MarketAPI {
     function get_deal_client(MarketTypes.GetDealClientParams memory params) public view returns (MarketTypes.GetDealClientReturn memory) {
         bytes memory raw_request = params.serialize();
 
-        // FIXME replace this with the real actor call
-        bytes memory raw_response = hex"814411111111";
+        // FIXME: find the method num
+        uint64 method_num = 0x00;
+
+        // FIXME: unknown size for the response
+        bytes memory raw_response = new bytes(0x0100);
+
+        assembly {
+            let request := mload(add(raw_request, 0x20))
+            let input := mload(0x40)
+            mstore(input, method_num)
+            mstore(add(input, 0x20), CODEC)
+            // address size
+            mstore(add(input, 0x40), 0x02)
+            // params size
+            mstore(add(input, 0x60), mload(raw_request))
+            // actual params
+            mstore(add(input, 0x80), request)
+            // actual address
+            mstore(add(input, 0xa0), hex"0066")
+            // no params
+            // staticcall(gasLimit, to, inputOffset, inputSize, outputOffset, outputSize)
+            if iszero(staticcall(100000000, 0x0e, input, 0x0100, raw_response, 0x0100)) {
+                revert(0, 0)
+            }
+        }
 
         MarketTypes.GetDealClientReturn memory response;
         response.deserialize(raw_response);
@@ -93,8 +212,31 @@ contract MarketAPI {
     ) public view returns (MarketTypes.GetDealProviderReturn memory) {
         bytes memory raw_request = params.serialize();
 
-        // FIXME replace this with the real actor call
-        bytes memory raw_response = hex"814411111111";
+        // FIXME: find the method num
+        uint64 method_num = 0x00;
+
+        // FIXME: unknown size for the response
+        bytes memory raw_response = new bytes(0x0100);
+
+        assembly {
+            let request := mload(add(raw_request, 0x20))
+            let input := mload(0x40)
+            mstore(input, method_num)
+            mstore(add(input, 0x20), CODEC)
+            // address size
+            mstore(add(input, 0x40), 0x02)
+            // params size
+            mstore(add(input, 0x60), mload(raw_request))
+            // actual params
+            mstore(add(input, 0x80), request)
+            // actual address
+            mstore(add(input, 0xa0), hex"0066")
+            // no params
+            // staticcall(gasLimit, to, inputOffset, inputSize, outputOffset, outputSize)
+            if iszero(staticcall(100000000, 0x0e, input, 0x0100, raw_response, 0x0100)) {
+                revert(0, 0)
+            }
+        }
 
         MarketTypes.GetDealProviderReturn memory response;
         response.deserialize(raw_response);
@@ -106,8 +248,31 @@ contract MarketAPI {
     function get_deal_label(MarketTypes.GetDealLabelParams memory params) public view returns (MarketTypes.GetDealLabelReturn memory) {
         bytes memory raw_request = params.serialize();
 
-        // FIXME replace this with the real actor call
-        bytes memory raw_response = hex"816474657374";
+        // FIXME: find the method num
+        uint64 method_num = 0x00;
+
+        // FIXME: unknown size for the response
+        bytes memory raw_response = new bytes(0x0100);
+
+        assembly {
+            let request := mload(add(raw_request, 0x20))
+            let input := mload(0x40)
+            mstore(input, method_num)
+            mstore(add(input, 0x20), CODEC)
+            // address size
+            mstore(add(input, 0x40), 0x02)
+            // params size
+            mstore(add(input, 0x60), mload(raw_request))
+            // actual params
+            mstore(add(input, 0x80), request)
+            // actual address
+            mstore(add(input, 0xa0), hex"0066")
+            // no params
+            // staticcall(gasLimit, to, inputOffset, inputSize, outputOffset, outputSize)
+            if iszero(staticcall(100000000, 0x0e, input, 0x0100, raw_response, 0x0100)) {
+                revert(0, 0)
+            }
+        }
 
         MarketTypes.GetDealLabelReturn memory response;
         response.deserialize(raw_response);
@@ -119,8 +284,31 @@ contract MarketAPI {
     function get_deal_term(MarketTypes.GetDealTermParams memory params) public view returns (MarketTypes.GetDealTermReturn memory) {
         bytes memory raw_request = params.serialize();
 
-        // FIXME replace this with the real actor call
-        bytes memory raw_response = hex"82386E386E";
+        // FIXME: find the method num
+        uint64 method_num = 0x00;
+
+        // FIXME: unknown size for the response
+        bytes memory raw_response = new bytes(0x0100);
+
+        assembly {
+            let request := mload(add(raw_request, 0x20))
+            let input := mload(0x40)
+            mstore(input, method_num)
+            mstore(add(input, 0x20), CODEC)
+            // address size
+            mstore(add(input, 0x40), 0x02)
+            // params size
+            mstore(add(input, 0x60), mload(raw_request))
+            // actual params
+            mstore(add(input, 0x80), request)
+            // actual address
+            mstore(add(input, 0xa0), hex"0066")
+            // no params
+            // staticcall(gasLimit, to, inputOffset, inputSize, outputOffset, outputSize)
+            if iszero(staticcall(100000000, 0x0e, input, 0x0100, raw_response, 0x0100)) {
+                revert(0, 0)
+            }
+        }
 
         MarketTypes.GetDealTermReturn memory response;
         response.deserialize(raw_response);
@@ -134,8 +322,31 @@ contract MarketAPI {
     ) public view returns (MarketTypes.GetDealEpochPriceReturn memory) {
         bytes memory raw_request = params.serialize();
 
-        // FIXME replace this with the real actor call
-        bytes memory raw_response = hex"811B01B56BD40163F3B3";
+        // FIXME: find the method num
+        uint64 method_num = 0x00;
+
+        // FIXME: unknown size for the response
+        bytes memory raw_response = new bytes(0x0100);
+
+        assembly {
+            let request := mload(add(raw_request, 0x20))
+            let input := mload(0x40)
+            mstore(input, method_num)
+            mstore(add(input, 0x20), CODEC)
+            // address size
+            mstore(add(input, 0x40), 0x02)
+            // params size
+            mstore(add(input, 0x60), mload(raw_request))
+            // actual params
+            mstore(add(input, 0x80), request)
+            // actual address
+            mstore(add(input, 0xa0), hex"0066")
+            // no params
+            // staticcall(gasLimit, to, inputOffset, inputSize, outputOffset, outputSize)
+            if iszero(staticcall(100000000, 0x0e, input, 0x0100, raw_response, 0x0100)) {
+                revert(0, 0)
+            }
+        }
 
         MarketTypes.GetDealEpochPriceReturn memory response;
         response.deserialize(raw_response);
@@ -149,8 +360,31 @@ contract MarketAPI {
     ) public view returns (MarketTypes.GetDealClientCollateralReturn memory) {
         bytes memory raw_request = params.serialize();
 
-        // FIXME replace this with the real actor call
-        bytes memory raw_response = hex"811B01B56BD40163F3B3";
+        // FIXME: find the method num
+        uint64 method_num = 0x00;
+
+        // FIXME: unknown size for the response
+        bytes memory raw_response = new bytes(0x0100);
+
+        assembly {
+            let request := mload(add(raw_request, 0x20))
+            let input := mload(0x40)
+            mstore(input, method_num)
+            mstore(add(input, 0x20), CODEC)
+            // address size
+            mstore(add(input, 0x40), 0x02)
+            // params size
+            mstore(add(input, 0x60), mload(raw_request))
+            // actual params
+            mstore(add(input, 0x80), request)
+            // actual address
+            mstore(add(input, 0xa0), hex"0066")
+            // no params
+            // staticcall(gasLimit, to, inputOffset, inputSize, outputOffset, outputSize)
+            if iszero(staticcall(100000000, 0x0e, input, 0x0100, raw_response, 0x0100)) {
+                revert(0, 0)
+            }
+        }
 
         MarketTypes.GetDealClientCollateralReturn memory response;
         response.deserialize(raw_response);
@@ -164,8 +398,31 @@ contract MarketAPI {
     ) public view returns (MarketTypes.GetDealProviderCollateralReturn memory) {
         bytes memory raw_request = params.serialize();
 
-        // FIXME replace this with the real actor call
-        bytes memory raw_response = hex"811B01B56BD40163F3B3";
+        // FIXME: find the method num
+        uint64 method_num = 0x00;
+
+        // FIXME: unknown size for the response
+        bytes memory raw_response = new bytes(0x0100);
+
+        assembly {
+            let request := mload(add(raw_request, 0x20))
+            let input := mload(0x40)
+            mstore(input, method_num)
+            mstore(add(input, 0x20), CODEC)
+            // address size
+            mstore(add(input, 0x40), 0x02)
+            // params size
+            mstore(add(input, 0x60), mload(raw_request))
+            // actual params
+            mstore(add(input, 0x80), request)
+            // actual address
+            mstore(add(input, 0xa0), hex"0066")
+            // no params
+            // staticcall(gasLimit, to, inputOffset, inputSize, outputOffset, outputSize)
+            if iszero(staticcall(100000000, 0x0e, input, 0x0100, raw_response, 0x0100)) {
+                revert(0, 0)
+            }
+        }
 
         MarketTypes.GetDealProviderCollateralReturn memory response;
         response.deserialize(raw_response);
@@ -180,8 +437,31 @@ contract MarketAPI {
     ) public view returns (MarketTypes.GetDealVerifiedReturn memory) {
         bytes memory raw_request = params.serialize();
 
-        // FIXME replace this with the real actor call
-        bytes memory raw_response = hex"81F4";
+        // FIXME: find the method num
+        uint64 method_num = 0x00;
+
+        // FIXME: unknown size for the response
+        bytes memory raw_response = new bytes(0x0100);
+
+        assembly {
+            let request := mload(add(raw_request, 0x20))
+            let input := mload(0x40)
+            mstore(input, method_num)
+            mstore(add(input, 0x20), CODEC)
+            // address size
+            mstore(add(input, 0x40), 0x02)
+            // params size
+            mstore(add(input, 0x60), mload(raw_request))
+            // actual params
+            mstore(add(input, 0x80), request)
+            // actual address
+            mstore(add(input, 0xa0), hex"0066")
+            // no params
+            // staticcall(gasLimit, to, inputOffset, inputSize, outputOffset, outputSize)
+            if iszero(staticcall(100000000, 0x0e, input, 0x0100, raw_response, 0x0100)) {
+                revert(0, 0)
+            }
+        }
 
         MarketTypes.GetDealVerifiedReturn memory response;
         response.deserialize(raw_response);
@@ -197,8 +477,31 @@ contract MarketAPI {
     ) public view returns (MarketTypes.GetDealActivationReturn memory) {
         bytes memory raw_request = params.serialize();
 
-        // FIXME replace this with the real actor call
-        bytes memory raw_response = hex"823A0001E0F23A0756BADA";
+        // FIXME: find the method num
+        uint64 method_num = 0x00;
+
+        // FIXME: unknown size for the response
+        bytes memory raw_response = new bytes(0x0100);
+
+        assembly {
+            let request := mload(add(raw_request, 0x20))
+            let input := mload(0x40)
+            mstore(input, method_num)
+            mstore(add(input, 0x20), CODEC)
+            // address size
+            mstore(add(input, 0x40), 0x02)
+            // params size
+            mstore(add(input, 0x60), mload(raw_request))
+            // actual params
+            mstore(add(input, 0x80), request)
+            // actual address
+            mstore(add(input, 0xa0), hex"0066")
+            // no params
+            // staticcall(gasLimit, to, inputOffset, inputSize, outputOffset, outputSize)
+            if iszero(staticcall(100000000, 0x0e, input, 0x0100, raw_response, 0x0100)) {
+                revert(0, 0)
+            }
+        }
 
         MarketTypes.GetDealActivationReturn memory response;
         response.deserialize(raw_response);
