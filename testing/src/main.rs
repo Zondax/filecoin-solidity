@@ -163,7 +163,7 @@ fn main() {
 
     let exec_return : Return = RawBytes::deserialize(&res.msg_receipt.return_data).unwrap();
 
-    /*println!("Calling `change_owner_address`");
+    println!("Calling `change_owner_address`");
 
     let message = Message {
         from: sender[0].1,
@@ -179,7 +179,7 @@ fn main() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
-    assert_eq!(res.msg_receipt.exit_code.value(), 0);*/
+    assert_eq!(res.msg_receipt.exit_code.value(), 0);
 
     println!("Calling `get_beneficiary`");
 
@@ -188,7 +188,7 @@ fn main() {
         to: Address::new_id(exec_return.actor_id),
         gas_limit: 1000000000,
         method_num: 2,
-        sequence: 2,
+        sequence: 3,
         params: RawBytes::new(hex::decode("44d9fc907e").unwrap()),
         ..Message::default()
     };
