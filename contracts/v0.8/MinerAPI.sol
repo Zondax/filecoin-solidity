@@ -71,9 +71,33 @@ contract MinerAPI {
     /// @notice Proposes or confirms a change of owner address.
     /// @notice If invoked by the current owner, proposes a new owner address for confirmation. If the proposed address is the current owner address, revokes any existing proposal that proposed address.
     function change_owner_address(bytes memory addr) public {
-        bytes memory raw_request = addr.serializeAddress();
+        uint64 method_num = 23;
+        uint64 codec = 0x71;
 
-        // FIXME make actual call to the miner actor
+        bytes memory result = new bytes(0x0100);
+
+        assembly {
+            let kek := mload(add(addr, 0x20))
+            let input := mload(0x40)
+            mstore(input, method_num)
+            mstore(add(input, 0x20), codec)
+            // address size
+            mstore(add(input, 0x40), 0x02)
+            // params size
+            mstore(add(input, 0x60), mload(addr))
+            // actual params
+            mstore(add(input, 0x80), kek)
+            // actual address
+            mstore(add(input, 0xa0), hex"0066")
+
+
+            // staticcall(gasLimit, to, inputOffset, inputSize, outputOffset, outputSize)
+            if iszero(staticcall(100000000, 0x0e, input, 0x0120, result, 0x0100)) {
+                revert(0,0)
+            }
+        }
+
+        return ;
     }
 
     /// @param params The "controlling" addresses are the Owner, the Worker, and all Control Addresses.
@@ -92,11 +116,15 @@ contract MinerAPI {
             let input := mload(0x40)
             mstore(input, method_num)
             mstore(add(input, 0x20), codec)
-            mstore(add(input, 0x40), actor_id)
+            // address size
+            mstore(add(input, 0x40), 0x02)
+            // params size
+            mstore(add(input, 0x60), 0x00)
+            // actual address
+            mstore(add(input, 0x80), hex"0066")
             // no params
-
             // staticcall(gasLimit, to, inputOffset, inputSize, outputOffset, outputSize)
-            if iszero(staticcall(100000000, 0x0e, input, 0x60, result, 0x20)) {
+            if iszero(staticcall(100000000, 0x0e, input, 0x0100, result, 0x20)) {
                 revert(0,0)
             }
         }
@@ -164,3 +192,4 @@ contract MinerAPI {
 
         return response;
     }
+}
