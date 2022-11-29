@@ -6,6 +6,7 @@ import "solidity-cborutils/contracts/CBOR.sol";
 import {CommonTypes} from "../types/CommonTypes.sol";
 import {MinerTypes} from "../types/MinerTypes.sol";
 import "../utils/CborDecode.sol";
+import "../utils/Misc.sol";
 
 /// @title FIXME
 /// @author Zondax AG
@@ -127,6 +128,7 @@ library GetBeneficiaryCBOR {
     using CBORDecoder for bytes;
 
     function deserialize(MinerTypes.GetBeneficiaryReturn memory ret, bytes memory rawResp) internal pure {
+        bytes memory tmp;
         uint byteIdx = 0;
         uint len;
 
@@ -141,8 +143,12 @@ library GetBeneficiaryCBOR {
         (len, byteIdx) = rawResp.readFixedArray(byteIdx);
         assert(len == 3);
 
-        (ret.active.term.quota, byteIdx) = rawResp.readBytes(byteIdx);
-        (ret.active.term.used_quota, byteIdx) = rawResp.readBytes(byteIdx);
+        (tmp, byteIdx) = rawResp.readBytes(byteIdx);
+        ret.active.term.quota = int256(Misc.toUint256(tmp, 0));
+
+        (tmp, byteIdx) = rawResp.readBytes(byteIdx);
+        ret.active.term.used_quota = int256(Misc.toUint256(tmp, 0));
+
         (ret.active.term.expiration, byteIdx) = rawResp.readUInt64(byteIdx);
 
         if (!rawResp.isNullNext(byteIdx)) {

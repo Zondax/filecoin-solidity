@@ -295,16 +295,6 @@ contract MinerAPI {
         return response;
     }
 
-    function toUint256(bytes memory _bytes, uint offset)   
-    internal
-    pure
-    returns (uint256 value) {
-
-        assembly {
-        value := mload(add(_bytes, offset))
-        }
-    }
-
     function copy(uint src, uint dest, uint len) internal pure {
         // Copy word-length chunks while possible
         for (; len >= 32; len -= 32) {
