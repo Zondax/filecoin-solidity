@@ -25,4 +25,14 @@ library PowerTypes {
     struct MinerConsensusCountReturn {
         int64 miner_consensus_count;
     }
+    struct NetworkRawPowerReturn {
+        int256 raw_byte_power;
+    }
+    struct MinerRawPowerParams {
+        uint64 miner;
+    }
+    struct MinerRawPowerReturn {
+        int256 raw_byte_power;
+        bool meets_consensus_minimum;
+    }
 }

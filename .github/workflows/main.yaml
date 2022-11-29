@@ -63,7 +63,7 @@ jobs:
         env:
           PRIVATE_KEY: ${{ secrets.WALLET_PRIVATE_KEY }}
   miner-integration:
-    name: "Miner APIs: integration tests"
+    name: "Miner API: integration tests"
     timeout-minutes: 20
     runs-on: ubuntu-latest
     steps:

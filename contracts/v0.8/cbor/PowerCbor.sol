@@ -6,6 +6,7 @@ import "solidity-cborutils/contracts/CBOR.sol";
 import {CommonTypes} from "../types/CommonTypes.sol";
 import {PowerTypes} from "../types/PowerTypes.sol";
 import "../utils/CborDecode.sol";
+import "../utils/Misc.sol";
 
 /// @title FIXME
 /// @author Zondax AG
@@ -75,5 +76,55 @@ library MinerConsensusCountCBOR {
         assert(len == 1);
 
         (ret.miner_consensus_count, byteIdx) = rawResp.readInt64(byteIdx);
+    }
+}
+
+/// @title FIXME
+/// @author Zondax AG
+library NetworkRawPowerCBOR {
+    using CBOR for CBOR.CBORBuffer;
+    using CBORDecoder for bytes;
+
+    function deserialize(PowerTypes.NetworkRawPowerReturn memory ret, bytes memory rawResp) internal pure {
+        uint byteIdx = 0;
+        uint len;
+
+        (len, byteIdx) = rawResp.readFixedArray(byteIdx);
+        assert(len == 1);
+
+        bytes memory tmp;
+        (tmp, byteIdx) = rawResp.readBytes(byteIdx);
+        ret.raw_byte_power = int256(Misc.toUint256(tmp, 0));
+    }
+}
+
+/// @title FIXME
+/// @author Zondax AG
+library MinerRawPowerCBOR {
+    using CBOR for CBOR.CBORBuffer;
+    using CBORDecoder for bytes;
+
+    function serialize(PowerTypes.MinerRawPowerParams memory params) internal pure returns (bytes memory) {
+        // FIXME what should the max length be on the buffer?
+        CBOR.CBORBuffer memory buf = CBOR.create(64);
+
+        buf.startFixedArray(1);
+        buf.writeUInt64(params.miner);
+
+        return buf.data();
+    }
+
+    function deserialize(PowerTypes.MinerRawPowerReturn memory ret, bytes memory rawResp) internal pure {
+        uint byteIdx = 0;
+        uint len;
+
+        (len, byteIdx) = rawResp.readFixedArray(byteIdx);
+        assert(len == 2);
+
+        bytes memory tmp;
+        (tmp, byteIdx) = rawResp.readBytes(byteIdx);
+        ret.raw_byte_power = int256(Misc.toUint256(tmp, 0));
+
+        (ret.meets_consensus_minimum, byteIdx) = rawResp.readBool(byteIdx);
     }
 }
