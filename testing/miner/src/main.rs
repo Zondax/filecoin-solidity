@@ -221,7 +221,7 @@ fn main() {
 
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
 
-    println!("Calling `get_vesting_funs`");
+    println!("Calling `get_vesting_funds`");
 
     let message = Message {
         from: sender[0].1,
