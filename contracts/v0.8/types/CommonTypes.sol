@@ -74,8 +74,8 @@ library CommonTypes {
     }
 
     struct BeneficiaryTerm {
-        int256 quota;
-        int256 used_quota;
+        bytes quota;
+        bytes used_quota;
         uint64 expiration;
     }
 
