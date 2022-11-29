@@ -1,0 +1,44 @@
+[package]
+name = "testing"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+#fvm_ipld_blockstore = { version = "0.1.1", git = "https://github.com/filecoin-project/ref-fvm" }
+#fvm_integration_tests = { version = "0.1.0", git = "https://github.com/filecoin-project/ref-fvm" }
+#fvm_shared = { version = "3.0.0-alpha.2", git = "https://github.com/filecoin-project/ref-fvm" }
+#fvm = { version = "3.0.0-alpha.1", git = "https://github.com/filecoin-project/ref-fvm", default-features = false }
+#fvm_ipld_encoding = { version = "0.2.2", git = "https://github.com/filecoin-project/ref-fvm" }
+
+fvm_ipld_blockstore = { version = "0.1.1" }
+fvm_shared = { version = "3.0.0-alpha.12" }
+fvm = { version = "3.0.0-alpha.11", default-features = false, features = ["m2-native"] }
+fvm_ipld_encoding = { version = "0.3.0" }
+fvm_integration_tests = { version = "0.1.1-alpha.1", git = "https://github.com/filecoin-project/ref-fvm" }
+
+bls-signatures = "0.13.0"
+rand_core = "0.6.4"
+
+serde = { version = "1.0", features = ["derive"] }
+serde_tuple = "0.5"
+wabt = "0.10.0"
+hex = "0.4.3"
+cid = "0.8.6"
+multihash = { version = "0.16.1", default-features = false }
+
+actors-v10 = { package = "fil_builtin_actors_bundle", git = "https://github.com/filecoin-project/builtin-actors", branch = "next", features = ["m2-native"] }
+fil_actors_runtime = { version = "10.0.0-alpha.1", git = "https://github.com/filecoin-project/builtin-actors", branch = "next", features = ["m2-native"] }
+fil_actor_eam = { version = "10.0.0-alpha.1", git = "https://github.com/filecoin-project/builtin-actors", branch = "next" }
+fil_actor_init = { version = "10.0.0-alpha.1", git = "https://github.com/filecoin-project/builtin-actors", branch = "next" }
+fil_actor_miner = { version = "10.0.0-alpha.1", git = "https://github.com/filecoin-project/builtin-actors", branch = "next" }
+
+[patch.crates-io]
+fvm_ipld_encoding = { version = "0.3.0", git = "https://github.com/filecoin-project/ref-fvm" }
+fvm_ipld_hamt = { version = "0.6.1", git = "https://github.com/filecoin-project/ref-fvm" }
+fvm_ipld_amt = { version = "0.5.0", git = "https://github.com/filecoin-project/ref-fvm" }
+fvm_ipld_blockstore = { version = "0.1.1", git = "https://github.com/filecoin-project/ref-fvm" }
+fvm_shared = { version = "3.0.0-alpha.12", git = "https://github.com/filecoin-project/ref-fvm" }
+fvm = { version = "3.0.0-alpha.11", git = "https://github.com/filecoin-project/ref-fvm", default-features = false, features = ["m2-native"] }
+fvm_integration_tests = { version = "0.1.1-alpha.1", git = "https://github.com/rllola/ref-fvm", branch = "feat/market-signleton-integration" }

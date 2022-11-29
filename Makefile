@@ -40,6 +40,12 @@ test_miner_integration:
 test_market_integration:
 	make && cd testing/market && cargo r
 
+test_power_integration:
+	make && cd testing/power && cargo r
+
+test_verifreg_integration:
+	make && cd testing/verifreg && cargo r
+
 download_bundle_actor:
 	cd testing && wget https://github.com/filecoin-project/builtin-actors/releases/download/dev%2F20221123-fvm-m2/builtin-actors-devnet-wasm.car
 
