@@ -20,7 +20,7 @@ library ChangeBeneficiaryCBOR {
 
         buf.startFixedArray(3);
         buf.writeBytes(params.new_beneficiary);
-        buf.writeInt256(params.new_quota);
+        buf.writeBytes(Misc.toBytes(uint256(params.new_quota)));
         buf.writeUInt64(params.new_expiration);
 
         return buf.data();

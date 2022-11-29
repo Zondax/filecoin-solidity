@@ -200,4 +200,24 @@ fn main() {
     dbg!(&res);
 
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
+
+    println!("Calling `change_beneficiary`");
+
+    let message = Message {
+        from: sender[0].1,
+        to: Address::new_id(exec_return.actor_id),
+        gas_limit: 1000000000,
+        method_num: 2,
+        sequence: 4,
+        params: RawBytes::new(hex::decode("58C4DDBC6F030000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000006000000000000000000000000000000000000000000000000000000000000004BC00000000000000000000000000000000000000000000000000000000000004BC00000000000000000000000000000000000000000000000000000000000000020067000000000000000000000000000000000000000000000000000000000000").unwrap()),
+        ..Message::default()
+    };
+
+    let res = executor
+        .execute_message(message, ApplyKind::Explicit, 100)
+        .unwrap();
+
+    dbg!(&res);
+
+    assert_eq!(res.msg_receipt.exit_code.value(), 0);
 }
