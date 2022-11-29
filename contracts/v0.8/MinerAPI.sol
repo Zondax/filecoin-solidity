@@ -7,7 +7,9 @@ import "./cbor/MinerCbor.sol";
 uint64 constant ADDRESS_MAX_LEN = 86;
 uint64 constant CODEC = 0x71;
 
-/// @title This contract is a proxy to a built-in Miner actor. Calling one of its methods will result in a cross-actor call being performed. However, in this mock library, no actual call is performed.
+/// @title This contract is a proxy to a built-in Miner actor. Calling one of its methods will result in a cross-actor call being performed.
+/// @notice During miner initialization, a miner actor is created on the chain, and this actor gives the miner its ID f0.... The miner actor is in charge of collecting all the payments sent to the miner.
+/// @dev For more info about the miner actor, please refer to https://lotus.filecoin.io/storage-providers/operate/addresses/
 /// @author Zondax AG
 contract MinerAPI {
     using ChangeBeneficiaryCBOR for MinerTypes.ChangeBeneficiaryParams;
@@ -124,6 +126,7 @@ contract MinerAPI {
     }
 
     /// @return the miner's sector size.
+    /// @dev For more information about sector sizes, please refer to https://spec.filecoin.io/systems/filecoin_mining/sector/#section-systems.filecoin_mining.sector
     function get_sector_size() public returns (MinerTypes.GetSectorSizeReturn memory) {
         // TODO: find the method num
         uint64 method_num = 0x00;
