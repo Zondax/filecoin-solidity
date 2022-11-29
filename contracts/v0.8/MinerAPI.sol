@@ -21,6 +21,11 @@ contract MinerAPI {
     using GetAvailableBalanceCBOR for MinerTypes.GetAvailableBalanceReturn;
     using GetVestingFundsCBOR for MinerTypes.GetVestingFundsReturn;
     using GetBeneficiaryCBOR for MinerTypes.GetBeneficiaryReturn;
+    using ChangeWorkerAddressCBOR for MinerTypes.ChangeWorkerAddressParams;
+    using ChangePeerIDCBOR for MinerTypes.ChangePeerIDParams;
+    using ChangeMultiaddrsCBOR for MinerTypes.ChangeMultiaddrsParams;
+    using GetPeerIDCBOR for MinerTypes.GetPeerIDReturn;
+    using GetMultiaddrsCBOR for MinerTypes.GetMultiaddrsReturn;
 
     /*uint32 actor_id;
 
@@ -294,6 +299,239 @@ contract MinerAPI {
         Misc.copy(src, dst, 0x0a);
 
         MinerTypes.GetBeneficiaryReturn memory response;
+        response.deserialize(result);
+
+        return response;
+    }
+
+    /// @notice FIXME
+    function change_beneficiary(MinerTypes.ChangeWorkerAddressParams memory params) public {
+        // TODO: find the method num
+        uint64 method_num = 0x1f;
+
+        // FIXME: unknown size for the response
+        bytes memory raw_response = new bytes(0x0200);
+
+        assembly {
+            let input := mload(0x40)
+            mstore(input, method_num)
+            mstore(add(input, 0x20), CODEC)
+            // address size
+            mstore(add(input, 0x40), 0x02)
+            // params size
+            mstore(add(input, 0x60), 0x00)
+            // actual address
+            mstore(add(input, 0x80), hex"0066")
+            // no params
+            // call(gasLimit, to, value, inputOffset, inputSize, outputOffset, outputSize)
+            if iszero(call(100000000, 0x0e, 0x00, input, 0xa0, raw_response, 0x0200)) {
+                revert(0, 0)
+            }
+        }
+        return;
+    }
+
+    /// @notice FIXME
+    function change_peer_id(MinerTypes.ChangePeerIDParams memory params) public {
+        // TODO: find the method num
+        uint64 method_num = 0x1f;
+
+        // FIXME: unknown size for the response
+        bytes memory raw_response = new bytes(0x0200);
+
+        assembly {
+            let input := mload(0x40)
+            mstore(input, method_num)
+            mstore(add(input, 0x20), CODEC)
+            // address size
+            mstore(add(input, 0x40), 0x02)
+            // params size
+            mstore(add(input, 0x60), 0x00)
+            // actual address
+            mstore(add(input, 0x80), hex"0066")
+            // no params
+            // call(gasLimit, to, value, inputOffset, inputSize, outputOffset, outputSize)
+            if iszero(call(100000000, 0x0e, 0x00, input, 0xa0, raw_response, 0x0200)) {
+                revert(0, 0)
+            }
+        }
+        return;
+    }
+
+    /// @notice FIXME
+    function change_peer_id(MinerTypes.ChangeMultiaddrsParams memory params) public {
+        // TODO: find the method num
+        uint64 method_num = 0x1f;
+
+        // FIXME: unknown size for the response
+        bytes memory raw_response = new bytes(0x0200);
+
+        assembly {
+            let input := mload(0x40)
+            mstore(input, method_num)
+            mstore(add(input, 0x20), CODEC)
+            // address size
+            mstore(add(input, 0x40), 0x02)
+            // params size
+            mstore(add(input, 0x60), 0x00)
+            // actual address
+            mstore(add(input, 0x80), hex"0066")
+            // no params
+            // call(gasLimit, to, value, inputOffset, inputSize, outputOffset, outputSize)
+            if iszero(call(100000000, 0x0e, 0x00, input, 0xa0, raw_response, 0x0200)) {
+                revert(0, 0)
+            }
+        }
+        return;
+    }
+
+    /// @notice FIXME
+    function repay_debt() public {
+        // FIXME: https://github.com/filecoin-project/builtin-actors/pull/811/files#diff-fbcb2ec1a9d82b18f146c728cafd643df0e7ae47a04d84be7644913fe89236e5R130
+        uint64 method_num = 0x00;
+
+        bytes memory raw_response = new bytes(0x80);
+
+        // TODO: should be bytes
+        //uint64 actor_id = 0x0066;
+
+        assembly {
+            let input := mload(0x40)
+            mstore(input, method_num)
+            mstore(add(input, 0x20), CODEC)
+            // address size
+            mstore(add(input, 0x40), 0x02)
+            // params size
+            mstore(add(input, 0x60), 0x00)
+            // actual address
+            mstore(add(input, 0x80), hex"0066")
+            // no params
+
+            // call(gasLimit, to, value, inputOffset, inputSize, outputOffset, outputSize)
+            if iszero(call(100000000, 0x0e, 0x00, input, 0x0100, raw_response, 0x80)) {
+                revert(0, 0)
+            }
+        }
+
+        return;
+    }
+
+    /// @notice FIXME
+    function confirm_change_worker_address() public {
+        // FIXME: https://github.com/filecoin-project/builtin-actors/pull/811/files#diff-fbcb2ec1a9d82b18f146c728cafd643df0e7ae47a04d84be7644913fe89236e5R130
+        uint64 method_num = 0x00;
+
+        bytes memory raw_response = new bytes(0x80);
+
+        // TODO: should be bytes
+        //uint64 actor_id = 0x0066;
+
+        assembly {
+            let input := mload(0x40)
+            mstore(input, method_num)
+            mstore(add(input, 0x20), CODEC)
+            // address size
+            mstore(add(input, 0x40), 0x02)
+            // params size
+            mstore(add(input, 0x60), 0x00)
+            // actual address
+            mstore(add(input, 0x80), hex"0066")
+            // no params
+
+            // call(gasLimit, to, value, inputOffset, inputSize, outputOffset, outputSize)
+            if iszero(call(100000000, 0x0e, 0x00, input, 0x0100, raw_response, 0x80)) {
+                revert(0, 0)
+            }
+        }
+
+        return;
+    }
+
+    /// @notice FIXME
+    function get_peer_id() public returns (MinerTypes.GetPeerIDReturn memory) {
+        // TODO: find the method num
+        uint64 method_num = 0x1f;
+
+        // FIXME: unknown size for the response
+        bytes memory raw_response = new bytes(0x0200);
+
+        assembly {
+            let input := mload(0x40)
+            mstore(input, method_num)
+            mstore(add(input, 0x20), CODEC)
+            // address size
+            mstore(add(input, 0x40), 0x02)
+            // params size
+            mstore(add(input, 0x60), 0x00)
+            // actual address
+            mstore(add(input, 0x80), hex"0066")
+            // no params
+            // call(gasLimit, to, value, inputOffset, inputSize, outputOffset, outputSize)
+            if iszero(call(100000000, 0x0e, 0x00, input, 0xa0, raw_response, 0x0200)) {
+                revert(0, 0)
+            }
+        }
+
+        /*uint256 exit_code = toUint256(raw_response, 0x00);
+        uint256 codec = toUint256(raw_response, 0x20);
+        uint256 offset = toUint256(raw_response, 0x40);
+        uint256 size = toUint256(raw_response, 0x60);*/
+
+        bytes memory result = new bytes(0x0a);
+        uint src;
+        uint dst;
+        assembly {
+            src := add(raw_response, 0x80)
+            dst := add(result, 0x20)
+        }
+        Misc.copy(src, dst, 0x0a);
+
+        MinerTypes.GetPeerIDReturn memory response;
+        response.deserialize(result);
+
+        return response;
+    }
+
+    /// @notice FIXME
+    function get_multiaddresses() public returns (MinerTypes.GetMultiaddrsReturn memory) {
+        // TODO: find the method num
+        uint64 method_num = 0x1f;
+
+        // FIXME: unknown size for the response
+        bytes memory raw_response = new bytes(0x0200);
+
+        assembly {
+            let input := mload(0x40)
+            mstore(input, method_num)
+            mstore(add(input, 0x20), CODEC)
+            // address size
+            mstore(add(input, 0x40), 0x02)
+            // params size
+            mstore(add(input, 0x60), 0x00)
+            // actual address
+            mstore(add(input, 0x80), hex"0066")
+            // no params
+            // call(gasLimit, to, value, inputOffset, inputSize, outputOffset, outputSize)
+            if iszero(call(100000000, 0x0e, 0x00, input, 0xa0, raw_response, 0x0200)) {
+                revert(0, 0)
+            }
+        }
+
+        /*uint256 exit_code = toUint256(raw_response, 0x00);
+        uint256 codec = toUint256(raw_response, 0x20);
+        uint256 offset = toUint256(raw_response, 0x40);
+        uint256 size = toUint256(raw_response, 0x60);*/
+
+        bytes memory result = new bytes(0x0a);
+        uint src;
+        uint dst;
+        assembly {
+            src := add(raw_response, 0x80)
+            dst := add(result, 0x20)
+        }
+        Misc.copy(src, dst, 0x0a);
+
+        MinerTypes.GetMultiaddrsReturn memory response;
         response.deserialize(result);
 
         return response;

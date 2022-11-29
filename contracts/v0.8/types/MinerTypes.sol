@@ -38,4 +38,21 @@ library MinerTypes {
         CommonTypes.ActiveBeneficiary active;
         CommonTypes.PendingBeneficiaryChange proposed;
     }
+
+    struct ChangeWorkerAddressParams {
+        bytes new_worker;
+        bytes[] new_control_addresses;
+    }
+    struct ChangePeerIDParams {
+        bytes new_id;
+    }
+    struct ChangeMultiaddrsParams {
+        bytes[] new_multi_addrs;
+    }
+    struct GetPeerIDReturn {
+        bytes peer_id;
+    }
+    struct GetMultiaddrsReturn {
+        bytes[] multi_addrs;
+    }
 }
