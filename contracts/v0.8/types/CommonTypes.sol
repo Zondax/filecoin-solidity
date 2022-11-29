@@ -199,11 +199,6 @@ library CommonTypes {
         uint64[] deal_ids;
     }
 
-    struct Signature {
-        int8 sig_type;
-        bytes data;
-    }
-
     struct DealProposal {
         bytes piece_cid;
         uint64 piece_size;
@@ -220,7 +215,7 @@ library CommonTypes {
 
     struct ClientDealProposal {
         DealProposal proposal;
-        Signature client_signature;
+        bytes client_signature;
     }
 
     struct SectorDealData {

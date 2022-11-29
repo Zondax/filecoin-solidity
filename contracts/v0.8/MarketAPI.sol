@@ -3,6 +3,7 @@ pragma solidity >=0.4.25 <=0.8.15;
 
 import "./types/MarketTypes.sol";
 import "./cbor/MarketCbor.sol";
+import "./types/CommonTypes.sol";
 
 uint64 constant ADDRESS_MAX_LEN = 86;
 uint64 constant CODEC = 0x71;
@@ -33,6 +34,8 @@ contract MarketAPI {
     using GetDealVerifiedCBOR for MarketTypes.GetDealVerifiedReturn;
     using GetDealActivationCBOR for MarketTypes.GetDealActivationParams;
     using GetDealActivationCBOR for MarketTypes.GetDealActivationReturn;
+    using PublishStorageDealsCBOR for MarketTypes.PublishStorageDealsParams;
+    using PublishStorageDealsCBOR for MarketTypes.PublishStorageDealsReturn;
 
     /// @notice Deposits the received value into the balance held in escrow.
     function add_balance(bytes memory provider_or_client) public {
@@ -85,7 +88,7 @@ contract MarketAPI {
             // actual params
             mstore(add(input, 0x80), request)
             // actual address
-            mstore(add(input, 0xa0), hex"0066")
+            mstore(add(input, 0xa0), hex"0005")
             // no params
             // call(gasLimit, to, value, inputOffset, inputSize, outputOffset, outputSize)
             if iszero(call(100000000, 0x0e, 0x00, input, 0x0100, raw_response, 0x0100)) {
@@ -118,7 +121,7 @@ contract MarketAPI {
             // actual params
             mstore(add(input, 0x80), kek)
             // actual address
-            mstore(add(input, 0xa0), hex"0066")
+            mstore(add(input, 0xa0), hex"0005")
             // call(gasLimit, to, value, inputOffset, inputSize, outputOffset, outputSize)
             if iszero(call(100000000, 0x0e, 0x00, input, 0x0100, raw_response, 0x20)) {
                 revert(0, 0)
@@ -156,7 +159,7 @@ contract MarketAPI {
             // actual params
             mstore(add(input, 0x80), request)
             // actual address
-            mstore(add(input, 0xa0), hex"0066")
+            mstore(add(input, 0xa0), hex"0005")
             // no params
             // call(gasLimit, to, value, inputOffset, inputSize, outputOffset, outputSize)
             if iszero(call(100000000, 0x0e, 0x00, input, 0x0100, raw_response, 0x0100)) {
@@ -192,7 +195,7 @@ contract MarketAPI {
             // actual params
             mstore(add(input, 0x80), request)
             // actual address
-            mstore(add(input, 0xa0), hex"0066")
+            mstore(add(input, 0xa0), hex"0005")
             // no params
             // call(gasLimit, to, value, inputOffset, inputSize, outputOffset, outputSize)
             if iszero(call(100000000, 0x0e, 0x00, input, 0x0100, raw_response, 0x0100)) {
@@ -207,9 +210,7 @@ contract MarketAPI {
     }
 
     /// @return the provider of a deal proposal.
-    function get_deal_provider(
-        MarketTypes.GetDealProviderParams memory params
-    ) public returns (MarketTypes.GetDealProviderReturn memory) {
+    function get_deal_provider(MarketTypes.GetDealProviderParams memory params) public returns (MarketTypes.GetDealProviderReturn memory) {
         bytes memory raw_request = params.serialize();
 
         // FIXME: find the method num
@@ -230,7 +231,7 @@ contract MarketAPI {
             // actual params
             mstore(add(input, 0x80), request)
             // actual address
-            mstore(add(input, 0xa0), hex"0066")
+            mstore(add(input, 0xa0), hex"0005")
             // no params
             // call(gasLimit, to, value, inputOffset, inputSize, outputOffset, outputSize)
             if iszero(call(100000000, 0x0e, 0x00, input, 0x0100, raw_response, 0x0100)) {
@@ -266,7 +267,7 @@ contract MarketAPI {
             // actual params
             mstore(add(input, 0x80), request)
             // actual address
-            mstore(add(input, 0xa0), hex"0066")
+            mstore(add(input, 0xa0), hex"0005")
             // no params
             // call(gasLimit, to, value, inputOffset, inputSize, outputOffset, outputSize)
             if iszero(call(100000000, 0x0e, 0x00, input, 0x0100, raw_response, 0x0100)) {
@@ -302,7 +303,7 @@ contract MarketAPI {
             // actual params
             mstore(add(input, 0x80), request)
             // actual address
-            mstore(add(input, 0xa0), hex"0066")
+            mstore(add(input, 0xa0), hex"0005")
             // no params
             // call(gasLimit, to, value, inputOffset, inputSize, outputOffset, outputSize)
             if iszero(call(100000000, 0x0e, 0x00, input, 0x0100, raw_response, 0x0100)) {
@@ -340,7 +341,7 @@ contract MarketAPI {
             // actual params
             mstore(add(input, 0x80), request)
             // actual address
-            mstore(add(input, 0xa0), hex"0066")
+            mstore(add(input, 0xa0), hex"0005")
             // no params
             // call(gasLimit, to, value, inputOffset, inputSize, outputOffset, outputSize)
             if iszero(call(100000000, 0x0e, 0x00, input, 0x0100, raw_response, 0x0100)) {
@@ -378,7 +379,7 @@ contract MarketAPI {
             // actual params
             mstore(add(input, 0x80), request)
             // actual address
-            mstore(add(input, 0xa0), hex"0066")
+            mstore(add(input, 0xa0), hex"0005")
             // no params
             // call(gasLimit, to, value, inputOffset, inputSize, outputOffset, outputSize)
             if iszero(call(100000000, 0x0e, 0x00, input, 0x0100, raw_response, 0x0100)) {
@@ -416,7 +417,7 @@ contract MarketAPI {
             // actual params
             mstore(add(input, 0x80), request)
             // actual address
-            mstore(add(input, 0xa0), hex"0066")
+            mstore(add(input, 0xa0), hex"0005")
             // no params
             // call(gasLimit, to, value, inputOffset, inputSize, outputOffset, outputSize)
             if iszero(call(100000000, 0x0e, 0x00, input, 0x0100, raw_response, 0x0100)) {
@@ -432,9 +433,7 @@ contract MarketAPI {
 
     /// @return the verified flag for a deal proposal.
     /// @notice Note that the source of truth for verified allocations and claims is the verified registry actor.
-    function get_deal_verified(
-        MarketTypes.GetDealVerifiedParams memory params
-    ) public returns (MarketTypes.GetDealVerifiedReturn memory) {
+    function get_deal_verified(MarketTypes.GetDealVerifiedParams memory params) public returns (MarketTypes.GetDealVerifiedReturn memory) {
         bytes memory raw_request = params.serialize();
 
         // FIXME: find the method num
@@ -455,7 +454,7 @@ contract MarketAPI {
             // actual params
             mstore(add(input, 0x80), request)
             // actual address
-            mstore(add(input, 0xa0), hex"0066")
+            mstore(add(input, 0xa0), hex"0005")
             // no params
             // call(gasLimit, to, value, inputOffset, inputSize, outputOffset, outputSize)
             if iszero(call(100000000, 0x0e, 0x00, input, 0x0100, raw_response, 0x0100)) {
@@ -495,7 +494,7 @@ contract MarketAPI {
             // actual params
             mstore(add(input, 0x80), request)
             // actual address
-            mstore(add(input, 0xa0), hex"0066")
+            mstore(add(input, 0xa0), hex"0005")
             // no params
             // call(gasLimit, to, value, inputOffset, inputSize, outputOffset, outputSize)
             if iszero(call(100000000, 0x0e, 0x00, input, 0x0100, raw_response, 0x0100)) {
@@ -510,11 +509,40 @@ contract MarketAPI {
     }
 
     /// @notice Publish a new set of storage deals (not yet included in a sector).
-    function publish_storage_deals(bytes memory raw_auth_params, address callee) public {
-        // calls standard filecoin receiver on message authentication api method number
-        (bool success, ) = callee.call(
-            abi.encodeWithSignature("handle_filecoin_method(uint64,uint64,bytes)", 0, 2643134072, raw_auth_params)
-        );
-        require(success, "client contract failed to authorize deal publish");
+    function publish_storage_deals(
+        MarketTypes.PublishStorageDealsParams memory params
+    ) public returns (MarketTypes.PublishStorageDealsReturn memory) {
+        bytes memory raw_request = params.serialize();
+
+        // FIXME: find the method num
+        uint64 method_num = 0x00;
+
+        // FIXME: unknown size for the response
+        bytes memory raw_response = new bytes(0x0100);
+
+        assembly {
+            let request := mload(add(raw_request, 0x20))
+            let input := mload(0x40)
+            mstore(input, method_num)
+            mstore(add(input, 0x20), CODEC)
+            // address size
+            mstore(add(input, 0x40), 0x02)
+            // params size
+            mstore(add(input, 0x60), mload(raw_request))
+            // actual params
+            mstore(add(input, 0x80), request)
+            // actual address
+            mstore(add(input, 0xa0), hex"0005")
+            // no params
+            // call(gasLimit, to, value, inputOffset, inputSize, outputOffset, outputSize)
+            if iszero(call(100000000, 0x0e, 0x00, input, 0x0100, raw_response, 0x0100)) {
+                revert(0, 0)
+            }
+        }
+
+        MarketTypes.PublishStorageDealsReturn memory response;
+        response.deserialize(raw_response);
+
+        return response;
     }
 }

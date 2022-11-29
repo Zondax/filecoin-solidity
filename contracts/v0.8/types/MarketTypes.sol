@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: Apache-2.0
 pragma solidity >=0.4.25 <=0.8.15;
 
+import "./CommonTypes.sol";
+
 /// @title Filecoin market actor types for Solidity.
 /// @author Zondax AG
 library MarketTypes {
@@ -99,5 +101,14 @@ library MarketTypes {
     struct GetDealActivationReturn {
         int64 activated;
         int64 terminated;
+    }
+
+    struct PublishStorageDealsParams {
+        CommonTypes.ClientDealProposal[] deals;
+    }
+
+    struct PublishStorageDealsReturn {
+        uint64[] ids;
+        bytes valid_deals;
     }
 }
