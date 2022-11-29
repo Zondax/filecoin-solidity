@@ -54,9 +54,9 @@ fn main() {
     let sender: [Account; 1] = tester.create_accounts().unwrap();
 
     /***********************************************
-     * 
+     *
      * Instantiate Account Actor with a BLS address
-     * 
+     *
      ***********************************************/
 
     let bls_private_key = bls_signatures::PrivateKey::generate(&mut OsRng);
@@ -90,9 +90,9 @@ fn main() {
     let executor = tester.executor.as_mut().unwrap();
 
     /**************************
-     * 
+     *
      * Machine instantiated
-     * 
+     *
      **************************/
 
     println!("Create Miner actor for solidity contract to interact with");

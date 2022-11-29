@@ -6,6 +6,7 @@ import "solidity-cborutils/contracts/CBOR.sol";
 import {CommonTypes} from "../types/CommonTypes.sol";
 import {MinerTypes} from "../types/MinerTypes.sol";
 import "../utils/CborDecode.sol";
+import "../utils/Misc.sol";
 
 /// @title FIXME
 /// @author Zondax AG
@@ -127,6 +128,7 @@ library GetBeneficiaryCBOR {
     using CBORDecoder for bytes;
 
     function deserialize(MinerTypes.GetBeneficiaryReturn memory ret, bytes memory rawResp) internal pure {
+        bytes memory tmp;
         uint byteIdx = 0;
         uint len;
 
@@ -141,18 +143,24 @@ library GetBeneficiaryCBOR {
         (len, byteIdx) = rawResp.readFixedArray(byteIdx);
         assert(len == 3);
 
-        (ret.active.term.quota, byteIdx) = rawResp.readInt256(byteIdx);
-        (ret.active.term.used_quota, byteIdx) = rawResp.readInt256(byteIdx);
+        (tmp, byteIdx) = rawResp.readBytes(byteIdx);
+        ret.active.term.quota = int256(Misc.toUint256(tmp, 0));
+
+        (tmp, byteIdx) = rawResp.readBytes(byteIdx);
+        ret.active.term.used_quota = int256(Misc.toUint256(tmp, 0));
+
         (ret.active.term.expiration, byteIdx) = rawResp.readUInt64(byteIdx);
 
-        (len, byteIdx) = rawResp.readFixedArray(byteIdx);
-        assert(len == 5);
+        if (!rawResp.isNullNext(byteIdx)) {
+            (len, byteIdx) = rawResp.readFixedArray(byteIdx);
+            assert(len == 5);
 
-        (ret.proposed.new_beneficiary, byteIdx) = rawResp.readBytes(byteIdx);
-        (ret.proposed.new_quota, byteIdx) = rawResp.readInt256(byteIdx);
-        (ret.proposed.new_expiration, byteIdx) = rawResp.readUInt64(byteIdx);
-        (ret.proposed.approved_by_beneficiary, byteIdx) = rawResp.readBool(byteIdx);
-        (ret.proposed.approved_by_nominee, byteIdx) = rawResp.readBool(byteIdx);
+            (ret.proposed.new_beneficiary, byteIdx) = rawResp.readBytes(byteIdx);
+            (ret.proposed.new_quota, byteIdx) = rawResp.readInt256(byteIdx);
+            (ret.proposed.new_expiration, byteIdx) = rawResp.readUInt64(byteIdx);
+            (ret.proposed.approved_by_beneficiary, byteIdx) = rawResp.readBool(byteIdx);
+            (ret.proposed.approved_by_nominee, byteIdx) = rawResp.readBool(byteIdx);
+        }
     }
 }
 

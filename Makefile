@@ -32,6 +32,9 @@ test_miner_cbor_serialization:
 test_market_cbor_serialization:
 	cd hardhat && yarn hardhat withdraw_balance --providerorclient 0xaaaa12 --tokenamount 12222 --contractaddress $(CONTRACT_ADDRESS)
 
+test_miner_rust:
+	make && cd testing && cargo r
+
 download_bundle_actor:
 	cd testing && wget https://github.com/filecoin-project/builtin-actors/releases/download/dev%2F20221123-fvm-m2/builtin-actors-devnet-wasm.car
 
