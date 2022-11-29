@@ -33,13 +33,10 @@ contract MinerAPI {
     /// @notice This address is also allowed to change the worker address for the miner
     /// @return the owner address of a Miner
     function get_owner() public returns (MinerTypes.GetOwnerReturn memory) {
-        // FIXME: https://github.com/filecoin-project/builtin-actors/pull/811/files#diff-fbcb2ec1a9d82b18f146c728cafd643df0e7ae47a04d84be7644913fe89236e5R130
+        // FIXME: find the method num
         uint64 method_num = 0x00;
 
         bytes memory raw_response = new bytes(0x80);
-
-        // TODO: should be bytes
-        //uint64 actor_id = 0x0066;
 
         assembly {
             let input := mload(0x40)
@@ -59,8 +56,18 @@ contract MinerAPI {
             }
         }
 
+        // FIXME create bytes array with correct size
+        bytes memory result = new bytes(0x0a);
+        uint src;
+        uint dst;
+        assembly {
+            src := add(raw_response, 0x80)
+            dst := add(result, 0x20)
+        }
+        Misc.copy(src, dst, 0x0a);
+
         MinerTypes.GetOwnerReturn memory response;
-        response.deserialize(raw_response);
+        response.deserialize(result);
 
         return response;
     }
@@ -97,7 +104,7 @@ contract MinerAPI {
     /// @param addr The "controlling" addresses are the Owner, the Worker, and all Control Addresses.
     /// @return Whether the provided address is "controlling".
     function is_controlling_address(bytes memory addr) public returns (MinerTypes.IsControllingAddressReturn memory) {
-        // FIXME: https://github.com/filecoin-project/builtin-actors/pull/811/files#diff-fbcb2ec1a9d82b18f146c728cafd643df0e7ae47a04d84be7644913fe89236e5R131
+        // FIXME: find the method num
         uint64 method_num = 0x00;
 
         bytes memory raw_response = new bytes(0x20);
@@ -121,8 +128,18 @@ contract MinerAPI {
             }
         }
 
+        // FIXME create bytes array with correct size
+        bytes memory result = new bytes(0x0a);
+        uint src;
+        uint dst;
+        assembly {
+            src := add(raw_response, 0x80)
+            dst := add(result, 0x20)
+        }
+        Misc.copy(src, dst, 0x0a);
+
         MinerTypes.IsControllingAddressReturn memory response;
-        response.deserialize(raw_response);
+        response.deserialize(result);
 
         return response;
     }
@@ -130,7 +147,7 @@ contract MinerAPI {
     /// @return the miner's sector size.
     /// @dev For more information about sector sizes, please refer to https://spec.filecoin.io/systems/filecoin_mining/sector/#section-systems.filecoin_mining.sector
     function get_sector_size() public returns (MinerTypes.GetSectorSizeReturn memory) {
-        // TODO: find the method num
+        // FIXME: find the method num
         uint64 method_num = 0x00;
 
         bytes memory raw_response = new bytes(0x20);
@@ -152,8 +169,18 @@ contract MinerAPI {
             }
         }
 
+        // FIXME create bytes array with correct size
+        bytes memory result = new bytes(0x0a);
+        uint src;
+        uint dst;
+        assembly {
+            src := add(raw_response, 0x80)
+            dst := add(result, 0x20)
+        }
+        Misc.copy(src, dst, 0x0a);
+
         MinerTypes.GetSectorSizeReturn memory response;
-        response.deserialize(raw_response);
+        response.deserialize(result);
 
         return response;
     }
@@ -162,7 +189,7 @@ contract MinerAPI {
     /// @notice Can go negative if the miner is in IP debt.
     /// @return the available balance of this miner.
     function get_available_balance() public returns (MinerTypes.GetAvailableBalanceReturn memory) {
-        // TODO: find the method num
+        // FIXME: find the method num
         uint64 method_num = 0x00;
 
         bytes memory raw_response = new bytes(0x20);
@@ -184,15 +211,25 @@ contract MinerAPI {
             }
         }
 
+        // FIXME create bytes array with correct size
+        bytes memory result = new bytes(0x0a);
+        uint src;
+        uint dst;
+        assembly {
+            src := add(raw_response, 0x80)
+            dst := add(result, 0x20)
+        }
+        Misc.copy(src, dst, 0x0a);
+
         MinerTypes.GetAvailableBalanceReturn memory response;
-        response.deserialize(raw_response);
+        response.deserialize(result);
 
         return response;
     }
 
     /// @return the funds vesting in this miner as a list of (vesting_epoch, vesting_amount) tuples.
     function get_vesting_funds() public returns (MinerTypes.GetVestingFundsReturn memory) {
-        // TODO: find the method num
+        // FIXME: find the method num
         uint64 method_num = 0x00;
 
         // FIXME: unknown size for the response
@@ -215,8 +252,18 @@ contract MinerAPI {
             }
         }
 
+        // FIXME create bytes array with correct size
+        bytes memory result = new bytes(0x0a);
+        uint src;
+        uint dst;
+        assembly {
+            src := add(raw_response, 0x80)
+            dst := add(result, 0x20)
+        }
+        Misc.copy(src, dst, 0x0a);
+
         MinerTypes.GetVestingFundsReturn memory response;
-        response.deserialize(raw_response);
+        response.deserialize(result);
 
         return response;
     }
@@ -257,7 +304,6 @@ contract MinerAPI {
     /// @notice This method is for use by other actors (such as those acting as beneficiaries), and to abstract the state representation for clients.
     /// @notice Retrieves the currently active and proposed beneficiary information.
     function get_beneficiary() public returns (MinerTypes.GetBeneficiaryReturn memory) {
-        // TODO: find the method num
         uint64 method_num = 0x1f;
 
         // FIXME: unknown size for the response
@@ -285,6 +331,7 @@ contract MinerAPI {
         uint256 offset = toUint256(raw_response, 0x40);
         uint256 size = toUint256(raw_response, 0x60);*/
 
+        // FIXME create bytes array with correct size
         bytes memory result = new bytes(0x0a);
         uint src;
         uint dst;
