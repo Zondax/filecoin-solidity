@@ -141,18 +141,20 @@ library GetBeneficiaryCBOR {
         (len, byteIdx) = rawResp.readFixedArray(byteIdx);
         assert(len == 3);
 
-        (ret.active.term.quota, byteIdx) = rawResp.readInt256(byteIdx);
-        (ret.active.term.used_quota, byteIdx) = rawResp.readInt256(byteIdx);
+        (ret.active.term.quota, byteIdx) = rawResp.readBytes(byteIdx);
+        (ret.active.term.used_quota, byteIdx) = rawResp.readBytes(byteIdx);
         (ret.active.term.expiration, byteIdx) = rawResp.readUInt64(byteIdx);
 
-        (len, byteIdx) = rawResp.readFixedArray(byteIdx);
-        assert(len == 5);
+        if (!rawResp.isNullNext(byteIdx)) {
+            (len, byteIdx) = rawResp.readFixedArray(byteIdx);
+            assert(len == 5);
 
-        (ret.proposed.new_beneficiary, byteIdx) = rawResp.readBytes(byteIdx);
-        (ret.proposed.new_quota, byteIdx) = rawResp.readInt256(byteIdx);
-        (ret.proposed.new_expiration, byteIdx) = rawResp.readUInt64(byteIdx);
-        (ret.proposed.approved_by_beneficiary, byteIdx) = rawResp.readBool(byteIdx);
-        (ret.proposed.approved_by_nominee, byteIdx) = rawResp.readBool(byteIdx);
+            (ret.proposed.new_beneficiary, byteIdx) = rawResp.readBytes(byteIdx);
+            (ret.proposed.new_quota, byteIdx) = rawResp.readInt256(byteIdx);
+            (ret.proposed.new_expiration, byteIdx) = rawResp.readUInt64(byteIdx);
+            (ret.proposed.approved_by_beneficiary, byteIdx) = rawResp.readBool(byteIdx);
+            (ret.proposed.approved_by_nominee, byteIdx) = rawResp.readBool(byteIdx);
+        }
     }
 }
 
