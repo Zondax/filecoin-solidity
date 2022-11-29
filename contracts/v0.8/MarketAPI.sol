@@ -37,7 +37,7 @@ contract MarketAPI {
     /// @notice Deposits the received value into the balance held in escrow.
     function add_balance(bytes memory provider_or_client) public {
         // FIXME: find the method num
-        uint64 method_num = 0x00;
+        uint64 method_num = 0x02;
 
         assembly {
             let kek := mload(add(provider_or_client, 0x20))
@@ -51,10 +51,10 @@ contract MarketAPI {
             // actual params
             mstore(add(input, 0x80), kek)
             // actual address
-            mstore(add(input, 0xa0), hex"0066")
+            mstore(add(input, 0xa0), hex"0005")
 
-            // staticcall(gasLimit, to, inputOffset, inputSize, outputOffset, outputSize)
-            if iszero(staticcall(100000000, 0x0e, input, 0x0120, 0x00, 0x00)) {
+            // call(gasLimit, to, value, inputOffset, inputSize, outputOffset, outputSize)
+            if iszero(call(100000000, 0x0e, 0x00, input, 0x0120, 0x00, 0x00)) {
                 revert(0, 0)
             }
         }
@@ -87,8 +87,8 @@ contract MarketAPI {
             // actual address
             mstore(add(input, 0xa0), hex"0066")
             // no params
-            // staticcall(gasLimit, to, inputOffset, inputSize, outputOffset, outputSize)
-            if iszero(staticcall(100000000, 0x0e, input, 0x0100, raw_response, 0x0100)) {
+            // call(gasLimit, to, value, inputOffset, inputSize, outputOffset, outputSize)
+            if iszero(call(100000000, 0x0e, 0x00, input, 0x0100, raw_response, 0x0100)) {
                 revert(0, 0)
             }
         }
@@ -100,7 +100,7 @@ contract MarketAPI {
     }
 
     /// @return the escrow balance and locked amount for an address.
-    function get_balance(bytes memory addr) public view returns (MarketTypes.GetBalanceReturn memory) {
+    function get_balance(bytes memory addr) public returns (MarketTypes.GetBalanceReturn memory) {
         // FIXME: find the method num
         uint64 method_num = 0x00;
 
@@ -119,8 +119,8 @@ contract MarketAPI {
             mstore(add(input, 0x80), kek)
             // actual address
             mstore(add(input, 0xa0), hex"0066")
-            // staticcall(gasLimit, to, inputOffset, inputSize, outputOffset, outputSize)
-            if iszero(staticcall(100000000, 0x0e, input, 0x0100, raw_response, 0x20)) {
+            // call(gasLimit, to, value, inputOffset, inputSize, outputOffset, outputSize)
+            if iszero(call(100000000, 0x0e, 0x00, input, 0x0100, raw_response, 0x20)) {
                 revert(0, 0)
             }
         }
@@ -135,7 +135,7 @@ contract MarketAPI {
     /// @notice This will be available after the deal is published (whether or not is is activated) and up until some undefined period after it is terminated.
     function get_deal_data_commitment(
         MarketTypes.GetDealDataCommitmentParams memory params
-    ) public view returns (MarketTypes.GetDealDataCommitmentReturn memory) {
+    ) public returns (MarketTypes.GetDealDataCommitmentReturn memory) {
         bytes memory raw_request = params.serialize();
 
         // FIXME: find the method num
@@ -158,8 +158,8 @@ contract MarketAPI {
             // actual address
             mstore(add(input, 0xa0), hex"0066")
             // no params
-            // staticcall(gasLimit, to, inputOffset, inputSize, outputOffset, outputSize)
-            if iszero(staticcall(100000000, 0x0e, input, 0x0100, raw_response, 0x0100)) {
+            // call(gasLimit, to, value, inputOffset, inputSize, outputOffset, outputSize)
+            if iszero(call(100000000, 0x0e, 0x00, input, 0x0100, raw_response, 0x0100)) {
                 revert(0, 0)
             }
         }
@@ -171,7 +171,7 @@ contract MarketAPI {
     }
 
     /// @return the client of a deal proposal.
-    function get_deal_client(MarketTypes.GetDealClientParams memory params) public view returns (MarketTypes.GetDealClientReturn memory) {
+    function get_deal_client(MarketTypes.GetDealClientParams memory params) public returns (MarketTypes.GetDealClientReturn memory) {
         bytes memory raw_request = params.serialize();
 
         // FIXME: find the method num
@@ -194,8 +194,8 @@ contract MarketAPI {
             // actual address
             mstore(add(input, 0xa0), hex"0066")
             // no params
-            // staticcall(gasLimit, to, inputOffset, inputSize, outputOffset, outputSize)
-            if iszero(staticcall(100000000, 0x0e, input, 0x0100, raw_response, 0x0100)) {
+            // call(gasLimit, to, value, inputOffset, inputSize, outputOffset, outputSize)
+            if iszero(call(100000000, 0x0e, 0x00, input, 0x0100, raw_response, 0x0100)) {
                 revert(0, 0)
             }
         }
@@ -209,7 +209,7 @@ contract MarketAPI {
     /// @return the provider of a deal proposal.
     function get_deal_provider(
         MarketTypes.GetDealProviderParams memory params
-    ) public view returns (MarketTypes.GetDealProviderReturn memory) {
+    ) public returns (MarketTypes.GetDealProviderReturn memory) {
         bytes memory raw_request = params.serialize();
 
         // FIXME: find the method num
@@ -232,8 +232,8 @@ contract MarketAPI {
             // actual address
             mstore(add(input, 0xa0), hex"0066")
             // no params
-            // staticcall(gasLimit, to, inputOffset, inputSize, outputOffset, outputSize)
-            if iszero(staticcall(100000000, 0x0e, input, 0x0100, raw_response, 0x0100)) {
+            // call(gasLimit, to, value, inputOffset, inputSize, outputOffset, outputSize)
+            if iszero(call(100000000, 0x0e, 0x00, input, 0x0100, raw_response, 0x0100)) {
                 revert(0, 0)
             }
         }
@@ -245,7 +245,7 @@ contract MarketAPI {
     }
 
     /// @return the label of a deal proposal.
-    function get_deal_label(MarketTypes.GetDealLabelParams memory params) public view returns (MarketTypes.GetDealLabelReturn memory) {
+    function get_deal_label(MarketTypes.GetDealLabelParams memory params) public returns (MarketTypes.GetDealLabelReturn memory) {
         bytes memory raw_request = params.serialize();
 
         // FIXME: find the method num
@@ -268,8 +268,8 @@ contract MarketAPI {
             // actual address
             mstore(add(input, 0xa0), hex"0066")
             // no params
-            // staticcall(gasLimit, to, inputOffset, inputSize, outputOffset, outputSize)
-            if iszero(staticcall(100000000, 0x0e, input, 0x0100, raw_response, 0x0100)) {
+            // call(gasLimit, to, value, inputOffset, inputSize, outputOffset, outputSize)
+            if iszero(call(100000000, 0x0e, 0x00, input, 0x0100, raw_response, 0x0100)) {
                 revert(0, 0)
             }
         }
@@ -281,7 +281,7 @@ contract MarketAPI {
     }
 
     /// @return the start epoch and duration (in epochs) of a deal proposal.
-    function get_deal_term(MarketTypes.GetDealTermParams memory params) public view returns (MarketTypes.GetDealTermReturn memory) {
+    function get_deal_term(MarketTypes.GetDealTermParams memory params) public returns (MarketTypes.GetDealTermReturn memory) {
         bytes memory raw_request = params.serialize();
 
         // FIXME: find the method num
@@ -304,8 +304,8 @@ contract MarketAPI {
             // actual address
             mstore(add(input, 0xa0), hex"0066")
             // no params
-            // staticcall(gasLimit, to, inputOffset, inputSize, outputOffset, outputSize)
-            if iszero(staticcall(100000000, 0x0e, input, 0x0100, raw_response, 0x0100)) {
+            // call(gasLimit, to, value, inputOffset, inputSize, outputOffset, outputSize)
+            if iszero(call(100000000, 0x0e, 0x00, input, 0x0100, raw_response, 0x0100)) {
                 revert(0, 0)
             }
         }
@@ -319,7 +319,7 @@ contract MarketAPI {
     /// @return the per-epoch price of a deal proposal.
     function get_deal_total_price(
         MarketTypes.GetDealEpochPriceParams memory params
-    ) public view returns (MarketTypes.GetDealEpochPriceReturn memory) {
+    ) public returns (MarketTypes.GetDealEpochPriceReturn memory) {
         bytes memory raw_request = params.serialize();
 
         // FIXME: find the method num
@@ -342,8 +342,8 @@ contract MarketAPI {
             // actual address
             mstore(add(input, 0xa0), hex"0066")
             // no params
-            // staticcall(gasLimit, to, inputOffset, inputSize, outputOffset, outputSize)
-            if iszero(staticcall(100000000, 0x0e, input, 0x0100, raw_response, 0x0100)) {
+            // call(gasLimit, to, value, inputOffset, inputSize, outputOffset, outputSize)
+            if iszero(call(100000000, 0x0e, 0x00, input, 0x0100, raw_response, 0x0100)) {
                 revert(0, 0)
             }
         }
@@ -357,7 +357,7 @@ contract MarketAPI {
     /// @return the client collateral requirement for a deal proposal.
     function get_deal_client_collateral(
         MarketTypes.GetDealClientCollateralParams memory params
-    ) public view returns (MarketTypes.GetDealClientCollateralReturn memory) {
+    ) public returns (MarketTypes.GetDealClientCollateralReturn memory) {
         bytes memory raw_request = params.serialize();
 
         // FIXME: find the method num
@@ -380,8 +380,8 @@ contract MarketAPI {
             // actual address
             mstore(add(input, 0xa0), hex"0066")
             // no params
-            // staticcall(gasLimit, to, inputOffset, inputSize, outputOffset, outputSize)
-            if iszero(staticcall(100000000, 0x0e, input, 0x0100, raw_response, 0x0100)) {
+            // call(gasLimit, to, value, inputOffset, inputSize, outputOffset, outputSize)
+            if iszero(call(100000000, 0x0e, 0x00, input, 0x0100, raw_response, 0x0100)) {
                 revert(0, 0)
             }
         }
@@ -395,7 +395,7 @@ contract MarketAPI {
     /// @return the provider collateral requirement for a deal proposal.
     function get_deal_provider_collateral(
         MarketTypes.GetDealProviderCollateralParams memory params
-    ) public view returns (MarketTypes.GetDealProviderCollateralReturn memory) {
+    ) public returns (MarketTypes.GetDealProviderCollateralReturn memory) {
         bytes memory raw_request = params.serialize();
 
         // FIXME: find the method num
@@ -418,8 +418,8 @@ contract MarketAPI {
             // actual address
             mstore(add(input, 0xa0), hex"0066")
             // no params
-            // staticcall(gasLimit, to, inputOffset, inputSize, outputOffset, outputSize)
-            if iszero(staticcall(100000000, 0x0e, input, 0x0100, raw_response, 0x0100)) {
+            // call(gasLimit, to, value, inputOffset, inputSize, outputOffset, outputSize)
+            if iszero(call(100000000, 0x0e, 0x00, input, 0x0100, raw_response, 0x0100)) {
                 revert(0, 0)
             }
         }
@@ -434,7 +434,7 @@ contract MarketAPI {
     /// @notice Note that the source of truth for verified allocations and claims is the verified registry actor.
     function get_deal_verified(
         MarketTypes.GetDealVerifiedParams memory params
-    ) public view returns (MarketTypes.GetDealVerifiedReturn memory) {
+    ) public returns (MarketTypes.GetDealVerifiedReturn memory) {
         bytes memory raw_request = params.serialize();
 
         // FIXME: find the method num
@@ -457,8 +457,8 @@ contract MarketAPI {
             // actual address
             mstore(add(input, 0xa0), hex"0066")
             // no params
-            // staticcall(gasLimit, to, inputOffset, inputSize, outputOffset, outputSize)
-            if iszero(staticcall(100000000, 0x0e, input, 0x0100, raw_response, 0x0100)) {
+            // call(gasLimit, to, value, inputOffset, inputSize, outputOffset, outputSize)
+            if iszero(call(100000000, 0x0e, 0x00, input, 0x0100, raw_response, 0x0100)) {
                 revert(0, 0)
             }
         }
@@ -474,7 +474,7 @@ contract MarketAPI {
     /// @return USR_NOT_FOUND if the deal doesn't exist (yet), or EX_DEAL_EXPIRED if the deal has been removed from state.
     function get_deal_activation(
         MarketTypes.GetDealActivationParams memory params
-    ) public view returns (MarketTypes.GetDealActivationReturn memory) {
+    ) public returns (MarketTypes.GetDealActivationReturn memory) {
         bytes memory raw_request = params.serialize();
 
         // FIXME: find the method num
@@ -497,8 +497,8 @@ contract MarketAPI {
             // actual address
             mstore(add(input, 0xa0), hex"0066")
             // no params
-            // staticcall(gasLimit, to, inputOffset, inputSize, outputOffset, outputSize)
-            if iszero(staticcall(100000000, 0x0e, input, 0x0100, raw_response, 0x0100)) {
+            // call(gasLimit, to, value, inputOffset, inputSize, outputOffset, outputSize)
+            if iszero(call(100000000, 0x0e, 0x00, input, 0x0100, raw_response, 0x0100)) {
                 revert(0, 0)
             }
         }
