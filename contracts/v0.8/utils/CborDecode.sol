@@ -56,11 +56,10 @@ library CBORDecoder {
 
         uint max_len = byteIdx + len;
         bytes memory slice = new bytes(len);
-        for (uint256 i = byteIdx; i < max_len; ) {
-            slice[i] = cborParams[i];
-            unchecked {
-                ++i;
-            }
+        uint slice_index = 0;
+        for (uint256 i = byteIdx; i < max_len; i++) {
+            slice[slice_index] = cborParams[i];
+            slice_index++;
         }
 
         return (string(slice), byteIdx + len);
@@ -75,11 +74,10 @@ library CBORDecoder {
 
         uint max_len = byteIdx + len;
         bytes memory slice = new bytes(len);
-        for (uint256 i = byteIdx; i < max_len; ) {
-            slice[i] = cborParams[i];
-            unchecked {
-                ++i;
-            }
+        uint slice_index = 0;
+        for (uint256 i = byteIdx; i < max_len; i++) {
+            slice[slice_index] = cborParams[i];
+            slice_index++;
         }
 
         return (slice, byteIdx + len);
