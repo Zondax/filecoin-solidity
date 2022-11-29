@@ -78,7 +78,7 @@ jobs:
       - name: Install latest stable
         uses: actions-rs/toolchain@v1
         with:
-          toolchain: stable
+          toolchain: nightly
           override: true
       - name: Install dependencies
         run:  | 
