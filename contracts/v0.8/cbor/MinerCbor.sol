@@ -185,3 +185,90 @@ library GetVestingFundsCBOR {
         }
     }
 }
+
+library ChangeWorkerAddressCBOR {
+    using CBOR for CBOR.CBORBuffer;
+    using CBORDecoder for bytes;
+
+    function serialize(MinerTypes.ChangeWorkerAddressParams memory params) internal pure returns (bytes memory) {
+        // FIXME what should the max length be on the buffer?
+        CBOR.CBORBuffer memory buf = CBOR.create(64);
+
+        buf.startFixedArray(2);
+        buf.writeBytes(params.new_worker);
+        buf.startFixedArray(uint64(params.new_control_addresses.length));
+
+        for (uint64 i = 0; i < params.new_control_addresses.length; i++) {
+            buf.writeBytes(params.new_control_addresses[i]);
+        }
+
+        return buf.data();
+    }
+}
+
+library ChangePeerIDCBOR {
+    using CBOR for CBOR.CBORBuffer;
+    using CBORDecoder for bytes;
+
+    function serialize(MinerTypes.ChangePeerIDParams memory params) internal pure returns (bytes memory) {
+        // FIXME what should the max length be on the buffer?
+        CBOR.CBORBuffer memory buf = CBOR.create(64);
+
+        buf.startFixedArray(1);
+        buf.writeBytes(params.new_id);
+
+        return buf.data();
+    }
+}
+
+library ChangeMultiaddrsCBOR {
+    using CBOR for CBOR.CBORBuffer;
+    using CBORDecoder for bytes;
+
+    function serialize(MinerTypes.ChangeMultiaddrsParams memory params) internal pure returns (bytes memory) {
+        // FIXME what should the max length be on the buffer?
+        CBOR.CBORBuffer memory buf = CBOR.create(64);
+
+        buf.startFixedArray(1);
+        buf.startFixedArray(uint64(params.new_multi_addrs.length));
+
+        for (uint64 i = 0; i < params.new_multi_addrs.length; i++) {
+            buf.writeBytes(params.new_multi_addrs[i]);
+        }
+
+        return buf.data();
+    }
+}
+
+library GetPeerIDCBOR {
+    using CBOR for CBOR.CBORBuffer;
+    using CBORDecoder for bytes;
+
+    function deserialize(MinerTypes.GetPeerIDReturn memory ret, bytes memory rawResp) internal pure {
+        uint byteIdx = 0;
+        uint len;
+
+        (len, byteIdx) = rawResp.readFixedArray(byteIdx);
+        (ret.peer_id, byteIdx) = rawResp.readBytes(byteIdx);
+    }
+}
+
+library GetMultiaddrsCBOR {
+    using CBOR for CBOR.CBORBuffer;
+    using CBORDecoder for bytes;
+
+    function deserialize(MinerTypes.GetMultiaddrsReturn memory ret, bytes memory rawResp) internal pure {
+        int64 epoch;
+        int256 amount;
+
+        uint byteIdx = 0;
+        uint len;
+
+        (len, byteIdx) = rawResp.readFixedArray(byteIdx);
+        ret.multi_addrs = new bytes[](len);
+
+        for (uint i = 0; i < len; i++) {
+            (ret.multi_addrs[i], byteIdx) = rawResp.readBytes(byteIdx);
+        }
+    }
+}
