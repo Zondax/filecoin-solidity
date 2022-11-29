@@ -95,9 +95,14 @@ jobs:
           key: ${{ runner.os }}-cargo-${{ hashFiles('./testing/Cargo.lock') }}
       - name: Build contracts
         run: make
-      - name: Run tests
+      - name: Run tests on miner
         run: |
-          cd testing
+          cd testing/miner
+          rustup target add wasm32-unknown-unknown
+          RUST_BACKTRACE=1 cargo r
+      - name: Run tests on market
+        run: |
+          cd testing/market
           rustup target add wasm32-unknown-unknown
           RUST_BACKTRACE=1 cargo r
       - name: Save crates
