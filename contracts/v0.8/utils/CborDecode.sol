@@ -26,6 +26,10 @@ uint8 constant True_Type = 21;
 uint8 constant False_Type = 20;
 
 library CBORDecoder {
+    function isNullNext(bytes memory cborParams, uint byteIdx) internal pure returns (bool) {
+        return cborParams[byteIdx] == hex"f6";
+    }
+
     function readBool(bytes memory cborParams, uint byteIdx) internal pure returns (bool, uint) {
         uint8 maj;
         uint value;
