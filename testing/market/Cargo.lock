@@ -4294,3 +4294,4 @@ dependencies = [
 [[patch.unused]]
 name = "fvm_integration_tests"
 version = "0.1.1-alpha.1"
+source = "git+https://github.com/rllola/ref-fvm?branch=feat/market-signleton-integration#c168c854ae4e5e129df66c37c6a3afbb8265b58a"

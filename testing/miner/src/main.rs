@@ -23,7 +23,7 @@ use fvm::state_tree::{ActorState};
 use fvm_shared::econ::TokenAmount;
 
 const WASM_COMPILED_PATH: &str =
-   "../build/v0.8/MinerAPI.bin";
+   "../../build/v0.8/MinerAPI.bin";
 
 // const WASM_COMPILED_PATH: &str =
 // "../build/SimpleCoin.bin";

@@ -23,7 +23,7 @@ use fvm::state_tree::{ActorState};
 use fvm_shared::econ::TokenAmount;
 
 const WASM_COMPILED_PATH: &str =
-   "../build/v0.8/MarketAPI.bin";
+   "../../build/v0.8/MarketAPI.bin";
 
 #[derive(Serialize_tuple, Deserialize_tuple)]
 pub struct Create2Params {
