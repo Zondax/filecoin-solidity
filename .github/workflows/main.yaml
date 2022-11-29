@@ -93,8 +93,13 @@ jobs:
             ~/.cargo/registry/cache/
             ~/.cargo/git/db/
           key: ${{ runner.os }}-cargo-${{ hashFiles('./testing/Cargo.lock') }}
+      - name: Build contracts
+        run: make
       - name: Run tests
-        run: make test_miner_rust
+        run: |
+          cd testing
+          rustup target add wasm32-unknown-unknown
+          RUST_BACKTRACE=1 cargo r
       - name: Save crates
         uses: actions/cache@v3
         with:
