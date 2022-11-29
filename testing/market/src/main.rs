@@ -82,7 +82,7 @@ fn main() {
 
     let exec_return : Return = RawBytes::deserialize(&res.msg_receipt.return_data).unwrap();
 
-    println!("Calling `get_balance`");
+    println!("Calling `add_balance`");
 
     let message = Message {
         from: sender[0].1,
