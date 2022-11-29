@@ -92,7 +92,7 @@ jobs:
             ~/.cargo/registry/index/
             ~/.cargo/registry/cache/
             ~/.cargo/git/db/
-          key: ${{ runner.os }}-cargo-${{ hashFiles('./testing/Cargo.lock') }}
+          key: ${{ runner.os }}-cargo-${{ hashFiles('./testing/miner/Cargo.lock') }}
       - name: Build contracts
         run: make
       - name: Run tests on miner
@@ -113,6 +113,6 @@ jobs:
             ~/.cargo/registry/index/
             ~/.cargo/registry/cache/
             ~/.cargo/git/db/
-          key: ${{ runner.os }}-cargo-${{ hashFiles('./testing/Cargo.lock') }}
+          key: ${{ runner.os }}-cargo-${{ hashFiles('./testing/market/Cargo.lock') }}
 
 
