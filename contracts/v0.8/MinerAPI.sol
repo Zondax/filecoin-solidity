@@ -2,6 +2,7 @@
 pragma solidity >=0.4.25 <=0.8.17;
 
 import "./types/MinerTypes.sol";
+import "./utils/Misc.sol";
 import "./cbor/MinerCbor.sol";
 
 uint64 constant ADDRESS_MAX_LEN = 86;
@@ -290,32 +291,11 @@ contract MinerAPI {
             src := add(raw_response, 0x80)
             dst := add(result, 0x20)
         }
-        copy(src, dst, 0x0a);
+        Misc.copy(src, dst, 0x0a);
 
         MinerTypes.GetBeneficiaryReturn memory response;
         response.deserialize(result);
 
         return response;
-    }
-
-    function copy(uint src, uint dest, uint len) internal pure {
-        // Copy word-length chunks while possible
-        for (; len >= 32; len -= 32) {
-            assembly {
-                mstore(dest, mload(src))
-            }
-            dest += 32;
-            src += 32;
-        }
-
-        if (len == 0) return;
-
-        // Copy remaining bytes
-        uint mask = 256 ** (32 - len) - 1;
-        assembly {
-            let srcpart := and(mload(src), not(mask))
-            let destpart := and(mload(dest), mask)
-            mstore(dest, or(destpart, srcpart))
-        }
     }
 }
