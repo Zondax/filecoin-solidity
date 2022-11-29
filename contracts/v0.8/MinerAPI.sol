@@ -251,10 +251,7 @@ contract MinerAPI {
 
     /// @notice This method is for use by other actors (such as those acting as beneficiaries), and to abstract the state representation for clients.
     /// @notice Retrieves the currently active and proposed beneficiary information.
-    function get_beneficiary() public 
-        ///returns (MinerTypes.GetBeneficiaryReturn memory)
-        returns (bytes memory) 
-    {
+    function get_beneficiary() public returns (MinerTypes.GetBeneficiaryReturn memory) {
         // TODO: find the method num
         uint64 method_num = 0x1f;
 
@@ -292,10 +289,10 @@ contract MinerAPI {
         }
         copy(src, dst, 0x0a);
 
-        /*MinerTypes.GetBeneficiaryReturn memory response;
-        response.deserialize(hex"828242006483404000f6");*/
+        MinerTypes.GetBeneficiaryReturn memory response;
+        response.deserialize(result);
 
-        return result;
+        return response;
     }
 
     function toUint256(bytes memory _bytes, uint offset)   
