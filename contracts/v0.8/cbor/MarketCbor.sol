@@ -5,6 +5,7 @@ import "solidity-cborutils/contracts/CBOR.sol";
 
 import {MarketTypes} from "../types/MarketTypes.sol";
 import "../utils/CborDecode.sol";
+import "../utils/Misc.sol";
 
 /// @title FIXME
 /// @author Zondax AG
@@ -343,5 +344,52 @@ library GetDealActivationCBOR {
 
         ret.activated = activated;
         ret.terminated = terminated;
+    }
+}
+
+library PublishStorageDealsCBOR {
+    using CBOR for CBOR.CBORBuffer;
+    using CBORDecoder for bytes;
+
+    function serialize(MarketTypes.PublishStorageDealsParams memory params) internal pure returns (bytes memory) {
+        // FIXME what should the max length be on the buffer?
+        CBOR.CBORBuffer memory buf = CBOR.create(64);
+
+        buf.startFixedArray(1);
+        buf.startFixedArray(uint64(params.deals.length));
+
+        for (uint64 i = 0; i < params.deals.length; i++) {
+            buf.startFixedArray(11);
+
+            buf.writeBytes(params.deals[i].proposal.piece_cid);
+            buf.writeUInt64(params.deals[i].proposal.piece_size);
+            buf.writeBool(params.deals[i].proposal.verified_deal);
+            buf.writeBytes(params.deals[i].proposal.client);
+            buf.writeBytes(params.deals[i].proposal.provider);
+            buf.writeString(params.deals[i].proposal.label);
+            buf.writeInt64(params.deals[i].proposal.start_epoch);
+            buf.writeInt64(params.deals[i].proposal.end_epoch);
+            buf.writeBytes(Misc.toBytes(uint256(params.deals[i].proposal.storage_price_per_epoch)));
+            buf.writeBytes(Misc.toBytes(uint256(params.deals[i].proposal.provider_collateral)));
+            buf.writeBytes(Misc.toBytes(uint256(params.deals[i].proposal.client_collateral)));
+
+            buf.writeBytes(params.deals[i].client_signature);
+        }
+
+        return buf.data();
+    }
+
+    function deserialize(MarketTypes.PublishStorageDealsReturn memory ret, bytes memory rawResp) internal pure {
+        uint byteIdx = 0;
+        uint len;
+
+        (len, byteIdx) = rawResp.readFixedArray(byteIdx);
+        ret.ids = new uint64[](len);
+
+        for (uint i = 0; i < len; i++) {
+            (ret.ids[i], byteIdx) = rawResp.readUInt64(byteIdx);
+        }
+
+        (ret.valid_deals, byteIdx) = rawResp.readBytes(byteIdx);
     }
 }
