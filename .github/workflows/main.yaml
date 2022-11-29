@@ -62,8 +62,8 @@ jobs:
           cat deploy_power.log
         env:
           PRIVATE_KEY: ${{ secrets.WALLET_PRIVATE_KEY }}
-  api-integration:
-    name: "Filecoin APIs: integration tests"
+  miner-integration:
+    name: "Miner APIs: integration tests"
     timeout-minutes: 20
     runs-on: ubuntu-latest
     steps:
@@ -81,7 +81,7 @@ jobs:
           toolchain: nightly
           override: true
       - name: Install dependencies
-        run:  | 
+        run:  |
           yarn install
           make install_solc_linux
       - name: Restore crates
@@ -92,12 +92,12 @@ jobs:
             ~/.cargo/registry/index/
             ~/.cargo/registry/cache/
             ~/.cargo/git/db/
-          key: ${{ runner.os }}-cargo-${{ hashFiles('./testing/Cargo.lock') }}
+          key: ${{ runner.os }}-cargo-${{ hashFiles('./testing/miner/Cargo.lock') }}
       - name: Build contracts
         run: make
-      - name: Run tests
+      - name: Run tests on miner
         run: |
-          cd testing
+          cd testing/miner
           rustup target add wasm32-unknown-unknown
           RUST_BACKTRACE=1 cargo r
       - name: Save crates
@@ -108,6 +108,56 @@ jobs:
             ~/.cargo/registry/index/
             ~/.cargo/registry/cache/
             ~/.cargo/git/db/
-          key: ${{ runner.os }}-cargo-${{ hashFiles('./testing/Cargo.lock') }}
+          key: ${{ runner.os }}-cargo-${{ hashFiles('./testing/miner/Cargo.lock') }}
+
+  market-integration:
+    name: "Market API: integration tests"
+    timeout-minutes: 20
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Install node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16.16.0'
+      - name: Install yarn
+        run: npm install -g yarn
+      - name: Install latest stable
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: nightly
+          override: true
+      - name: Install dependencies
+        run:  |
+          yarn install
+          make install_solc_linux
+      - name: Restore crates
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+          key: ${{ runner.os }}-cargo-${{ hashFiles('./testing/market/Cargo.lock') }}
+      - name: Build contracts
+        run: make
+      - name: Run tests on market
+        run: |
+          cd testing/market
+          rustup target add wasm32-unknown-unknown
+          RUST_BACKTRACE=1 cargo r
+      - name: Save crates
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+          key: ${{ runner.os }}-cargo-${{ hashFiles('./testing/market/Cargo.lock') }}
+
+
 
 
