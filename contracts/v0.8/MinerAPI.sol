@@ -4,6 +4,7 @@ pragma solidity >=0.4.25 <=0.8.17;
 import "./types/MinerTypes.sol";
 import "./utils/Misc.sol";
 import "./cbor/MinerCbor.sol";
+import "./utils/Misc.sol";
 
 uint64 constant ADDRESS_MAX_LEN = 86;
 uint64 constant CODEC = 0x71;
