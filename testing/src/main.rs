@@ -107,7 +107,7 @@ fn main() {
     };
 
     let exec_params = fil_actor_init::ExecParams{
-        code_cid: Cid::from_str("bafk2bzacebdaxwdyinugsqlxahvufhhw22t7py7wtwzhk4qyrkftbw67tap4g").unwrap(),
+        code_cid: Cid::from_str("bafk2bzacec7gj7tiyiaanver7wxj6celzrbjo5f2qcrsattjtffhk32k3cl34").unwrap(),
         constructor_params: RawBytes::serialize(constructor_params).unwrap(),
     };
 
@@ -125,7 +125,7 @@ fn main() {
     .unwrap();
 
     let exec_return : ExecReturn = RawBytes::deserialize(&res.msg_receipt.return_data).unwrap();
-    //dbg!(&exec_return);
+
     dbg!(hex::encode(&exec_return.id_address.to_bytes()));
 
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
@@ -163,26 +163,6 @@ fn main() {
 
     let exec_return : Return = RawBytes::deserialize(&res.msg_receipt.return_data).unwrap();
 
-    // println!("Calling `get_owner`");
-
-    // let message = Message {
-    //     from: sender[0].1,
-    //     to: Address::new_id(exec_return.actor_id),
-    //     gas_limit: 1000000000,
-    //     method_num: 2,
-    //     sequence: 2,
-    //     params: RawBytes::new(hex::decode("440ac298dc").unwrap()),
-    //     ..Message::default()
-    // };
-
-    // let res = executor
-    //     .execute_message(message, ApplyKind::Explicit, 100)
-    //     .unwrap();
-
-    // dbg!(&res);
-
-    // assert_eq!(res.msg_receipt.exit_code.value(), 0);
-
     println!("Calling `change_owner_address`");
 
     let message = Message {
@@ -192,6 +172,24 @@ fn main() {
         method_num: 2,
         sequence: 2,
         params: RawBytes::new(hex::decode("58645E1066B0000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000067").unwrap()),
+        ..Message::default()
+    };
+
+    let res = executor
+        .execute_message(message, ApplyKind::Explicit, 100)
+        .unwrap();
+
+    assert_eq!(res.msg_receipt.exit_code.value(), 0);
+
+    println!("Calling `get_beneficiary`");
+
+    let message = Message {
+        from: sender[0].1,
+        to: Address::new_id(exec_return.actor_id),
+        gas_limit: 1000000000,
+        method_num: 2,
+        sequence: 3,
+        params: RawBytes::new(hex::decode("44d9fc907e").unwrap()),
         ..Message::default()
     };
 
