@@ -32,16 +32,10 @@ library GetOwnerCBOR {
     using CBORDecoder for bytes;
 
     function deserialize(MinerTypes.GetOwnerReturn memory ret, bytes memory rawResp) internal pure {
-        bytes memory owner;
         uint byteIdx = 0;
         uint len;
 
-        (len, byteIdx) = rawResp.readFixedArray(byteIdx);
-        assert(len == 1);
-
-        (owner, byteIdx) = rawResp.readBytes(byteIdx);
-
-        ret.owner = owner;
+        (ret.owner, byteIdx) = rawResp.readBytes(byteIdx);
     }
 }
 

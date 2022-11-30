@@ -68,4 +68,21 @@ library Misc {
 
         return raw_response;
     } 
+
+    function getDataFromActorResponse(bytes memory raw_response) internal pure returns (bytes memory) {
+        uint256 exit_code = Misc.toUint256(raw_response, 0x00);
+        uint256 size = Misc.toUint256(raw_response, 0x60);
+        require(exit_code == 0, "actor error");
+
+        bytes memory result = new bytes(size);
+        uint src;
+        uint dst;
+        assembly {
+            src := add(raw_response, 0x80)
+            dst := add(result, 0x20)
+        }
+        Misc.copy(src, dst, size);
+
+        return result;
+    }
 }

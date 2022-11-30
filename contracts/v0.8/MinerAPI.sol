@@ -37,13 +37,9 @@ contract MinerAPI {
     /// @notice This address is also allowed to change the worker address for the miner
     /// @return the owner address of a Miner
     function get_owner() public returns (MinerTypes.GetOwnerReturn memory) {
-        // FIXME: https://github.com/filecoin-project/builtin-actors/pull/811/files#diff-fbcb2ec1a9d82b18f146c728cafd643df0e7ae47a04d84be7644913fe89236e5R130
-        uint64 method_num = 0x00;
+        uint64 method_num = 3275365574;
 
-        bytes memory raw_response = new bytes(0x80);
-
-        // TODO: should be bytes
-        //uint64 actor_id = 0x0066;
+        bytes memory raw_response = new bytes(0x100);
 
         assembly {
             let input := mload(0x40)
@@ -58,13 +54,15 @@ contract MinerAPI {
             // no params
 
             // call(gasLimit, to, value, inputOffset, inputSize, outputOffset, outputSize)
-            if iszero(call(100000000, 0x0e, 0x00, input, 0x0100, raw_response, 0x80)) {
+            if iszero(call(1000000000, 0x0e, 0x00, input, 0xa0, raw_response, 0x100)) {
                 revert(0, 0)
             }
         }
 
+        bytes memory result = Misc.getDataFromActorResponse(raw_response);
+
         MinerTypes.GetOwnerReturn memory response;
-        response.deserialize(raw_response);
+        response.deserialize(result);
 
         return response;
     }
@@ -284,19 +282,7 @@ contract MinerAPI {
             }
         }
 
-        /*uint256 exit_code = toUint256(raw_response, 0x00);
-        uint256 codec = toUint256(raw_response, 0x20);
-        uint256 offset = toUint256(raw_response, 0x40);
-        uint256 size = toUint256(raw_response, 0x60);*/
-
-        bytes memory result = new bytes(0x0a);
-        uint src;
-        uint dst;
-        assembly {
-            src := add(raw_response, 0x80)
-            dst := add(result, 0x20)
-        }
-        Misc.copy(src, dst, 0x0a);
+        bytes memory result = Misc.getDataFromActorResponse(raw_response);
 
         MinerTypes.GetBeneficiaryReturn memory response;
         response.deserialize(result);
