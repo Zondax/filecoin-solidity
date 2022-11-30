@@ -48,12 +48,7 @@ library IsControllingAddressCBOR {
         uint byteIdx = 0;
         uint len;
 
-        (len, byteIdx) = rawResp.readFixedArray(byteIdx);
-        assert(len == 1);
-
-        (is_controlling, byteIdx) = rawResp.readBool(byteIdx);
-
-        ret.is_controlling = is_controlling;
+        (ret.is_controlling, byteIdx) = rawResp.readBool(byteIdx);
     }
 }
 
@@ -259,6 +254,9 @@ library GetMultiaddrsCBOR {
 
         uint byteIdx = 0;
         uint len;
+
+        (len, byteIdx) = rawResp.readFixedArray(byteIdx);
+        assert(len == 1);
 
         (len, byteIdx) = rawResp.readFixedArray(byteIdx);
         ret.multi_addrs = new bytes[](len);
