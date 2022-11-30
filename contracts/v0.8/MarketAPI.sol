@@ -12,6 +12,7 @@ uint64 constant CODEC = 0x71;
 /// @title This contract is a proxy to the singleton Storage Market actor (address: f05). Calling one of its methods will result in a cross-actor call being performed.
 /// @author Zondax AG
 contract MarketAPI {
+    using AddressCBOR for bytes;
     using WithdrawBalanceCBOR for MarketTypes.WithdrawBalanceParams;
     using WithdrawBalanceCBOR for MarketTypes.WithdrawBalanceReturn;
     using GetBalanceCBOR for MarketTypes.GetBalanceReturn;
@@ -42,7 +43,11 @@ contract MarketAPI {
     function add_balance(bytes memory provider_or_client) public {
         uint64 method_num = 0x02;
 
-        bytes memory raw_response = Misc.call_actor(method_num, hex"0005", provider_or_client);
+        bytes memory raw_request = provider_or_client.serializeAddress();
+
+        bytes memory raw_response = Misc.call_actor(method_num, hex"0005", raw_request);
+
+        Misc.getDataFromActorResponse(raw_response);
 
         return;
     }
@@ -68,7 +73,9 @@ contract MarketAPI {
     function get_balance(bytes memory addr) public returns (MarketTypes.GetBalanceReturn memory) {
         uint64 method_num = 726108461;
 
-        bytes memory raw_response = Misc.call_actor(method_num, hex"0005", addr);
+        bytes memory raw_request = addr.serializeAddress();
+
+        bytes memory raw_response = Misc.call_actor(method_num, hex"0005", raw_request);
 
         MarketTypes.GetBalanceReturn memory response;
         response.deserialize(raw_response);

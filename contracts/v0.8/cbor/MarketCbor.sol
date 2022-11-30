@@ -38,6 +38,30 @@ library WithdrawBalanceCBOR {
     }
 }
 
+library AddressCBOR {
+    using CBOR for CBOR.CBORBuffer;
+    using CBORDecoder for bytes;
+
+    function serializeAddress(bytes memory addr) internal pure returns (bytes memory) {
+        // FIXME what should the max length be on the buffer?
+        CBOR.CBORBuffer memory buf = CBOR.create(64);
+
+        buf.writeBytes(addr);
+
+        return buf.data();
+    }
+
+    function deserializeAddress(bytes memory ret) internal pure returns (bytes memory) {
+        bytes memory addr;
+        uint byteIdx = 0;
+        uint len;
+
+        (addr, byteIdx) = ret.readBytes(byteIdx);
+
+        return addr;
+    }
+}
+
 library GetBalanceCBOR {
     using CBORDecoder for bytes;
 
