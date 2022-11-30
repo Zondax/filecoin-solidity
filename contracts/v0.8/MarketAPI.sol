@@ -66,8 +66,7 @@ contract MarketAPI {
 
     /// @return the escrow balance and locked amount for an address.
     function get_balance(bytes memory addr) public returns (MarketTypes.GetBalanceReturn memory) {
-        // FIXME: find the method num
-        uint64 method_num = 0x00;
+        uint64 method_num = 726108461;
 
         bytes memory raw_response = Misc.call_actor(method_num, hex"0005", addr);
 
@@ -83,9 +82,7 @@ contract MarketAPI {
         MarketTypes.GetDealDataCommitmentParams memory params
     ) public returns (MarketTypes.GetDealDataCommitmentReturn memory) {
         bytes memory raw_request = params.serialize();
-
-        // FIXME: find the method num
-        uint64 method_num = 0x00;
+        uint64 method_num = 1157985802;
 
         bytes memory raw_response = Misc.call_actor(method_num, hex"0005", raw_request);
 
@@ -98,9 +95,7 @@ contract MarketAPI {
     /// @return the client of a deal proposal.
     function get_deal_client(MarketTypes.GetDealClientParams memory params) public returns (MarketTypes.GetDealClientReturn memory) {
         bytes memory raw_request = params.serialize();
-
-        // FIXME: find the method num
-        uint64 method_num = 0x00;
+        uint64 method_num = 128053329;
 
         bytes memory raw_response = Misc.call_actor(method_num, hex"0005", raw_request);
 
@@ -115,9 +110,7 @@ contract MarketAPI {
         MarketTypes.GetDealProviderParams memory params
     ) public returns (MarketTypes.GetDealProviderReturn memory) {
         bytes memory raw_request = params.serialize();
-
-        // FIXME: find the method num
-        uint64 method_num = 0x00;
+        uint64 method_num = 935081690;
 
         bytes memory raw_response = Misc.call_actor(method_num, hex"0005", raw_request);
 
@@ -130,9 +123,7 @@ contract MarketAPI {
     /// @return the label of a deal proposal.
     function get_deal_label(MarketTypes.GetDealLabelParams memory params) public returns (MarketTypes.GetDealLabelReturn memory) {
         bytes memory raw_request = params.serialize();
-
-        // FIXME: find the method num
-        uint64 method_num = 0x00;
+        uint64 method_num = 46363526;
 
         bytes memory raw_response = Misc.call_actor(method_num, hex"0005", raw_request);
 
@@ -145,9 +136,7 @@ contract MarketAPI {
     /// @return the start epoch and duration (in epochs) of a deal proposal.
     function get_deal_term(MarketTypes.GetDealTermParams memory params) public returns (MarketTypes.GetDealTermReturn memory) {
         bytes memory raw_request = params.serialize();
-
-        // FIXME: find the method num
-        uint64 method_num = 0x00;
+        uint64 method_num = 163777312;
 
         bytes memory raw_response = Misc.call_actor(method_num, hex"0005", raw_request);
 
@@ -162,9 +151,7 @@ contract MarketAPI {
         MarketTypes.GetDealEpochPriceParams memory params
     ) public returns (MarketTypes.GetDealEpochPriceReturn memory) {
         bytes memory raw_request = params.serialize();
-
-        // FIXME: find the method num
-        uint64 method_num = 0x00;
+        uint64 method_num = 4287162428;
 
         bytes memory raw_response = Misc.call_actor(method_num, hex"0005", raw_request);
 
@@ -179,9 +166,7 @@ contract MarketAPI {
         MarketTypes.GetDealClientCollateralParams memory params
     ) public returns (MarketTypes.GetDealClientCollateralReturn memory) {
         bytes memory raw_request = params.serialize();
-
-        // FIXME: find the method num
-        uint64 method_num = 0x00;
+        uint64 method_num = 200567895;
 
         bytes memory raw_response = Misc.call_actor(method_num, hex"0005", raw_request);
 
@@ -196,9 +181,7 @@ contract MarketAPI {
         MarketTypes.GetDealProviderCollateralParams memory params
     ) public returns (MarketTypes.GetDealProviderCollateralReturn memory) {
         bytes memory raw_request = params.serialize();
-
-        // FIXME: find the method num
-        uint64 method_num = 0x00;
+        uint64 method_num = 2986712137;
 
         bytes memory raw_response = Misc.call_actor(method_num, hex"0005", raw_request);
 
@@ -214,9 +197,7 @@ contract MarketAPI {
         MarketTypes.GetDealVerifiedParams memory params
     ) public returns (MarketTypes.GetDealVerifiedReturn memory) {
         bytes memory raw_request = params.serialize();
-
-        // FIXME: find the method num
-        uint64 method_num = 0x00;
+        uint64 method_num = 2627389465;
 
         bytes memory raw_response = Misc.call_actor(method_num, hex"0005", raw_request);
 
@@ -233,9 +214,7 @@ contract MarketAPI {
         MarketTypes.GetDealActivationParams memory params
     ) public returns (MarketTypes.GetDealActivationReturn memory) {
         bytes memory raw_request = params.serialize();
-
-        // FIXME: find the method num
-        uint64 method_num = 0x00;
+        uint64 method_num = 2567238399;
 
         bytes memory raw_response = Misc.call_actor(method_num, hex"0005", raw_request);
 

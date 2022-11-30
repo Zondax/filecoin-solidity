@@ -19,6 +19,7 @@ fn main() {
     println!("AddBalanceExported {}", AddBalanceExported);
     println!("WithdrawBalanceExported {}", WithdrawBalanceExported);
     println!("PublishStorageDealsExported {}", PublishStorageDealsExported);
+    println!("GetBalanceExported {}", GetBalanceExported);
     println!("GetDealDataCommitmentExported {}", GetDealDataCommitmentExported);
     println!("GetDealClientExported {}", GetDealClientExported);
     println!("GetDealProviderExported {}", GetDealProviderExported);

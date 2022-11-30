@@ -74,23 +74,23 @@ fn main() {
 
     let exec_return : Return = RawBytes::deserialize(&res.msg_receipt.return_data).unwrap();
 
-    // println!("Calling `add_balance`");
+    println!("Calling `add_balance`");
 
-    // let message = Message {
-    //     from: sender[0].1,
-    //     to: Address::new_id(exec_return.actor_id),
-    //     gas_limit: 1000000000,
-    //     method_num: 2,
-    //     sequence: 1,
-    //     params: RawBytes::new(hex::decode("5864467fafef000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000066").unwrap()),
-    //     ..Message::default()
-    // };
+    let message = Message {
+        from: sender[0].1,
+        to: Address::new_id(exec_return.actor_id),
+        gas_limit: 1000000000,
+        method_num: 2,
+        sequence: 1,
+        params: RawBytes::new(hex::decode("5864467fafef000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000066").unwrap()),
+        ..Message::default()
+    };
 
-    // let res = executor
-    //     .execute_message(message, ApplyKind::Explicit, 100)
-    //     .unwrap();
+    let res = executor
+        .execute_message(message, ApplyKind::Explicit, 100)
+        .unwrap();
 
-    // assert_eq!(res.msg_receipt.exit_code.value(), 0);
+    assert_eq!(res.msg_receipt.exit_code.value(), 0);
 
     println!("Calling `withdraw_balance`");
 
@@ -99,7 +99,7 @@ fn main() {
         to: Address::new_id(exec_return.actor_id),
         gas_limit: 1000000000,
         method_num: 2,
-        sequence: 1,
+        sequence: 2,
         params: RawBytes::new(hex::decode("58A45BFFDFC40000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000A000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000066").unwrap()),
         ..Message::default()
     };
