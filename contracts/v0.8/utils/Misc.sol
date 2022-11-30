@@ -1,3 +1,5 @@
+import "@openzeppelin/contracts/utils/Strings.sol";
+
 library Misc {
     uint64 constant CODEC = 0x71;
 
@@ -79,7 +81,7 @@ library Misc {
     function getDataFromActorResponse(bytes memory raw_response) internal pure returns (bytes memory) {
         uint256 exit_code = Misc.toUint256(raw_response, 0x00);
         uint256 size = Misc.toUint256(raw_response, 0x60);
-        require(exit_code == 0, "actor error");
+        require(exit_code == 0, string.concat("actor error ", Strings.toString(exit_code)));
 
         bytes memory result = new bytes(size);
         uint src;
