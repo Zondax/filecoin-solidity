@@ -47,7 +47,7 @@ library Misc {
             mstore(input, method_num)
             mstore(add(input, 0x20), CODEC)
             // address size
-            mstore(add(input, 0x40), 0x02)
+            mstore(add(input, 0x40), mload(actor_code))
             // params size
             mstore(add(input, 0x60), len)
             // actual params (copy by slice of 32 bytes)
