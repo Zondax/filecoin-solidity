@@ -10,20 +10,12 @@ use std::env;
 use fvm_shared::message::Message;
 use fvm::executor::{ApplyKind, Executor};
 use fil_actor_eam::Return;
-use fil_actor_init::ExecReturn;
 use fvm_ipld_encoding::RawBytes;
-use fil_actors_runtime::{EAM_ACTOR_ADDR, INIT_ACTOR_ADDR};
-use cid::Cid;
-use std::str::FromStr;
-use rand_core::OsRng;
-use bls_signatures::Serialize;
-use multihash::Code;
-use fvm_ipld_encoding::CborStore;
-use fvm::state_tree::{ActorState};
-use fvm_shared::econ::TokenAmount;
+use fil_actors_runtime::{EAM_ACTOR_ADDR};
+
 
 const WASM_COMPILED_PATH: &str =
-   "../../build/v0.8/MarketAPI.bin";
+   "../build/v0.8/MarketAPI.bin";
 
 #[derive(Serialize_tuple, Deserialize_tuple)]
 pub struct Create2Params {
@@ -98,7 +90,23 @@ fn main() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
-    dbg!(&res);
+    assert_eq!(res.msg_receipt.exit_code.value(), 0);
+
+    println!("Calling `withdraw_balance`");
+
+    let message = Message {
+        from: sender[0].1,
+        to: Address::new_id(exec_return.actor_id),
+        gas_limit: 1000000000,
+        method_num: 2,
+        sequence: 2,
+        params: RawBytes::new(hex::decode("58845BFFDFC400000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000006600000000000000000000000000000000000000000000000000000000000000A0").unwrap()),
+        ..Message::default()
+    };
+
+    let res = executor
+        .execute_message(message, ApplyKind::Explicit, 100)
+        .unwrap();
 
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
 }

@@ -39,7 +39,6 @@ contract MarketAPI {
 
     /// @notice Deposits the received value into the balance held in escrow.
     function add_balance(bytes memory provider_or_client) public {
-        // FIXME: find the method num
         uint64 method_num = 0x02;
 
         assembly {
@@ -71,7 +70,7 @@ contract MarketAPI {
         bytes memory raw_request = params.serialize();
 
         // FIXME: find the method num
-        uint64 method_num = 0x00;
+        uint64 method_num = 0x03;
 
         // FIXME: unknown size for the response
         bytes memory raw_response = new bytes(0x0100);
@@ -518,8 +517,7 @@ contract MarketAPI {
     ) public returns (MarketTypes.PublishStorageDealsReturn memory) {
         bytes memory raw_request = params.serialize();
 
-        // FIXME: find the method num
-        uint64 method_num = 0x00;
+        uint64 method_num = 0x04;
 
         // FIXME: unknown size for the response
         bytes memory raw_response = new bytes(0x0100);
