@@ -130,63 +130,30 @@ contract MinerAPI {
     /// @notice Can go negative if the miner is in IP debt.
     /// @return the available balance of this miner.
     function get_available_balance() public returns (MinerTypes.GetAvailableBalanceReturn memory) {
-        // TODO: find the method num
-        uint64 method_num = 0x00;
+        bytes memory raw_request = new bytes(0);
 
-        bytes memory raw_response = new bytes(0x20);
+        bytes memory raw_response = Misc.call_actor(4026106874, hex"0066", raw_request);
 
-        assembly {
-            let input := mload(0x40)
-            mstore(input, method_num)
-            mstore(add(input, 0x20), CODEC)
-            // address size
-            mstore(add(input, 0x40), 0x02)
-            // params size
-            mstore(add(input, 0x60), 0x00)
-            // actual address
-            mstore(add(input, 0x80), hex"0066")
-            // no params
-            // call(gasLimit, to, value, inputOffset, inputSize, outputOffset, outputSize)
-            if iszero(call(100000000, 0x0e, 0x00, input, 0x0100, raw_response, 0x20)) {
-                revert(0, 0)
-            }
-        }
+        bytes memory result = Misc.getDataFromActorResponse(raw_response);
 
         MinerTypes.GetAvailableBalanceReturn memory response;
-        response.deserialize(raw_response);
+        response.deserialize(result);
 
         return response;
     }
 
     /// @return the funds vesting in this miner as a list of (vesting_epoch, vesting_amount) tuples.
-    function get_vesting_funds() public returns (MinerTypes.GetVestingFundsReturn memory) {
-        // TODO: find the method num
-        uint64 method_num = 0x00;
+    function get_vesting_funds() public returns (bytes memory) {
+        bytes memory raw_request = new bytes(0);
 
-        // FIXME: unknown size for the response
-        bytes memory raw_response = new bytes(0x0100);
+        bytes memory raw_response = Misc.call_actor(1726876304, hex"0066", raw_request);
 
-        assembly {
-            let input := mload(0x40)
-            mstore(input, method_num)
-            mstore(add(input, 0x20), CODEC)
-            // address size
-            mstore(add(input, 0x40), 0x02)
-            // params size
-            mstore(add(input, 0x60), 0x00)
-            // actual address
-            mstore(add(input, 0x80), hex"0066")
-            // no params
-            // call(gasLimit, to, value, inputOffset, inputSize, outputOffset, outputSize)
-            if iszero(call(100000000, 0x0e, 0x00, input, 0x0100, raw_response, 0x0100)) {
-                revert(0, 0)
-            }
-        }
+        bytes memory result = Misc.getDataFromActorResponse(raw_response);
 
-        MinerTypes.GetVestingFundsReturn memory response;
-        response.deserialize(raw_response);
+        //MinerTypes.GetVestingFundsReturn memory response;
+        //response.deserialize(result);
 
-        return response;
+        return result;
     }
 
     /// @notice Proposes or confirms a change of beneficiary address.
@@ -237,7 +204,7 @@ contract MinerAPI {
     }
 
     /// @notice FIXME
-    function change_beneficiary(MinerTypes.ChangeWorkerAddressParams memory params) public {
+    function change_worker_address(MinerTypes.ChangeWorkerAddressParams memory params) public {
         // TODO: find the method num
         uint64 method_num = 0x1f;
 
