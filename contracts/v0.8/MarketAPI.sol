@@ -39,7 +39,6 @@ contract MarketAPI {
 
     /// @notice Deposits the received value into the balance held in escrow.
     function add_balance(bytes memory provider_or_client) public {
-        // FIXME: find the method num
         uint64 method_num = 0x02;
 
         assembly {
@@ -67,11 +66,12 @@ contract MarketAPI {
 
     /// @notice Attempt to withdraw the specified amount from the balance held in escrow.
     /// @notice If less than the specified amount is available, yields the entire available balance.
-    function withdraw_balance(MarketTypes.WithdrawBalanceParams memory params) public returns (MarketTypes.WithdrawBalanceReturn memory) {
+    function withdraw_balance(MarketTypes.WithdrawBalanceParams memory params) public 
+        returns (MarketTypes.WithdrawBalanceReturn memory)
+    {
         bytes memory raw_request = params.serialize();
 
-        // FIXME: find the method num
-        uint64 method_num = 0x00;
+        uint64 method_num = 0x03;
 
         // FIXME: unknown size for the response
         bytes memory raw_response = new bytes(0x0100);
@@ -210,7 +210,9 @@ contract MarketAPI {
     }
 
     /// @return the provider of a deal proposal.
-    function get_deal_provider(MarketTypes.GetDealProviderParams memory params) public returns (MarketTypes.GetDealProviderReturn memory) {
+    function get_deal_provider(
+        MarketTypes.GetDealProviderParams memory params
+    ) public returns (MarketTypes.GetDealProviderReturn memory) {
         bytes memory raw_request = params.serialize();
 
         // FIXME: find the method num
@@ -433,7 +435,9 @@ contract MarketAPI {
 
     /// @return the verified flag for a deal proposal.
     /// @notice Note that the source of truth for verified allocations and claims is the verified registry actor.
-    function get_deal_verified(MarketTypes.GetDealVerifiedParams memory params) public returns (MarketTypes.GetDealVerifiedReturn memory) {
+    function get_deal_verified(
+        MarketTypes.GetDealVerifiedParams memory params
+    ) public returns (MarketTypes.GetDealVerifiedReturn memory) {
         bytes memory raw_request = params.serialize();
 
         // FIXME: find the method num
@@ -514,8 +518,7 @@ contract MarketAPI {
     ) public returns (MarketTypes.PublishStorageDealsReturn memory) {
         bytes memory raw_request = params.serialize();
 
-        // FIXME: find the method num
-        uint64 method_num = 0x00;
+        uint64 method_num = 0x04;
 
         // FIXME: unknown size for the response
         bytes memory raw_response = new bytes(0x0100);
