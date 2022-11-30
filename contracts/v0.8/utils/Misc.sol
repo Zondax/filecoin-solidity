@@ -63,7 +63,7 @@ library Misc {
             } {
                 mstore(add(input, add(0x80, offset)), mload(add(raw_request, add(0x20, offset))))
             }
-            if gt(offset, 0) {
+            if mod(len, 0x20) {
                 offset := add(sub(offset, 0x20), mod(len, 0x20))
             }
             // actual address
