@@ -57,16 +57,10 @@ library GetSectorSizeCBOR {
     using CBORDecoder for bytes;
 
     function deserialize(MinerTypes.GetSectorSizeReturn memory ret, bytes memory rawResp) internal pure {
-        uint64 sector_size;
         uint byteIdx = 0;
         uint len;
 
-        (len, byteIdx) = rawResp.readFixedArray(byteIdx);
-        assert(len == 1);
-
-        (sector_size, byteIdx) = rawResp.readUInt64(byteIdx);
-
-        ret.sector_size = sector_size;
+        (ret.sector_size, byteIdx) = rawResp.readUInt64(byteIdx);
     }
 }
 
