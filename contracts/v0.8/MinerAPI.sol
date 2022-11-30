@@ -154,7 +154,7 @@ contract MinerAPI {
     function change_worker_address(MinerTypes.ChangeWorkerAddressParams memory params) public {
         bytes memory raw_request = params.serialize();
 
-        bytes memory raw_response = Misc.call_actor(1010589339, hex"0066", raw_request);
+        bytes memory raw_response = Misc.call_actor(3302309124, hex"0066", raw_request);
 
         bytes memory result = Misc.getDataFromActorResponse(raw_response);
 
