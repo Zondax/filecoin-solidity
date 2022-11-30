@@ -48,12 +48,7 @@ library IsControllingAddressCBOR {
         uint byteIdx = 0;
         uint len;
 
-        (len, byteIdx) = rawResp.readFixedArray(byteIdx);
-        assert(len == 1);
-
-        (is_controlling, byteIdx) = rawResp.readBool(byteIdx);
-
-        ret.is_controlling = is_controlling;
+        (ret.is_controlling, byteIdx) = rawResp.readBool(byteIdx);
     }
 }
 
@@ -62,16 +57,10 @@ library GetSectorSizeCBOR {
     using CBORDecoder for bytes;
 
     function deserialize(MinerTypes.GetSectorSizeReturn memory ret, bytes memory rawResp) internal pure {
-        uint64 sector_size;
         uint byteIdx = 0;
         uint len;
 
-        (len, byteIdx) = rawResp.readFixedArray(byteIdx);
-        assert(len == 1);
-
-        (sector_size, byteIdx) = rawResp.readUInt64(byteIdx);
-
-        ret.sector_size = sector_size;
+        (ret.sector_size, byteIdx) = rawResp.readUInt64(byteIdx);
     }
 }
 
@@ -259,6 +248,9 @@ library GetMultiaddrsCBOR {
 
         uint byteIdx = 0;
         uint len;
+
+        (len, byteIdx) = rawResp.readFixedArray(byteIdx);
+        assert(len == 1);
 
         (len, byteIdx) = rawResp.readFixedArray(byteIdx);
         ret.multi_addrs = new bytes[](len);

@@ -74,7 +74,9 @@ fn main() {
     let cid = state_tree.store().put_cbor(&state, Code::Blake2b256).unwrap();
 
     let actor_state = ActorState {
+        // CID of Accounts actor. You get this as output from builtin-actors compiling process
         code: Cid::from_str("bafk2bzaceapwdyvowtd5v4blmntzqkdienejy4mlrl53mua55xgftdqoggoe4").unwrap(),
+        // code: Cid::from_str("bafk2bzacecj7v5ur5qk4vn3xbvgsizl35e42l3yaankmxu6dcoouv4mkphsjq").unwrap(),
         state: cid,
         sequence: 0,
         balance: TokenAmount::from_atto(10000),
@@ -107,7 +109,9 @@ fn main() {
     };
 
     let exec_params = fil_actor_init::ExecParams{
+        // CID of StorageMiner actor. You get this as output from builtin-actors compiling process
         code_cid: Cid::from_str("bafk2bzaceazmjegx7urapdpohpos7tud5m4w7doxsetbjo5tx7y7wciyirphi").unwrap(),
+        // code_cid: Cid::from_str("bafk2bzacedgixfd465634uihet3u57vugbbp6s5sseb76phti3cexx66ers3i").unwrap(),
         constructor_params: RawBytes::serialize(constructor_params).unwrap(),
     };
 
@@ -179,8 +183,9 @@ fn main() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
-    dbg!(&res);
-
+    if res.msg_receipt.exit_code.value() != 33 {
+        dbg!(&res);
+    }
 
     assert_eq!(res.msg_receipt.exit_code.value(), 33);
     assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "08c379a00000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000e6163746f72206572726f72203138000000000000000000000000000000000000");
@@ -201,7 +206,9 @@ fn main() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
-    dbg!(&res);
+    if res.msg_receipt.exit_code.value() != 0 {
+        dbg!(&res);
+    }
 
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
 
@@ -221,7 +228,9 @@ fn main() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
-    dbg!(&res);
+    if res.msg_receipt.exit_code.value() != 33 {
+        dbg!(&res);
+    }
 
     assert_eq!(res.msg_receipt.exit_code.value(), 33);
     assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "08c379a00000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000e6163746f72206572726f72203138000000000000000000000000000000000000");
@@ -242,7 +251,9 @@ fn main() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
-    dbg!(&res);
+    if res.msg_receipt.exit_code.value() != 0 {
+        dbg!(&res);
+    }
 
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
 
@@ -262,7 +273,9 @@ fn main() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
-    dbg!(&res);
+    if res.msg_receipt.exit_code.value() != 0 {
+        dbg!(&res);
+    }
 
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
 
@@ -283,7 +296,9 @@ fn main() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
-    dbg!(&res);
+    if res.msg_receipt.exit_code.value() != 0 {
+        dbg!(&res);
+    }
 
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
 
@@ -303,7 +318,9 @@ fn main() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
-    dbg!(&res);
+    if res.msg_receipt.exit_code.value() != 33 {
+        dbg!(&res);
+    }
 
     assert_eq!(res.msg_receipt.exit_code.value(), 33);
     assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "08c379a00000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000e6163746f72206572726f72203138000000000000000000000000000000000000");
@@ -325,7 +342,9 @@ fn main() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
-    dbg!(&res);
+    if res.msg_receipt.exit_code.value() != 33 {
+        dbg!(&res);
+    }
 
     assert_eq!(res.msg_receipt.exit_code.value(), 33);
     assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "08c379a00000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000e6163746f72206572726f72203138000000000000000000000000000000000000");
@@ -348,7 +367,32 @@ fn main() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
-    dbg!(&res);
+    if res.msg_receipt.exit_code.value() != 0 {
+        dbg!(&res);
+    }
+
+    assert_eq!(res.msg_receipt.exit_code.value(), 0);
+
+
+    println!("Calling `get_multiaddresses`");
+
+    let message = Message {
+        from: sender[0].1,
+        to: Address::new_id(exec_return.actor_id),
+        gas_limit: 1000000000,
+        method_num: 2,
+        sequence: 11,
+        params: RawBytes::new(hex::decode("44B163EC58").unwrap()),
+        ..Message::default()
+    };
+
+    let res = executor
+        .execute_message(message, ApplyKind::Explicit, 100)
+        .unwrap();
+
+    if res.msg_receipt.exit_code.value() != 0 {
+        dbg!(&res);
+    }
 
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
 
@@ -360,7 +404,7 @@ fn main() {
         to: Address::new_id(exec_return.actor_id),
         gas_limit: 1000000000,
         method_num: 2,
-        sequence: 11,
+        sequence: 12,
         params: RawBytes::new(hex::decode("5901248D74B5D8000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000080000000000000000000000000000000000000000000000000000000000000000200660000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000020067000000000000000000000000000000000000000000000000000000000000").unwrap()),
         ..Message::default()
     };
@@ -369,21 +413,44 @@ fn main() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
-    dbg!(&res);
+    if res.msg_receipt.exit_code.value() != 33 {
+        dbg!(&res);
+    }
 
     assert_eq!(res.msg_receipt.exit_code.value(), 33);
     assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "08c379a00000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000e6163746f72206572726f72203136000000000000000000000000000000000000");
 
-    /*
-    println!("Calling `change_peer_id`");
+    println!("Calling `is_controlling_address`");
+
+    let message = Message {
+       from: sender[0].1,
+       to: Address::new_id(exec_return.actor_id),
+       gas_limit: 1000000000,
+       method_num: 2,
+       sequence: 13,
+       params: RawBytes::new(hex::decode("5864BE3B757A000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000020066000000000000000000000000000000000000000000000000000000000000").unwrap()),
+       ..Message::default()
+    };
+
+    let res = executor
+       .execute_message(message, ApplyKind::Explicit, 100)
+       .unwrap();
+
+    if res.msg_receipt.exit_code.value() != 0 {
+        dbg!(&res);
+    }
+
+    assert_eq!(res.msg_receipt.exit_code.value(), 0);
+
+    println!("Calling `get_sector_size`");
 
     let message = Message {
         from: sender[0].1,
         to: Address::new_id(exec_return.actor_id),
         gas_limit: 1000000000,
         method_num: 2,
-        sequence: 12,
-        params: RawBytes::new(hex::decode("b22b8c9f0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000020066000000000000000000000000000000000000000000000000000000000000").unwrap()),
+        sequence: 14,
+        params: RawBytes::new(hex::decode("44A9B494A1").unwrap()),
         ..Message::default()
     };
 
@@ -391,30 +458,55 @@ fn main() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
-    dbg!(&res);
+    if res.msg_receipt.exit_code.value() != 0 {
+        dbg!(&res);
+    }
 
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
-*/
 
+    println!("Calling `change_multiaddresses`");
 
-    /*
-        println!("Calling `is_controlling_address`");
+    let message = Message {
+        from: sender[0].1,
+        to: Address::new_id(exec_return.actor_id),
+        gas_limit: 1000000000,
+        method_num: 2,
+        sequence: 15,
+        params: RawBytes::new(hex::decode("5901844219EFC7000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000003000000000000000000000000000000000000000000000000000000000000006000000000000000000000000000000000000000000000000000000000000000A000000000000000000000000000000000000000000000000000000000000000E0000000000000000000000000000000000000000000000000000000000000000200660000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002006600000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000020066000000000000000000000000000000000000000000000000000000000000").unwrap()),
+        ..Message::default()
+    };
 
-        let message = Message {
-            from: sender[0].1,
-            to: Address::new_id(exec_return.actor_id),
-            gas_limit: 1000000000,
-            method_num: 2,
-            sequence: 6,
-            params: RawBytes::new(hex::decode("5864BE3B757A000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000020066000000000000000000000000000000000000000000000000000000000000").unwrap()),
-            ..Message::default()
-        };
+    let res = executor
+        .execute_message(message, ApplyKind::Explicit, 100)
+        .unwrap();
 
-        let res = executor
-            .execute_message(message, ApplyKind::Explicit, 100)
-            .unwrap();
-
+    if res.msg_receipt.exit_code.value() != 33 {
         dbg!(&res);
+    }
 
-        assert_eq!(res.msg_receipt.exit_code.value(), 0);*/
+    assert_eq!(res.msg_receipt.exit_code.value(), 33);
+    assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "08c379a00000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000e6163746f72206572726f72203138000000000000000000000000000000000000");
+
+    println!("Calling `change_peer_id`");
+
+    let message = Message {
+        from: sender[0].1,
+        to: Address::new_id(exec_return.actor_id),
+        gas_limit: 1000000000,
+        method_num: 2,
+        sequence: 16,
+        params: RawBytes::new(hex::decode("5884B22B8C9F0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000020066000000000000000000000000000000000000000000000000000000000000").unwrap()),
+        ..Message::default()
+    };
+
+    let res = executor
+        .execute_message(message, ApplyKind::Explicit, 100)
+        .unwrap();
+
+    if res.msg_receipt.exit_code.value() != 33 {
+        dbg!(&res);
+    }
+
+    assert_eq!(res.msg_receipt.exit_code.value(), 33);
+    assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "08c379a00000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000e6163746f72206572726f72203138000000000000000000000000000000000000");
 }

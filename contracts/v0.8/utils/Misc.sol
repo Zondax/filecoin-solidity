@@ -2,6 +2,9 @@ import "@openzeppelin/contracts/utils/Strings.sol";
 
 library Misc {
     uint64 constant CODEC = 0x71;
+    uint64 constant GAS_LIMIT = 100000000;
+    uint64 constant CALL_ACTOR_PRECOMPILE_ADDR = 0x0e;
+    uint64 constant MAX_RAW_RESPONSE_SIZE = 0x300;
 
     function toUint256(bytes memory _bytes, uint offset) internal pure returns (uint256 value) {
         assembly {
@@ -38,8 +41,7 @@ library Misc {
     }
 
     function call_actor(uint method_num, bytes memory actor_code, bytes memory raw_request) internal returns (bytes memory) {
-        // FIXME: unknown size for the response
-        bytes memory raw_response = new bytes(0x0100);
+        bytes memory raw_response = new bytes(MAX_RAW_RESPONSE_SIZE);
 
         uint len;
 
@@ -69,8 +71,10 @@ library Misc {
             // actual address
             mstore(add(input, add(0x80, offset)), mload(add(actor_code, 0x20)))
             // no params
+
+            // FIXME set inputSize according to the input length
             // call(gasLimit, to, value, inputOffset, inputSize, outputOffset, outputSize)
-            if iszero(call(100000000, 0x0e, 0x00, input, 0x100, raw_response, 0x0100)) {
+            if iszero(call(GAS_LIMIT, CALL_ACTOR_PRECOMPILE_ADDR, 0x00, input, 0x100, raw_response, MAX_RAW_RESPONSE_SIZE)) {
                 revert(0, 0)
             }
         }
@@ -81,7 +85,7 @@ library Misc {
     function getDataFromActorResponse(bytes memory raw_response) internal pure returns (bytes memory) {
         uint256 exit_code = Misc.toUint256(raw_response, 0x00);
         uint256 size = Misc.toUint256(raw_response, 0x60);
-        require(exit_code == 0, string.concat("actor error ", Strings.toString(exit_code)));
+        require(exit_code == 0, string.concat("actor error code ", Strings.toString(exit_code)));
 
         bytes memory result = new bytes(size);
         uint src;
