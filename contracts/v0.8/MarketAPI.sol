@@ -4,6 +4,7 @@ pragma solidity >=0.4.25 <=0.8.15;
 import "./types/MarketTypes.sol";
 import "./cbor/MarketCbor.sol";
 import "./types/CommonTypes.sol";
+import "./utils/Misc.sol";
 
 uint64 constant ADDRESS_MAX_LEN = 86;
 uint64 constant CODEC = 0x71;
@@ -41,25 +42,7 @@ contract MarketAPI {
     function add_balance(bytes memory provider_or_client) public {
         uint64 method_num = 0x02;
 
-        assembly {
-            let kek := mload(add(provider_or_client, 0x20))
-            let input := mload(0x40)
-            mstore(input, method_num)
-            mstore(add(input, 0x20), CODEC)
-            // address size
-            mstore(add(input, 0x40), 0x02)
-            // params size
-            mstore(add(input, 0x60), mload(provider_or_client))
-            // actual params
-            mstore(add(input, 0x80), kek)
-            // actual address
-            mstore(add(input, 0xa0), hex"0005")
-
-            // call(gasLimit, to, value, inputOffset, inputSize, outputOffset, outputSize)
-            if iszero(call(100000000, 0x0e, 0x00, input, 0x0120, 0x00, 0x00)) {
-                revert(0, 0)
-            }
-        }
+        bytes memory raw_response = Misc.call_actor(method_num, hex"0005", provider_or_client);
 
         return;
     }
@@ -73,28 +56,7 @@ contract MarketAPI {
 
         uint64 method_num = 0x03;
 
-        // FIXME: unknown size for the response
-        bytes memory raw_response = new bytes(0x0100);
-
-        assembly {
-            let request := mload(add(raw_request, 0x20))
-            let input := mload(0x40)
-            mstore(input, method_num)
-            mstore(add(input, 0x20), CODEC)
-            // address size
-            mstore(add(input, 0x40), 0x02)
-            // params size
-            mstore(add(input, 0x60), mload(raw_request))
-            // actual params
-            mstore(add(input, 0x80), request)
-            // actual address
-            mstore(add(input, 0xa0), hex"0005")
-            // no params
-            // call(gasLimit, to, value, inputOffset, inputSize, outputOffset, outputSize)
-            if iszero(call(100000000, 0x0e, 0x00, input, 0x0100, raw_response, 0x0100)) {
-                revert(0, 0)
-            }
-        }
+        bytes memory raw_response = Misc.call_actor(method_num, hex"0005", raw_request);
 
         MarketTypes.WithdrawBalanceReturn memory response;
         response.deserialize(raw_response);
@@ -107,26 +69,7 @@ contract MarketAPI {
         // FIXME: find the method num
         uint64 method_num = 0x00;
 
-        bytes memory raw_response = new bytes(0x20);
-
-        assembly {
-            let kek := mload(add(addr, 0x20))
-            let input := mload(0x40)
-            mstore(input, method_num)
-            mstore(add(input, 0x20), CODEC)
-            // address size
-            mstore(add(input, 0x40), 0x02)
-            // params size
-            mstore(add(input, 0x60), mload(addr))
-            // actual params
-            mstore(add(input, 0x80), kek)
-            // actual address
-            mstore(add(input, 0xa0), hex"0005")
-            // call(gasLimit, to, value, inputOffset, inputSize, outputOffset, outputSize)
-            if iszero(call(100000000, 0x0e, 0x00, input, 0x0100, raw_response, 0x20)) {
-                revert(0, 0)
-            }
-        }
+        bytes memory raw_response = Misc.call_actor(method_num, hex"0005", addr);
 
         MarketTypes.GetBalanceReturn memory response;
         response.deserialize(raw_response);
@@ -144,28 +87,7 @@ contract MarketAPI {
         // FIXME: find the method num
         uint64 method_num = 0x00;
 
-        // FIXME: unknown size for the response
-        bytes memory raw_response = new bytes(0x0100);
-
-        assembly {
-            let request := mload(add(raw_request, 0x20))
-            let input := mload(0x40)
-            mstore(input, method_num)
-            mstore(add(input, 0x20), CODEC)
-            // address size
-            mstore(add(input, 0x40), 0x02)
-            // params size
-            mstore(add(input, 0x60), mload(raw_request))
-            // actual params
-            mstore(add(input, 0x80), request)
-            // actual address
-            mstore(add(input, 0xa0), hex"0005")
-            // no params
-            // call(gasLimit, to, value, inputOffset, inputSize, outputOffset, outputSize)
-            if iszero(call(100000000, 0x0e, 0x00, input, 0x0100, raw_response, 0x0100)) {
-                revert(0, 0)
-            }
-        }
+        bytes memory raw_response = Misc.call_actor(method_num, hex"0005", raw_request);
 
         MarketTypes.GetDealDataCommitmentReturn memory response;
         response.deserialize(raw_response);
@@ -180,28 +102,7 @@ contract MarketAPI {
         // FIXME: find the method num
         uint64 method_num = 0x00;
 
-        // FIXME: unknown size for the response
-        bytes memory raw_response = new bytes(0x0100);
-
-        assembly {
-            let request := mload(add(raw_request, 0x20))
-            let input := mload(0x40)
-            mstore(input, method_num)
-            mstore(add(input, 0x20), CODEC)
-            // address size
-            mstore(add(input, 0x40), 0x02)
-            // params size
-            mstore(add(input, 0x60), mload(raw_request))
-            // actual params
-            mstore(add(input, 0x80), request)
-            // actual address
-            mstore(add(input, 0xa0), hex"0005")
-            // no params
-            // call(gasLimit, to, value, inputOffset, inputSize, outputOffset, outputSize)
-            if iszero(call(100000000, 0x0e, 0x00, input, 0x0100, raw_response, 0x0100)) {
-                revert(0, 0)
-            }
-        }
+        bytes memory raw_response = Misc.call_actor(method_num, hex"0005", raw_request);
 
         MarketTypes.GetDealClientReturn memory response;
         response.deserialize(raw_response);
@@ -218,28 +119,7 @@ contract MarketAPI {
         // FIXME: find the method num
         uint64 method_num = 0x00;
 
-        // FIXME: unknown size for the response
-        bytes memory raw_response = new bytes(0x0100);
-
-        assembly {
-            let request := mload(add(raw_request, 0x20))
-            let input := mload(0x40)
-            mstore(input, method_num)
-            mstore(add(input, 0x20), CODEC)
-            // address size
-            mstore(add(input, 0x40), 0x02)
-            // params size
-            mstore(add(input, 0x60), mload(raw_request))
-            // actual params
-            mstore(add(input, 0x80), request)
-            // actual address
-            mstore(add(input, 0xa0), hex"0005")
-            // no params
-            // call(gasLimit, to, value, inputOffset, inputSize, outputOffset, outputSize)
-            if iszero(call(100000000, 0x0e, 0x00, input, 0x0100, raw_response, 0x0100)) {
-                revert(0, 0)
-            }
-        }
+        bytes memory raw_response = Misc.call_actor(method_num, hex"0005", raw_request);
 
         MarketTypes.GetDealProviderReturn memory response;
         response.deserialize(raw_response);
@@ -254,28 +134,7 @@ contract MarketAPI {
         // FIXME: find the method num
         uint64 method_num = 0x00;
 
-        // FIXME: unknown size for the response
-        bytes memory raw_response = new bytes(0x0100);
-
-        assembly {
-            let request := mload(add(raw_request, 0x20))
-            let input := mload(0x40)
-            mstore(input, method_num)
-            mstore(add(input, 0x20), CODEC)
-            // address size
-            mstore(add(input, 0x40), 0x02)
-            // params size
-            mstore(add(input, 0x60), mload(raw_request))
-            // actual params
-            mstore(add(input, 0x80), request)
-            // actual address
-            mstore(add(input, 0xa0), hex"0005")
-            // no params
-            // call(gasLimit, to, value, inputOffset, inputSize, outputOffset, outputSize)
-            if iszero(call(100000000, 0x0e, 0x00, input, 0x0100, raw_response, 0x0100)) {
-                revert(0, 0)
-            }
-        }
+        bytes memory raw_response = Misc.call_actor(method_num, hex"0005", raw_request);
 
         MarketTypes.GetDealLabelReturn memory response;
         response.deserialize(raw_response);
@@ -290,28 +149,7 @@ contract MarketAPI {
         // FIXME: find the method num
         uint64 method_num = 0x00;
 
-        // FIXME: unknown size for the response
-        bytes memory raw_response = new bytes(0x0100);
-
-        assembly {
-            let request := mload(add(raw_request, 0x20))
-            let input := mload(0x40)
-            mstore(input, method_num)
-            mstore(add(input, 0x20), CODEC)
-            // address size
-            mstore(add(input, 0x40), 0x02)
-            // params size
-            mstore(add(input, 0x60), mload(raw_request))
-            // actual params
-            mstore(add(input, 0x80), request)
-            // actual address
-            mstore(add(input, 0xa0), hex"0005")
-            // no params
-            // call(gasLimit, to, value, inputOffset, inputSize, outputOffset, outputSize)
-            if iszero(call(100000000, 0x0e, 0x00, input, 0x0100, raw_response, 0x0100)) {
-                revert(0, 0)
-            }
-        }
+        bytes memory raw_response = Misc.call_actor(method_num, hex"0005", raw_request);
 
         MarketTypes.GetDealTermReturn memory response;
         response.deserialize(raw_response);
@@ -328,28 +166,7 @@ contract MarketAPI {
         // FIXME: find the method num
         uint64 method_num = 0x00;
 
-        // FIXME: unknown size for the response
-        bytes memory raw_response = new bytes(0x0100);
-
-        assembly {
-            let request := mload(add(raw_request, 0x20))
-            let input := mload(0x40)
-            mstore(input, method_num)
-            mstore(add(input, 0x20), CODEC)
-            // address size
-            mstore(add(input, 0x40), 0x02)
-            // params size
-            mstore(add(input, 0x60), mload(raw_request))
-            // actual params
-            mstore(add(input, 0x80), request)
-            // actual address
-            mstore(add(input, 0xa0), hex"0005")
-            // no params
-            // call(gasLimit, to, value, inputOffset, inputSize, outputOffset, outputSize)
-            if iszero(call(100000000, 0x0e, 0x00, input, 0x0100, raw_response, 0x0100)) {
-                revert(0, 0)
-            }
-        }
+        bytes memory raw_response = Misc.call_actor(method_num, hex"0005", raw_request);
 
         MarketTypes.GetDealEpochPriceReturn memory response;
         response.deserialize(raw_response);
@@ -366,28 +183,7 @@ contract MarketAPI {
         // FIXME: find the method num
         uint64 method_num = 0x00;
 
-        // FIXME: unknown size for the response
-        bytes memory raw_response = new bytes(0x0100);
-
-        assembly {
-            let request := mload(add(raw_request, 0x20))
-            let input := mload(0x40)
-            mstore(input, method_num)
-            mstore(add(input, 0x20), CODEC)
-            // address size
-            mstore(add(input, 0x40), 0x02)
-            // params size
-            mstore(add(input, 0x60), mload(raw_request))
-            // actual params
-            mstore(add(input, 0x80), request)
-            // actual address
-            mstore(add(input, 0xa0), hex"0005")
-            // no params
-            // call(gasLimit, to, value, inputOffset, inputSize, outputOffset, outputSize)
-            if iszero(call(100000000, 0x0e, 0x00, input, 0x0100, raw_response, 0x0100)) {
-                revert(0, 0)
-            }
-        }
+        bytes memory raw_response = Misc.call_actor(method_num, hex"0005", raw_request);
 
         MarketTypes.GetDealClientCollateralReturn memory response;
         response.deserialize(raw_response);
@@ -404,28 +200,7 @@ contract MarketAPI {
         // FIXME: find the method num
         uint64 method_num = 0x00;
 
-        // FIXME: unknown size for the response
-        bytes memory raw_response = new bytes(0x0100);
-
-        assembly {
-            let request := mload(add(raw_request, 0x20))
-            let input := mload(0x40)
-            mstore(input, method_num)
-            mstore(add(input, 0x20), CODEC)
-            // address size
-            mstore(add(input, 0x40), 0x02)
-            // params size
-            mstore(add(input, 0x60), mload(raw_request))
-            // actual params
-            mstore(add(input, 0x80), request)
-            // actual address
-            mstore(add(input, 0xa0), hex"0005")
-            // no params
-            // call(gasLimit, to, value, inputOffset, inputSize, outputOffset, outputSize)
-            if iszero(call(100000000, 0x0e, 0x00, input, 0x0100, raw_response, 0x0100)) {
-                revert(0, 0)
-            }
-        }
+        bytes memory raw_response = Misc.call_actor(method_num, hex"0005", raw_request);
 
         MarketTypes.GetDealProviderCollateralReturn memory response;
         response.deserialize(raw_response);
@@ -443,28 +218,7 @@ contract MarketAPI {
         // FIXME: find the method num
         uint64 method_num = 0x00;
 
-        // FIXME: unknown size for the response
-        bytes memory raw_response = new bytes(0x0100);
-
-        assembly {
-            let request := mload(add(raw_request, 0x20))
-            let input := mload(0x40)
-            mstore(input, method_num)
-            mstore(add(input, 0x20), CODEC)
-            // address size
-            mstore(add(input, 0x40), 0x02)
-            // params size
-            mstore(add(input, 0x60), mload(raw_request))
-            // actual params
-            mstore(add(input, 0x80), request)
-            // actual address
-            mstore(add(input, 0xa0), hex"0005")
-            // no params
-            // call(gasLimit, to, value, inputOffset, inputSize, outputOffset, outputSize)
-            if iszero(call(100000000, 0x0e, 0x00, input, 0x0100, raw_response, 0x0100)) {
-                revert(0, 0)
-            }
-        }
+        bytes memory raw_response = Misc.call_actor(method_num, hex"0005", raw_request);
 
         MarketTypes.GetDealVerifiedReturn memory response;
         response.deserialize(raw_response);
@@ -483,28 +237,7 @@ contract MarketAPI {
         // FIXME: find the method num
         uint64 method_num = 0x00;
 
-        // FIXME: unknown size for the response
-        bytes memory raw_response = new bytes(0x0100);
-
-        assembly {
-            let request := mload(add(raw_request, 0x20))
-            let input := mload(0x40)
-            mstore(input, method_num)
-            mstore(add(input, 0x20), CODEC)
-            // address size
-            mstore(add(input, 0x40), 0x02)
-            // params size
-            mstore(add(input, 0x60), mload(raw_request))
-            // actual params
-            mstore(add(input, 0x80), request)
-            // actual address
-            mstore(add(input, 0xa0), hex"0005")
-            // no params
-            // call(gasLimit, to, value, inputOffset, inputSize, outputOffset, outputSize)
-            if iszero(call(100000000, 0x0e, 0x00, input, 0x0100, raw_response, 0x0100)) {
-                revert(0, 0)
-            }
-        }
+        bytes memory raw_response = Misc.call_actor(method_num, hex"0005", raw_request);
 
         MarketTypes.GetDealActivationReturn memory response;
         response.deserialize(raw_response);
@@ -520,28 +253,7 @@ contract MarketAPI {
 
         uint64 method_num = 0x04;
 
-        // FIXME: unknown size for the response
-        bytes memory raw_response = new bytes(0x0100);
-
-        assembly {
-            let request := mload(add(raw_request, 0x20))
-            let input := mload(0x40)
-            mstore(input, method_num)
-            mstore(add(input, 0x20), CODEC)
-            // address size
-            mstore(add(input, 0x40), 0x02)
-            // params size
-            mstore(add(input, 0x60), mload(raw_request))
-            // actual params
-            mstore(add(input, 0x80), request)
-            // actual address
-            mstore(add(input, 0xa0), hex"0005")
-            // no params
-            // call(gasLimit, to, value, inputOffset, inputSize, outputOffset, outputSize)
-            if iszero(call(100000000, 0x0e, 0x00, input, 0x0100, raw_response, 0x0100)) {
-                revert(0, 0)
-            }
-        }
+        bytes memory raw_response = Misc.call_actor(method_num, hex"0005", raw_request);
 
         MarketTypes.PublishStorageDealsReturn memory response;
         response.deserialize(raw_response);
