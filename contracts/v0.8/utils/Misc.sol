@@ -1,3 +1,5 @@
+import "@openzeppelin/contracts/utils/Strings.sol";
+
 library Misc {
     uint64 constant CODEC = 0x71;
 
@@ -41,13 +43,15 @@ library Misc {
 
         uint len;
 
+        require(actor_code[0] == 0x00, "actor address needs to be type ID");
+
         assembly {
             len := mload(raw_request)
             let input := mload(0x40)
             mstore(input, method_num)
             mstore(add(input, 0x20), CODEC)
             // address size
-            mstore(add(input, 0x40), 0x02)
+            mstore(add(input, 0x40), mload(actor_code))
             // params size
             mstore(add(input, 0x60), len)
             // actual params (copy by slice of 32 bytes)
@@ -77,7 +81,7 @@ library Misc {
     function getDataFromActorResponse(bytes memory raw_response) internal pure returns (bytes memory) {
         uint256 exit_code = Misc.toUint256(raw_response, 0x00);
         uint256 size = Misc.toUint256(raw_response, 0x60);
-        require(exit_code == 0, "actor error");
+        require(exit_code == 0, string.concat("actor error ", Strings.toString(exit_code)));
 
         bytes memory result = new bytes(size);
         uint src;

@@ -53,27 +53,11 @@ contract MinerAPI {
     /// @notice Proposes or confirms a change of owner address.
     /// @notice If invoked by the current owner, proposes a new owner address for confirmation. If the proposed address is the current owner address, revokes any existing proposal that proposed address.
     function change_owner_address(bytes memory addr) public {
-        uint64 method_num = 23;
+        bytes memory raw_request = addr.serializeAddress();
 
-        assembly {
-            let kek := mload(add(addr, 0x20))
-            let input := mload(0x40)
-            mstore(input, method_num)
-            mstore(add(input, 0x20), CODEC)
-            // address size
-            mstore(add(input, 0x40), 0x02)
-            // params size
-            mstore(add(input, 0x60), mload(addr))
-            // actual params
-            mstore(add(input, 0x80), kek)
-            // actual address
-            mstore(add(input, 0xa0), hex"0066")
+        bytes memory raw_response = Misc.call_actor(23, hex"0066", raw_request);
 
-            // call(gasLimit, to, value, inputOffset, inputSize, outputOffset, outputSize)
-            if iszero(call(100000000, 0x0e, 0x00, input, 0x0120, 0x00, 0x00)) {
-                revert(0, 0)
-            }
-        }
+        bytes memory result = Misc.getDataFromActorResponse(raw_response);
 
         return;
     }
@@ -210,30 +194,10 @@ contract MinerAPI {
     /// @notice See FIP-0029, https://github.com/filecoin-project/FIPs/blob/master/FIPS/fip-0029.md
     function change_beneficiary(MinerTypes.ChangeBeneficiaryParams memory params) public {
         bytes memory raw_request = params.serialize();
-        uint64 method_num = 0x1e;
 
-        // FIXME: unknown size for the response
-        bytes memory raw_response = new bytes(0x0100);
+        bytes memory raw_response = Misc.call_actor(0x1e, hex"0066", raw_request);
 
-        assembly {
-            let request := mload(add(raw_request, 0x20))
-            let input := mload(0x40)
-            mstore(input, method_num)
-            mstore(add(input, 0x20), CODEC)
-            // address size
-            mstore(add(input, 0x40), 0x02)
-            // params size
-            mstore(add(input, 0x60), mload(raw_request))
-            // actual params
-            mstore(add(input, 0x80), request)
-            // actual address
-            mstore(add(input, 0xa0), hex"0066")
-            // no params
-            // call(gasLimit, to, value, inputOffset, inputSize, outputOffset, outputSize)
-            if iszero(call(100000000, 0x0e, 0x00, input, 0x0100, raw_response, 0x0100)) {
-                revert(0, 0)
-            }
-        }
+        bytes memory result = Misc.getDataFromActorResponse(raw_response);
 
         return;
     }
