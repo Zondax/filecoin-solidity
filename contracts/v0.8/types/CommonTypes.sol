@@ -276,4 +276,9 @@ library CommonTypes {
         // ID of the provider's sector in which the data is committed.
         uint64 sector;
     }
+    struct ClaimTerm {
+        uint64 provider;
+        uint64 claim_id;
+        int64 term_max;
+    }
 }

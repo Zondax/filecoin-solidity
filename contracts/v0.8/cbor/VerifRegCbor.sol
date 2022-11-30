@@ -6,6 +6,7 @@ import "solidity-cborutils/contracts/CBOR.sol";
 import {CommonTypes} from "../types/CommonTypes.sol";
 import {VerifRegTypes} from "../types/VerifRegTypes.sol";
 import "../utils/CborDecode.sol";
+import "../utils/Misc.sol";
 
 /// @title FIXME
 /// @author Zondax AG
@@ -84,5 +85,228 @@ library AddVerifierClientCBOR {
         buf.writeUInt256(params.allowance);
 
         return buf.data();
+    }
+}
+
+/// @title FIXME
+/// @author Zondax AG
+library RemoveExpiredAllocationsCBOR {
+    using CBOR for CBOR.CBORBuffer;
+    using CBORDecoder for bytes;
+
+    function serialize(VerifRegTypes.RemoveExpiredAllocationsParams memory params) internal pure returns (bytes memory) {
+        // FIXME what should the max length be on the buffer?
+        CBOR.CBORBuffer memory buf = CBOR.create(64);
+
+        uint allocationIdsLen = params.allocation_ids.length;
+
+        buf.startFixedArray(2);
+        buf.writeUInt64(params.client);
+        buf.startFixedArray(uint64(allocationIdsLen));
+        for (uint i = 0; i < allocationIdsLen; i++) {
+            buf.writeUInt64(params.allocation_ids[i]);
+        }
+
+        return buf.data();
+    }
+
+    function deserialize(VerifRegTypes.RemoveExpiredAllocationsReturn memory ret, bytes memory rawResp) internal pure {
+        uint byteIdx = 0;
+        uint len;
+
+        (len, byteIdx) = rawResp.readFixedArray(byteIdx);
+        assert(len == 3);
+
+        (len, byteIdx) = rawResp.readFixedArray(byteIdx);
+        ret.considered = new uint64[](len);
+
+        for (uint i = 0; i < len; i++) {
+            (ret.considered[i], byteIdx) = rawResp.readUInt64(byteIdx);
+        }
+
+        (len, byteIdx) = rawResp.readFixedArray(byteIdx);
+        assert(len == 2);
+
+        (ret.results.success_count, byteIdx) = rawResp.readUInt32(byteIdx);
+
+        (len, byteIdx) = rawResp.readFixedArray(byteIdx);
+        ret.results.fail_codes = new CommonTypes.FailCode[](len);
+
+        for (uint i = 0; i < len; i++) {
+            (len, byteIdx) = rawResp.readFixedArray(byteIdx);
+            assert(len == 2);
+
+            (ret.results.fail_codes[i].idx, byteIdx) = rawResp.readUInt32(byteIdx);
+            (ret.results.fail_codes[i].code, byteIdx) = rawResp.readUInt32(byteIdx);
+        }
+
+        bytes memory tmp;
+        (tmp, byteIdx) = rawResp.readBytes(byteIdx);
+        ret.datacap_recovered = int256(Misc.toUint256(tmp, 0));
+    }
+}
+
+/// @title FIXME
+/// @author Zondax AG
+library ExtendClaimTermsCBOR {
+    using CBOR for CBOR.CBORBuffer;
+    using CBORDecoder for bytes;
+
+    function serialize(VerifRegTypes.ExtendClaimTermsParams memory params) internal pure returns (bytes memory) {
+        // FIXME what should the max length be on the buffer?
+        CBOR.CBORBuffer memory buf = CBOR.create(64);
+
+        uint termsLen = params.terms.length;
+
+        buf.startFixedArray(1);
+        buf.startFixedArray(uint64(termsLen));
+        for (uint i = 0; i < termsLen; i++) {
+            buf.startFixedArray(3);
+            buf.writeUInt64(params.terms[i].provider);
+            buf.writeUInt64(params.terms[i].claim_id);
+            buf.writeInt64(params.terms[i].term_max);
+        }
+
+        return buf.data();
+    }
+
+    function deserialize(CommonTypes.BatchReturn memory ret, bytes memory rawResp) internal pure {
+        uint byteIdx = 0;
+        uint len;
+
+        (len, byteIdx) = rawResp.readFixedArray(byteIdx);
+        assert(len == 2);
+
+        (ret.success_count, byteIdx) = rawResp.readUInt32(byteIdx);
+
+        (len, byteIdx) = rawResp.readFixedArray(byteIdx);
+        ret.fail_codes = new CommonTypes.FailCode[](len);
+
+        for (uint i = 0; i < len; i++) {
+            (len, byteIdx) = rawResp.readFixedArray(byteIdx);
+            assert(len == 2);
+
+            (ret.fail_codes[i].idx, byteIdx) = rawResp.readUInt32(byteIdx);
+            (ret.fail_codes[i].code, byteIdx) = rawResp.readUInt32(byteIdx);
+        }
+    }
+}
+
+/// @title FIXME
+/// @author Zondax AG
+library RemoveExpiredClaimsCBOR {
+    using CBOR for CBOR.CBORBuffer;
+    using CBORDecoder for bytes;
+
+    function serialize(VerifRegTypes.RemoveExpiredClaimsParams memory params) internal pure returns (bytes memory) {
+        // FIXME what should the max length be on the buffer?
+        CBOR.CBORBuffer memory buf = CBOR.create(64);
+
+        uint claimIdsLen = params.claim_ids.length;
+
+        buf.startFixedArray(2);
+        buf.writeUInt64(params.provider);
+        buf.startFixedArray(uint64(claimIdsLen));
+        for (uint i = 0; i < claimIdsLen; i++) {
+            buf.writeUInt64(params.claim_ids[i]);
+        }
+
+        return buf.data();
+    }
+
+    function deserialize(VerifRegTypes.RemoveExpiredClaimsReturn memory ret, bytes memory rawResp) internal pure {
+        uint byteIdx = 0;
+        uint len;
+
+        (len, byteIdx) = rawResp.readFixedArray(byteIdx);
+        assert(len == 2);
+
+        (len, byteIdx) = rawResp.readFixedArray(byteIdx);
+        ret.considered = new uint64[](len);
+
+        for (uint i = 0; i < len; i++) {
+            (ret.considered[i], byteIdx) = rawResp.readUInt64(byteIdx);
+        }
+
+        (len, byteIdx) = rawResp.readFixedArray(byteIdx);
+        assert(len == 2);
+
+        (ret.results.success_count, byteIdx) = rawResp.readUInt32(byteIdx);
+
+        (len, byteIdx) = rawResp.readFixedArray(byteIdx);
+        ret.results.fail_codes = new CommonTypes.FailCode[](len);
+
+        for (uint i = 0; i < len; i++) {
+            (len, byteIdx) = rawResp.readFixedArray(byteIdx);
+            assert(len == 2);
+
+            (ret.results.fail_codes[i].idx, byteIdx) = rawResp.readUInt32(byteIdx);
+            (ret.results.fail_codes[i].code, byteIdx) = rawResp.readUInt32(byteIdx);
+        }
+    }
+}
+
+/// @title FIXME
+/// @author Zondax AG
+library UniversalReceiverHookCBOR {
+    using CBOR for CBOR.CBORBuffer;
+    using CBORDecoder for bytes;
+
+    function serialize(VerifRegTypes.UniversalReceiverParams memory params) internal pure returns (bytes memory) {
+        // FIXME what should the max length be on the buffer?
+        CBOR.CBORBuffer memory buf = CBOR.create(64);
+
+        buf.startFixedArray(2);
+        buf.writeUInt64(params.type_);
+        buf.writeBytes(params.payload);
+
+        return buf.data();
+    }
+
+    function deserialize(VerifRegTypes.AllocationsResponse memory ret, bytes memory rawResp) internal pure {
+        uint byteIdx = 0;
+        uint len;
+
+        (len, byteIdx) = rawResp.readFixedArray(byteIdx);
+        assert(len == 3);
+
+        (len, byteIdx) = rawResp.readFixedArray(byteIdx);
+        assert(len == 2);
+
+        (ret.allocation_results.success_count, byteIdx) = rawResp.readUInt32(byteIdx);
+
+        (len, byteIdx) = rawResp.readFixedArray(byteIdx);
+        ret.allocation_results.fail_codes = new CommonTypes.FailCode[](len);
+
+        for (uint i = 0; i < len; i++) {
+            (len, byteIdx) = rawResp.readFixedArray(byteIdx);
+            assert(len == 2);
+
+            (ret.allocation_results.fail_codes[i].idx, byteIdx) = rawResp.readUInt32(byteIdx);
+            (ret.allocation_results.fail_codes[i].code, byteIdx) = rawResp.readUInt32(byteIdx);
+        }
+
+        (len, byteIdx) = rawResp.readFixedArray(byteIdx);
+        assert(len == 2);
+
+        (ret.extension_results.success_count, byteIdx) = rawResp.readUInt32(byteIdx);
+
+        (len, byteIdx) = rawResp.readFixedArray(byteIdx);
+        ret.extension_results.fail_codes = new CommonTypes.FailCode[](len);
+
+        for (uint i = 0; i < len; i++) {
+            (len, byteIdx) = rawResp.readFixedArray(byteIdx);
+            assert(len == 2);
+
+            (ret.extension_results.fail_codes[i].idx, byteIdx) = rawResp.readUInt32(byteIdx);
+            (ret.extension_results.fail_codes[i].code, byteIdx) = rawResp.readUInt32(byteIdx);
+        }
+
+        (len, byteIdx) = rawResp.readFixedArray(byteIdx);
+        ret.new_allocations = new uint64[](len);
+
+        for (uint i = 0; i < len; i++) {
+            (ret.new_allocations[i], byteIdx) = rawResp.readUInt64(byteIdx);
+        }
     }
 }
