@@ -288,6 +288,47 @@ fn main() {
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
 
     /*
+        println!("Calling `change_peer_id`");
+
+        let message = Message {
+            from: sender[0].1,
+            to: Address::new_id(exec_return.actor_id),
+            gas_limit: 1000000000,
+            method_num: 2,
+            sequence: 8,
+            params: RawBytes::new(hex::decode("b22b8c9f0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000020066000000000000000000000000000000000000000000000000000000000000").unwrap()),
+            ..Message::default()
+        };
+
+        let res = executor
+            .execute_message(message, ApplyKind::Explicit, 100)
+            .unwrap();
+
+        dbg!(&res);
+
+        assert_eq!(res.msg_receipt.exit_code.value(), 0);
+
+        println!("Calling `change_worker_address`");
+
+        let message = Message {
+            from: sender[0].1,
+            to: Address::new_id(exec_return.actor_id),
+            gas_limit: 1000000000,
+            method_num: 2,
+            sequence: 2,
+            params: RawBytes::new(hex::decode("5901248D74B5D8000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000080000000000000000000000000000000000000000000000000000000000000000200660000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000020066000000000000000000000000000000000000000000000000000000000000").unwrap()),
+            ..Message::default()
+        };
+
+        let res = executor
+            .execute_message(message, ApplyKind::Explicit, 100)
+            .unwrap();
+
+        dbg!(&res);
+
+        assert_eq!(res.msg_receipt.exit_code.value(), 0);
+    */
+    /*
         println!("Calling `is_controlling_address`");
 
         let message = Message {
