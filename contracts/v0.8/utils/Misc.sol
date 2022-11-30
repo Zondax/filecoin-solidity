@@ -41,6 +41,8 @@ library Misc {
 
         uint len;
 
+        require(actor_code[0] == 0x00, "actor address needs to be type ID");
+
         assembly {
             len := mload(raw_request)
             let input := mload(0x40)
