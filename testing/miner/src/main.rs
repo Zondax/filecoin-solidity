@@ -74,7 +74,7 @@ fn main() {
     let cid = state_tree.store().put_cbor(&state, Code::Blake2b256).unwrap();
 
     let actor_state = ActorState {
-        code: Cid::from_str("bafk2bzaceatwmlp3buf6rcvl323g62wzxbkio2tasl6gxozbjjgcvxxtn3shi").unwrap(),
+        code: Cid::from_str("bafk2bzaceapwdyvowtd5v4blmntzqkdienejy4mlrl53mua55xgftdqoggoe4").unwrap(),
         state: cid,
         sequence: 0,
         balance: TokenAmount::from_atto(10000),
@@ -107,7 +107,7 @@ fn main() {
     };
 
     let exec_params = fil_actor_init::ExecParams{
-        code_cid: Cid::from_str("bafk2bzacec7gj7tiyiaanver7wxj6celzrbjo5f2qcrsattjtffhk32k3cl34").unwrap(),
+        code_cid: Cid::from_str("bafk2bzaceazmjegx7urapdpohpos7tud5m4w7doxsetbjo5tx7y7wciyirphi").unwrap(),
         constructor_params: RawBytes::serialize(constructor_params).unwrap(),
     };
 
