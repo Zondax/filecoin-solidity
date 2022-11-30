@@ -80,16 +80,12 @@ library GetAvailableBalanceCBOR {
     using CBORDecoder for bytes;
 
     function deserialize(MinerTypes.GetAvailableBalanceReturn memory ret, bytes memory rawResp) internal pure {
-        int256 available_balance;
         uint byteIdx = 0;
         uint len;
 
-        (len, byteIdx) = rawResp.readFixedArray(byteIdx);
-        assert(len == 1);
-
-        (available_balance, byteIdx) = rawResp.readInt256(byteIdx);
-
-        ret.available_balance = available_balance;
+        bytes memory tmp;
+        (tmp, byteIdx) = rawResp.readBytes(byteIdx);
+        ret.available_balance = int256(Misc.toUint256(tmp, 0));
     }
 }
 
@@ -165,16 +161,22 @@ library GetVestingFundsCBOR {
     function deserialize(MinerTypes.GetVestingFundsReturn memory ret, bytes memory rawResp) internal pure {
         int64 epoch;
         int256 amount;
+        bytes memory tmp;
 
         uint byteIdx = 0;
         uint len;
+
+        (len, byteIdx) = rawResp.readFixedArray(byteIdx);
+        assert(len == 1);
 
         (len, byteIdx) = rawResp.readFixedArray(byteIdx);
         ret.vesting_funds = new CommonTypes.VestingFunds[](len);
 
         for (uint i = 0; i < len; i++) {
             (epoch, byteIdx) = rawResp.readInt64(byteIdx);
-            (amount, byteIdx) = rawResp.readInt256(byteIdx);
+            (tmp, byteIdx) = rawResp.readBytes(byteIdx);
+
+            amount = int256(Misc.toUint256(tmp, 0));
             ret.vesting_funds[i] = CommonTypes.VestingFunds(epoch, amount);
         }
     }

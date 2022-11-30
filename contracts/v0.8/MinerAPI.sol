@@ -65,32 +65,14 @@ contract MinerAPI {
     /// @param addr The "controlling" addresses are the Owner, the Worker, and all Control Addresses.
     /// @return Whether the provided address is "controlling".
     function is_controlling_address(bytes memory addr) public returns (MinerTypes.IsControllingAddressReturn memory) {
-        // FIXME: https://github.com/filecoin-project/builtin-actors/pull/811/files#diff-fbcb2ec1a9d82b18f146c728cafd643df0e7ae47a04d84be7644913fe89236e5R131
-        uint64 method_num = 0x00;
+        bytes memory raw_request = addr.serializeAddress();
 
-        bytes memory raw_response = new bytes(0x20);
+        bytes memory raw_response = Misc.call_actor(348244887, hex"0066", raw_request);
 
-        assembly {
-            let kek := mload(add(addr, 0x20))
-            let input := mload(0x40)
-            mstore(input, method_num)
-            mstore(add(input, 0x20), CODEC)
-            // address size
-            mstore(add(input, 0x40), 0x02)
-            // params size
-            mstore(add(input, 0x60), mload(addr))
-            // actual params
-            mstore(add(input, 0x80), kek)
-            // actual address
-            mstore(add(input, 0xa0), hex"0066")
-            // call(gasLimit, to, value, inputOffset, inputSize, outputOffset, outputSize)
-            if iszero(call(100000000, 0x0e, 0x00, input, 0x0100, raw_response, 0x20)) {
-                revert(0, 0)
-            }
-        }
+        bytes memory result = Misc.getDataFromActorResponse(raw_response);
 
         MinerTypes.IsControllingAddressReturn memory response;
-        response.deserialize(raw_response);
+        response.deserialize(result);
 
         return response;
     }
@@ -98,30 +80,14 @@ contract MinerAPI {
     /// @return the miner's sector size.
     /// @dev For more information about sector sizes, please refer to https://spec.filecoin.io/systems/filecoin_mining/sector/#section-systems.filecoin_mining.sector
     function get_sector_size() public returns (MinerTypes.GetSectorSizeReturn memory) {
-        // TODO: find the method num
-        uint64 method_num = 0x00;
+        bytes memory raw_request = new bytes(0);
 
-        bytes memory raw_response = new bytes(0x20);
+        bytes memory raw_response = Misc.call_actor(3858292296, hex"0066", raw_request);
 
-        assembly {
-            let input := mload(0x40)
-            mstore(input, method_num)
-            mstore(add(input, 0x20), CODEC)
-            // address size
-            mstore(add(input, 0x40), 0x02)
-            // params size
-            mstore(add(input, 0x60), 0x00)
-            // actual address
-            mstore(add(input, 0x80), hex"0066")
-            // no params
-            // call(gasLimit, to, value, inputOffset, inputSize, outputOffset, outputSize)
-            if iszero(call(100000000, 0x0e, 0x00, input, 0x0100, raw_response, 0x20)) {
-                revert(0, 0)
-            }
-        }
+        bytes memory result = Misc.getDataFromActorResponse(raw_response);
 
         MinerTypes.GetSectorSizeReturn memory response;
-        response.deserialize(raw_response);
+        response.deserialize(result);
 
         return response;
     }
@@ -130,61 +96,28 @@ contract MinerAPI {
     /// @notice Can go negative if the miner is in IP debt.
     /// @return the available balance of this miner.
     function get_available_balance() public returns (MinerTypes.GetAvailableBalanceReturn memory) {
-        // TODO: find the method num
-        uint64 method_num = 0x00;
+        bytes memory raw_request = new bytes(0);
 
-        bytes memory raw_response = new bytes(0x20);
+        bytes memory raw_response = Misc.call_actor(4026106874, hex"0066", raw_request);
 
-        assembly {
-            let input := mload(0x40)
-            mstore(input, method_num)
-            mstore(add(input, 0x20), CODEC)
-            // address size
-            mstore(add(input, 0x40), 0x02)
-            // params size
-            mstore(add(input, 0x60), 0x00)
-            // actual address
-            mstore(add(input, 0x80), hex"0066")
-            // no params
-            // call(gasLimit, to, value, inputOffset, inputSize, outputOffset, outputSize)
-            if iszero(call(100000000, 0x0e, 0x00, input, 0x0100, raw_response, 0x20)) {
-                revert(0, 0)
-            }
-        }
+        bytes memory result = Misc.getDataFromActorResponse(raw_response);
 
         MinerTypes.GetAvailableBalanceReturn memory response;
-        response.deserialize(raw_response);
+        response.deserialize(result);
 
         return response;
     }
 
     /// @return the funds vesting in this miner as a list of (vesting_epoch, vesting_amount) tuples.
     function get_vesting_funds() public returns (MinerTypes.GetVestingFundsReturn memory) {
-        // TODO: find the method num
-        uint64 method_num = 0x00;
+        bytes memory raw_request = new bytes(0);
 
-        // FIXME: unknown size for the response
-        bytes memory raw_response = new bytes(0x0100);
+        bytes memory raw_response = Misc.call_actor(1726876304, hex"0066", raw_request);
 
-        assembly {
-            let input := mload(0x40)
-            mstore(input, method_num)
-            mstore(add(input, 0x20), CODEC)
-            // address size
-            mstore(add(input, 0x40), 0x02)
-            // params size
-            mstore(add(input, 0x60), 0x00)
-            // actual address
-            mstore(add(input, 0x80), hex"0066")
-            // no params
-            // call(gasLimit, to, value, inputOffset, inputSize, outputOffset, outputSize)
-            if iszero(call(100000000, 0x0e, 0x00, input, 0x0100, raw_response, 0x0100)) {
-                revert(0, 0)
-            }
-        }
+        bytes memory result = Misc.getDataFromActorResponse(raw_response);
 
         MinerTypes.GetVestingFundsReturn memory response;
-        response.deserialize(raw_response);
+        response.deserialize(result);
 
         return response;
     }
@@ -205,28 +138,9 @@ contract MinerAPI {
     /// @notice This method is for use by other actors (such as those acting as beneficiaries), and to abstract the state representation for clients.
     /// @notice Retrieves the currently active and proposed beneficiary information.
     function get_beneficiary() public returns (MinerTypes.GetBeneficiaryReturn memory) {
-        // TODO: find the method num
-        uint64 method_num = 0x1f;
+        bytes memory raw_request = new bytes(0);
 
-        // FIXME: unknown size for the response
-        bytes memory raw_response = new bytes(0x0200);
-
-        assembly {
-            let input := mload(0x40)
-            mstore(input, method_num)
-            mstore(add(input, 0x20), CODEC)
-            // address size
-            mstore(add(input, 0x40), 0x02)
-            // params size
-            mstore(add(input, 0x60), 0x00)
-            // actual address
-            mstore(add(input, 0x80), hex"0066")
-            // no params
-            // call(gasLimit, to, value, inputOffset, inputSize, outputOffset, outputSize)
-            if iszero(call(100000000, 0x0e, 0x00, input, 0xa0, raw_response, 0x0200)) {
-                revert(0, 0)
-            }
-        }
+        bytes memory raw_response = Misc.call_actor(0x1f, hex"0066", raw_request);
 
         bytes memory result = Misc.getDataFromActorResponse(raw_response);
 
@@ -237,186 +151,67 @@ contract MinerAPI {
     }
 
     /// @notice FIXME
-    function change_beneficiary(MinerTypes.ChangeWorkerAddressParams memory params) public {
-        // TODO: find the method num
-        uint64 method_num = 0x1f;
+    function change_worker_address(MinerTypes.ChangeWorkerAddressParams memory params) public {
+        bytes memory raw_request = params.serialize();
 
-        // FIXME: unknown size for the response
-        bytes memory raw_response = new bytes(0x0200);
+        bytes memory raw_response = Misc.call_actor(3302309124, hex"0066", raw_request);
 
-        assembly {
-            let input := mload(0x40)
-            mstore(input, method_num)
-            mstore(add(input, 0x20), CODEC)
-            // address size
-            mstore(add(input, 0x40), 0x02)
-            // params size
-            mstore(add(input, 0x60), 0x00)
-            // actual address
-            mstore(add(input, 0x80), hex"0066")
-            // no params
-            // call(gasLimit, to, value, inputOffset, inputSize, outputOffset, outputSize)
-            if iszero(call(100000000, 0x0e, 0x00, input, 0xa0, raw_response, 0x0200)) {
-                revert(0, 0)
-            }
-        }
+        bytes memory result = Misc.getDataFromActorResponse(raw_response);
+
         return;
     }
 
     /// @notice FIXME
     function change_peer_id(MinerTypes.ChangePeerIDParams memory params) public {
-        // TODO: find the method num
-        uint64 method_num = 0x1f;
+        bytes memory raw_request = params.serialize();
 
-        // FIXME: unknown size for the response
-        bytes memory raw_response = new bytes(0x0200);
+        bytes memory raw_response = Misc.call_actor(1236548004, hex"0066", raw_request);
 
-        assembly {
-            let input := mload(0x40)
-            mstore(input, method_num)
-            mstore(add(input, 0x20), CODEC)
-            // address size
-            mstore(add(input, 0x40), 0x02)
-            // params size
-            mstore(add(input, 0x60), 0x00)
-            // actual address
-            mstore(add(input, 0x80), hex"0066")
-            // no params
-            // call(gasLimit, to, value, inputOffset, inputSize, outputOffset, outputSize)
-            if iszero(call(100000000, 0x0e, 0x00, input, 0xa0, raw_response, 0x0200)) {
-                revert(0, 0)
-            }
-        }
+        bytes memory result = Misc.getDataFromActorResponse(raw_response);
+
         return;
     }
 
     /// @notice FIXME
-    function change_peer_id(MinerTypes.ChangeMultiaddrsParams memory params) public {
-        // TODO: find the method num
-        uint64 method_num = 0x1f;
+    function change_multiaddresses(MinerTypes.ChangeMultiaddrsParams memory params) public {
+        bytes memory raw_request = params.serialize();
 
-        // FIXME: unknown size for the response
-        bytes memory raw_response = new bytes(0x0200);
+        bytes memory raw_response = Misc.call_actor(1063480576, hex"0066", raw_request);
 
-        assembly {
-            let input := mload(0x40)
-            mstore(input, method_num)
-            mstore(add(input, 0x20), CODEC)
-            // address size
-            mstore(add(input, 0x40), 0x02)
-            // params size
-            mstore(add(input, 0x60), 0x00)
-            // actual address
-            mstore(add(input, 0x80), hex"0066")
-            // no params
-            // call(gasLimit, to, value, inputOffset, inputSize, outputOffset, outputSize)
-            if iszero(call(100000000, 0x0e, 0x00, input, 0xa0, raw_response, 0x0200)) {
-                revert(0, 0)
-            }
-        }
+        bytes memory result = Misc.getDataFromActorResponse(raw_response);
+
         return;
     }
 
     /// @notice FIXME
     function repay_debt() public {
-        // FIXME: https://github.com/filecoin-project/builtin-actors/pull/811/files#diff-fbcb2ec1a9d82b18f146c728cafd643df0e7ae47a04d84be7644913fe89236e5R130
-        uint64 method_num = 0x00;
+        bytes memory raw_request = new bytes(0);
 
-        bytes memory raw_response = new bytes(0x80);
+        bytes memory raw_response = Misc.call_actor(3665352697, hex"0066", raw_request);
 
-        // TODO: should be bytes
-        //uint64 actor_id = 0x0066;
-
-        assembly {
-            let input := mload(0x40)
-            mstore(input, method_num)
-            mstore(add(input, 0x20), CODEC)
-            // address size
-            mstore(add(input, 0x40), 0x02)
-            // params size
-            mstore(add(input, 0x60), 0x00)
-            // actual address
-            mstore(add(input, 0x80), hex"0066")
-            // no params
-
-            // call(gasLimit, to, value, inputOffset, inputSize, outputOffset, outputSize)
-            if iszero(call(100000000, 0x0e, 0x00, input, 0x0100, raw_response, 0x80)) {
-                revert(0, 0)
-            }
-        }
+        bytes memory result = Misc.getDataFromActorResponse(raw_response);
 
         return;
     }
 
     /// @notice FIXME
     function confirm_change_worker_address() public {
-        // FIXME: https://github.com/filecoin-project/builtin-actors/pull/811/files#diff-fbcb2ec1a9d82b18f146c728cafd643df0e7ae47a04d84be7644913fe89236e5R130
-        uint64 method_num = 0x00;
+        bytes memory raw_request = new bytes(0);
 
-        bytes memory raw_response = new bytes(0x80);
+        bytes memory raw_response = Misc.call_actor(2354970453, hex"0066", raw_request);
 
-        // TODO: should be bytes
-        //uint64 actor_id = 0x0066;
-
-        assembly {
-            let input := mload(0x40)
-            mstore(input, method_num)
-            mstore(add(input, 0x20), CODEC)
-            // address size
-            mstore(add(input, 0x40), 0x02)
-            // params size
-            mstore(add(input, 0x60), 0x00)
-            // actual address
-            mstore(add(input, 0x80), hex"0066")
-            // no params
-
-            // call(gasLimit, to, value, inputOffset, inputSize, outputOffset, outputSize)
-            if iszero(call(100000000, 0x0e, 0x00, input, 0x0100, raw_response, 0x80)) {
-                revert(0, 0)
-            }
-        }
+        bytes memory result = Misc.getDataFromActorResponse(raw_response);
 
         return;
     }
 
     /// @notice FIXME
     function get_peer_id() public returns (MinerTypes.GetPeerIDReturn memory) {
-        // TODO: find the method num
-        uint64 method_num = 0x1f;
+        bytes memory raw_request = new bytes(0);
 
-        // FIXME: unknown size for the response
-        bytes memory raw_response = new bytes(0x0200);
+        bytes memory raw_response = Misc.call_actor(2812875329, hex"0066", raw_request);
 
-        assembly {
-            let input := mload(0x40)
-            mstore(input, method_num)
-            mstore(add(input, 0x20), CODEC)
-            // address size
-            mstore(add(input, 0x40), 0x02)
-            // params size
-            mstore(add(input, 0x60), 0x00)
-            // actual address
-            mstore(add(input, 0x80), hex"0066")
-            // no params
-            // call(gasLimit, to, value, inputOffset, inputSize, outputOffset, outputSize)
-            if iszero(call(100000000, 0x0e, 0x00, input, 0xa0, raw_response, 0x0200)) {
-                revert(0, 0)
-            }
-        }
-
-        /*uint256 exit_code = toUint256(raw_response, 0x00);
-        uint256 codec = toUint256(raw_response, 0x20);
-        uint256 offset = toUint256(raw_response, 0x40);
-        uint256 size = toUint256(raw_response, 0x60);*/
-
-        bytes memory result = new bytes(0x0a);
-        uint src;
-        uint dst;
-        assembly {
-            src := add(raw_response, 0x80)
-            dst := add(result, 0x20)
-        }
-        Misc.copy(src, dst, 0x0a);
+        bytes memory result = Misc.getDataFromActorResponse(raw_response);
 
         MinerTypes.GetPeerIDReturn memory response;
         response.deserialize(result);
@@ -426,42 +221,11 @@ contract MinerAPI {
 
     /// @notice FIXME
     function get_multiaddresses() public returns (MinerTypes.GetMultiaddrsReturn memory) {
-        // TODO: find the method num
-        uint64 method_num = 0x1f;
+        bytes memory raw_request = new bytes(0);
 
-        // FIXME: unknown size for the response
-        bytes memory raw_response = new bytes(0x0200);
+        bytes memory raw_response = Misc.call_actor(1332909407, hex"0066", raw_request);
 
-        assembly {
-            let input := mload(0x40)
-            mstore(input, method_num)
-            mstore(add(input, 0x20), CODEC)
-            // address size
-            mstore(add(input, 0x40), 0x02)
-            // params size
-            mstore(add(input, 0x60), 0x00)
-            // actual address
-            mstore(add(input, 0x80), hex"0066")
-            // no params
-            // call(gasLimit, to, value, inputOffset, inputSize, outputOffset, outputSize)
-            if iszero(call(100000000, 0x0e, 0x00, input, 0xa0, raw_response, 0x0200)) {
-                revert(0, 0)
-            }
-        }
-
-        /*uint256 exit_code = toUint256(raw_response, 0x00);
-        uint256 codec = toUint256(raw_response, 0x20);
-        uint256 offset = toUint256(raw_response, 0x40);
-        uint256 size = toUint256(raw_response, 0x60);*/
-
-        bytes memory result = new bytes(0x0a);
-        uint src;
-        uint dst;
-        assembly {
-            src := add(raw_response, 0x80)
-            dst := add(result, 0x20)
-        }
-        Misc.copy(src, dst, 0x0a);
+        bytes memory result = Misc.getDataFromActorResponse(raw_response);
 
         MinerTypes.GetMultiaddrsReturn memory response;
         response.deserialize(result);
