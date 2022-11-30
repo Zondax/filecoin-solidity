@@ -74,8 +74,9 @@ fn main() {
     let cid = state_tree.store().put_cbor(&state, Code::Blake2b256).unwrap();
 
     let actor_state = ActorState {
-        //code: Cid::from_str("bafk2bzaceapwdyvowtd5v4blmntzqkdienejy4mlrl53mua55xgftdqoggoe4").unwrap(),
-        code: Cid::from_str("bafk2bzacecj7v5ur5qk4vn3xbvgsizl35e42l3yaankmxu6dcoouv4mkphsjq").unwrap(),
+        // CID of Accounts actor. You get this as output from builtin-actors compiling process
+        code: Cid::from_str("bafk2bzaceapwdyvowtd5v4blmntzqkdienejy4mlrl53mua55xgftdqoggoe4").unwrap(),
+        // code: Cid::from_str("bafk2bzacecj7v5ur5qk4vn3xbvgsizl35e42l3yaankmxu6dcoouv4mkphsjq").unwrap(),
         state: cid,
         sequence: 0,
         balance: TokenAmount::from_atto(10000),
@@ -108,8 +109,9 @@ fn main() {
     };
 
     let exec_params = fil_actor_init::ExecParams{
-        //code_cid: Cid::from_str("bafk2bzaceazmjegx7urapdpohpos7tud5m4w7doxsetbjo5tx7y7wciyirphi").unwrap(),
-        code_cid: Cid::from_str("bafk2bzacedgixfd465634uihet3u57vugbbp6s5sseb76phti3cexx66ers3i").unwrap(),
+        // CID of StorageMiner actor. You get this as output from builtin-actors compiling process
+        code_cid: Cid::from_str("bafk2bzaceazmjegx7urapdpohpos7tud5m4w7doxsetbjo5tx7y7wciyirphi").unwrap(),
+        // code_cid: Cid::from_str("bafk2bzacedgixfd465634uihet3u57vugbbp6s5sseb76phti3cexx66ers3i").unwrap(),
         constructor_params: RawBytes::serialize(constructor_params).unwrap(),
     };
 
