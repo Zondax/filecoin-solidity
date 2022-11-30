@@ -37,27 +37,9 @@ contract MinerAPI {
     /// @notice This address is also allowed to change the worker address for the miner
     /// @return the owner address of a Miner
     function get_owner() public returns (MinerTypes.GetOwnerReturn memory) {
-        uint64 method_num = 3275365574;
+        bytes memory raw_request = new bytes(0);
 
-        bytes memory raw_response = new bytes(0x100);
-
-        assembly {
-            let input := mload(0x40)
-            mstore(input, method_num)
-            mstore(add(input, 0x20), CODEC)
-            // address size
-            mstore(add(input, 0x40), 0x02)
-            // params size
-            mstore(add(input, 0x60), 0x00)
-            // actual address
-            mstore(add(input, 0x80), hex"0066")
-            // no params
-
-            // call(gasLimit, to, value, inputOffset, inputSize, outputOffset, outputSize)
-            if iszero(call(1000000000, 0x0e, 0x00, input, 0xa0, raw_response, 0x100)) {
-                revert(0, 0)
-            }
-        }
+        bytes memory raw_response = Misc.call_actor(3275365574, hex"0066", raw_request);
 
         bytes memory result = Misc.getDataFromActorResponse(raw_response);
 
