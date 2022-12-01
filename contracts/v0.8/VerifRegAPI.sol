@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
+// DRAFT - NO AUDITED CODE
 pragma solidity >=0.4.25 <=0.8.17;
 
 import "./types/VerifRegTypes.sol";
