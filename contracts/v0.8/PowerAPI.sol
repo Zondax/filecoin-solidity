@@ -20,8 +20,10 @@ contract PowerAPI {
 
         bytes memory raw_response = Misc.call_actor(1173380165, hex"0005", raw_request);
 
+        bytes memory result = Misc.getDataFromActorResponse(raw_response);
+
         PowerTypes.CreateMinerReturn memory response;
-        response.deserialize(raw_response);
+        response.deserialize(result);
 
         return response;
     }
@@ -31,8 +33,10 @@ contract PowerAPI {
 
         bytes memory raw_response = Misc.call_actor(1987646258, hex"0005", raw_request);
 
+        bytes memory result = Misc.getDataFromActorResponse(raw_response);
+
         PowerTypes.MinerCountReturn memory response;
-        response.deserialize(raw_response);
+        response.deserialize(result);
 
         return response;
     }
@@ -42,8 +46,10 @@ contract PowerAPI {
 
         bytes memory raw_response = Misc.call_actor(196739875, hex"0005", raw_request);
 
+        bytes memory result = Misc.getDataFromActorResponse(raw_response);
+
         PowerTypes.MinerConsensusCountReturn memory response;
-        response.deserialize(raw_response);
+        response.deserialize(result);
 
         return response;
     }
@@ -53,8 +59,10 @@ contract PowerAPI {
 
         bytes memory raw_response = Misc.call_actor(931722534, hex"0005", raw_request);
 
+        bytes memory result = Misc.getDataFromActorResponse(raw_response);
+
         PowerTypes.NetworkRawPowerReturn memory response;
-        response.deserialize(raw_response);
+        response.deserialize(result);
 
         return response;
     }
@@ -64,8 +72,10 @@ contract PowerAPI {
 
         bytes memory raw_response = Misc.call_actor(3753401894, hex"0005", raw_request);
 
+        bytes memory result = Misc.getDataFromActorResponse(raw_response);
+
         PowerTypes.MinerRawPowerReturn memory response;
-        response.deserialize(raw_response);
+        response.deserialize(result);
 
         return response;
     }
