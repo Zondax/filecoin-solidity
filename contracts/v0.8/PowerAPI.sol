@@ -18,7 +18,7 @@ contract PowerAPI {
     function create_miner(PowerTypes.CreateMinerParams memory params) public returns (PowerTypes.CreateMinerReturn memory) {
         bytes memory raw_request = params.serialize();
 
-        bytes memory raw_response = Misc.call_actor(1173380165, hex"0005", raw_request);
+        bytes memory raw_response = Misc.call_actor(PowerTypes.CreateMinerMethodNum, PowerTypes.ActorCode, raw_request);
 
         bytes memory result = Misc.getDataFromActorResponse(raw_response);
 
@@ -31,7 +31,7 @@ contract PowerAPI {
     function miner_count() public returns (PowerTypes.MinerCountReturn memory) {
         bytes memory raw_request = new bytes(0);
 
-        bytes memory raw_response = Misc.call_actor(1987646258, hex"0005", raw_request);
+        bytes memory raw_response = Misc.call_actor(PowerTypes.MinerCountMethodNum, PowerTypes.ActorCode, raw_request);
 
         bytes memory result = Misc.getDataFromActorResponse(raw_response);
 
@@ -44,7 +44,7 @@ contract PowerAPI {
     function miner_consensus_count() public returns (PowerTypes.MinerConsensusCountReturn memory) {
         bytes memory raw_request = new bytes(0);
 
-        bytes memory raw_response = Misc.call_actor(196739875, hex"0005", raw_request);
+        bytes memory raw_response = Misc.call_actor(PowerTypes.MinerConsensusCountMethodNum, PowerTypes.ActorCode, raw_request);
 
         bytes memory result = Misc.getDataFromActorResponse(raw_response);
 
@@ -57,7 +57,7 @@ contract PowerAPI {
     function network_raw_power() public returns (PowerTypes.NetworkRawPowerReturn memory) {
         bytes memory raw_request = new bytes(0);
 
-        bytes memory raw_response = Misc.call_actor(931722534, hex"0005", raw_request);
+        bytes memory raw_response = Misc.call_actor(PowerTypes.NetworkRawPowerMethodNum, PowerTypes.ActorCode, raw_request);
 
         bytes memory result = Misc.getDataFromActorResponse(raw_response);
 
@@ -70,7 +70,7 @@ contract PowerAPI {
     function miner_raw_power(PowerTypes.MinerRawPowerParams memory params) public returns (PowerTypes.MinerRawPowerReturn memory) {
         bytes memory raw_request = params.serialize();
 
-        bytes memory raw_response = Misc.call_actor(3753401894, hex"0005", raw_request);
+        bytes memory raw_response = Misc.call_actor(PowerTypes.MinerRawPowerMethodNum, PowerTypes.ActorCode, raw_request);
 
         bytes memory result = Misc.getDataFromActorResponse(raw_response);
 
