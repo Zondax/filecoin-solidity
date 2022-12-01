@@ -66,19 +66,18 @@ library GetBalanceCBOR {
     using CBORDecoder for bytes;
 
     function deserialize(MarketTypes.GetBalanceReturn memory ret, bytes memory rawResp) internal pure {
-        uint256 balance;
-        uint256 locked;
         uint byteIdx = 0;
         uint len;
+        bytes memory tmp;
 
         (len, byteIdx) = rawResp.readFixedArray(byteIdx);
         assert(len == 2);
 
-        (balance, byteIdx) = rawResp.readUInt256(byteIdx);
-        (locked, byteIdx) = rawResp.readUInt256(byteIdx);
+        (tmp, byteIdx) = rawResp.readBytes(byteIdx);
+        ret.balance = Misc.toInt256(tmp, 0);
 
-        ret.balance = balance;
-        ret.locked = locked;
+        (tmp, byteIdx) = rawResp.readBytes(byteIdx);
+        ret.locked = Misc.toInt256(tmp, 0);
     }
 }
 
