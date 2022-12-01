@@ -34,17 +34,17 @@ test_market_cbor_serialization:
 
 test_integration: test_miner_integration test_market_integration test_power_integration test_verifreg_integration
 
-test_miner_integration:
-	make && cd testing/miner && cargo r
+test_miner_integration: build
+	cd testing/miner && cargo r
 
-test_market_integration:
-	make && cd testing/market && cargo r
+test_market_integration: build
+	cd testing/market && cargo r
 
-test_power_integration:
-	make && cd testing/power && cargo r
+test_power_integration: build
+	cd testing/power && cargo r
 
-test_verifreg_integration:
-	make && cd testing/verifreg && cargo r
+test_verifreg_integration: build
+	cd testing/verifreg && cargo r
 
 download_bundle_actor:
 	cd testing && wget https://github.com/filecoin-project/builtin-actors/releases/download/dev%2F20221123-fvm-m2/builtin-actors-devnet-wasm.car
