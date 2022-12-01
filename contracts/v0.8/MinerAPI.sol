@@ -30,7 +30,7 @@ contract MinerAPI {
     function get_owner(bytes memory actor_code) public returns (MinerTypes.GetOwnerReturn memory) {
         bytes memory raw_request = new bytes(0);
 
-        bytes memory raw_response = Misc.call_actor(3275365574, actor_code, raw_request);
+        bytes memory raw_response = Misc.call_actor(MinerTypes.GetOwnerMethodNum, actor_code, raw_request);
 
         bytes memory result = Misc.getDataFromActorResponse(raw_response);
 
@@ -46,7 +46,7 @@ contract MinerAPI {
     function change_owner_address(bytes memory actor_code, bytes memory addr) public {
         bytes memory raw_request = addr.serializeAddress();
 
-        bytes memory raw_response = Misc.call_actor(23, actor_code, raw_request);
+        bytes memory raw_response = Misc.call_actor(MinerTypes.ChangeOwnerAddressMethodNum, actor_code, raw_request);
 
         bytes memory result = Misc.getDataFromActorResponse(raw_response);
 
@@ -61,7 +61,7 @@ contract MinerAPI {
     ) public returns (MinerTypes.IsControllingAddressReturn memory) {
         bytes memory raw_request = addr.serializeAddress();
 
-        bytes memory raw_response = Misc.call_actor(348244887, actor_code, raw_request);
+        bytes memory raw_response = Misc.call_actor(MinerTypes.IsControllingAddressMethodNum, actor_code, raw_request);
 
         bytes memory result = Misc.getDataFromActorResponse(raw_response);
 
@@ -76,7 +76,7 @@ contract MinerAPI {
     function get_sector_size(bytes memory actor_code) public returns (MinerTypes.GetSectorSizeReturn memory) {
         bytes memory raw_request = new bytes(0);
 
-        bytes memory raw_response = Misc.call_actor(3858292296, actor_code, raw_request);
+        bytes memory raw_response = Misc.call_actor(MinerTypes.GetSectorSizeMethodNum, actor_code, raw_request);
 
         bytes memory result = Misc.getDataFromActorResponse(raw_response);
 
@@ -92,7 +92,7 @@ contract MinerAPI {
     function get_available_balance(bytes memory actor_code) public returns (MinerTypes.GetAvailableBalanceReturn memory) {
         bytes memory raw_request = new bytes(0);
 
-        bytes memory raw_response = Misc.call_actor(4026106874, actor_code, raw_request);
+        bytes memory raw_response = Misc.call_actor(MinerTypes.GetAvailableBalanceMethodNum, actor_code, raw_request);
 
         bytes memory result = Misc.getDataFromActorResponse(raw_response);
 
@@ -106,7 +106,7 @@ contract MinerAPI {
     function get_vesting_funds(bytes memory actor_code) public returns (MinerTypes.GetVestingFundsReturn memory) {
         bytes memory raw_request = new bytes(0);
 
-        bytes memory raw_response = Misc.call_actor(1726876304, actor_code, raw_request);
+        bytes memory raw_response = Misc.call_actor(MinerTypes.GetVestingFundsMethodNum, actor_code, raw_request);
 
         bytes memory result = Misc.getDataFromActorResponse(raw_response);
 
@@ -122,7 +122,7 @@ contract MinerAPI {
     function change_beneficiary(bytes memory actor_code, MinerTypes.ChangeBeneficiaryParams memory params) public {
         bytes memory raw_request = params.serialize();
 
-        bytes memory raw_response = Misc.call_actor(0x1e, actor_code, raw_request);
+        bytes memory raw_response = Misc.call_actor(MinerTypes.ChangeBeneficiaryMethodNum, actor_code, raw_request);
 
         bytes memory result = Misc.getDataFromActorResponse(raw_response);
 
@@ -134,7 +134,7 @@ contract MinerAPI {
     function get_beneficiary(bytes memory actor_code) public returns (MinerTypes.GetBeneficiaryReturn memory) {
         bytes memory raw_request = new bytes(0);
 
-        bytes memory raw_response = Misc.call_actor(0x1f, actor_code, raw_request);
+        bytes memory raw_response = Misc.call_actor(MinerTypes.GetBeneficiaryMethodNum, actor_code, raw_request);
 
         bytes memory result = Misc.getDataFromActorResponse(raw_response);
 
@@ -148,7 +148,7 @@ contract MinerAPI {
     function change_worker_address(bytes memory actor_code, MinerTypes.ChangeWorkerAddressParams memory params) public {
         bytes memory raw_request = params.serialize();
 
-        bytes memory raw_response = Misc.call_actor(3302309124, actor_code, raw_request);
+        bytes memory raw_response = Misc.call_actor(MinerTypes.ChangeWorkerAddressMethodNum, actor_code, raw_request);
 
         bytes memory result = Misc.getDataFromActorResponse(raw_response);
 
@@ -159,7 +159,7 @@ contract MinerAPI {
     function change_peer_id(bytes memory actor_code, MinerTypes.ChangePeerIDParams memory params) public {
         bytes memory raw_request = params.serialize();
 
-        bytes memory raw_response = Misc.call_actor(1236548004, actor_code, raw_request);
+        bytes memory raw_response = Misc.call_actor(MinerTypes.ChangePeerIDMethodNum, actor_code, raw_request);
 
         bytes memory result = Misc.getDataFromActorResponse(raw_response);
 
@@ -170,7 +170,7 @@ contract MinerAPI {
     function change_multiaddresses(bytes memory actor_code, MinerTypes.ChangeMultiaddrsParams memory params) public {
         bytes memory raw_request = params.serialize();
 
-        bytes memory raw_response = Misc.call_actor(1063480576, actor_code, raw_request);
+        bytes memory raw_response = Misc.call_actor(MinerTypes.ChangeMultiaddrsMethodNum, actor_code, raw_request);
 
         bytes memory result = Misc.getDataFromActorResponse(raw_response);
 
@@ -181,7 +181,7 @@ contract MinerAPI {
     function repay_debt(bytes memory actor_code) public {
         bytes memory raw_request = new bytes(0);
 
-        bytes memory raw_response = Misc.call_actor(3665352697, actor_code, raw_request);
+        bytes memory raw_response = Misc.call_actor(MinerTypes.RepayDebtMethodNum, actor_code, raw_request);
 
         bytes memory result = Misc.getDataFromActorResponse(raw_response);
 
@@ -192,7 +192,7 @@ contract MinerAPI {
     function confirm_change_worker_address(bytes memory actor_code) public {
         bytes memory raw_request = new bytes(0);
 
-        bytes memory raw_response = Misc.call_actor(2354970453, actor_code, raw_request);
+        bytes memory raw_response = Misc.call_actor(MinerTypes.ConfirmChangeWorkerAddressMethodNum, actor_code, raw_request);
 
         bytes memory result = Misc.getDataFromActorResponse(raw_response);
 
@@ -203,7 +203,7 @@ contract MinerAPI {
     function get_peer_id(bytes memory actor_code) public returns (MinerTypes.GetPeerIDReturn memory) {
         bytes memory raw_request = new bytes(0);
 
-        bytes memory raw_response = Misc.call_actor(2812875329, actor_code, raw_request);
+        bytes memory raw_response = Misc.call_actor(MinerTypes.GetPeerIDMethodNum, actor_code, raw_request);
 
         bytes memory result = Misc.getDataFromActorResponse(raw_response);
 
@@ -217,7 +217,7 @@ contract MinerAPI {
     function get_multiaddresses(bytes memory actor_code) public returns (MinerTypes.GetMultiaddrsReturn memory) {
         bytes memory raw_request = new bytes(0);
 
-        bytes memory raw_response = Misc.call_actor(1332909407, actor_code, raw_request);
+        bytes memory raw_response = Misc.call_actor(MinerTypes.GetMultiaddrsMethodNum, actor_code, raw_request);
 
         bytes memory result = Misc.getDataFromActorResponse(raw_response);
 
