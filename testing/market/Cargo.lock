@@ -942,7 +942,7 @@ dependencies = [
 [[package]]
 name = "fil_actor_eam"
 version = "10.0.0-alpha.1"
-source = "git+https://github.com/filecoin-project/builtin-actors?branch=next#ec7d3f2f65941737c90f7d2e41047c6aead1d771"
+source = "git+https://github.com/filecoin-project/builtin-actors?branch=next#a30ee4e034988b1f8f894b5c24e684457f31c8b8"
 dependencies = [
  "anyhow",
  "cid",
@@ -963,7 +963,7 @@ dependencies = [
 [[package]]
 name = "fil_actors_runtime"
 version = "10.0.0-alpha.1"
-source = "git+https://github.com/filecoin-project/builtin-actors?branch=next#ec7d3f2f65941737c90f7d2e41047c6aead1d771"
+source = "git+https://github.com/filecoin-project/builtin-actors?branch=next#a30ee4e034988b1f8f894b5c24e684457f31c8b8"
 dependencies = [
  "anyhow",
  "byteorder",
@@ -2663,9 +2663,9 @@ checksum = "6bdef32e8150c2a081110b42772ffe7d7c9032b606bc226c8260fd97e0976601"
 
 [[package]]
 name = "syn"
-version = "1.0.104"
+version = "1.0.105"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4ae548ec36cf198c0ef7710d3c230987c2d6d7bd98ad6edc0274462724c585ce"
+checksum = "60b9b43d45702de4c839cb9b51d9f529c5dd26a4aff255b42b1ebc03e88ee908"
 dependencies = [
  "proc-macro2",
  "quote",
