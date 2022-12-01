@@ -11,3 +11,6 @@ You can check the Solidity API repo here [:link:](https://github.com/Zondax/fevm
 
 We have also created an NPM package to facilitate its integration [:link:](https://www.npmjs.com/package/@zondax/filecoin-solidity-api)
 
+### Disclaimer :warning::warning:
+
+The project is actually on **beta**. Please, feel free to report any possible bug you encounter with while you make use of it.

@@ -12,6 +12,11 @@ _Please visit our website at [zondax.ch](https://www.zondax.ch)_
 
 ---
 
+## :warning::warning: DISCLAIMER :warning::warning:
+
+#### This project is in beta stage. Please, feel free to report any bug you encounter with.
+
+---
 
 ## Looking for the documentation? :books::books:
 We have built this beautiful website for you!
