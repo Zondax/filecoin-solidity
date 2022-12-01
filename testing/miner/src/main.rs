@@ -75,7 +75,7 @@ fn main() {
 
     let actor_state = ActorState {
         // CID of Accounts actor. You get this as output from builtin-actors compiling process
-        code: Cid::from_str("bafk2bzaceapwdyvowtd5v4blmntzqkdienejy4mlrl53mua55xgftdqoggoe4").unwrap(),
+        code: Cid::from_str("bafk2bzacedwtrdnnb777mbyh2z5viy4m24gfxxrlq7tbcf6is7yo4sqpm4iv4").unwrap(),
         // code: Cid::from_str("bafk2bzacecj7v5ur5qk4vn3xbvgsizl35e42l3yaankmxu6dcoouv4mkphsjq").unwrap(),
         state: cid,
         sequence: 0,
@@ -84,7 +84,7 @@ fn main() {
     };
 
     state_tree
-        .set_actor(&Address::new_id(assigned_addr), actor_state)
+        .set_actor(assigned_addr, actor_state)
         .unwrap();
     // Instantiate machine
     tester.instantiate_machine(DummyExterns).unwrap();
@@ -110,7 +110,7 @@ fn main() {
 
     let exec_params = fil_actor_init::ExecParams{
         // CID of StorageMiner actor. You get this as output from builtin-actors compiling process
-        code_cid: Cid::from_str("bafk2bzaceazmjegx7urapdpohpos7tud5m4w7doxsetbjo5tx7y7wciyirphi").unwrap(),
+        code_cid: Cid::from_str("bafk2bzacedexvfprcccv3kq4ausjfz4ip7uvudxchkcglg7sz5z42jwvhlyn2").unwrap(),
         // code_cid: Cid::from_str("bafk2bzacedgixfd465634uihet3u57vugbbp6s5sseb76phti3cexx66ers3i").unwrap(),
         constructor_params: RawBytes::serialize(constructor_params).unwrap(),
     };
@@ -127,6 +127,8 @@ fn main() {
     let res = executor
     .execute_message(message, ApplyKind::Explicit, 100)
     .unwrap();
+
+    dbg!(&res);
 
     let exec_return : ExecReturn = RawBytes::deserialize(&res.msg_receipt.return_data).unwrap();
 
