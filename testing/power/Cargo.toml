@@ -12,9 +12,6 @@ fvm = { version = "3.0.0-alpha.12", default-features = false, features = ["m2-na
 fvm_ipld_encoding = { version = "0.3.0" }
 fvm_integration_tests = { version = "0.1.1-alpha.1", git = "https://github.com/rllola/ref-fvm", branch = "lola/fixes" }
 
-bls-signatures = "0.13.0"
-rand_core = "0.6.4"
-
 serde = { version = "1.0", features = ["derive"] }
 serde_tuple = "0.5"
 wabt = "0.10.0"

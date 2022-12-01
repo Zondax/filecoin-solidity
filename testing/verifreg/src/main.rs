@@ -1,26 +1,17 @@
 use fvm_integration_tests::tester::{Account, Tester};
 use fvm_integration_tests::dummy::DummyExterns;
 use fvm_integration_tests::bundle;
-use fvm_ipld_encoding::{strict_bytes, BytesDe, tuple::*};
+use fvm_ipld_encoding::{strict_bytes, tuple::*};
 use fvm_shared::state::StateTreeVersion;
 use fvm_shared::version::NetworkVersion;
 use fvm_ipld_blockstore::MemoryBlockstore;
-use fvm_shared::address::Address;
 use std::env;
 use fvm_shared::message::Message;
 use fvm::executor::{ApplyKind, Executor};
 use fil_actor_eam::Return;
-use fil_actor_init::ExecReturn;
 use fvm_ipld_encoding::RawBytes;
-use fil_actors_runtime::{EAM_ACTOR_ADDR, INIT_ACTOR_ADDR};
-use cid::Cid;
-use std::str::FromStr;
-use rand_core::OsRng;
-use bls_signatures::Serialize;
-use multihash::Code;
-use fvm_ipld_encoding::CborStore;
-use fvm::state_tree::{ActorState};
-use fvm_shared::econ::TokenAmount;
+use fil_actors_runtime::{EAM_ACTOR_ADDR};
+
 
 const WASM_COMPILED_PATH: &str =
    "../../build/v0.8/VerifRegAPI.bin";
@@ -80,6 +71,6 @@ fn main() {
 
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
 
-    let exec_return : Return = RawBytes::deserialize(&res.msg_receipt.return_data).unwrap();
+    let _exec_return : Return = RawBytes::deserialize(&res.msg_receipt.return_data).unwrap();
 
 }
