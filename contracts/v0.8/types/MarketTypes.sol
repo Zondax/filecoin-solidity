@@ -33,8 +33,8 @@ library MarketTypes {
     }
 
     struct GetBalanceReturn {
-        uint256 balance;
-        uint256 locked;
+        int256 balance;
+        int256 locked;
     }
 
     struct GetDealDataCommitmentParams {
