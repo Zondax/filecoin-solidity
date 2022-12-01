@@ -43,7 +43,7 @@ sidebar_position: 2
 | Constructor                              | :heavy_multiplication_x: |
 | AddBalance                               | :heavy_check_mark:       |
 | WithdrawBalance                          | :heavy_check_mark:       |
-| PublishStorageDeals                      | :heavy_multiplication_x: |
+| PublishStorageDeals                      | :heavy_check_mark:       |
 | VerifyDealsForActivation                 | :heavy_multiplication_x: |
 | ActivateDeals                            | :heavy_multiplication_x: |
 | OnMinerSectorsTerminate                  | :heavy_multiplication_x: |
@@ -64,8 +64,8 @@ sidebar_position: 2
 | Miner                                    |                          |
 | Constructor                              | :heavy_multiplication_x: |
 | ControlAddresses                         | :heavy_multiplication_x: |
-| ChangeWorkerAddress                      | :heavy_multiplication_x: |
-| ChangePeerID                             | :heavy_multiplication_x: |
+| ChangeWorkerAddress                      | :heavy_check_mark:       |
+| ChangePeerID                             | :heavy_check_mark:       |
 | SubmitWindowedPoSt                       | :heavy_multiplication_x: |
 | PreCommitSector                          | :heavy_multiplication_x: |
 | ProveCommitSector                        | :heavy_multiplication_x: |
@@ -77,14 +77,14 @@ sidebar_position: 2
 | CheckSectorProven                        | :heavy_multiplication_x: |
 | ApplyRewards                             | :heavy_multiplication_x: |
 | ReportConsensusFault                     | :heavy_multiplication_x: |
-| WithdrawBalance                          | :heavy_multiplication_x: |
+| WithdrawBalance                          | :heavy_check_mark:       |
 | ConfirmSectorProofsValid                 | :heavy_multiplication_x: |
-| ChangeMultiaddrs                         | :heavy_multiplication_x: |
+| ChangeMultiaddrs                         | :heavy_check_mark:       |
 | CompactPartitions                        | :heavy_multiplication_x: |
 | CompactSectorNumbers                     | :heavy_multiplication_x: |
 | ConfirmUpdateWorkerKey                   | :heavy_multiplication_x: |
-| RepayDebt                                | :heavy_multiplication_x: |
-| ChangeOwnerAddress                        | :heavy_check_mark:       |
+| RepayDebt                                | :heavy_check_mark:       |
+| ChangeOwnerAddress                       | :heavy_check_mark:       |
 | DisputeWindowedPoSt                      | :heavy_multiplication_x: |
 | PreCommitSectorBatch                     | :heavy_multiplication_x: |
 | ProveCommitAggregate                     | :heavy_multiplication_x: |
@@ -99,7 +99,7 @@ sidebar_position: 2
 | GetSectorSize                            | :heavy_check_mark:       |
 | GetVestingFunds                          | :heavy_check_mark:       |
 | GetAvailableBalance                      | :heavy_check_mark:       |
-| Read peer ID, multiaddr                  | :heavy_multiplication_x: |
+| Read peer ID, multiaddr                  | :heavy_check_mark:       |
 | Read pre-commit deposit                  | :heavy_multiplication_x: |
 | Read initial pledge total                | :heavy_multiplication_x: |
 | Read fee debt                            | :heavy_multiplication_x: |
@@ -134,8 +134,8 @@ sidebar_position: 2
 | UpdatePledgeTotal                        | :heavy_multiplication_x: |
 | SubmitPoRepForBulkVerify                 | :heavy_multiplication_x: |
 | CurrentTotalPower                        | :heavy_multiplication_x: |
-| NetworkRawPower                          | :heavy_multiplication_x: |
-| MinerRawPower                            | :heavy_multiplication_x: |
+| NetworkRawPower                          | :heavy_check_mark:       |
+| MinerRawPower                            | :heavy_check_mark:       |
 | Get miner count, consensus count         | :heavy_check_mark:       |
 | Compute pledge collateral for new sector | :heavy_multiplication_x: |
 | Get network bytes committed?             | :heavy_multiplication_x: |
@@ -159,12 +159,12 @@ sidebar_position: 2
 | RemoveVerifier                           | :heavy_multiplication_x: |
 | AddVerifiedClient                        | :heavy_check_mark:       |
 | RemoveVerifiedClientDataCap              | :heavy_multiplication_x: |
-| RemoveExpiredAllocations                 | :heavy_multiplication_x: |
+| RemoveExpiredAllocations                 | :heavy_check_mark:       |
 | ClaimAllocations                         | :heavy_multiplication_x: |
 | GetClaims                                | :heavy_check_mark:       |
-| ExtendClaimTerms                         | :heavy_multiplication_x: |
-| RemoveExpiredClaims                      | :heavy_multiplication_x: |
-| UniversalReceiverHook                    | :heavy_multiplication_x: |
+| ExtendClaimTerms                         | :heavy_check_mark:       |
+| RemoveExpiredClaims                      | :heavy_check_mark:       |
+| UniversalReceiverHook                    | :heavy_check_mark:       |
 | List/get allocations                     | :heavy_multiplication_x: |
 | List claims                              | :heavy_multiplication_x: |
 | List/check verifiers                     | :heavy_multiplication_x: |
