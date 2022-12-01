@@ -942,7 +942,7 @@ dependencies = [
 [[package]]
 name = "fil_actor_eam"
 version = "10.0.0-alpha.1"
-source = "git+https://github.com/filecoin-project/builtin-actors?branch=next#a30ee4e034988b1f8f894b5c24e684457f31c8b8"
+source = "git+https://github.com/filecoin-project/builtin-actors?branch=next#77f6e8f9be74473fcbc82977299a77abe1a65656"
 dependencies = [
  "anyhow",
  "cid",
@@ -963,7 +963,7 @@ dependencies = [
 [[package]]
 name = "fil_actors_runtime"
 version = "10.0.0-alpha.1"
-source = "git+https://github.com/filecoin-project/builtin-actors?branch=next#a30ee4e034988b1f8f894b5c24e684457f31c8b8"
+source = "git+https://github.com/filecoin-project/builtin-actors?branch=next#77f6e8f9be74473fcbc82977299a77abe1a65656"
 dependencies = [
  "anyhow",
  "byteorder",
@@ -1206,7 +1206,7 @@ dependencies = [
 [[package]]
 name = "fvm"
 version = "3.0.0-alpha.12"
-source = "git+https://github.com/rllola/ref-fvm?branch=lola/fixes#ea4faf32ab0f388989fae13963242382256be20a"
+source = "git+https://github.com/rllola/ref-fvm?branch=lola/fixes#1c240e0a39d562d944412fb19a041bc210ff02a8"
 dependencies = [
  "anyhow",
  "blake2b_simd",
@@ -1223,6 +1223,7 @@ dependencies = [
  "fvm_ipld_hamt",
  "fvm_shared",
  "lazy_static",
+ "libipld-core 0.13.1",
  "log",
  "multihash",
  "num-derive",
@@ -1253,7 +1254,7 @@ dependencies = [
 [[package]]
 name = "fvm_integration_tests"
 version = "0.1.1-alpha.1"
-source = "git+https://github.com/rllola/ref-fvm?branch=lola/fixes#ea4faf32ab0f388989fae13963242382256be20a"
+source = "git+https://github.com/rllola/ref-fvm?branch=lola/fixes#1c240e0a39d562d944412fb19a041bc210ff02a8"
 dependencies = [
  "anyhow",
  "cid",
@@ -1281,7 +1282,7 @@ dependencies = [
 [[package]]
 name = "fvm_ipld_amt"
 version = "0.5.0"
-source = "git+https://github.com/rllola/ref-fvm?branch=lola/fixes#ea4faf32ab0f388989fae13963242382256be20a"
+source = "git+https://github.com/rllola/ref-fvm?branch=lola/fixes#1c240e0a39d562d944412fb19a041bc210ff02a8"
 dependencies = [
  "anyhow",
  "cid",
@@ -1296,7 +1297,7 @@ dependencies = [
 [[package]]
 name = "fvm_ipld_blockstore"
 version = "0.1.1"
-source = "git+https://github.com/rllola/ref-fvm?branch=lola/fixes#ea4faf32ab0f388989fae13963242382256be20a"
+source = "git+https://github.com/rllola/ref-fvm?branch=lola/fixes#1c240e0a39d562d944412fb19a041bc210ff02a8"
 dependencies = [
  "anyhow",
  "cid",
@@ -1306,7 +1307,7 @@ dependencies = [
 [[package]]
 name = "fvm_ipld_car"
 version = "0.6.0"
-source = "git+https://github.com/rllola/ref-fvm?branch=lola/fixes#ea4faf32ab0f388989fae13963242382256be20a"
+source = "git+https://github.com/rllola/ref-fvm?branch=lola/fixes#1c240e0a39d562d944412fb19a041bc210ff02a8"
 dependencies = [
  "cid",
  "futures",
@@ -1320,7 +1321,7 @@ dependencies = [
 [[package]]
 name = "fvm_ipld_encoding"
 version = "0.3.0"
-source = "git+https://github.com/rllola/ref-fvm?branch=lola/fixes#ea4faf32ab0f388989fae13963242382256be20a"
+source = "git+https://github.com/rllola/ref-fvm?branch=lola/fixes#1c240e0a39d562d944412fb19a041bc210ff02a8"
 dependencies = [
  "anyhow",
  "cid",
@@ -1336,7 +1337,7 @@ dependencies = [
 [[package]]
 name = "fvm_ipld_hamt"
 version = "0.6.1"
-source = "git+https://github.com/rllola/ref-fvm?branch=lola/fixes#ea4faf32ab0f388989fae13963242382256be20a"
+source = "git+https://github.com/rllola/ref-fvm?branch=lola/fixes#1c240e0a39d562d944412fb19a041bc210ff02a8"
 dependencies = [
  "anyhow",
  "byteorder",
@@ -1344,7 +1345,7 @@ dependencies = [
  "forest_hash_utils",
  "fvm_ipld_blockstore",
  "fvm_ipld_encoding",
- "libipld-core",
+ "libipld-core 0.14.0",
  "multihash",
  "once_cell",
  "serde",
@@ -1355,7 +1356,7 @@ dependencies = [
 [[package]]
 name = "fvm_sdk"
 version = "3.0.0-alpha.15"
-source = "git+https://github.com/rllola/ref-fvm?branch=lola/fixes#ea4faf32ab0f388989fae13963242382256be20a"
+source = "git+https://github.com/rllola/ref-fvm?branch=lola/fixes#1c240e0a39d562d944412fb19a041bc210ff02a8"
 dependencies = [
  "cid",
  "fvm_ipld_encoding",
@@ -1369,7 +1370,7 @@ dependencies = [
 [[package]]
 name = "fvm_shared"
 version = "3.0.0-alpha.13"
-source = "git+https://github.com/rllola/ref-fvm?branch=lola/fixes#ea4faf32ab0f388989fae13963242382256be20a"
+source = "git+https://github.com/rllola/ref-fvm?branch=lola/fixes#1c240e0a39d562d944412fb19a041bc210ff02a8"
 dependencies = [
  "anyhow",
  "bitflags",
@@ -1620,6 +1621,21 @@ name = "libc"
 version = "0.2.137"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "fc7fcc620a3bff7cdd7a365be3376c97191aeaccc2a603e600951e452615bf89"
+
+[[package]]
+name = "libipld-core"
+version = "0.13.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "fbdd758764f9680a818af33c31db733eb7c45224715d8816b9dcf0548c75f7c5"
+dependencies = [
+ "anyhow",
+ "cid",
+ "core2",
+ "multibase",
+ "multihash",
+ "serde",
+ "thiserror",
+]
 
 [[package]]
 name = "libipld-core"
