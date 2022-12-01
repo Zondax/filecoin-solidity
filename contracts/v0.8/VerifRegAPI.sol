@@ -22,7 +22,7 @@ contract VerifRegAPI {
     function get_claims(VerifRegTypes.GetClaimsParams memory params) public returns (VerifRegTypes.GetClaimsReturn memory) {
         bytes memory raw_request = params.serialize();
 
-        bytes memory raw_response = Misc.call_actor(2199871187, hex"0005", raw_request);
+        bytes memory raw_response = Misc.call_actor(VerifRegTypes.GetClaimsMethodNum, VerifRegTypes.ActorCode, raw_request);
 
         bytes memory result = Misc.getDataFromActorResponse(raw_response);
 
@@ -35,7 +35,7 @@ contract VerifRegAPI {
     function add_verified_client(VerifRegTypes.AddVerifierClientParams memory params) public {
         bytes memory raw_request = params.serialize();
 
-        bytes memory raw_response = Misc.call_actor(3916220144, hex"0005", raw_request);
+        bytes memory raw_response = Misc.call_actor(VerifRegTypes.AddVerifierClientMethodNum, VerifRegTypes.ActorCode, raw_request);
 
         bytes memory result = Misc.getDataFromActorResponse(raw_response);
 
@@ -47,7 +47,7 @@ contract VerifRegAPI {
     ) public returns (VerifRegTypes.RemoveExpiredAllocationsReturn memory) {
         bytes memory raw_request = params.serialize();
 
-        bytes memory raw_response = Misc.call_actor(2873373899, hex"0005", raw_request);
+        bytes memory raw_response = Misc.call_actor(VerifRegTypes.RemoveExpiredAllocationsMethodNum, VerifRegTypes.ActorCode, raw_request);
 
         bytes memory result = Misc.getDataFromActorResponse(raw_response);
 
@@ -60,7 +60,7 @@ contract VerifRegAPI {
     function extend_claim_terms(VerifRegTypes.ExtendClaimTermsParams memory params) public returns (CommonTypes.BatchReturn memory) {
         bytes memory raw_request = params.serialize();
 
-        bytes memory raw_response = Misc.call_actor(1752273514, hex"0005", raw_request);
+        bytes memory raw_response = Misc.call_actor(VerifRegTypes.ExtendClaimTermsMethodNum, VerifRegTypes.ActorCode, raw_request);
 
         bytes memory result = Misc.getDataFromActorResponse(raw_response);
 
@@ -75,7 +75,7 @@ contract VerifRegAPI {
     ) public returns (VerifRegTypes.RemoveExpiredClaimsReturn memory) {
         bytes memory raw_request = params.serialize();
 
-        bytes memory raw_response = Misc.call_actor(2873373899, hex"0005", raw_request);
+        bytes memory raw_response = Misc.call_actor(VerifRegTypes.RemoveExpiredClaimsMethodNum, VerifRegTypes.ActorCode, raw_request);
 
         bytes memory result = Misc.getDataFromActorResponse(raw_response);
 
@@ -90,7 +90,7 @@ contract VerifRegAPI {
     ) public returns (VerifRegTypes.AllocationsResponse memory) {
         bytes memory raw_request = params.serialize();
 
-        bytes memory raw_response = Misc.call_actor(3726118371, hex"0005", raw_request);
+        bytes memory raw_response = Misc.call_actor(VerifRegTypes.UniversalReceiverMethodNum, VerifRegTypes.ActorCode, raw_request);
 
         bytes memory result = Misc.getDataFromActorResponse(raw_response);
 
