@@ -61,8 +61,10 @@ contract MarketAPI {
 
         bytes memory raw_response = Misc.call_actor(method_num, hex"0005", raw_request);
 
+        bytes memory result = Misc.getDataFromActorResponse(raw_response);
+
         MarketTypes.WithdrawBalanceReturn memory response;
-        response.deserialize(raw_response);
+        response.deserialize(result);
 
         return response;
     }
@@ -75,8 +77,10 @@ contract MarketAPI {
 
         bytes memory raw_response = Misc.call_actor(method_num, hex"0005", raw_request);
 
+        bytes memory result = Misc.getDataFromActorResponse(raw_response);
+
         MarketTypes.GetBalanceReturn memory response;
-        response.deserialize(raw_response);
+        response.deserialize(result);
 
         return response;
     }
@@ -91,8 +95,10 @@ contract MarketAPI {
 
         bytes memory raw_response = Misc.call_actor(method_num, hex"0005", raw_request);
 
+        bytes memory result = Misc.getDataFromActorResponse(raw_response);
+
         MarketTypes.GetDealDataCommitmentReturn memory response;
-        response.deserialize(raw_response);
+        response.deserialize(result);
 
         return response;
     }
@@ -104,8 +110,10 @@ contract MarketAPI {
 
         bytes memory raw_response = Misc.call_actor(method_num, hex"0005", raw_request);
 
+        bytes memory result = Misc.getDataFromActorResponse(raw_response);
+
         MarketTypes.GetDealClientReturn memory response;
-        response.deserialize(raw_response);
+        response.deserialize(result);
 
         return response;
     }
@@ -117,8 +125,10 @@ contract MarketAPI {
 
         bytes memory raw_response = Misc.call_actor(method_num, hex"0005", raw_request);
 
+        bytes memory result = Misc.getDataFromActorResponse(raw_response);
+
         MarketTypes.GetDealProviderReturn memory response;
-        response.deserialize(raw_response);
+        response.deserialize(result);
 
         return response;
     }
@@ -130,8 +140,10 @@ contract MarketAPI {
 
         bytes memory raw_response = Misc.call_actor(method_num, hex"0005", raw_request);
 
+        bytes memory result = Misc.getDataFromActorResponse(raw_response);
+
         MarketTypes.GetDealLabelReturn memory response;
-        response.deserialize(raw_response);
+        response.deserialize(result);
 
         return response;
     }
@@ -143,8 +155,10 @@ contract MarketAPI {
 
         bytes memory raw_response = Misc.call_actor(method_num, hex"0005", raw_request);
 
+        bytes memory result = Misc.getDataFromActorResponse(raw_response);
+
         MarketTypes.GetDealTermReturn memory response;
-        response.deserialize(raw_response);
+        response.deserialize(result);
 
         return response;
     }
@@ -158,8 +172,10 @@ contract MarketAPI {
 
         bytes memory raw_response = Misc.call_actor(method_num, hex"0005", raw_request);
 
+        bytes memory result = Misc.getDataFromActorResponse(raw_response);
+
         MarketTypes.GetDealEpochPriceReturn memory response;
-        response.deserialize(raw_response);
+        response.deserialize(result);
 
         return response;
     }
@@ -173,8 +189,10 @@ contract MarketAPI {
 
         bytes memory raw_response = Misc.call_actor(method_num, hex"0005", raw_request);
 
+        bytes memory result = Misc.getDataFromActorResponse(raw_response);
+
         MarketTypes.GetDealClientCollateralReturn memory response;
-        response.deserialize(raw_response);
+        response.deserialize(result);
 
         return response;
     }
@@ -188,8 +206,10 @@ contract MarketAPI {
 
         bytes memory raw_response = Misc.call_actor(method_num, hex"0005", raw_request);
 
+        bytes memory result = Misc.getDataFromActorResponse(raw_response);
+
         MarketTypes.GetDealProviderCollateralReturn memory response;
-        response.deserialize(raw_response);
+        response.deserialize(result);
 
         return response;
     }
@@ -202,8 +222,10 @@ contract MarketAPI {
 
         bytes memory raw_response = Misc.call_actor(method_num, hex"0005", raw_request);
 
+        bytes memory result = Misc.getDataFromActorResponse(raw_response);
+
         MarketTypes.GetDealVerifiedReturn memory response;
-        response.deserialize(raw_response);
+        response.deserialize(result);
 
         return response;
     }
@@ -219,8 +241,10 @@ contract MarketAPI {
 
         bytes memory raw_response = Misc.call_actor(method_num, hex"0005", raw_request);
 
+        bytes memory result = Misc.getDataFromActorResponse(raw_response);
+
         MarketTypes.GetDealActivationReturn memory response;
-        response.deserialize(raw_response);
+        response.deserialize(result);
 
         return response;
     }
@@ -235,8 +259,10 @@ contract MarketAPI {
 
         bytes memory raw_response = Misc.call_actor(method_num, hex"0005", raw_request);
 
+        bytes memory result = Misc.getDataFromActorResponse(raw_response);
+
         MarketTypes.PublishStorageDealsReturn memory response;
-        response.deserialize(raw_response);
+        response.deserialize(result);
 
         return response;
     }
