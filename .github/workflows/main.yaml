@@ -195,7 +195,7 @@ jobs:
         run: make
       - name: Run tests on power
         run: |
-          cd testing/market
+          cd testing/power
           rustup target add wasm32-unknown-unknown
           RUST_BACKTRACE=1 cargo r
       - name: Save crates
