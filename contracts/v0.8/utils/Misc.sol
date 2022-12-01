@@ -12,7 +12,18 @@ library Misc {
         }
     }
 
+    function toInt256(bytes memory _bytes, uint offset) internal pure returns (int256 value) {
+        return int256(toUint256(_bytes, offset));
+    }
+
     function toBytes(uint256 x) internal pure returns (bytes memory b) {
+        b = new bytes(32);
+        assembly {
+            mstore(add(b, 32), x)
+        }
+    }
+
+    function toBytes(int256 x) internal pure returns (bytes memory b) {
         b = new bytes(32);
         assembly {
             mstore(add(b, 32), x)
