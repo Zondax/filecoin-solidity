@@ -12,6 +12,7 @@ uint64 constant CODEC = 0x71;
 /// @title This contract is a proxy to the singleton Storage Market actor (address: f05). Calling one of its methods will result in a cross-actor call being performed.
 /// @author Zondax AG
 contract MarketAPI {
+    using AddressCBOR for bytes;
     using WithdrawBalanceCBOR for MarketTypes.WithdrawBalanceParams;
     using WithdrawBalanceCBOR for MarketTypes.WithdrawBalanceReturn;
     using GetBalanceCBOR for MarketTypes.GetBalanceReturn;
@@ -42,16 +43,18 @@ contract MarketAPI {
     function add_balance(bytes memory provider_or_client) public {
         uint64 method_num = 0x02;
 
-        bytes memory raw_response = Misc.call_actor(method_num, hex"0005", provider_or_client);
+        bytes memory raw_request = provider_or_client.serializeAddress();
+
+        bytes memory raw_response = Misc.call_actor(method_num, hex"0005", raw_request);
+
+        Misc.getDataFromActorResponse(raw_response);
 
         return;
     }
 
     /// @notice Attempt to withdraw the specified amount from the balance held in escrow.
     /// @notice If less than the specified amount is available, yields the entire available balance.
-    function withdraw_balance(MarketTypes.WithdrawBalanceParams memory params) public 
-        returns (MarketTypes.WithdrawBalanceReturn memory)
-    {
+    function withdraw_balance(MarketTypes.WithdrawBalanceParams memory params) public returns (MarketTypes.WithdrawBalanceReturn memory) {
         bytes memory raw_request = params.serialize();
 
         uint64 method_num = 0x03;
@@ -68,7 +71,9 @@ contract MarketAPI {
     function get_balance(bytes memory addr) public returns (MarketTypes.GetBalanceReturn memory) {
         uint64 method_num = 726108461;
 
-        bytes memory raw_response = Misc.call_actor(method_num, hex"0005", addr);
+        bytes memory raw_request = addr.serializeAddress();
+
+        bytes memory raw_response = Misc.call_actor(method_num, hex"0005", raw_request);
 
         MarketTypes.GetBalanceReturn memory response;
         response.deserialize(raw_response);
@@ -106,9 +111,7 @@ contract MarketAPI {
     }
 
     /// @return the provider of a deal proposal.
-    function get_deal_provider(
-        MarketTypes.GetDealProviderParams memory params
-    ) public returns (MarketTypes.GetDealProviderReturn memory) {
+    function get_deal_provider(MarketTypes.GetDealProviderParams memory params) public returns (MarketTypes.GetDealProviderReturn memory) {
         bytes memory raw_request = params.serialize();
         uint64 method_num = 935081690;
 
@@ -193,9 +196,7 @@ contract MarketAPI {
 
     /// @return the verified flag for a deal proposal.
     /// @notice Note that the source of truth for verified allocations and claims is the verified registry actor.
-    function get_deal_verified(
-        MarketTypes.GetDealVerifiedParams memory params
-    ) public returns (MarketTypes.GetDealVerifiedReturn memory) {
+    function get_deal_verified(MarketTypes.GetDealVerifiedParams memory params) public returns (MarketTypes.GetDealVerifiedReturn memory) {
         bytes memory raw_request = params.serialize();
         uint64 method_num = 2627389465;
 

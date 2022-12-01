@@ -19,7 +19,7 @@ library WithdrawBalanceCBOR {
 
         buf.startFixedArray(2);
         buf.writeBytes(params.provider_or_client);
-        buf.writeUInt256(params.tokenAmount);
+        buf.writeBytes(Misc.toBytes(params.tokenAmount));
 
         return buf.data();
     }
@@ -35,6 +35,30 @@ library WithdrawBalanceCBOR {
         (amount_withdrawn, byteIdx) = rawResp.readUInt256(byteIdx);
 
         ret.amount_withdrawn = amount_withdrawn;
+    }
+}
+
+library AddressCBOR {
+    using CBOR for CBOR.CBORBuffer;
+    using CBORDecoder for bytes;
+
+    function serializeAddress(bytes memory addr) internal pure returns (bytes memory) {
+        // FIXME what should the max length be on the buffer?
+        CBOR.CBORBuffer memory buf = CBOR.create(64);
+
+        buf.writeBytes(addr);
+
+        return buf.data();
+    }
+
+    function deserializeAddress(bytes memory ret) internal pure returns (bytes memory) {
+        bytes memory addr;
+        uint byteIdx = 0;
+        uint len;
+
+        (addr, byteIdx) = ret.readBytes(byteIdx);
+
+        return addr;
     }
 }
 
@@ -66,26 +90,21 @@ library GetDealDataCommitmentCBOR {
         // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
-        buf.startFixedArray(1);
         buf.writeUInt64(params.id);
 
         return buf.data();
     }
 
     function deserialize(MarketTypes.GetDealDataCommitmentReturn memory ret, bytes memory rawResp) internal pure {
-        bytes memory data;
-        uint64 size;
         uint byteIdx = 0;
         uint len;
 
         (len, byteIdx) = rawResp.readFixedArray(byteIdx);
-        assert(len == 2);
 
-        (data, byteIdx) = rawResp.readBytes(byteIdx);
-        (size, byteIdx) = rawResp.readUInt64(byteIdx);
-
-        ret.data = data;
-        ret.size = size;
+        if (len > 0) {
+            (ret.data, byteIdx) = rawResp.readBytes(byteIdx);
+            (ret.size, byteIdx) = rawResp.readUInt64(byteIdx);
+        }
     }
 }
 
@@ -97,7 +116,6 @@ library GetDealClientCBOR {
         // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
-        buf.startFixedArray(1);
         buf.writeUInt64(params.id);
 
         return buf.data();
@@ -125,7 +143,6 @@ library GetDealProviderCBOR {
         // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
-        buf.startFixedArray(1);
         buf.writeUInt64(params.id);
 
         return buf.data();
@@ -153,7 +170,6 @@ library GetDealLabelCBOR {
         // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
-        buf.startFixedArray(1);
         buf.writeUInt64(params.id);
 
         return buf.data();
@@ -181,7 +197,6 @@ library GetDealTermCBOR {
         // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
-        buf.startFixedArray(1);
         buf.writeUInt64(params.id);
 
         return buf.data();
@@ -212,7 +227,6 @@ library GetDealEpochPriceCBOR {
         // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
-        buf.startFixedArray(1);
         buf.writeUInt64(params.id);
 
         return buf.data();
@@ -240,7 +254,6 @@ library GetDealClientCollateralCBOR {
         // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
-        buf.startFixedArray(1);
         buf.writeUInt64(params.id);
 
         return buf.data();
@@ -268,7 +281,6 @@ library GetDealProviderCollateralCBOR {
         // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
-        buf.startFixedArray(1);
         buf.writeUInt64(params.id);
 
         return buf.data();
@@ -296,7 +308,6 @@ library GetDealVerifiedCBOR {
         // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
-        buf.startFixedArray(1);
         buf.writeUInt64(params.id);
 
         return buf.data();
@@ -324,7 +335,6 @@ library GetDealActivationCBOR {
         // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
-        buf.startFixedArray(1);
         buf.writeUInt64(params.id);
 
         return buf.data();

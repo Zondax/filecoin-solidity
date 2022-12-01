@@ -8,7 +8,7 @@ import "./CommonTypes.sol";
 library MarketTypes {
     struct WithdrawBalanceParams {
         bytes provider_or_client;
-        uint256 tokenAmount;
+        int256 tokenAmount;
     }
 
     struct WithdrawBalanceReturn {
