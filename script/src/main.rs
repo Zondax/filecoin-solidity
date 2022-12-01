@@ -66,4 +66,35 @@ fn main() {
     println!("GetPeerIDExported {}", GetPeerIDExported);
     println!("GetMultiaddrsExported {}", GetMultiaddrsExported);
 
+
+    println!("POWER EXPORTED METHOD NUM");
+
+    let CreateMinerExported = frc42_dispatch::method_hash!("CreateMiner");
+    let NetworkRawPowerExported = frc42_dispatch::method_hash!("NetworkRawPower");
+    let MinerRawPowerExported = frc42_dispatch::method_hash!("MinerRawPower");
+    let MinerCountExported = frc42_dispatch::method_hash!("MinerCount");
+    let MinerConsensusCountExported = frc42_dispatch::method_hash!("MinerConsensusCount");
+
+    println!("CreateMinerExported {}", CreateMinerExported);
+    println!("NetworkRawPowerExported {}", NetworkRawPowerExported);
+    println!("MinerRawPowerExported {}", MinerRawPowerExported);
+    println!("MinerCountExported {}", MinerCountExported);
+    println!("MinerConsensusCountExported {}", MinerConsensusCountExported);
+
+
+    println!("VERIFIED REGISTRY EXPORTED METHOD NUM");
+
+    let AddVerifiedClientExported = frc42_dispatch::method_hash!("AddVerifiedClient");
+    let RemoveExpiredAllocationsExported = frc42_dispatch::method_hash!("RemoveExpiredAllocations");
+    let GetClaimsExported = frc42_dispatch::method_hash!("GetClaims");
+    let ExtendClaimTermsExported = frc42_dispatch::method_hash!("ExtendClaimTerms");
+    let RemoveExpiredClaimsExported = frc42_dispatch::method_hash!("RemoveExpiredClaims");
+    let UniversalReceiverHook = frc42_dispatch::method_hash!("Receive");
+
+    println!("AddVerifiedClientExported {}", AddVerifiedClientExported);
+    println!("RemoveExpiredAllocationsExported {}", RemoveExpiredAllocationsExported);
+    println!("GetClaimsExported {}", GetClaimsExported);
+    println!("ExtendClaimTermsExported {}", ExtendClaimTermsExported);
+    println!("RemoveExpiredClaimsExported {}", RemoveExpiredClaimsExported);
+    println!("UniversalReceiverHook {}", UniversalReceiverHook);
 }
