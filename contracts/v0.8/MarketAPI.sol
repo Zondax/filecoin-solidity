@@ -5,6 +5,7 @@ import "./types/MarketTypes.sol";
 import "./cbor/MarketCbor.sol";
 import "./types/CommonTypes.sol";
 import "./utils/Misc.sol";
+import "./utils/Actor.sol";
 
 /// @title This contract is a proxy to the singleton Storage Market actor (address: f05). Calling one of its methods will result in a cross-actor call being performed.
 /// @author Zondax AG
@@ -40,9 +41,9 @@ contract MarketAPI {
     function add_balance(bytes memory provider_or_client) public {
         bytes memory raw_request = provider_or_client.serializeAddress();
 
-        bytes memory raw_response = Misc.call_actor(MarketTypes.AddBalanceMethodNum, MarketTypes.ActorCode, raw_request);
+        bytes memory raw_response = Actor.call(MarketTypes.AddBalanceMethodNum, MarketTypes.ActorCode, raw_request);
 
-        Misc.getDataFromActorResponse(raw_response);
+        Actor.readRespData(raw_response);
 
         return;
     }
@@ -52,9 +53,9 @@ contract MarketAPI {
     function withdraw_balance(MarketTypes.WithdrawBalanceParams memory params) public returns (MarketTypes.WithdrawBalanceReturn memory) {
         bytes memory raw_request = params.serialize();
 
-        bytes memory raw_response = Misc.call_actor(MarketTypes.WithdrawBalanceMethodNum, MarketTypes.ActorCode, raw_request);
+        bytes memory raw_response = Actor.call(MarketTypes.WithdrawBalanceMethodNum, MarketTypes.ActorCode, raw_request);
 
-        bytes memory result = Misc.getDataFromActorResponse(raw_response);
+        bytes memory result = Actor.readRespData(raw_response);
 
         MarketTypes.WithdrawBalanceReturn memory response;
         response.deserialize(result);
@@ -66,9 +67,9 @@ contract MarketAPI {
     function get_balance(bytes memory addr) public returns (MarketTypes.GetBalanceReturn memory) {
         bytes memory raw_request = addr.serializeAddress();
 
-        bytes memory raw_response = Misc.call_actor(MarketTypes.GetBalanceMethodNum, MarketTypes.ActorCode, raw_request);
+        bytes memory raw_response = Actor.call(MarketTypes.GetBalanceMethodNum, MarketTypes.ActorCode, raw_request);
 
-        bytes memory result = Misc.getDataFromActorResponse(raw_response);
+        bytes memory result = Actor.readRespData(raw_response);
 
         MarketTypes.GetBalanceReturn memory response;
         response.deserialize(result);
@@ -83,9 +84,9 @@ contract MarketAPI {
     ) public returns (MarketTypes.GetDealDataCommitmentReturn memory) {
         bytes memory raw_request = params.serialize();
 
-        bytes memory raw_response = Misc.call_actor(MarketTypes.GetDealDataCommitmentMethodNum, MarketTypes.ActorCode, raw_request);
+        bytes memory raw_response = Actor.call(MarketTypes.GetDealDataCommitmentMethodNum, MarketTypes.ActorCode, raw_request);
 
-        bytes memory result = Misc.getDataFromActorResponse(raw_response);
+        bytes memory result = Actor.readRespData(raw_response);
 
         MarketTypes.GetDealDataCommitmentReturn memory response;
         response.deserialize(result);
@@ -97,9 +98,9 @@ contract MarketAPI {
     function get_deal_client(MarketTypes.GetDealClientParams memory params) public returns (MarketTypes.GetDealClientReturn memory) {
         bytes memory raw_request = params.serialize();
 
-        bytes memory raw_response = Misc.call_actor(MarketTypes.GetDealClientMethodNum, MarketTypes.ActorCode, raw_request);
+        bytes memory raw_response = Actor.call(MarketTypes.GetDealClientMethodNum, MarketTypes.ActorCode, raw_request);
 
-        bytes memory result = Misc.getDataFromActorResponse(raw_response);
+        bytes memory result = Actor.readRespData(raw_response);
 
         MarketTypes.GetDealClientReturn memory response;
         response.deserialize(result);
@@ -111,9 +112,9 @@ contract MarketAPI {
     function get_deal_provider(MarketTypes.GetDealProviderParams memory params) public returns (MarketTypes.GetDealProviderReturn memory) {
         bytes memory raw_request = params.serialize();
 
-        bytes memory raw_response = Misc.call_actor(MarketTypes.GetDealProviderMethodNum, MarketTypes.ActorCode, raw_request);
+        bytes memory raw_response = Actor.call(MarketTypes.GetDealProviderMethodNum, MarketTypes.ActorCode, raw_request);
 
-        bytes memory result = Misc.getDataFromActorResponse(raw_response);
+        bytes memory result = Actor.readRespData(raw_response);
 
         MarketTypes.GetDealProviderReturn memory response;
         response.deserialize(result);
@@ -125,9 +126,9 @@ contract MarketAPI {
     function get_deal_label(MarketTypes.GetDealLabelParams memory params) public returns (MarketTypes.GetDealLabelReturn memory) {
         bytes memory raw_request = params.serialize();
 
-        bytes memory raw_response = Misc.call_actor(MarketTypes.GetDealLabelMethodNum, MarketTypes.ActorCode, raw_request);
+        bytes memory raw_response = Actor.call(MarketTypes.GetDealLabelMethodNum, MarketTypes.ActorCode, raw_request);
 
-        bytes memory result = Misc.getDataFromActorResponse(raw_response);
+        bytes memory result = Actor.readRespData(raw_response);
 
         MarketTypes.GetDealLabelReturn memory response;
         response.deserialize(result);
@@ -139,9 +140,9 @@ contract MarketAPI {
     function get_deal_term(MarketTypes.GetDealTermParams memory params) public returns (MarketTypes.GetDealTermReturn memory) {
         bytes memory raw_request = params.serialize();
 
-        bytes memory raw_response = Misc.call_actor(MarketTypes.GetDealTermMethodNum, MarketTypes.ActorCode, raw_request);
+        bytes memory raw_response = Actor.call(MarketTypes.GetDealTermMethodNum, MarketTypes.ActorCode, raw_request);
 
-        bytes memory result = Misc.getDataFromActorResponse(raw_response);
+        bytes memory result = Actor.readRespData(raw_response);
 
         MarketTypes.GetDealTermReturn memory response;
         response.deserialize(result);
@@ -155,9 +156,9 @@ contract MarketAPI {
     ) public returns (MarketTypes.GetDealEpochPriceReturn memory) {
         bytes memory raw_request = params.serialize();
 
-        bytes memory raw_response = Misc.call_actor(MarketTypes.GetDealEpochPriceMethodNum, MarketTypes.ActorCode, raw_request);
+        bytes memory raw_response = Actor.call(MarketTypes.GetDealEpochPriceMethodNum, MarketTypes.ActorCode, raw_request);
 
-        bytes memory result = Misc.getDataFromActorResponse(raw_response);
+        bytes memory result = Actor.readRespData(raw_response);
 
         MarketTypes.GetDealEpochPriceReturn memory response;
         response.deserialize(result);
@@ -171,9 +172,9 @@ contract MarketAPI {
     ) public returns (MarketTypes.GetDealClientCollateralReturn memory) {
         bytes memory raw_request = params.serialize();
 
-        bytes memory raw_response = Misc.call_actor(MarketTypes.GetDealClientCollateralMethodNum, MarketTypes.ActorCode, raw_request);
+        bytes memory raw_response = Actor.call(MarketTypes.GetDealClientCollateralMethodNum, MarketTypes.ActorCode, raw_request);
 
-        bytes memory result = Misc.getDataFromActorResponse(raw_response);
+        bytes memory result = Actor.readRespData(raw_response);
 
         MarketTypes.GetDealClientCollateralReturn memory response;
         response.deserialize(result);
@@ -187,9 +188,9 @@ contract MarketAPI {
     ) public returns (MarketTypes.GetDealProviderCollateralReturn memory) {
         bytes memory raw_request = params.serialize();
 
-        bytes memory raw_response = Misc.call_actor(MarketTypes.GetDealProviderCollateralMethodNum, MarketTypes.ActorCode, raw_request);
+        bytes memory raw_response = Actor.call(MarketTypes.GetDealProviderCollateralMethodNum, MarketTypes.ActorCode, raw_request);
 
-        bytes memory result = Misc.getDataFromActorResponse(raw_response);
+        bytes memory result = Actor.readRespData(raw_response);
 
         MarketTypes.GetDealProviderCollateralReturn memory response;
         response.deserialize(result);
@@ -202,9 +203,9 @@ contract MarketAPI {
     function get_deal_verified(MarketTypes.GetDealVerifiedParams memory params) public returns (MarketTypes.GetDealVerifiedReturn memory) {
         bytes memory raw_request = params.serialize();
 
-        bytes memory raw_response = Misc.call_actor(MarketTypes.GetDealVerifiedMethodNum, MarketTypes.ActorCode, raw_request);
+        bytes memory raw_response = Actor.call(MarketTypes.GetDealVerifiedMethodNum, MarketTypes.ActorCode, raw_request);
 
-        bytes memory result = Misc.getDataFromActorResponse(raw_response);
+        bytes memory result = Actor.readRespData(raw_response);
 
         MarketTypes.GetDealVerifiedReturn memory response;
         response.deserialize(result);
@@ -220,9 +221,9 @@ contract MarketAPI {
     ) public returns (MarketTypes.GetDealActivationReturn memory) {
         bytes memory raw_request = params.serialize();
 
-        bytes memory raw_response = Misc.call_actor(MarketTypes.GetDealActivationMethodNum, MarketTypes.ActorCode, raw_request);
+        bytes memory raw_response = Actor.call(MarketTypes.GetDealActivationMethodNum, MarketTypes.ActorCode, raw_request);
 
-        bytes memory result = Misc.getDataFromActorResponse(raw_response);
+        bytes memory result = Actor.readRespData(raw_response);
 
         MarketTypes.GetDealActivationReturn memory response;
         response.deserialize(result);
@@ -236,9 +237,9 @@ contract MarketAPI {
     ) public returns (MarketTypes.PublishStorageDealsReturn memory) {
         bytes memory raw_request = params.serialize();
 
-        bytes memory raw_response = Misc.call_actor(MarketTypes.PublishStorageDealsMethodNum, MarketTypes.ActorCode, raw_request);
+        bytes memory raw_response = Actor.call(MarketTypes.PublishStorageDealsMethodNum, MarketTypes.ActorCode, raw_request);
 
-        bytes memory result = Misc.getDataFromActorResponse(raw_response);
+        bytes memory result = Actor.readRespData(raw_response);
 
         MarketTypes.PublishStorageDealsReturn memory response;
         response.deserialize(result);

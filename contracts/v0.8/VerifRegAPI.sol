@@ -4,6 +4,8 @@ pragma solidity >=0.4.25 <=0.8.17;
 import "./types/VerifRegTypes.sol";
 import "./cbor/VerifRegCbor.sol";
 
+import "./utils/Actor.sol";
+
 /// @title FIXME
 /// @author Zondax AG
 contract VerifRegAPI {
@@ -22,9 +24,9 @@ contract VerifRegAPI {
     function get_claims(VerifRegTypes.GetClaimsParams memory params) public returns (VerifRegTypes.GetClaimsReturn memory) {
         bytes memory raw_request = params.serialize();
 
-        bytes memory raw_response = Misc.call_actor(VerifRegTypes.GetClaimsMethodNum, VerifRegTypes.ActorCode, raw_request);
+        bytes memory raw_response = Actor.call(VerifRegTypes.GetClaimsMethodNum, VerifRegTypes.ActorCode, raw_request);
 
-        bytes memory result = Misc.getDataFromActorResponse(raw_response);
+        bytes memory result = Actor.readRespData(raw_response);
 
         VerifRegTypes.GetClaimsReturn memory response;
         response.deserialize(result);
@@ -35,9 +37,9 @@ contract VerifRegAPI {
     function add_verified_client(VerifRegTypes.AddVerifierClientParams memory params) public {
         bytes memory raw_request = params.serialize();
 
-        bytes memory raw_response = Misc.call_actor(VerifRegTypes.AddVerifierClientMethodNum, VerifRegTypes.ActorCode, raw_request);
+        bytes memory raw_response = Actor.call(VerifRegTypes.AddVerifierClientMethodNum, VerifRegTypes.ActorCode, raw_request);
 
-        bytes memory result = Misc.getDataFromActorResponse(raw_response);
+        bytes memory result = Actor.readRespData(raw_response);
 
         return;
     }
@@ -47,9 +49,9 @@ contract VerifRegAPI {
     ) public returns (VerifRegTypes.RemoveExpiredAllocationsReturn memory) {
         bytes memory raw_request = params.serialize();
 
-        bytes memory raw_response = Misc.call_actor(VerifRegTypes.RemoveExpiredAllocationsMethodNum, VerifRegTypes.ActorCode, raw_request);
+        bytes memory raw_response = Actor.call(VerifRegTypes.RemoveExpiredAllocationsMethodNum, VerifRegTypes.ActorCode, raw_request);
 
-        bytes memory result = Misc.getDataFromActorResponse(raw_response);
+        bytes memory result = Actor.readRespData(raw_response);
 
         VerifRegTypes.RemoveExpiredAllocationsReturn memory response;
         response.deserialize(result);
@@ -60,9 +62,9 @@ contract VerifRegAPI {
     function extend_claim_terms(VerifRegTypes.ExtendClaimTermsParams memory params) public returns (CommonTypes.BatchReturn memory) {
         bytes memory raw_request = params.serialize();
 
-        bytes memory raw_response = Misc.call_actor(VerifRegTypes.ExtendClaimTermsMethodNum, VerifRegTypes.ActorCode, raw_request);
+        bytes memory raw_response = Actor.call(VerifRegTypes.ExtendClaimTermsMethodNum, VerifRegTypes.ActorCode, raw_request);
 
-        bytes memory result = Misc.getDataFromActorResponse(raw_response);
+        bytes memory result = Actor.readRespData(raw_response);
 
         CommonTypes.BatchReturn memory response;
         response.deserialize(result);
@@ -75,9 +77,9 @@ contract VerifRegAPI {
     ) public returns (VerifRegTypes.RemoveExpiredClaimsReturn memory) {
         bytes memory raw_request = params.serialize();
 
-        bytes memory raw_response = Misc.call_actor(VerifRegTypes.RemoveExpiredClaimsMethodNum, VerifRegTypes.ActorCode, raw_request);
+        bytes memory raw_response = Actor.call(VerifRegTypes.RemoveExpiredClaimsMethodNum, VerifRegTypes.ActorCode, raw_request);
 
-        bytes memory result = Misc.getDataFromActorResponse(raw_response);
+        bytes memory result = Actor.readRespData(raw_response);
 
         VerifRegTypes.RemoveExpiredClaimsReturn memory response;
         response.deserialize(result);
@@ -90,9 +92,9 @@ contract VerifRegAPI {
     ) public returns (VerifRegTypes.AllocationsResponse memory) {
         bytes memory raw_request = params.serialize();
 
-        bytes memory raw_response = Misc.call_actor(VerifRegTypes.UniversalReceiverMethodNum, VerifRegTypes.ActorCode, raw_request);
+        bytes memory raw_response = Actor.call(VerifRegTypes.UniversalReceiverMethodNum, VerifRegTypes.ActorCode, raw_request);
 
-        bytes memory result = Misc.getDataFromActorResponse(raw_response);
+        bytes memory result = Actor.readRespData(raw_response);
 
         VerifRegTypes.AllocationsResponse memory response;
         response.deserialize(result);
