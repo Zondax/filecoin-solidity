@@ -1,3 +1,21 @@
+/*******************************************************************************
+ *   (c) 2022 Zondax AG
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ ********************************************************************************/
+//
+// DRAFT!! THIS CODE HAS NOT BEEN AUDITED - USE ONLY FOR PROTOTYPING
+//
 const fa = require("@glif/filecoin-address");
 const util = require("util");
 const request = util.promisify(require("request"));
@@ -42,7 +60,7 @@ const deployer = new ethers.Wallet(DEPLOYER_PRIVATE_KEY);
   const f4Address = fa.newDelegatedEthAddress(deployer.address).toString();
   const nonce = await callRpc("Filecoin.MpoolGetNonce", [f4Address]);
   console.log("f4address (for use with faucet) = ", f4Address);
-  console.log("Ethereum address:", deployer.address);  
+  console.log("Ethereum address:", deployer.address);
 })
 
 
