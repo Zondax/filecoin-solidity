@@ -55,7 +55,7 @@ contract MarketAPI {
     using PublishStorageDealsCBOR for MarketTypes.PublishStorageDealsReturn;
 
     /// @notice Deposits the received value into the balance held in escrow.
-    function add_balance(bytes memory provider_or_client) public {
+    function add_balance(bytes memory provider_or_client) public payable {
         bytes memory raw_request = provider_or_client.serializeAddress();
 
         bytes memory raw_response = Actor.call(MarketTypes.AddBalanceMethodNum, MarketTypes.ActorCode, raw_request);
