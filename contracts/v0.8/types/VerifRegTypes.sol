@@ -23,7 +23,7 @@ import "./CommonTypes.sol";
 /// @title Filecoin Verified Registry actor types for Solidity.
 /// @author Zondax AG
 library VerifRegTypes {
-    bytes constant ActorCode = hex"0005";
+    bytes constant ActorCode = hex"0006";
     uint constant GetClaimsMethodNum = 2199871187;
     uint constant AddVerifierClientMethodNum = 3916220144;
     uint constant RemoveExpiredAllocationsMethodNum = 2873373899;
