@@ -30,6 +30,7 @@ library Actor {
         bytes memory raw_response = new bytes(MAX_RAW_RESPONSE_SIZE);
 
         uint len;
+        uint amount = msg.value;
 
         require(actor_code[0] == 0x00, "actor address needs to be type ID");
 
@@ -59,8 +60,8 @@ library Actor {
             // no params
 
             // FIXME set inputSize according to the input length
-            // call(gasLimit, to, value, inputOffset, inputSize, outputOffset, outputSize)
-            if iszero(call(GAS_LIMIT, CALL_ACTOR_PRECOMPILE_ADDR, 0x00, input, 0x100, raw_response, MAX_RAW_RESPONSE_SIZE)) {
+            // call(gasLimit, to, amount, inputOffset, inputSize, outputOffset, outputSize)
+            if iszero(call(GAS_LIMIT, CALL_ACTOR_PRECOMPILE_ADDR, amount, input, 0x100, raw_response, MAX_RAW_RESPONSE_SIZE)) {
                 revert(0, 0)
             }
         }

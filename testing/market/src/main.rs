@@ -4,6 +4,7 @@ use fvm_integration_tests::bundle;
 use fvm_ipld_encoding::{strict_bytes, tuple::*};
 use fvm_shared::state::StateTreeVersion;
 use fvm_shared::version::NetworkVersion;
+use fvm_shared::econ::TokenAmount;
 use fvm_ipld_blockstore::MemoryBlockstore;
 use fvm_shared::address::Address;
 use std::env;
@@ -36,6 +37,9 @@ fn main() {
         Tester::new(NetworkVersion::V18, StateTreeVersion::V5, bundle_root, bs).unwrap();
 
     let sender: [Account; 1] = tester.create_accounts().unwrap();
+
+    // Our account address is 100 so hex"0064"
+    // dbg!(sender[0]);
 
     // Instantiate machine
     tester.instantiate_machine(DummyExterns).unwrap();
@@ -82,7 +86,8 @@ fn main() {
         gas_limit: 1000000000,
         method_num: 2,
         sequence: 1,
-        params: RawBytes::new(hex::decode("5864467FAFEF000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000020066000000000000000000000000000000000000000000000000000000000000").unwrap()),
+        value: TokenAmount::from_atto(1_000),
+        params: RawBytes::new(hex::decode("5864467FAFEF000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000020064000000000000000000000000000000000000000000000000000000000000").unwrap()),
         ..Message::default()
     };
 
@@ -90,13 +95,9 @@ fn main() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
-    if res.msg_receipt.exit_code.value() != 33 {
-        dbg!(&res);
-    }
+    dbg!(&res);
 
-    assert_eq!(res.msg_receipt.exit_code.value(), 33);
-    assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "08c379a0000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000136163746f72206572726f7220636f646520313600000000000000000000000000");
-
+    assert_eq!(res.msg_receipt.exit_code.value(), 0);
 
     println!("Calling `withdraw_balance`");
 
