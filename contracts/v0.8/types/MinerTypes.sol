@@ -31,11 +31,16 @@ library MinerTypes {
     uint constant GetVestingFundsMethodNum = 1726876304;
     uint constant ChangeBeneficiaryMethodNum = 0x1e;
     uint constant GetBeneficiaryMethodNum = 0x1f;
-    uint constant ChangeWorkerAddressMethodNum = 3302309124;
-    uint constant ChangePeerIDMethodNum = 1236548004;
-    uint constant ChangeMultiaddrsMethodNum = 1063480576;
-    uint constant RepayDebtMethodNum = 3665352697;
-    uint constant ConfirmChangeWorkerAddressMethodNum = 2354970453;
+    //uint constant ChangeWorkerAddressMethodNum = 3302309124;
+    uint constant ChangeWorkerAddressMethodNum = 3;
+    //uint constant ChangePeerIDMethodNum = 1236548004;
+    uint constant ChangePeerIDMethodNum = 4;
+    //uint constant ChangeMultiaddrsMethodNum = 1063480576;
+    uint constant ChangeMultiaddrsMethodNum = 18;
+    uint constant RepayDebtMethodNum = 22;
+    //uint constant RepayDebtMethodNum = 3665352697;
+    //uint constant ConfirmChangeWorkerAddressMethodNum = 2354970453;
+    uint constant ConfirmChangeWorkerAddressMethodNum = 21;
     uint constant GetPeerIDMethodNum = 2812875329;
     uint constant GetMultiaddrsMethodNum = 1332909407;
 
