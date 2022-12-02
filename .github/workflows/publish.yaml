@@ -20,7 +20,9 @@ jobs:
           registry-url: "https://registry.npmjs.org"
           scope: "@zondax"
       - name: Install dependencies
-        run: make install_solc_linux
+        run:  |
+          yarn install
+          make install_solc_linux
       - name: Compile contract file
         run: make
       - name: Install yarn
