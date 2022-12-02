@@ -25,8 +25,7 @@ import "./CommonTypes.sol";
 library MinerTypes {
     uint constant GetOwnerMethodNum = 3275365574;
     uint constant ChangeOwnerAddressMethodNum = 23;
-    //uint constant IsControllingAddressMethodNum = 348244887;
-    uint constant IsControllingAddressMethodNum = 2;
+    uint constant IsControllingAddressMethodNum = 348244887;
     uint constant GetSectorSizeMethodNum = 3858292296;
     uint constant GetAvailableBalanceMethodNum = 4026106874;
     uint constant GetVestingFundsMethodNum = 1726876304;
