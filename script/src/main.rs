@@ -132,4 +132,7 @@ fn main() {
     println!("BurnExported {}", BurnExported);
     println!("BurnFromExported {}", BurnFromExported);
     println!("AllowanceExported {}", AllowanceExported);
+
+    let ExecExported = frc42_dispatch::method_hash!("Exec");
+    println!("ExecExported {}", ExecExported);
 }
