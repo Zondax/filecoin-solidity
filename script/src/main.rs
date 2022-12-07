@@ -97,4 +97,39 @@ fn main() {
     println!("ExtendClaimTermsExported {}", ExtendClaimTermsExported);
     println!("RemoveExpiredClaimsExported {}", RemoveExpiredClaimsExported);
     println!("UniversalReceiverHook {}", UniversalReceiverHook);
+
+    println!("DATA CAP EXPORTED METHOD NUM");
+
+    let MintExported = frc42_dispatch::method_hash!("Mint");
+    let DestroyExported = frc42_dispatch::method_hash!("Destroy");
+    let NameExported = frc42_dispatch::method_hash!("Name");
+    let SymbolExported = frc42_dispatch::method_hash!("Symbol");
+    let GranularityExported = frc42_dispatch::method_hash!("GranularityExported");
+    let TotalSupplyExported = frc42_dispatch::method_hash!("TotalSupply");
+    let BalanceExported = frc42_dispatch::method_hash!("Balance");
+    let TransferExported = frc42_dispatch::method_hash!("Transfer");
+    let TransferFromExported = frc42_dispatch::method_hash!("TransferFrom");
+    let IncreaseAllowanceExported = frc42_dispatch::method_hash!("IncreaseAllowance");
+    let DecreaseAllowanceExported = frc42_dispatch::method_hash!("DecreaseAllowance");
+    let RevokeAllowanceExported = frc42_dispatch::method_hash!("RevokeAllowance");
+    let BurnExported = frc42_dispatch::method_hash!("Burn");
+    let BurnFromExported = frc42_dispatch::method_hash!("BurnFrom");
+    let AllowanceExported = frc42_dispatch::method_hash!("Allowance");
+
+
+    println!("MintExported {}", MintExported);
+    println!("DestroyExported {}", DestroyExported);
+    println!("NameExported {}", NameExported);
+    println!("SymbolExported {}", SymbolExported);
+    println!("GranularityExported {}", GranularityExported);
+    println!("TotalSupplyExported {}", TotalSupplyExported);
+    println!("BalanceExported {}", BalanceExported);
+    println!("TransferExported {}", TransferExported);
+    println!("TransferFromExported {}", TransferFromExported);
+    println!("IncreaseAllowanceExported {}", IncreaseAllowanceExported);
+    println!("DecreaseAllowanceExported {}", DecreaseAllowanceExported);
+    println!("RevokeAllowanceExported {}", RevokeAllowanceExported);
+    println!("BurnExported {}", BurnExported);
+    println!("BurnFromExported {}", BurnFromExported);
+    println!("AllowanceExported {}", AllowanceExported);
 }
