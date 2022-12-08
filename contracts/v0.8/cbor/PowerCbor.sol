@@ -70,12 +70,9 @@ library MinerCountCBOR {
 
     function deserialize(PowerTypes.MinerCountReturn memory ret, bytes memory rawResp) internal pure {
         uint byteIdx = 0;
-        uint len;
 
-        (len, byteIdx) = rawResp.readFixedArray(byteIdx);
-        assert(len == 1);
-
-        (ret.miner_count, byteIdx) = rawResp.readInt64(byteIdx);
+        // REVIEW: The ouput returned is '00' so it unsigned but the type described in buitin is i64.
+        (ret.miner_count, byteIdx) = rawResp.readUInt64(byteIdx);
     }
 }
 

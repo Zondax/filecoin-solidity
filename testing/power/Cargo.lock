@@ -1206,6 +1206,7 @@ dependencies = [
 [[package]]
 name = "fvm"
 version = "3.0.0-alpha.12"
+source = "git+https://github.com/rllola/ref-fvm?branch=lola/fixes#78b0b044c75722032690b5e3607a9221961a9e12"
 dependencies = [
  "anyhow",
  "blake2b_simd",
@@ -1253,6 +1254,7 @@ dependencies = [
 [[package]]
 name = "fvm_integration_tests"
 version = "0.1.1-alpha.1"
+source = "git+https://github.com/rllola/ref-fvm?branch=lola/fixes#78b0b044c75722032690b5e3607a9221961a9e12"
 dependencies = [
  "anyhow",
  "cid",
@@ -1280,6 +1282,7 @@ dependencies = [
 [[package]]
 name = "fvm_ipld_amt"
 version = "0.5.0"
+source = "git+https://github.com/rllola/ref-fvm?branch=lola/fixes#78b0b044c75722032690b5e3607a9221961a9e12"
 dependencies = [
  "anyhow",
  "cid",
@@ -1294,6 +1297,7 @@ dependencies = [
 [[package]]
 name = "fvm_ipld_blockstore"
 version = "0.1.1"
+source = "git+https://github.com/rllola/ref-fvm?branch=lola/fixes#78b0b044c75722032690b5e3607a9221961a9e12"
 dependencies = [
  "anyhow",
  "cid",
@@ -1303,6 +1307,7 @@ dependencies = [
 [[package]]
 name = "fvm_ipld_car"
 version = "0.6.0"
+source = "git+https://github.com/rllola/ref-fvm?branch=lola/fixes#78b0b044c75722032690b5e3607a9221961a9e12"
 dependencies = [
  "cid",
  "futures",
@@ -1316,6 +1321,7 @@ dependencies = [
 [[package]]
 name = "fvm_ipld_encoding"
 version = "0.3.0"
+source = "git+https://github.com/rllola/ref-fvm?branch=lola/fixes#78b0b044c75722032690b5e3607a9221961a9e12"
 dependencies = [
  "anyhow",
  "cid",
@@ -1331,6 +1337,7 @@ dependencies = [
 [[package]]
 name = "fvm_ipld_hamt"
 version = "0.6.1"
+source = "git+https://github.com/rllola/ref-fvm?branch=lola/fixes#78b0b044c75722032690b5e3607a9221961a9e12"
 dependencies = [
  "anyhow",
  "byteorder",
@@ -1349,6 +1356,7 @@ dependencies = [
 [[package]]
 name = "fvm_sdk"
 version = "3.0.0-alpha.15"
+source = "git+https://github.com/rllola/ref-fvm?branch=lola/fixes#78b0b044c75722032690b5e3607a9221961a9e12"
 dependencies = [
  "cid",
  "fvm_ipld_encoding",
@@ -1362,6 +1370,7 @@ dependencies = [
 [[package]]
 name = "fvm_shared"
 version = "3.0.0-alpha.13"
+source = "git+https://github.com/rllola/ref-fvm?branch=lola/fixes#78b0b044c75722032690b5e3607a9221961a9e12"
 dependencies = [
  "anyhow",
  "bitflags",

@@ -89,8 +89,6 @@ fn main() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
-    dbg!(&res);
     
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
-
 }
