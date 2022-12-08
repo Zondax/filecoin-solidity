@@ -147,4 +147,27 @@ fn main() {
 
     println!("AuthenticateMessageExported {}", AuthenticateMessageExported);
     println!("UniversalReceiverHook {}", UniversalReceiverHook);
+
+    println!("MULTISIG EXPORTED METHOD NUM");
+
+    let ProposeExported = frc42_dispatch::method_hash!("Propose");
+    let ApproveExported = frc42_dispatch::method_hash!("Approve");
+    let CancelExported = frc42_dispatch::method_hash!("Cancel");
+    let AddSignerExported = frc42_dispatch::method_hash!("AddSigner");
+    let RemoveSignerExported = frc42_dispatch::method_hash!("RemoveSigner");
+    let SwapSignerExported = frc42_dispatch::method_hash!("SwapSigner");
+    let ChangeNumApprovalsThresholdExported =
+        frc42_dispatch::method_hash!("ChangeNumApprovalsThreshold");
+    let LockBalanceExported = frc42_dispatch::method_hash!("LockBalance");
+    let UniversalReceiverHook = frc42_dispatch::method_hash!("Receive");
+
+    println!("ProposeExported {}", ProposeExported);
+    println!("ApproveExported {}", ApproveExported);
+    println!("CancelExported {}", CancelExported);
+    println!("AddSignerExported {}", AddSignerExported);
+    println!("RemoveSignerExported {}", RemoveSignerExported);
+    println!("SwapSignerExported {}", SwapSignerExported);
+    println!("ChangeNumApprovalsThresholdExported {}", ChangeNumApprovalsThresholdExported);
+    println!("LockBalanceExported {}", LockBalanceExported);
+    println!("UniversalReceiverHook {}", UniversalReceiverHook);
 }
