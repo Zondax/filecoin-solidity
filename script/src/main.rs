@@ -58,6 +58,7 @@ fn main() {
     println!("RepayDebtExported {}", RepayDebtExported);
     println!("ChangeOwnerAddressExported {}", ChangeOwnerAddressExported);
     println!("ChangeBenificiaryExported {}", ChangeBenificiaryExported);
+    println!("GetBeneficiaryExported {}", GetBeneficiaryExported);
     println!("GetOwnerExported {}", GetOwnerExported);
     println!("IsControllingAddressExported {}", IsControllingAddressExported);
     println!("GetSectorSizeExported {}", GetSectorSizeExported);
