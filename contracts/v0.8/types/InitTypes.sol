@@ -20,7 +20,7 @@ pragma solidity >=0.4.25 <=0.8.15;
 
 import "./CommonTypes.sol";
 
-/// @title Filecoin market actor types for Solidity.
+/// @title Filecoin init actor types for Solidity.
 /// @author Zondax AG
 library InitTypes {
     bytes constant ActorCode = hex"0005"; // FIXME set this value correctly
