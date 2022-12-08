@@ -17,8 +17,8 @@ serde_tuple = "0.5"
 wabt = "0.10.0"
 hex = "0.4.3"
 
-fil_actors_runtime = { version = "10.0.0-alpha.1", git = "https://github.com/filecoin-project/builtin-actors", branch = "next", features = ["m2-native"] }
-fil_actor_eam = { version = "10.0.0-alpha.1", git = "https://github.com/filecoin-project/builtin-actors", branch = "next" }
+fil_actors_runtime = { version = "10.0.0-alpha.1", git = "https://github.com/filecoin-project/builtin-actors", rev = "a30ee4e034988b1f8f894b5c24e684457f31c8b8", features = ["m2-native"] }
+fil_actor_eam = { version = "10.0.0-alpha.1", git = "https://github.com/filecoin-project/builtin-actors", rev = "a30ee4e034988b1f8f894b5c24e684457f31c8b8" }
 
 [patch.crates-io]
 fvm_shared = { version = "3.0.0-alpha.13", git = "https://github.com/rllola/ref-fvm", branch = "lola/fixes" }

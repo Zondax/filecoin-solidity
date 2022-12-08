@@ -7,6 +7,7 @@ use fvm_shared::version::NetworkVersion;
 use fvm_ipld_blockstore::MemoryBlockstore;
 use std::env;
 use fvm_shared::message::Message;
+use fvm_shared::address::Address;
 use fvm::executor::{ApplyKind, Executor};
 use fil_actor_eam::Return;
 use fvm_ipld_encoding::RawBytes;
@@ -70,6 +71,26 @@ fn main() {
 
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
 
-    let _exec_return : Return = RawBytes::deserialize(&res.msg_receipt.return_data).unwrap();
+    let exec_return : Return = RawBytes::deserialize(&res.msg_receipt.return_data).unwrap();
+
+    println!("Calling `miner_count`");
+
+    let message = Message {
+        from: sender[0].1,
+        to: Address::new_id(exec_return.actor_id),
+        gas_limit: 1000000000,
+        method_num: 2,
+        sequence: 1,
+        params: RawBytes::new(hex::decode("4487a8d7d6").unwrap()),
+        ..Message::default()
+    };
+
+    let res = executor
+        .execute_message(message, ApplyKind::Explicit, 100)
+        .unwrap();
+
+    dbg!(&res);
+    
+    assert_eq!(res.msg_receipt.exit_code.value(), 0);
 
 }
