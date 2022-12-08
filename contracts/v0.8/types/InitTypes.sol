@@ -23,7 +23,7 @@ import "./CommonTypes.sol";
 /// @title Filecoin init actor types for Solidity.
 /// @author Zondax AG
 library InitTypes {
-    bytes constant ActorCode = hex"0005"; // FIXME set this value correctly
+    bytes constant ActorCode = hex"0001";
     uint constant ExecMethodNum = 81225168;
     uint constant Exec4MethodNum = 3;
 
