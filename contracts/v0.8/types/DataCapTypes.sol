@@ -20,6 +20,8 @@ pragma solidity >=0.4.25 <=0.8.15;
 
 import "./CommonTypes.sol";
 
+/// @title Filecoin datacap actor types for Solidity.
+/// @author Zondax AG
 library DataCapTypes {
     bytes constant ActorCode = hex"0005"; // FIXME set correct value here
     uint constant NameMethodNum = 48890204;

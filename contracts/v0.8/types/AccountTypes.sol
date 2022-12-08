@@ -20,35 +20,15 @@ pragma solidity >=0.4.25 <=0.8.15;
 
 import "./CommonTypes.sol";
 
-/// @title Filecoin init actor types for Solidity.
+/// @title Filecoin account actor types for Solidity.
 /// @author Zondax AG
-library InitTypes {
-    bytes constant ActorCode = hex"0001";
-    uint constant ExecMethodNum = 81225168;
-    uint constant Exec4MethodNum = 3;
+library AccountTypes {
+    bytes constant ActorCode = hex"0005"; // FIXME set this value correctly
+    uint constant AuthenticateMessageMethodNum = 2643134072;
+    uint constant UniversalReceiverHookMethodNum = 3726118371;
 
-    struct ExecParams {
-        bytes code_cid;
-        bytes constructor_params;
-    }
-
-    struct ExecReturn {
-        /// ID based address for created actor
-        bytes id_address;
-        /// Reorg safe address for actor
-        bytes robust_address;
-    }
-
-    struct Exec4Params {
-        bytes code_cid;
-        bytes constructor_params;
-        bytes subaddress;
-    }
-
-    struct Exec4Return {
-        /// ID based address for created actor
-        bytes id_address;
-        /// Reorg safe address for actor
-        bytes robust_address;
+    struct AuthenticateMessageParams {
+        bytes signature;
+        bytes message;
     }
 }

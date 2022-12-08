@@ -133,6 +133,17 @@ fn main() {
     println!("BurnFromExported {}", BurnFromExported);
     println!("AllowanceExported {}", AllowanceExported);
 
+    println!("INIT EXPORTED METHOD NUM");
+
     let ExecExported = frc42_dispatch::method_hash!("Exec");
     println!("ExecExported {}", ExecExported);
+
+
+    println!("ACCOUNT EXPORTED METHOD NUM");
+
+    let AuthenticateMessageExported = frc42_dispatch::method_hash!("AuthenticateMessage");
+    let UniversalReceiverHook = frc42_dispatch::method_hash!("Receive");
+
+    println!("AuthenticateMessageExported {}", AuthenticateMessageExported);
+    println!("UniversalReceiverHook {}", UniversalReceiverHook);
 }

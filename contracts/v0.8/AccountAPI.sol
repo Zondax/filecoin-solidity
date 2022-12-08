@@ -18,45 +18,33 @@
 //
 pragma solidity >=0.4.25 <=0.8.15;
 
-import "./types/InitTypes.sol";
-import "./cbor/InitCbor.sol";
+import "./types/AccountTypes.sol";
+import "./cbor/AccountCbor.sol";
 import "./types/CommonTypes.sol";
 import "./utils/Misc.sol";
 import "./utils/Actor.sol";
 
-/// @title This contract is a proxy to the singleton Init actor (address: f01). Calling one of its methods will result in a cross-actor call being performed.
+/// @title This contract is a proxy to the singleton Account actor (address: f0X). Calling one of its methods will result in a cross-actor call being performed.
 /// @author Zondax AG
-contract InitAPI {
-    using ExecCBOR for InitTypes.ExecParams;
-    using ExecCBOR for InitTypes.ExecReturn;
-    using Exec4CBOR for InitTypes.Exec4Params;
-    using Exec4CBOR for InitTypes.Exec4Return;
+contract AccountAPI {
+    using AuthenticateMessageCBOR for AccountTypes.AuthenticateMessageParams;
+    using BytesCBOR for bytes;
 
     /// @notice FIXME
-    function exec(InitTypes.ExecParams memory params) public returns (InitTypes.ExecReturn memory) {
+    function authenticate_message(AccountTypes.AuthenticateMessageParams memory params) public {
         bytes memory raw_request = params.serialize();
 
-        bytes memory raw_response = Actor.call(InitTypes.ExecMethodNum, InitTypes.ActorCode, raw_request);
+        bytes memory raw_response = Actor.call(AccountTypes.AuthenticateMessageMethodNum, AccountTypes.ActorCode, raw_request);
 
         bytes memory result = Actor.readRespData(raw_response);
-
-        InitTypes.ExecReturn memory response;
-        response.deserialize(result);
-
-        return response;
     }
 
     /// @notice FIXME
-    function exec4(InitTypes.Exec4Params memory params) public returns (InitTypes.Exec4Return memory) {
-        bytes memory raw_request = params.serialize();
+    function universal_receiver_hook(bytes memory params) public {
+        bytes memory raw_request = params.serializeBytes();
 
-        bytes memory raw_response = Actor.call(InitTypes.Exec4MethodNum, InitTypes.ActorCode, raw_request);
+        bytes memory raw_response = Actor.call(AccountTypes.UniversalReceiverHookMethodNum, AccountTypes.ActorCode, raw_request);
 
         bytes memory result = Actor.readRespData(raw_response);
-
-        InitTypes.Exec4Return memory response;
-        response.deserialize(result);
-
-        return response;
     }
 }

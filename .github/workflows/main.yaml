@@ -350,6 +350,53 @@ jobs:
             ~/.cargo/registry/cache/
             ~/.cargo/git/db/
           key: ${{ runner.os }}-cargo-${{ hashFiles('./testing/init/Cargo.lock') }}
+  account-integration:
+    name: "Account API: integration tests"
+    timeout-minutes: 20
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Install node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16.16.0'
+      - name: Install yarn
+        run: npm install -g yarn
+      - name: Install latest stable
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: nightly
+          override: true
+      - name: Install dependencies
+        run: |
+          yarn install
+          make install_solc_linux
+      - name: Restore crates
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+          key: ${{ runner.os }}-cargo-${{ hashFiles('./testing/account/Cargo.lock') }}
+      - name: Build contracts
+        run: make
+      - name: Run tests on init
+        run: |
+          cd testing/account
+          rustup target add wasm32-unknown-unknown
+          RUST_BACKTRACE=1 cargo r
+      - name: Save crates
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+          key: ${{ runner.os }}-cargo-${{ hashFiles('./testing/account/Cargo.lock') }}
 
 
 
