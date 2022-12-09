@@ -44,7 +44,7 @@ library PowerTypes {
         bytes robust_address;
     }
     struct MinerCountReturn {
-        int64 miner_count;
+        uint64 miner_count;
     }
     struct MinerConsensusCountReturn {
         int64 miner_consensus_count;
