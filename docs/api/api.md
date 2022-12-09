@@ -1,6 +1,6 @@
 ---
 title: "Specifications"
-sidebar_position: 2
+sidebar_position: 1
 ---
 
 ## Actors and methods supported
