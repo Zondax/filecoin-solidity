@@ -10,7 +10,7 @@ you can reference them on your project.
 
 ### Deploy API
 
-In order to deploy these libraries, please refer to [this section](./deploy-it.md). You will find useful information about it. 
+In order to deploy these libraries, please refer to [this section](../deploy-it.md). You will find useful information about it. 
 
 ### Import API contract on your project 
 
@@ -18,22 +18,22 @@ In order to deploy these libraries, please refer to [this section](./deploy-it.m
 You will need to copy these files to a folder inside your project. Let's name it `libs`. In your smart contract, copy and paste these lines.
 
 ```solidity
-import { MarketAPI } from "./libs/MarketAPI.sol";
+import { MarketAPI } from "./libs/mocks/MarketAPI.sol";
 import { CommonTypes } from "./libs/types/CommonTypes.sol";
 import { MarketTypes } from "./libs/types/MarketTypes.sol";
 ```
 
 #### NPM Package
-A better approach to import these libs is using the NPM package created for this. [:link:](https://www.npmjs.com/package/@zondax/filecoin-solidity-api). 
+A better approach to import these libs is using the NPM package created for this. [:link:](https://www.npmjs.com/package/@zondax/filecoin-solidity-mock-api). 
 Run on your project in order to add this package. 
 ```yarn
-yarn add @zondax/filecoin-solidity-api
+yarn add @zondax/filecoin-solidity-mock-api
 ```
 
 In your smart contract, copy and paste these lines.
 
 ```solidity
-import { MarketAPI } from "@zondax/filecoin-solidity-api/contracts/v0.8/MarketAPI.sol";
+import { MarketAPI } from "@zondax/filecoin-solidity-api/contracts/v0.8/mocks/MarketAPI.sol";
 import { CommonTypes } from "@zondax/filecoin-solidity-api/contracts/v0.8/types/CommonTypes.sol";
 import { MarketTypes } from "@zondax/filecoin-solidity-api/contracts/v0.8/types/MarketAPI.sol";
 ```
