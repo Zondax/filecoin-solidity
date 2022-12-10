@@ -81,7 +81,7 @@ fn main() {
         gas_limit: 1000000000,
         method_num: 2,
         sequence: 1,
-        params: RawBytes::new(hex::decode("4487a8d7d6").unwrap()),
+        params: RawBytes::new(hex::decode("4487A8D7D6").unwrap()),
         ..Message::default()
     };
 
@@ -90,5 +90,77 @@ fn main() {
         .unwrap();
 
 
+    if res.msg_receipt.exit_code.value() != 0 {
+        dbg!(&res);
+    }
+    assert_eq!(res.msg_receipt.exit_code.value(), 0);
+
+    println!("Calling `network_raw_power`");
+
+    let message = Message {
+        from: sender[0].1,
+        to: Address::new_id(exec_return.actor_id),
+        gas_limit: 1000000000,
+        method_num: 2,
+        sequence: 2,
+        params: RawBytes::new(hex::decode("446C3D7356").unwrap()),
+        ..Message::default()
+    };
+
+    let res = executor
+        .execute_message(message, ApplyKind::Explicit, 100)
+        .unwrap();
+
+
+    if res.msg_receipt.exit_code.value() != 0 {
+        dbg!(&res);
+    }
+    assert_eq!(res.msg_receipt.exit_code.value(), 0);
+
+    println!("Calling `miner_raw_power`");
+
+    let message = Message {
+        from: sender[0].1,
+        to: Address::new_id(exec_return.actor_id),
+        gas_limit: 1000000000,
+        method_num: 2,
+        sequence: 3,
+        params: RawBytes::new(hex::decode("5824E7530A9B000000000000000000000000000000000000000000000000000000000000003D").unwrap()),
+        ..Message::default()
+    };
+
+    let res = executor
+        .execute_message(message, ApplyKind::Explicit, 100)
+        .unwrap();
+
+
+    if res.msg_receipt.exit_code.value() != 33 {
+        dbg!(&res);
+    }
+    assert_eq!(res.msg_receipt.exit_code.value(), 33);
+    assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "08c379a0000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000136163746f72206572726f7220636f646520313600000000000000000000000000");
+
+
+
+    println!("Calling `miner_consensus_count`");
+
+    let message = Message {
+        from: sender[0].1,
+        to: Address::new_id(exec_return.actor_id),
+        gas_limit: 1000000000,
+        method_num: 2,
+        sequence: 4,
+        params: RawBytes::new(hex::decode("44DF16B842").unwrap()),
+        ..Message::default()
+    };
+
+    let res = executor
+        .execute_message(message, ApplyKind::Explicit, 100)
+        .unwrap();
+
+
+    if res.msg_receipt.exit_code.value() != 0 {
+        dbg!(&res);
+    }
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
 }
