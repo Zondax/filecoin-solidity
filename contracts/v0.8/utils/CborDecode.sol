@@ -199,7 +199,7 @@ library CBORDecoder {
         uint value;
 
         (maj, value, byteIdx) = parseCborHeader(cborParams, byteIdx);
-        assert(maj == MajSignedInt);
+        assert(maj == MajSignedInt || maj == MajUnsignedInt);
 
         return (int64(uint64(value)), byteIdx);
     }
@@ -209,7 +209,7 @@ library CBORDecoder {
         uint value;
 
         (maj, value, byteIdx) = parseCborHeader(cborParams, byteIdx);
-        assert(maj == MajSignedInt);
+        assert(maj == MajSignedInt || maj == MajUnsignedInt);
 
         return (int32(uint32(value)), byteIdx);
     }
@@ -219,7 +219,7 @@ library CBORDecoder {
         uint value;
 
         (maj, value, byteIdx) = parseCborHeader(cborParams, byteIdx);
-        assert(maj == MajSignedInt);
+        assert(maj == MajSignedInt || maj == MajUnsignedInt);
 
         return (int16(uint16(value)), byteIdx);
     }
@@ -229,7 +229,7 @@ library CBORDecoder {
         uint value;
 
         (maj, value, byteIdx) = parseCborHeader(cborParams, byteIdx);
-        assert(maj == MajSignedInt);
+        assert(maj == MajSignedInt || maj == MajUnsignedInt);
 
         return (int8(uint8(value)), byteIdx);
     }
