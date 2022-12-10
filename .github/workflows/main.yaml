@@ -126,7 +126,7 @@ jobs:
         with:
           path: |
             ./testing/miner/target
-          key: ${{ runner.os }}-actors-${{ hashFiles('./testing/miner/Cargo.lock') }}
+          key: ${{ runner.os }}-miner-${{ hashFiles('./testing/miner/Cargo.lock') }}
       - name: Restore builtin-actors
         uses: actions/cache@v3
         with:
@@ -181,7 +181,7 @@ jobs:
         with:
           path: |
             ./testing/market/target
-          key: ${{ runner.os }}-actors-${{ hashFiles('./testing/market/Cargo.lock') }}
+          key: ${{ runner.os }}-market-${{ hashFiles('./testing/market/Cargo.lock') }}
       - name: Restore builtin-actors
         uses: actions/cache@v3
         with:
@@ -238,7 +238,7 @@ jobs:
         with:
           path: |
             ./testing/power/target
-          key: ${{ runner.os }}-actors-${{ hashFiles('./testing/power/Cargo.lock') }}
+          key: ${{ runner.os }}-power-${{ hashFiles('./testing/power/Cargo.lock') }}
       - name: Restore builtin-actors
         uses: actions/cache@v3
         with:
@@ -293,7 +293,7 @@ jobs:
         with:
           path: |
             ./testing/verifreg/target
-          key: ${{ runner.os }}-actors-${{ hashFiles('./testing/verifreg/Cargo.lock') }}
+          key: ${{ runner.os }}-verifreg-${{ hashFiles('./testing/verifreg/Cargo.lock') }}
       - name: Restore builtin-actors
         uses: actions/cache@v3
         with:
@@ -348,7 +348,7 @@ jobs:
         with:
           path: |
             ./testing/datacap/target
-          key: ${{ runner.os }}-actors-${{ hashFiles('./testing/datacap/Cargo.lock') }}
+          key: ${{ runner.os }}-datacap-${{ hashFiles('./testing/datacap/Cargo.lock') }}
       - name: Restore builtin-actors
         uses: actions/cache@v3
         with:
@@ -402,7 +402,7 @@ jobs:
         with:
           path: |
             ./testing/init/target
-          key: ${{ runner.os }}-actors-${{ hashFiles('./testing/init/Cargo.lock') }}
+          key: ${{ runner.os }}-init-${{ hashFiles('./testing/init/Cargo.lock') }}
       - name: Restore builtin-actors
         uses: actions/cache@v3
         with:
@@ -456,7 +456,7 @@ jobs:
         with:
           path: |
             ./testing/account/target
-          key: ${{ runner.os }}-actors-${{ hashFiles('./testing/account/Cargo.lock') }}
+          key: ${{ runner.os }}-account-${{ hashFiles('./testing/account/Cargo.lock') }}
       - name: Restore builtin-actors
         uses: actions/cache@v3
         with:
@@ -511,7 +511,7 @@ jobs:
         with:
           path: |
             ./testing/multisig/target
-          key: ${{ runner.os }}-actors-${{ hashFiles('./testing/multisig/Cargo.lock') }}
+          key: ${{ runner.os }}-multisig-${{ hashFiles('./testing/multisig/Cargo.lock') }}
       - name: Restore builtin-actors
         uses: actions/cache@v3
         with:
