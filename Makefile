@@ -51,28 +51,28 @@ test_market_cbor_serialization:
 
 test_integration: test_miner_integration test_market_integration test_power_integration test_verifreg_integration test_datacap_integration test_account_integration test_multisig_integration
 
-test_miner_integration: build
+test_miner_integration: build build_builtin_actors
 	cd testing/miner && cargo r
 
-test_market_integration: build
+test_market_integration: build build_builtin_actors
 	cd testing/market && cargo r
 
-test_power_integration: build
+test_power_integration: build build_builtin_actors
 	cd testing/power && cargo r
 
-test_verifreg_integration: build
+test_verifreg_integration: build build_builtin_actors
 	cd testing/verifreg && cargo r
 
-test_datacap_integration: build
+test_datacap_integration: build build_builtin_actors
 	cd testing/datacap && cargo r
 
-test_init_integration: build
+test_init_integration: build build_builtin_actors
 	cd testing/init && cargo r
 
-test_account_integration: build
+test_account_integration: build build_builtin_actors
 	cd testing/account && cargo r
 
-test_multisig_integration: build
+test_multisig_integration: build build_builtin_actors
 	cd testing/multisig && cargo r
 
 ################ DEPS ################
