@@ -42,16 +42,15 @@ library WithdrawBalanceCBOR {
     }
 
     function deserialize(MarketTypes.WithdrawBalanceReturn memory ret, bytes memory rawResp) internal pure {
-        uint256 amount_withdrawn;
+        bytes memory tmp;
         uint byteIdx = 0;
         uint len;
 
         (len, byteIdx) = rawResp.readFixedArray(byteIdx);
         assert(len == 1);
 
-        (amount_withdrawn, byteIdx) = rawResp.readUInt256(byteIdx);
-
-        ret.amount_withdrawn = amount_withdrawn;
+        (tmp, byteIdx) = rawResp.readBytes(byteIdx);
+        ret.amount_withdrawn = Misc.toUint256(tmp, 0);
     }
 }
 
@@ -249,16 +248,16 @@ library GetDealEpochPriceCBOR {
     }
 
     function deserialize(MarketTypes.GetDealEpochPriceReturn memory ret, bytes memory rawResp) internal pure {
-        uint256 price_per_epoch;
+        bytes memory tmp;
         uint byteIdx = 0;
         uint len;
 
         (len, byteIdx) = rawResp.readFixedArray(byteIdx);
         assert(len == 2);
 
-        (price_per_epoch, byteIdx) = rawResp.readUInt256(byteIdx);
 
-        ret.price_per_epoch = price_per_epoch;
+        (tmp, byteIdx) = rawResp.readBytes(byteIdx);
+        ret.price_per_epoch = Misc.toUint256(tmp, 0);
     }
 }
 
@@ -276,16 +275,15 @@ library GetDealClientCollateralCBOR {
     }
 
     function deserialize(MarketTypes.GetDealClientCollateralReturn memory ret, bytes memory rawResp) internal pure {
-        uint256 collateral;
+        bytes memory tmp;
         uint byteIdx = 0;
         uint len;
 
         (len, byteIdx) = rawResp.readFixedArray(byteIdx);
         assert(len == 2);
 
-        (collateral, byteIdx) = rawResp.readUInt256(byteIdx);
-
-        ret.collateral = collateral;
+        (tmp, byteIdx) = rawResp.readBytes(byteIdx);
+        ret.collateral = Misc.toUint256(tmp, 0);
     }
 }
 
@@ -303,16 +301,16 @@ library GetDealProviderCollateralCBOR {
     }
 
     function deserialize(MarketTypes.GetDealProviderCollateralReturn memory ret, bytes memory rawResp) internal pure {
-        uint256 collateral;
+        bytes memory tmp;
         uint byteIdx = 0;
         uint len;
 
         (len, byteIdx) = rawResp.readFixedArray(byteIdx);
         assert(len == 2);
 
-        (collateral, byteIdx) = rawResp.readUInt256(byteIdx);
 
-        ret.collateral = collateral;
+        (tmp, byteIdx) = rawResp.readBytes(byteIdx);
+        ret.collateral = Misc.toUint256(tmp, 0);
     }
 }
 
