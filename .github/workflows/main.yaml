@@ -121,6 +121,12 @@ jobs:
             ~/.cargo/registry/cache/
             ~/.cargo/git/db/
           key: ${{ runner.os }}-cargo-${{ hashFiles('./testing/miner/Cargo.lock') }}
+      - name: Restore previous compilation
+        uses: actions/cache@v3
+        with:
+          path: |
+            ./testing/miner/target
+          key: ${{ runner.os }}-actors-${{ hashFiles('./testing/miner/Cargo.lock') }}
       - name: Restore builtin-actors
         uses: actions/cache@v3
         with:
@@ -170,6 +176,12 @@ jobs:
             ~/.cargo/registry/cache/
             ~/.cargo/git/db/
           key: ${{ runner.os }}-cargo-${{ hashFiles('./testing/market/Cargo.lock') }}
+      - name: Restore previous compilation
+        uses: actions/cache@v3
+        with:
+          path: |
+            ./testing/market/target
+          key: ${{ runner.os }}-actors-${{ hashFiles('./testing/market/Cargo.lock') }}
       - name: Restore builtin-actors
         uses: actions/cache@v3
         with:
@@ -221,6 +233,12 @@ jobs:
             ~/.cargo/registry/cache/
             ~/.cargo/git/db/
           key: ${{ runner.os }}-cargo-${{ hashFiles('./testing/power/Cargo.lock') }}
+      - name: Restore previous compilation
+        uses: actions/cache@v3
+        with:
+          path: |
+            ./testing/power/target
+          key: ${{ runner.os }}-actors-${{ hashFiles('./testing/power/Cargo.lock') }}
       - name: Restore builtin-actors
         uses: actions/cache@v3
         with:
@@ -270,6 +288,12 @@ jobs:
             ~/.cargo/registry/cache/
             ~/.cargo/git/db/
           key: ${{ runner.os }}-cargo-${{ hashFiles('./testing/verifreg/Cargo.lock') }}
+      - name: Restore previous compilation
+        uses: actions/cache@v3
+        with:
+          path: |
+            ./testing/verifreg/target
+          key: ${{ runner.os }}-actors-${{ hashFiles('./testing/verifreg/Cargo.lock') }}
       - name: Restore builtin-actors
         uses: actions/cache@v3
         with:
@@ -319,6 +343,12 @@ jobs:
             ~/.cargo/registry/cache/
             ~/.cargo/git/db/
           key: ${{ runner.os }}-cargo-${{ hashFiles('./testing/datacap/Cargo.lock') }}
+      - name: Restore previous compilation
+        uses: actions/cache@v3
+        with:
+          path: |
+            ./testing/datacap/target
+          key: ${{ runner.os }}-actors-${{ hashFiles('./testing/datacap/Cargo.lock') }}
       - name: Restore builtin-actors
         uses: actions/cache@v3
         with:
@@ -367,6 +397,12 @@ jobs:
             ~/.cargo/registry/cache/
             ~/.cargo/git/db/
           key: ${{ runner.os }}-cargo-${{ hashFiles('./testing/init/Cargo.lock') }}
+      - name: Restore previous compilation
+        uses: actions/cache@v3
+        with:
+          path: |
+            ./testing/init/target
+          key: ${{ runner.os }}-actors-${{ hashFiles('./testing/init/Cargo.lock') }}
       - name: Restore builtin-actors
         uses: actions/cache@v3
         with:
@@ -415,6 +451,12 @@ jobs:
             ~/.cargo/registry/cache/
             ~/.cargo/git/db/
           key: ${{ runner.os }}-cargo-${{ hashFiles('./testing/account/Cargo.lock') }}
+      - name: Restore previous compilation
+        uses: actions/cache@v3
+        with:
+          path: |
+            ./testing/account/target
+          key: ${{ runner.os }}-actors-${{ hashFiles('./testing/account/Cargo.lock') }}
       - name: Restore builtin-actors
         uses: actions/cache@v3
         with:
@@ -464,6 +506,12 @@ jobs:
             ~/.cargo/registry/cache/
             ~/.cargo/git/db/
           key: ${{ runner.os }}-cargo-${{ hashFiles('./testing/multisig/Cargo.lock') }}
+      - name: Restore previous compilation
+        uses: actions/cache@v3
+        with:
+          path: |
+            ./testing/multisig/target
+          key: ${{ runner.os }}-actors-${{ hashFiles('./testing/multisig/Cargo.lock') }}
       - name: Restore builtin-actors
         uses: actions/cache@v3
         with:
