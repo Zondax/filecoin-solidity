@@ -1,18 +1,6 @@
+
+################ BUILD ################
 build: build_api build_mock_api
-
-deploy_api: deploy_miner_api deploy_market_api deploy_verifreg_api deploy_power_api
-
-deploy_miner_api:
-	mkdir -p hardhat/contracts && cp -rf contracts/* hardhat/contracts/. && cd hardhat && yarn hardhat deploy --tags MinerAPI
-
-deploy_market_api:
-	mkdir -p hardhat/contracts && cp -rf contracts/* hardhat/contracts/. && cd hardhat && yarn hardhat deploy --tags MarketAPI
-
-deploy_verifreg_api:
-	mkdir -p hardhat/contracts && cp -rf contracts/* hardhat/contracts/. && cd hardhat && yarn hardhat deploy --tags VerifRegAPI
-
-deploy_power_api:
-	mkdir -p hardhat/contracts && cp -rf contracts/* hardhat/contracts/. && cd hardhat && yarn hardhat deploy --tags PowerAPI
 
 build_api:
 	./bin/solc solidity-cborutils=${PWD}/node_modules/solidity-cborutils/ @openzeppelin=${PWD}/node_modules/@openzeppelin/ @ensdomains=${PWD}/node_modules/@ensdomains/ contracts/v0.8/MarketAPI.sol --output-dir ./build/v0.8 --overwrite --bin --hashes --opcodes --abi
@@ -28,11 +16,32 @@ build_mock_api:
 	./bin/solc solidity-cborutils=${PWD}/node_modules/solidity-cborutils/ @openzeppelin=${PWD}/node_modules/@openzeppelin/ @ensdomains=${PWD}/node_modules/@ensdomains/ contracts/v0.8/mocks/MarketAPI.sol --output-dir ./build/v0.8/mocks --overwrite --bin --hashes --opcodes --abi
 	./bin/solc solidity-cborutils=${PWD}/node_modules/solidity-cborutils/ @openzeppelin=${PWD}/node_modules/@openzeppelin/ @ensdomains=${PWD}/node_modules/@ensdomains/ contracts/v0.8/mocks/MinerAPI.sol --output-dir ./build/v0.8/mocks --overwrite --bin --hashes --opcodes --abi
 
+build_builtin_actors:
+	cd testing/builtin-actors && make bundle-devnet-wasm
+
+get_method_nums:
+	cd script && cargo r
+
+################ DEPLOY ################
+
+deploy_api: deploy_miner_api deploy_market_api deploy_verifreg_api deploy_power_api
+
+deploy_miner_api:
+	mkdir -p hardhat/contracts && cp -rf contracts/* hardhat/contracts/. && cd hardhat && yarn hardhat deploy --tags MinerAPI
+
+deploy_market_api:
+	mkdir -p hardhat/contracts && cp -rf contracts/* hardhat/contracts/. && cd hardhat && yarn hardhat deploy --tags MarketAPI
+
+deploy_verifreg_api:
+	mkdir -p hardhat/contracts && cp -rf contracts/* hardhat/contracts/. && cd hardhat && yarn hardhat deploy --tags VerifRegAPI
+
+deploy_power_api:
+	mkdir -p hardhat/contracts && cp -rf contracts/* hardhat/contracts/. && cd hardhat && yarn hardhat deploy --tags PowerAPI
+
 deploy_simple_coin:
 	cd hardhat && yarn hardhat deploy --tags SimpleCoin
 
-build_builtin_actors:
-	cd testing/builtin-actors && make bundle-devnet-wasm
+################ TESTS ################
 
 test_miner_cbor_serialization:
 	cd hardhat && yarn hardhat change-beneficiary --beneficiary 0xaaaa12 --quota 12222 --expiration 1111 --contractaddress $(CONTRACT_ADDRESS)
@@ -66,11 +75,7 @@ test_account_integration: build
 test_multisig_integration: build
 	cd testing/multisig && cargo r
 
-get_method_nums:
-	cd script && cargo r
-
-download_bundle_actor:
-	cd testing && wget https://github.com/filecoin-project/builtin-actors/releases/download/dev%2F20221123-fvm-m2/builtin-actors-devnet-wasm.car
+################ DEPS ################
 
 install_solc_linux:
 	wget https://binaries.soliditylang.org/linux-amd64/solc-linux-amd64-v0.8.15+commit.e14f2714
