@@ -28,7 +28,7 @@ fn main() {
     println!("Testing solidity API");
 
     let bs = MemoryBlockstore::default();
-    let actors = std::fs::read("../builtin-actors-devnet-wasm.car").expect("Unable to read actor devnet file file");
+    let actors = std::fs::read("../builtin-actors/output/builtin-actors-devnet-wasm.car").expect("Unable to read actor devnet file file");
     let bundle_root = bundle::import_bundle(&bs, &actors).unwrap();
 
     let mut tester =
@@ -89,6 +89,6 @@ fn main() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
-    
+
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
 }
