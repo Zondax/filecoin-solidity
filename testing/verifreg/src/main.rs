@@ -91,5 +91,5 @@ fn main() {
         .unwrap();
 
     // FIXME: "caller f0101 is not a verifier"
-    assert_eq!(res.msg_receipt.exit_code.value(), 17);
+    assert_eq!(res.msg_receipt.exit_code.value(), 33);
 }
