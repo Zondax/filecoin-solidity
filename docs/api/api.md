@@ -10,8 +10,8 @@ sidebar_position: 1
 | Account                                  |                          |
 | Constructor                              | :heavy_multiplication_x: |
 | PubkeyAddress                            | :heavy_multiplication_x: |
-| AuthenticateMessage                      | :heavy_multiplication_x: |
-| UniversalReceiverHook                    | :heavy_multiplication_x: |
+| AuthenticateMessage                      | :heavy_check_mark:       |
+| UniversalReceiverHook                    | :heavy_check_mark:       |
 |                                          |                          |
 | Cron                                     |                          |
 | Constructor                              | :heavy_multiplication_x: |
@@ -21,23 +21,23 @@ sidebar_position: 1
 | Constructor                              | :heavy_multiplication_x: |
 | Mint                                     | :heavy_multiplication_x: |
 | Destroy                                  | :heavy_multiplication_x: |
-| Name                                     | :heavy_multiplication_x: |
-| Symbol                                   | :heavy_multiplication_x: |
-| TotalSupply                              | :heavy_multiplication_x: |
-| BalanceOf                                | :heavy_multiplication_x: |
-| Transfer                                 | :heavy_multiplication_x: |
-| TransferFrom                             | :heavy_multiplication_x: |
-| IncreaseAllowance                        | :heavy_multiplication_x: |
-| DecreaseAllowance                        | :heavy_multiplication_x: |
-| RevokeAllowance                          | :heavy_multiplication_x: |
-| Burn                                     | :heavy_multiplication_x: |
-| BurnFrom                                 | :heavy_multiplication_x: |
-| Allowance                                | :heavy_multiplication_x: |
+| Name                                     | :heavy_check_mark:       |
+| Symbol                                   | :heavy_check_mark:       |
+| TotalSupply                              | :heavy_check_mark:       |
+| BalanceOf                                | :heavy_check_mark:       |
+| Transfer                                 | :heavy_check_mark:       |
+| TransferFrom                             | :heavy_check_mark:       |
+| IncreaseAllowance                        | :heavy_check_mark:       |
+| DecreaseAllowance                        | :heavy_check_mark:       |
+| RevokeAllowance                          | :heavy_check_mark:       |
+| Burn                                     | :heavy_check_mark:       |
+| BurnFrom                                 | :heavy_check_mark:       |
+| Allowance                                | :heavy_check_mark:       |
 |                                          |                          |
 | Init                                     |                          |
 | Constructor                              | :heavy_multiplication_x: |
-| Exec                                     | :heavy_multiplication_x: |
-| Exec4                                    | :heavy_multiplication_x: |
+| Exec                                     | :heavy_check_mark:       |
+| Exec4                                    | :heavy_check_mark:       |
 |                                          |                          |
 | Market                                   |                          |
 | Constructor                              | :heavy_multiplication_x: |
@@ -106,15 +106,15 @@ sidebar_position: 1
 |                                          |                          |
 | Multisig                                 |                          |
 | Constructor                              | :heavy_multiplication_x: |
-| Propose                                  | :heavy_multiplication_x: |
-| Approve                                  | :heavy_multiplication_x: |
-| Cancel                                   | :heavy_multiplication_x: |
-| AddSigner                                | :heavy_multiplication_x: |
-| RemoveSigner                             | :heavy_multiplication_x: |
-| SwapSigner                               | :heavy_multiplication_x: |
+| Propose                                  | :heavy_check_mark:       |
+| Approve                                  | :heavy_check_mark:       |
+| Cancel                                   | :heavy_check_mark:       |
+| AddSigner                                | :heavy_check_mark:       |
+| RemoveSigner                             | :heavy_check_mark:       |
+| SwapSigner                               | :heavy_check_mark:       |
 | ChangeNumApprovalsThreshold              | :heavy_multiplication_x: |
-| LockBalance                              | :heavy_multiplication_x: |
-| UniversalReceiverHook                    | :heavy_multiplication_x: |
+| LockBalance                              | :heavy_check_mark:       |
+| UniversalReceiverHook                    | :heavy_check_mark:       |
 | List signers and threshold               | :heavy_multiplication_x: |
 |                                          |                          |
 | Payment Channel                          |                          |
