@@ -54,4 +54,4 @@ MarketTypes.WithdrawBalanceReturn memory response = marketApiInstance.withdraw_b
 ```
 
 ## Working examples
-In order to see a complete demo you can use as example, please refer to [this folder](../contracts/v0.8/testContracts). You will find some smart contracts as examples
+In order to see a complete demo you can use as example, please refer to [tests folder](https://github.com/Zondax/filecoin-solidity-api/tree/master/contracts/v0.8/tests). You will find some smart contracts as examples
