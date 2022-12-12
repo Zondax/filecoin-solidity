@@ -467,7 +467,7 @@ jobs:
         run: make build_builtin_actors
       - name: Build contracts
         run: make
-      - name: Run tests on init
+      - name: Run tests on account
         run: |
           cd testing/account
           rustup target add wasm32-unknown-unknown
@@ -522,7 +522,7 @@ jobs:
         run: make build_builtin_actors
       - name: Build contracts
         run: make
-      - name: Run tests on init
+      - name: Run tests on multisig
         run: |
           cd testing/multisig
           rustup target add wasm32-unknown-unknown
