@@ -41,7 +41,7 @@ library VerifRegTypes {
     }
     struct AddVerifierClientParams {
         bytes addr;
-        uint256 allowance;
+        bytes allowance;
     }
     struct RemoveExpiredAllocationsParams {
         // Client for which to remove expired allocations.

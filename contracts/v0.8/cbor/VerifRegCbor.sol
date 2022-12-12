@@ -99,7 +99,7 @@ library AddVerifierClientCBOR {
 
         buf.startFixedArray(2);
         buf.writeBytes(params.addr);
-        buf.writeUInt256(params.allowance);
+        buf.writeBytes(params.allowance);
 
         return buf.data();
     }

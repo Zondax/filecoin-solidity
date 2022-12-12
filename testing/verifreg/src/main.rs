@@ -11,6 +11,7 @@ use fvm::executor::{ApplyKind, Executor};
 use fil_actor_eam::Return;
 use fvm_ipld_encoding::RawBytes;
 use fil_actors_runtime::{EAM_ACTOR_ADDR};
+use fvm_shared::address::Address;
 
 
 const WASM_COMPILED_PATH: &str =
@@ -71,6 +72,24 @@ fn main() {
 
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
 
-    let _exec_return : Return = RawBytes::deserialize(&res.msg_receipt.return_data).unwrap();
+    let exec_return : Return = RawBytes::deserialize(&res.msg_receipt.return_data).unwrap();
 
+    println!("Calling `add_verified_client`");
+
+    let message = Message {
+        from: sender[0].1,
+        to: Address::new_id(exec_return.actor_id),
+        gas_limit: 1000000000,
+        method_num: 2,
+        sequence: 1,
+        params: RawBytes::new(hex::decode("58E4557074610000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000000000002006400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000030010000000000000000000000000000000000000000000000000000000000000").unwrap()),
+        ..Message::default()
+    };
+
+    let res = executor
+        .execute_message(message, ApplyKind::Explicit, 100)
+        .unwrap();
+
+    // FIXME: "caller f0101 is not a verifier"
+    assert_eq!(res.msg_receipt.exit_code.value(), 33);
 }
