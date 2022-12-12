@@ -44,7 +44,7 @@ contract FilecoinMinerMockTest {
     }
     */
 
-    function get_owner_test() public view returns (MinerTypes.GetOwnerReturn memory) {
+    function get_owner_test() public returns (MinerTypes.GetOwnerReturn memory) {
         MinerAPI minerApiInstance = MinerAPI(minerApiAddress);
 
         bytes memory target = hex"0011";
@@ -52,7 +52,7 @@ contract FilecoinMinerMockTest {
         return response;
     }
 
-    function is_controlling_address_test() public view returns (MinerTypes.IsControllingAddressReturn memory) {
+    function is_controlling_address_test() public returns (MinerTypes.IsControllingAddressReturn memory) {
         MinerAPI minerApiInstance = MinerAPI(minerApiAddress);
 
         bytes memory target = hex"0011";
@@ -61,7 +61,7 @@ contract FilecoinMinerMockTest {
         return response;
     }
 
-    function get_sector_size_test() public view returns (MinerTypes.GetSectorSizeReturn memory) {
+    function get_sector_size_test() public returns (MinerTypes.GetSectorSizeReturn memory) {
         MinerAPI minerApiInstance = MinerAPI(minerApiAddress);
 
         bytes memory target = hex"0011";
@@ -69,7 +69,7 @@ contract FilecoinMinerMockTest {
         return response;
     }
 
-    function get_available_balance_test() public view returns (MinerTypes.GetAvailableBalanceReturn memory) {
+    function get_available_balance_test() public returns (MinerTypes.GetAvailableBalanceReturn memory) {
         MinerAPI minerApiInstance = MinerAPI(minerApiAddress);
 
         bytes memory target = hex"0011";
@@ -77,7 +77,7 @@ contract FilecoinMinerMockTest {
         return response;
     }
 
-    function get_vesting_funds_test() public view returns (MinerTypes.GetVestingFundsReturn memory) {
+    function get_vesting_funds_test() public returns (MinerTypes.GetVestingFundsReturn memory) {
         MinerAPI minerApiInstance = MinerAPI(minerApiAddress);
 
         bytes memory target = hex"0011";
@@ -94,7 +94,7 @@ contract FilecoinMinerMockTest {
         minerApiInstance.change_beneficiary(target, params);
     }
 
-    function get_beneficiary_test() public view returns (MinerTypes.GetBeneficiaryReturn memory) {
+    function get_beneficiary_test() public returns (MinerTypes.GetBeneficiaryReturn memory) {
         MinerAPI minerApiInstance = MinerAPI(minerApiAddress);
 
         bytes memory target = hex"0011";
