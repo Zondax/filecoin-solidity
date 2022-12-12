@@ -45,6 +45,10 @@ fn main() {
 
     let sender: [Account; 1] = tester.create_accounts().unwrap();
 
+    println!("Sender address id");
+    dbg!(&sender[0].0);
+    println!("Sender address bytes");
+    dbg!(hex::encode(&sender[0].1.to_bytes()));
     /***********************************************
      *
      * Instantiate Account Actor with a BLS address
@@ -89,42 +93,6 @@ fn main() {
      *
      **************************/
 
-    println!("Create Multisig actor for solidity contract to interact with");
-
-    let constructor_params = fil_actor_multisig::ConstructorParams{
-        num_approvals_threshold: 1,
-        signers: vec![sender[0].1],
-        start_epoch: 1670873233,
-        unlock_duration: 1670873234
-    };
-
-    let exec_params = fil_actor_init::ExecParams{
-        // CID of StorageMiner actor. You get this as output from builtin-actors compiling process
-        code_cid: Cid::from_str("bafk2bzacebjppmys5tqoq2fquf6vkb2bfcgsncfwy7bms7zgt37gowvphjsfk").unwrap(),
-        // code_cid: Cid::from_str("bafk2bzacedgixfd465634uihet3u57vugbbp6s5sseb76phti3cexx66ers3i").unwrap(),
-        constructor_params: RawBytes::serialize(constructor_params).unwrap(),
-    };
-
-    let message = Message {
-        from: sender[0].1,
-        to: INIT_ACTOR_ADDR,
-        gas_limit: 1000000000,
-        method_num: 2,
-        params: RawBytes::serialize(exec_params).unwrap(),
-        ..Message::default()
-    };
-
-    let res = executor
-        .execute_message(message, ApplyKind::Explicit, 100)
-        .unwrap();
-
-    dbg!(&res);
-
-    let exec_return : ExecReturn = RawBytes::deserialize(&res.msg_receipt.return_data).unwrap();
-
-    dbg!(hex::encode(&exec_return.id_address.to_bytes()));
-
-    assert_eq!(res.msg_receipt.exit_code.value(), 0);
 
     println!("Calling init actor (EVM)");
 
@@ -146,7 +114,7 @@ fn main() {
         to: EAM_ACTOR_ADDR,
         gas_limit: 1000000000,
         method_num: 3,
-        sequence: 1,
+        sequence: 0,
         params: RawBytes::serialize(constructor_params).unwrap(),
         ..Message::default()
     };
@@ -155,8 +123,74 @@ fn main() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
+    dbg!(&res);
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
 
     let exec_return : Return = RawBytes::deserialize(&res.msg_receipt.return_data).unwrap();
+
+    println!("Contract actor id");
+    dbg!(&exec_return.actor_id);
+    let contractActorID = exec_return.actor_id;
+
+    println!("Create Multisig actor for solidity contract to interact with");
+
+    let constructor_params = fil_actor_multisig::ConstructorParams{
+        num_approvals_threshold: 1,
+        signers: vec![Address::new_id(contractActorID)],
+        start_epoch: 1670873233,
+        unlock_duration: 1670873234
+    };
+
+    let exec_params = fil_actor_init::ExecParams{
+        // CID of StorageMiner actor. You get this as output from builtin-actors compiling process
+        code_cid: Cid::from_str("bafk2bzacebjppmys5tqoq2fquf6vkb2bfcgsncfwy7bms7zgt37gowvphjsfk").unwrap(),
+        // code_cid: Cid::from_str("bafk2bzacedgixfd465634uihet3u57vugbbp6s5sseb76phti3cexx66ers3i").unwrap(),
+        constructor_params: RawBytes::serialize(constructor_params).unwrap(),
+    };
+
+    let message = Message {
+        from: sender[0].1,
+        to: INIT_ACTOR_ADDR,
+        gas_limit: 1000000000,
+        method_num: 2,
+        sequence: 1,
+        params: RawBytes::serialize(exec_params).unwrap(),
+        ..Message::default()
+    };
+
+    let res = executor
+        .execute_message(message, ApplyKind::Explicit, 100)
+        .unwrap();
+
+    let exec_return : ExecReturn = RawBytes::deserialize(&res.msg_receipt.return_data).unwrap();
+
+    println!("Multisig actor address bytes");
+    dbg!(hex::encode(&exec_return.id_address.to_bytes()));
+
+    assert_eq!(res.msg_receipt.exit_code.value(), 0);
+
+
+    println!("Calling `propose`");
+
+    let message = Message {
+        from: sender[0].1,
+        to: Address::new_id(contractActorID),
+        gas_limit: 1000000000,
+        method_num: 2,
+        sequence: 2,
+        params: RawBytes::new(hex::decode("590164C0987260000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000000000002006600000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000000000457000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000C0000000000000000000000000000000000000000000000000000000000000000200640000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000").unwrap()),
+        ..Message::default()
+    };
+
+    let res = executor
+        .execute_message(message, ApplyKind::Explicit, 100)
+        .unwrap();
+
+    if res.msg_receipt.exit_code.value() != 0 {
+        dbg!(&res);
+    }
+
+    assert_eq!(res.msg_receipt.exit_code.value(), 0);
+
 
 }
