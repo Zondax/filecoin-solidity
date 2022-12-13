@@ -129,13 +129,13 @@ fn main() {
 
     println!("Contract actor id");
     dbg!(&exec_return.actor_id);
-    let contractActorID = exec_return.actor_id;
+    let contract_actor_id = exec_return.actor_id;
 
     println!("Create Multisig actor for solidity contract to interact with");
 
     let constructor_params = fil_actor_multisig::ConstructorParams{
         num_approvals_threshold: 1,
-        signers: vec![Address::new_id(contractActorID)],
+        signers: vec![Address::new_id(sender[0].0),Address::new_id(contract_actor_id)],
         start_epoch: 1670873233,
         unlock_duration: 1670873234
     };
@@ -173,7 +173,7 @@ fn main() {
 
     let message = Message {
         from: sender[0].1,
-        to: Address::new_id(contractActorID),
+        to: Address::new_id(contract_actor_id),
         gas_limit: 1000000000,
         method_num: 2,
         sequence: 2,
@@ -185,11 +185,39 @@ fn main() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
-    if res.msg_receipt.exit_code.value() != 0 {
+    if res.msg_receipt.exit_code.value() != 33 {
         dbg!(&res);
     }
 
-    assert_eq!(res.msg_receipt.exit_code.value(), 0);
+    assert_eq!(res.msg_receipt.exit_code.value(), 33);
+    assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "08c379a0000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000136163746f72206572726f7220636f646520333300000000000000000000000000");
 
 
+
+    println!("Calling `add_signer`");
+
+    let message = Message {
+        from: sender[0].1,
+        to: Address::new_id(contract_actor_id),
+        gas_limit: 1000000000,
+        method_num: 2,
+        sequence: 3,
+        params: RawBytes::new(hex::decode("5901041339400D00000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000080000000000000000000000000000000000000000000000000000000000000000200670000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000040000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000020064000000000000000000000000000000000000000000000000000000000000").unwrap()),
+        ..Message::default()
+    };
+
+    let res = executor
+        .execute_message(message, ApplyKind::Explicit, 100)
+        .unwrap();
+
+    if res.msg_receipt.exit_code.value() != 33 {
+        dbg!(&res);
+    }
+
+    assert_eq!(res.msg_receipt.exit_code.value(), 33);
+    assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "08c379a0000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000136163746f72206572726f7220636f646520313800000000000000000000000000");
+
+
+
+    // FIXME: As propose is failing, we cannot execute the rest of the methods...
 }
