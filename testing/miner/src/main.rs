@@ -25,9 +25,6 @@ use fvm_shared::econ::TokenAmount;
 const WASM_COMPILED_PATH: &str =
    "../../build/v0.8/MinerAPI.bin";
 
-// const WASM_COMPILED_PATH: &str =
-// "../build/SimpleCoin.bin";
-
 #[derive(Serialize_tuple, Deserialize_tuple, Clone, Debug)]
 struct State {
     empty: bool,
