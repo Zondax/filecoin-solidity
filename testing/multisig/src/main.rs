@@ -71,7 +71,7 @@ fn main() {
 
     let actor_state = ActorState {
         // CID of Accounts actor. You get this as output from builtin-actors compiling process
-        code: Cid::from_str("bafk2bzacebu625ptoi4ssmpr3nndjs3ujybdcdoiozjx64jvnzugypo7sm7os").unwrap(),
+        code: Cid::from_str("bafk2bzaceakum7hkogybvq73jrn5iexw2wlppa4ejwcsi46unihipa7d7bfsq").unwrap(),
         // code: Cid::from_str("bafk2bzacecj7v5ur5qk4vn3xbvgsizl35e42l3yaankmxu6dcoouv4mkphsjq").unwrap(),
         state: cid,
         sequence: 0,
