@@ -25,7 +25,8 @@ library Actor {
     uint64 constant GAS_LIMIT = 100000000;
     uint64 constant CALL_ACTOR_PRECOMPILE_ADDR = 0x0e;
     uint64 constant MAX_RAW_RESPONSE_SIZE = 0x300;
-    uint64 constant READ_FLAG = 0x00000001; // https://github.com/filecoin-project/ref-fvm/blob/master/shared/src/sys/mod.rs#L60
+    uint64 constant READ_ONLY_FLAG = 0x00000001; // https://github.com/filecoin-project/ref-fvm/blob/master/shared/src/sys/mod.rs#L60
+    uint64 constant DEFAULT_FLAG = 0x00000000;
 
     function call(uint method_num, bytes memory actor_code, bytes memory raw_request) internal returns (bytes memory) {
         bytes memory raw_response = new bytes(MAX_RAW_RESPONSE_SIZE);
@@ -42,7 +43,7 @@ library Actor {
             // value to send
             mstore(add(input, 0x20), amount)
             // readonly flag is mandatory for now
-            mstore(add(input, 0x40), READ_FLAG)
+            mstore(add(input, 0x40), DEFAULT_FLAG)
             // cbor codec is mandatory for now
             mstore(add(input, 0x60), CODEC)
             // address size

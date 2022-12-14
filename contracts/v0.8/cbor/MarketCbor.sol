@@ -46,9 +46,6 @@ library WithdrawBalanceCBOR {
         uint byteIdx = 0;
         uint len;
 
-        (len, byteIdx) = rawResp.readFixedArray(byteIdx);
-        assert(len == 1);
-
         (tmp, byteIdx) = rawResp.readBytes(byteIdx);
         ret.amount_withdrawn = Misc.toUint256(tmp, 0);
     }
