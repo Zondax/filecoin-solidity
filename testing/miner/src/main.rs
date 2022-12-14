@@ -72,8 +72,8 @@ fn main() {
 
     let actor_state = ActorState {
         // CID of Accounts actor. You get this as output from builtin-actors compiling process
-        code: Cid::from_str("bafk2bzacecijtwhjgnb24n452lat6m66yumpdsdunv3pupl5kow7j725twjtc").unwrap(),
-        // code: Cid::from_str("bafk2bzacecj7v5ur5qk4vn3xbvgsizl35e42l3yaankmxu6dcoouv4mkphsjq").unwrap(),
+        // code: Cid::from_str("bafk2bzacecijtwhjgnb24n452lat6m66yumpdsdunv3pupl5kow7j725twjtc").unwrap(),
+        code: Cid::from_str("bafk2bzaceddmas33nnn2izdexi5xjzuahzezl62aa5ah5bqwzzjceusskr6ty").unwrap(),
         state: cid,
         sequence: 0,
         balance: TokenAmount::from_atto(10000),
@@ -107,8 +107,8 @@ fn main() {
 
     let exec_params = fil_actor_init::ExecParams{
         // CID of StorageMiner actor. You get this as output from builtin-actors compiling process
-        code_cid: Cid::from_str("bafk2bzaceauju226n57uvravixmgnaoncdl3gwkcjwz4jcboy4yeq7ebhqmoy").unwrap(),
-        // code_cid: Cid::from_str("bafk2bzacedgixfd465634uihet3u57vugbbp6s5sseb76phti3cexx66ers3i").unwrap(),
+        // code_cid: Cid::from_str("bafk2bzaceauju226n57uvravixmgnaoncdl3gwkcjwz4jcboy4yeq7ebhqmoy").unwrap(),
+        code_cid: Cid::from_str("bafk2bzacea5ua7isdc4nx3huvbgsjdikfkxj2mhwveuyvtxtk5techk5rddl6").unwrap(),
         constructor_params: RawBytes::serialize(constructor_params).unwrap(),
     };
 
@@ -124,8 +124,6 @@ fn main() {
     let res = executor
     .execute_message(message, ApplyKind::Explicit, 100)
     .unwrap();
-
-    dbg!(&res);
 
     let exec_return : ExecReturn = RawBytes::deserialize(&res.msg_receipt.return_data).unwrap();
 
@@ -268,8 +266,7 @@ fn main() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
-    // FIXME
-    assert_eq!(res.msg_receipt.exit_code.value(), 33);
+    assert_eq!(res.msg_receipt.exit_code.value(), 0);
 
 
     println!("Calling `get_vesting_funds`");
@@ -288,8 +285,7 @@ fn main() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
-    // FIXME
-    assert_eq!(res.msg_receipt.exit_code.value(), 33);
+    assert_eq!(res.msg_receipt.exit_code.value(), 0);
 
     println!("Calling `repay_debt`");
 
@@ -348,8 +344,7 @@ fn main() {
         .unwrap();
 
 
-    // FIXME
-    assert_eq!(res.msg_receipt.exit_code.value(), 33);
+    assert_eq!(res.msg_receipt.exit_code.value(), 0);
 
 
     println!("Calling `get_multiaddresses`");
@@ -368,8 +363,7 @@ fn main() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
-    // FIXME
-    assert_eq!(res.msg_receipt.exit_code.value(), 33);
+    assert_eq!(res.msg_receipt.exit_code.value(), 0);
 
 
     println!("Calling `change_worker_address`");
@@ -407,8 +401,7 @@ fn main() {
        .execute_message(message, ApplyKind::Explicit, 100)
        .unwrap();
 
-    // FIXME
-    assert_eq!(res.msg_receipt.exit_code.value(), 33);
+    assert_eq!(res.msg_receipt.exit_code.value(), 0);
 
     println!("Calling `get_sector_size`");
 
@@ -426,8 +419,7 @@ fn main() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
-    // FIXME
-    assert_eq!(res.msg_receipt.exit_code.value(), 33);
+    assert_eq!(res.msg_receipt.exit_code.value(), 0);
 
     println!("Calling `change_multiaddresses`");
 
