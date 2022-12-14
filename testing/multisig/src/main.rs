@@ -142,7 +142,7 @@ fn main() {
 
     let exec_params = fil_actor_init::ExecParams{
         // CID of StorageMiner actor. You get this as output from builtin-actors compiling process
-        code_cid: Cid::from_str("bafk2bzacebjppmys5tqoq2fquf6vkb2bfcgsncfwy7bms7zgt37gowvphjsfk").unwrap(),
+        code_cid: Cid::from_str("bafk2bzacebkrgcucrpql55hdvvwr2qonr7j5uqtbhmt3gxatvgvqzuv4klwp4").unwrap(),
         // code_cid: Cid::from_str("bafk2bzacedgixfd465634uihet3u57vugbbp6s5sseb76phti3cexx66ers3i").unwrap(),
         constructor_params: RawBytes::serialize(constructor_params).unwrap(),
     };
