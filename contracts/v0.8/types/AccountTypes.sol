@@ -23,7 +23,6 @@ import "./CommonTypes.sol";
 /// @title Filecoin account actor types for Solidity.
 /// @author Zondax AG
 library AccountTypes {
-    bytes constant ActorCode = hex"0005"; // FIXME set this value correctly
     uint constant AuthenticateMessageMethodNum = 2643134072;
     uint constant UniversalReceiverHookMethodNum = 3726118371;
 

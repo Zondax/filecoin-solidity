@@ -24,26 +24,26 @@ import "./types/CommonTypes.sol";
 import "./utils/Misc.sol";
 import "./utils/Actor.sol";
 
-/// @title This contract is a proxy to the singleton Account actor (address: f0X). Calling one of its methods will result in a cross-actor call being performed.
+/// @title This contract is a proxy to the Account actor. Calling one of its methods will result in a cross-actor call being performed.
 /// @author Zondax AG
 contract AccountAPI {
     using AuthenticateMessageCBOR for AccountTypes.AuthenticateMessageParams;
     using BytesCBOR for bytes;
 
     /// @notice FIXME
-    function authenticate_message(AccountTypes.AuthenticateMessageParams memory params) public {
+    function authenticate_message(bytes memory target, AccountTypes.AuthenticateMessageParams memory params) public {
         bytes memory raw_request = params.serialize();
 
-        bytes memory raw_response = Actor.call(AccountTypes.AuthenticateMessageMethodNum, AccountTypes.ActorCode, raw_request);
+        bytes memory raw_response = Actor.call(AccountTypes.AuthenticateMessageMethodNum, target, raw_request);
 
         bytes memory result = Actor.readRespData(raw_response);
     }
 
     /// @notice FIXME
-    function universal_receiver_hook(bytes memory params) public {
+    function universal_receiver_hook(bytes memory target, bytes memory params) public {
         bytes memory raw_request = params.serializeBytes();
 
-        bytes memory raw_response = Actor.call(AccountTypes.UniversalReceiverHookMethodNum, AccountTypes.ActorCode, raw_request);
+        bytes memory raw_response = Actor.call(AccountTypes.UniversalReceiverHookMethodNum, target, raw_request);
 
         bytes memory result = Actor.readRespData(raw_response);
     }
