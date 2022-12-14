@@ -71,7 +71,7 @@ fn main() {
 
     let actor_state = ActorState {
         // CID of Accounts actor. You get this as output from builtin-actors compiling process
-        code: Cid::from_str("bafk2bzacebu625ptoi4ssmpr3nndjs3ujybdcdoiozjx64jvnzugypo7sm7os").unwrap(),
+        code: Cid::from_str("bafk2bzacecijtwhjgnb24n452lat6m66yumpdsdunv3pupl5kow7j725twjtc").unwrap(),
         // code: Cid::from_str("bafk2bzacecj7v5ur5qk4vn3xbvgsizl35e42l3yaankmxu6dcoouv4mkphsjq").unwrap(),
         state: cid,
         sequence: 0,
@@ -142,7 +142,7 @@ fn main() {
 
     let exec_params = fil_actor_init::ExecParams{
         // CID of StorageMiner actor. You get this as output from builtin-actors compiling process
-        code_cid: Cid::from_str("bafk2bzacebjppmys5tqoq2fquf6vkb2bfcgsncfwy7bms7zgt37gowvphjsfk").unwrap(),
+        code_cid: Cid::from_str("bafk2bzacedwgwjn47gcd2ocwhedhw26f562z3khvtyapyvdjm6dhz6lzdug3w").unwrap(),
         // code_cid: Cid::from_str("bafk2bzacedgixfd465634uihet3u57vugbbp6s5sseb76phti3cexx66ers3i").unwrap(),
         constructor_params: RawBytes::serialize(constructor_params).unwrap(),
     };
@@ -185,14 +185,9 @@ fn main() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
-    if res.msg_receipt.exit_code.value() != 33 {
-        dbg!(&res);
-    }
 
+    // FIXME
     assert_eq!(res.msg_receipt.exit_code.value(), 33);
-    assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "08c379a0000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000136163746f72206572726f7220636f646520333300000000000000000000000000");
-
-
 
     println!("Calling `add_signer`");
 
@@ -210,14 +205,9 @@ fn main() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
-    if res.msg_receipt.exit_code.value() != 33 {
-        dbg!(&res);
-    }
 
+    // FIXME
     assert_eq!(res.msg_receipt.exit_code.value(), 33);
-    assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "08c379a0000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000136163746f72206572726f7220636f646520313800000000000000000000000000");
-
-
 
     // FIXME: As propose is failing, we cannot execute the rest of the methods...
 }
