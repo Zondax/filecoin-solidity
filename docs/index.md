@@ -8,9 +8,9 @@ In the context of the Filecoin EVM, a Solidity library is required in order to a
 This project combines two different approaches: a **mocked version** of the API, as well as the **real implementation** that interacts with filecoin built-in actors.
 
 ## Libraries 
-The project repository for the Solidity API can be found [here :link:](https://github.com/Zondax/fevm-solidity-api). 
+The project repository for the Solidity API can be found [here :link:](https://github.com/Zondax/filecoin-solidity). 
 
-We have also created a public NPM package to facilitate its integration. Check it out [here :link:](https://www.npmjs.com/package/@zondax/filecoin-solidity-api).
+We have also created a public NPM package to facilitate its integration. Check it out [here :link:](https://www.npmjs.com/package/@zondax/filecoin-solidity).
 
 ### Mock
 They do not actually perform any cross-contract calls or syscalls. It will respond to specific scenarios, which are documented in this doc. The ultimate goal is for devs to be able to replace imports of mocked library with the real one and have their contracts connected to the real protocol.

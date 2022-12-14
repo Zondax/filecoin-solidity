@@ -24,18 +24,18 @@ import { MarketTypes } from "./libs/types/MarketTypes.sol";
 ```
 
 #### NPM Package
-A better approach to import these libs is using the NPM package created for this. [:link:](https://www.npmjs.com/package/@zondax/filecoin-solidity-mock-api). 
+A better approach to import these libs is using the NPM package created for this. [:link:](https://www.npmjs.com/package/@zondax/filecoin-solidity). 
 Run on your project in order to add this package. 
 ```yarn
-yarn add @zondax/filecoin-solidity-mock-api
+yarn add @zondax/filecoin-solidity
 ```
 
 In your smart contract, copy and paste these lines.
 
 ```solidity
-import { MarketAPI } from "@zondax/filecoin-solidity-api/contracts/v0.8/mocks/MarketAPI.sol";
-import { CommonTypes } from "@zondax/filecoin-solidity-api/contracts/v0.8/types/CommonTypes.sol";
-import { MarketTypes } from "@zondax/filecoin-solidity-api/contracts/v0.8/types/MarketAPI.sol";
+import { MarketAPI } from "@zondax/filecoin-solidity/contracts/v0.8/mocks/MarketAPI.sol";
+import { CommonTypes } from "@zondax/filecoin-solidity/contracts/v0.8/types/CommonTypes.sol";
+import { MarketTypes } from "@zondax/filecoin-solidity/contracts/v0.8/types/MarketAPI.sol";
 ```
 
 
@@ -54,4 +54,4 @@ MarketTypes.WithdrawBalanceReturn memory response = marketApiInstance.withdraw_b
 ```
 
 ## Working examples
-In order to see a complete demo you can use as example, please refer to [tests folder](https://github.com/Zondax/filecoin-solidity-api/tree/master/contracts/v0.8/tests). You will find some smart contracts as examples
+In order to see a complete demo you can use as example, please refer to [tests folder](https://github.com/Zondax/filecoin-solidity/tree/master/contracts/v0.8/tests). You will find some smart contracts as examples
