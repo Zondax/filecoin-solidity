@@ -180,12 +180,6 @@ fn main() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
-    if res.msg_receipt.exit_code.value() != 33 {
-        dbg!(&res);
-    }
-
-    dbg!(&res);
-
     assert_eq!(res.msg_receipt.exit_code.value(), 33);
     assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "586408c379a0000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000136163746f72206572726f7220636f646520313800000000000000000000000000");
 
@@ -205,8 +199,7 @@ fn main() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
-    // FIXME: Read-only error but it is `get_beneficiary`
-    assert_eq!(res.msg_receipt.exit_code.value(), 33);
+    assert_eq!(res.msg_receipt.exit_code.value(), 0);
 
     println!("Calling `change_beneficiary`");
 
