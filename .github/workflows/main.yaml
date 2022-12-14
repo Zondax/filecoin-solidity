@@ -6,7 +6,7 @@ jobs:
   build-mock:
     name: "Build Mock API"
     timeout-minutes: 20
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -28,7 +28,7 @@ jobs:
   simplecoin-checks:
     name: "SimpleCoin: end-to-end tests"
     timeout-minutes: 20
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -60,7 +60,7 @@ jobs:
   api-deploy:
     name: "Filecoin APIs: deploy"
     timeout-minutes: 20
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -91,7 +91,7 @@ jobs:
   miner-integration:
     name: "Miner API: integration tests"
     timeout-minutes: 20
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -146,7 +146,7 @@ jobs:
   market-integration:
     name: "Market API: integration tests"
     timeout-minutes: 20
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -203,7 +203,7 @@ jobs:
   power-integration:
     name: "Power API: integration tests"
     timeout-minutes: 20
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -258,7 +258,7 @@ jobs:
   verifreg-integration:
     name: "VerifReg API: integration tests"
     timeout-minutes: 20
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -313,7 +313,7 @@ jobs:
   datacap-integration:
     name: "DataCap API: integration tests"
     timeout-minutes: 20
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -367,7 +367,7 @@ jobs:
   init-integration:
     name: "Init API: integration tests"
     timeout-minutes: 20
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -421,7 +421,7 @@ jobs:
   account-integration:
     name: "Account API: integration tests"
     timeout-minutes: 20
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -476,7 +476,7 @@ jobs:
   multisig-integration:
     name: "Multisig API: integration tests"
     timeout-minutes: 20
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout
         uses: actions/checkout@v2
