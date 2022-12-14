@@ -1,5 +1,5 @@
 {
-  "name": "@zondax/filecoin-solidity-api",
+  "name": "@zondax/filecoin-solidity",
   "version": "0.0.0",
   "description": "Filecoin EVM Solidity APIs",
   "main": "",
@@ -9,7 +9,7 @@
   "scripts": {},
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Zondax/fevm-solidity-api.git"
+    "url": "git+https://github.com/Zondax/filecoin-solidity.git"
   },
   "keywords": [
     "FEVM",
@@ -20,9 +20,9 @@
   "author": "Zondax AG <hello@zondax.ch>",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/Zondax/fevm-solidity-api/issues"
+    "url": "https://github.com/Zondax/filecoin-solidity/issues"
   },
-  "homepage": "https://github.com/Zondax/fevm-solidity-api#readme",
+  "homepage": "https://github.com/Zondax/filecoin-solidity#readme",
   "files": [
     "contracts"
   ],
