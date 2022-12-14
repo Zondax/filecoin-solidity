@@ -89,9 +89,7 @@ fn main() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
-
-    // FIXME: read-only stuff
-    assert_eq!(res.msg_receipt.exit_code.value(), 33);
+    assert_eq!(res.msg_receipt.exit_code.value(), 0);
 
     println!("Calling `network_raw_power`");
 
@@ -109,9 +107,7 @@ fn main() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
-
-    // FIXME: read-only stuff
-    assert_eq!(res.msg_receipt.exit_code.value(), 33);
+    assert_eq!(res.msg_receipt.exit_code.value(), 0);
 
     println!("Calling `miner_raw_power`");
 
@@ -128,11 +124,6 @@ fn main() {
     let res = executor
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
-
-
-    if res.msg_receipt.exit_code.value() != 33 {
-        dbg!(&res);
-    }
 
     // FIXME
     assert_eq!(res.msg_receipt.exit_code.value(), 33);
@@ -153,6 +144,5 @@ fn main() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
-    // FIXME
-    assert_eq!(res.msg_receipt.exit_code.value(), 33);
+    assert_eq!(res.msg_receipt.exit_code.value(), 0);
 }

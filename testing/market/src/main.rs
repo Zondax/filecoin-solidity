@@ -39,7 +39,7 @@ fn main() {
     let sender: [Account; 1] = tester.create_accounts().unwrap();
 
     // Our account address is 100 so hex"0064"
-    // dbg!(sender[0]);
+    // dbg!(sender[0].1);
 
     // Instantiate machine
     tester.instantiate_machine(DummyExterns).unwrap();
@@ -87,7 +87,7 @@ fn main() {
         method_num: 2,
         sequence: 1,
         value: TokenAmount::from_atto(1_000),
-        params: RawBytes::new(hex::decode("5864467FAFEF000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000020064000000000000000000000000000000000000000000000000000000000000").unwrap()),
+        params: RawBytes::new(hex::decode("5864467FAFEF000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000020065000000000000000000000000000000000000000000000000000000000000").unwrap()),
         ..Message::default()
     };
 
@@ -95,8 +95,7 @@ fn main() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
-    // FIXME: precompiled break
-    assert_eq!(res.msg_receipt.exit_code.value(), 33);
+    assert_eq!(res.msg_receipt.exit_code.value(), 0);
 
     println!("Calling `withdraw_balance`");
 
@@ -106,7 +105,7 @@ fn main() {
         gas_limit: 1000000000,
         method_num: 2,
         sequence: 2,
-        params: RawBytes::new(hex::decode("58A45BFFDFC40000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000004BC00000000000000000000000000000000000000000000000000000000000000020066000000000000000000000000000000000000000000000000000000000000").unwrap()),
+        params: RawBytes::new(hex::decode("58A46C4162E200000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000040000000000000000000000000000000000000000000000000000000000000006400000000000000000000000000000000000000000000000000000000000000020065000000000000000000000000000000000000000000000000000000000000").unwrap()),
         ..Message::default()
     };
 
@@ -114,12 +113,7 @@ fn main() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
-    if res.msg_receipt.exit_code.value() != 33 {
-        dbg!(&res);
-    }
-
-    // FIXME : "actor error"
-    assert_eq!(res.msg_receipt.exit_code.value(), 33);
+    assert_eq!(res.msg_receipt.exit_code.value(), 0);
 
     println!("Calling `get_balance`");
 
@@ -129,7 +123,7 @@ fn main() {
         gas_limit: 1000000000,
         method_num: 2,
         sequence: 3,
-        params: RawBytes::new(hex::decode("58643587a9fd000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000020066000000000000000000000000000000000000000000000000000000000000").unwrap()),
+        params: RawBytes::new(hex::decode("58643587a9fd000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000020065000000000000000000000000000000000000000000000000000000000000").unwrap()),
         ..Message::default()
     };
 
@@ -137,8 +131,7 @@ fn main() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
-    // FIXME: precompile broke it
-    assert_eq!(res.msg_receipt.exit_code.value(), 33);
+    assert_eq!(res.msg_receipt.exit_code.value(), 0);
 
     println!("Calling `get_deal_data_commitment`");
 
@@ -156,14 +149,8 @@ fn main() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
-    if res.msg_receipt.exit_code.value() != 33 {
-        dbg!(&res);
-    }
-
-    // FIXME : "actor error"
+    // FIXME : "no such deal"
     assert_eq!(res.msg_receipt.exit_code.value(), 33);
-    //assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "586408c379a0000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000136163746f72206572726f7220636f646520313700000000000000000000000000");
-
 
     println!("Calling `get_deal_client`");
 
