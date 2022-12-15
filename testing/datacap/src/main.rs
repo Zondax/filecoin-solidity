@@ -34,7 +34,13 @@ fn main() {
     let mut tester =
         Tester::new(NetworkVersion::V18, StateTreeVersion::V5, bundle_root, bs).unwrap();
 
-    let sender: [Account; 1] = tester.create_accounts().unwrap();
+    let sender: [Account; 4] = tester.create_accounts().unwrap();
+
+
+    println!("{}", format!("Sender address id [{}] and bytes [{}]", &sender[0].0, hex::encode(&sender[0].1.to_bytes())));
+    println!("{}", format!("Sender address id [{}] and bytes [{}]", &sender[1].0, hex::encode(&sender[1].1.to_bytes())));
+    println!("{}", format!("Sender address id [{}] and bytes [{}]", &sender[2].0, hex::encode(&sender[2].1.to_bytes())));
+    println!("{}", format!("Sender address id [{}] and bytes [{}]", &sender[3].0, hex::encode(&sender[3].1.to_bytes())));
 
     // Instantiate machine
     tester.instantiate_machine(DummyExterns).unwrap();
@@ -154,4 +160,23 @@ fn main() {
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
     assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "58200000000000000000000000000000000000000000000000000000000000000000");
 
+
+    println!("Calling `allowance`");
+
+    let message = Message {
+        from: sender[0].1,
+        to: Address::new_id(exec_return.actor_id),
+        gas_limit: 1000000000,
+        method_num: 2,
+        sequence: 5,
+        params: RawBytes::new(hex::decode("58E4CE0A0B350000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000000000015011EDA43D05CA6D7D637E7065EF6B8C5DB89E5FB0C0000000000000000000000000000000000000000000000000000000000000000000000000000000000001501DCE5B7F69E73494891556A350F8CC357614916D50000000000000000000000").unwrap()),
+        ..Message::default()
+    };
+
+    let res = executor
+        .execute_message(message, ApplyKind::Explicit, 100)
+        .unwrap();
+
+    assert_eq!(res.msg_receipt.exit_code.value(), 0);
+    assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "58200000000000000000000000000000000000000000000000000000000000000000");
 }
