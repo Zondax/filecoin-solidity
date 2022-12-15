@@ -38,6 +38,15 @@ library BytesCBOR {
         return buf.data();
     }
 
+    function serializeNull() internal pure returns (bytes memory) {
+        // FIXME what should the max length be on the buffer?
+        CBOR.CBORBuffer memory buf = CBOR.create(64);
+
+        buf.writeNull();
+
+        return buf.data();
+    }
+
     function deserializeAddress(bytes memory ret) internal pure returns (bytes memory) {
         bytes memory addr;
         uint byteIdx = 0;

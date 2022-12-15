@@ -61,7 +61,7 @@ contract DataCapAPI {
     }
 
     function total_supply() public returns (int256) {
-        bytes memory raw_request = new bytes(0);
+        bytes memory raw_request = BytesCBOR.serializeNull();
 
         bytes memory raw_response = Actor.call(DataCapTypes.TotalSupplyMethodNum, DataCapTypes.ActorCode, raw_request);
 
