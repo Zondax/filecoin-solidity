@@ -42,6 +42,10 @@ fn main() {
     println!("{}", format!("Sender address id [{}] and bytes [{}]", &sender[2].0, hex::encode(&sender[2].1.to_bytes())));
     println!("{}", format!("Sender address id [{}] and bytes [{}]", &sender[3].0, hex::encode(&sender[3].1.to_bytes())));
 
+    // Governor address
+    // https://github.com/Zondax/ref-fvm/blob/14fdd638fe29beaf4259a02a65a141b736fff17d/testing/integration/src/tester.rs#L84
+    println!("Governor address ID type on hex [{}]",hex::encode(Address::new_id(200).to_bytes()));
+
     // Instantiate machine
     tester.instantiate_machine(DummyExterns).unwrap();
 
@@ -179,4 +183,27 @@ fn main() {
 
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
     assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "58200000000000000000000000000000000000000000000000000000000000000000");
+
+/*
+    println!("Calling `transfer`");
+
+    let message = Message {
+        from: sender[0].1,
+        to: Address::new_id(exec_return.actor_id),
+        gas_limit: 1000000000,
+        method_num: 2,
+        sequence: 6,
+        params: RawBytes::new(hex::decode("58E4003B119F000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000600000000000000000000000000000000000000000000000001BC16D674EC8000000000000000000000000000000000000000000000000000000000000000000A0000000000000000000000000000000000000000000000000000000000000000300C80100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000").unwrap()),
+        ..Message::default()
+    };
+
+    let res = executor
+        .execute_message(message, ApplyKind::Explicit, 100)
+        .unwrap();
+
+    dbg!(&res);
+    assert_eq!(res.msg_receipt.exit_code.value(), 0);
+    assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "58200000000000000000000000000000000000000000000000000000000000000000");
+   
+ */
 }
