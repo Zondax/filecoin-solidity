@@ -11,7 +11,7 @@ use fvm_shared::message::Message;
 use fvm::executor::{ApplyKind, Executor};
 use fil_actor_eam::Return;
 use fvm_ipld_encoding::RawBytes;
-use fil_actors_runtime::{EAM_ACTOR_ADDR};
+use fil_actors_runtime::{EAM_ACTOR_ADDR, DATACAP_TOKEN_ACTOR_ADDR};
 use fvm_shared::ActorID;
 use fvm_shared::econ::TokenAmount;
 
@@ -36,8 +36,11 @@ fn main() {
     let mut tester =
         Tester::new(NetworkVersion::V18, StateTreeVersion::V5, bundle_root, bs).unwrap();
 
-    let sender: [Account; 4] = tester.create_accounts().unwrap();
+    // As the governor address for datacap is 200, we create many many address in order to initialize the ID 200 with some tokens
+    // and make it a valid address to use.
+    let sender: [Account; 300] = tester.create_accounts().unwrap();
 
+    // Create embryo address to deploy the contract on it (assign some FILs to it)
     let tmp = hex::decode("DAFEA492D9c6733ae3d56b7Ed1ADB60692c98Bc5").unwrap();
     let contract_eth_address = tmp.as_slice();
     let contract_delegated_address = Address::new_delegated(10, contract_eth_address).unwrap();
@@ -63,6 +66,8 @@ fn main() {
 
     let executor = tester.executor.as_mut().unwrap();
 
+
+    // First we deploy the contract in order to actually have an actor running on the embryo address
     println!("Calling init actor (EVM)");
 
     let wasm_path = env::current_dir()
@@ -96,6 +101,35 @@ fn main() {
 
     let exec_return : Return = RawBytes::deserialize(&res.msg_receipt.return_data).unwrap();
 
+    /*
+    // We need to mint tokens for the contract actor address in order to be able to execute methods like transfer, etc
+    // NOTICE: The only address that can mint tokens is the governor, which is defined on the ref-fvm repo (on integration module)
+    // NOTICE: We firt deploy the contract because the embryo address by its own cannot receive minted tokens.
+    println!("Minting some tokens on datacap actor");
+
+    let mint_params = fil_actor_datacap::MintParams{
+        to: Address::new_id(contract_actor_id),
+        amount: TokenAmount::from_whole(1000),
+        operators: vec![Address::new_id(sender[0].0),Address::new_id(sender[1].0)]
+    };
+
+    let message = Message {
+        from: Address::new_id(200),
+        to: DATACAP_TOKEN_ACTOR_ADDR,
+        gas_limit: 1000000000,
+        method_num: 116935346, // Coming from get_method_nums command
+        sequence: 0,
+        params: RawBytes::serialize(mint_params).unwrap(),
+        ..Message::default()
+    };
+
+    let res = executor
+        .execute_message(message, ApplyKind::Explicit, 100)
+        .unwrap();
+
+    dbg!(&res);
+    assert_eq!(res.msg_receipt.exit_code.value(), 0);
+    */
     println!("Calling `name`");
 
     let message = Message {
