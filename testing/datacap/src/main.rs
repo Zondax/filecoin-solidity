@@ -12,6 +12,8 @@ use fvm::executor::{ApplyKind, Executor};
 use fil_actor_eam::Return;
 use fvm_ipld_encoding::RawBytes;
 use fil_actors_runtime::{EAM_ACTOR_ADDR};
+use fvm_shared::ActorID;
+use fvm_shared::econ::TokenAmount;
 
 const WASM_COMPILED_PATH: &str =
    "../../build/v0.8/DataCapAPI.bin";
@@ -36,6 +38,16 @@ fn main() {
 
     let sender: [Account; 4] = tester.create_accounts().unwrap();
 
+    let tmp = hex::decode("DAFEA492D9c6733ae3d56b7Ed1ADB60692c98Bc5").unwrap();
+    let contract_eth_address = tmp.as_slice();
+    let contract_delegated_address = Address::new_delegated(10, contract_eth_address).unwrap();
+    let contract_actor_id: ActorID = tester.create_embryo(&contract_delegated_address,TokenAmount::from_whole(100)).unwrap();
+
+
+    println!("Contract address delegated type [{}]", contract_delegated_address);
+    println!("Contract address delegated type on hex [{}]",hex::encode(contract_delegated_address.to_bytes()));
+    println!("Contract address ID type on decimal [{}]",contract_actor_id);
+    println!("Contract address ID type on hex [{}]",hex::encode(Address::new_id(contract_actor_id).to_bytes()));
 
     println!("{}", format!("Sender address id [{}] and bytes [{}]", &sender[0].0, hex::encode(&sender[0].1.to_bytes())));
     println!("{}", format!("Sender address id [{}] and bytes [{}]", &sender[1].0, hex::encode(&sender[1].1.to_bytes())));
@@ -204,6 +216,6 @@ fn main() {
     dbg!(&res);
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
     assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "58200000000000000000000000000000000000000000000000000000000000000000");
-   
+
  */
 }
