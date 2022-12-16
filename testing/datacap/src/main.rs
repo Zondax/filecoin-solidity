@@ -79,7 +79,7 @@ fn main() {
     };
 
     let message = Message {
-        from: sender[0].1,
+        from: Address::new_id(contract_actor_id),
         to: EAM_ACTOR_ADDR,
         gas_limit: 1000000000,
         method_num: 3,
@@ -103,7 +103,7 @@ fn main() {
         to: Address::new_id(exec_return.actor_id),
         gas_limit: 1000000000,
         method_num: 2,
-        sequence: 1,
+        sequence: 0,
         params: RawBytes::new(hex::decode("4406FDDE03").unwrap()),
         ..Message::default()
     };
@@ -123,7 +123,7 @@ fn main() {
         to: Address::new_id(exec_return.actor_id),
         gas_limit: 1000000000,
         method_num: 2,
-        sequence: 2,
+        sequence: 1,
         params: RawBytes::new(hex::decode("4495D89B41").unwrap()),
         ..Message::default()
     };
@@ -144,7 +144,7 @@ fn main() {
         to: Address::new_id(exec_return.actor_id),
         gas_limit: 1000000000,
         method_num: 2,
-        sequence: 3,
+        sequence: 2,
         params: RawBytes::new(hex::decode("443940E9EE").unwrap()),
         ..Message::default()
     };
@@ -164,7 +164,7 @@ fn main() {
         to: Address::new_id(exec_return.actor_id),
         gas_limit: 1000000000,
         method_num: 2,
-        sequence: 4,
+        sequence: 3,
         params: RawBytes::new(hex::decode("58645363301D000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000020066000000000000000000000000000000000000000000000000000000000000").unwrap()),
         ..Message::default()
     };
@@ -184,7 +184,7 @@ fn main() {
         to: Address::new_id(exec_return.actor_id),
         gas_limit: 1000000000,
         method_num: 2,
-        sequence: 5,
+        sequence: 4,
         params: RawBytes::new(hex::decode("58E4CE0A0B350000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000000000015011EDA43D05CA6D7D637E7065EF6B8C5DB89E5FB0C0000000000000000000000000000000000000000000000000000000000000000000000000000000000001501DCE5B7F69E73494891556A350F8CC357614916D50000000000000000000000").unwrap()),
         ..Message::default()
     };
@@ -195,7 +195,6 @@ fn main() {
 
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
     assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "58200000000000000000000000000000000000000000000000000000000000000000");
-
 /*
     println!("Calling `transfer`");
 
@@ -204,7 +203,7 @@ fn main() {
         to: Address::new_id(exec_return.actor_id),
         gas_limit: 1000000000,
         method_num: 2,
-        sequence: 6,
+        sequence: 5,
         params: RawBytes::new(hex::decode("58E4003B119F000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000600000000000000000000000000000000000000000000000001BC16D674EC8000000000000000000000000000000000000000000000000000000000000000000A0000000000000000000000000000000000000000000000000000000000000000300C80100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000").unwrap()),
         ..Message::default()
     };
@@ -215,7 +214,5 @@ fn main() {
 
     dbg!(&res);
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
-    assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "58200000000000000000000000000000000000000000000000000000000000000000");
-
- */
+    assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "58200000000000000000000000000000000000000000000000000000000000000000");*/
 }
