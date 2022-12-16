@@ -1198,7 +1198,7 @@ dependencies = [
  "frc42_dispatch",
  "fvm_ipld_blockstore",
  "fvm_ipld_encoding 0.3.0",
- "fvm_shared 3.0.0-alpha.14",
+ "fvm_shared 3.0.0-alpha.15",
  "num-derive",
  "num-traits",
  "serde",
@@ -1231,7 +1231,7 @@ dependencies = [
  "fil_actors_runtime",
  "fvm_ipld_blockstore",
  "fvm_ipld_encoding 0.3.0",
- "fvm_shared 3.0.0-alpha.14",
+ "fvm_shared 3.0.0-alpha.15",
  "log",
  "num-derive",
  "num-traits",
@@ -1251,7 +1251,7 @@ dependencies = [
  "fvm_ipld_blockstore",
  "fvm_ipld_encoding 0.3.0",
  "fvm_ipld_hamt 0.6.1",
- "fvm_shared 3.0.0-alpha.14",
+ "fvm_shared 3.0.0-alpha.15",
  "lazy_static",
  "log",
  "num-derive",
@@ -1269,7 +1269,7 @@ dependencies = [
  "fil_actors_runtime",
  "fvm_ipld_blockstore",
  "fvm_ipld_encoding 0.3.0",
- "fvm_shared 3.0.0-alpha.14",
+ "fvm_shared 3.0.0-alpha.15",
  "hex-literal",
  "log",
  "multihash 0.16.3",
@@ -1285,8 +1285,8 @@ name = "fil_actor_embryo"
 version = "10.0.0-alpha.1"
 source = "git+https://github.com/filecoin-project/builtin-actors?branch=next#16a587513d8e4a47be4e3ab4f7d697225dcb2869"
 dependencies = [
- "fvm_sdk 3.0.0-alpha.17",
- "fvm_shared 3.0.0-alpha.14",
+ "fvm_sdk 3.0.0-alpha.18",
+ "fvm_shared 3.0.0-alpha.15",
 ]
 
 [[package]]
@@ -1296,7 +1296,7 @@ source = "git+https://github.com/filecoin-project/builtin-actors?branch=next#16a
 dependencies = [
  "fil_actors_runtime",
  "fvm_ipld_encoding 0.3.0",
- "fvm_shared 3.0.0-alpha.14",
+ "fvm_shared 3.0.0-alpha.15",
  "hex-literal",
  "num-derive",
  "num-traits",
@@ -1318,7 +1318,7 @@ dependencies = [
  "fvm_ipld_blockstore",
  "fvm_ipld_encoding 0.3.0",
  "fvm_ipld_kamt",
- "fvm_shared 3.0.0-alpha.14",
+ "fvm_shared 3.0.0-alpha.15",
  "hex",
  "hex-literal",
  "impl-serde",
@@ -1349,7 +1349,7 @@ dependencies = [
  "fvm_ipld_blockstore",
  "fvm_ipld_encoding 0.3.0",
  "fvm_ipld_hamt 0.6.1",
- "fvm_shared 3.0.0-alpha.14",
+ "fvm_shared 3.0.0-alpha.15",
  "log",
  "num-derive",
  "num-traits",
@@ -1370,7 +1370,7 @@ dependencies = [
  "fvm_ipld_blockstore",
  "fvm_ipld_encoding 0.3.0",
  "fvm_ipld_hamt 0.6.1",
- "fvm_shared 3.0.0-alpha.14",
+ "fvm_shared 3.0.0-alpha.15",
  "integer-encoding",
  "libipld-core 0.13.1",
  "log",
@@ -1394,7 +1394,7 @@ dependencies = [
  "fvm_ipld_blockstore",
  "fvm_ipld_encoding 0.3.0",
  "fvm_ipld_hamt 0.6.1",
- "fvm_shared 3.0.0-alpha.14",
+ "fvm_shared 3.0.0-alpha.15",
  "itertools 0.10.5",
  "lazy_static",
  "log",
@@ -1416,7 +1416,7 @@ dependencies = [
  "fvm_ipld_blockstore",
  "fvm_ipld_encoding 0.3.0",
  "fvm_ipld_hamt 0.6.1",
- "fvm_shared 3.0.0-alpha.14",
+ "fvm_shared 3.0.0-alpha.15",
  "indexmap",
  "integer-encoding",
  "num-derive",
@@ -1435,7 +1435,7 @@ dependencies = [
  "frc42_dispatch",
  "fvm_ipld_blockstore",
  "fvm_ipld_encoding 0.3.0",
- "fvm_shared 3.0.0-alpha.14",
+ "fvm_shared 3.0.0-alpha.15",
  "num-derive",
  "num-traits",
  "serde",
@@ -1453,7 +1453,7 @@ dependencies = [
  "fvm_ipld_blockstore",
  "fvm_ipld_encoding 0.3.0",
  "fvm_ipld_hamt 0.6.1",
- "fvm_shared 3.0.0-alpha.14",
+ "fvm_shared 3.0.0-alpha.15",
  "indexmap",
  "integer-encoding",
  "lazy_static",
@@ -1471,7 +1471,7 @@ dependencies = [
  "fil_actors_runtime",
  "fvm_ipld_blockstore",
  "fvm_ipld_encoding 0.3.0",
- "fvm_shared 3.0.0-alpha.14",
+ "fvm_shared 3.0.0-alpha.15",
  "lazy_static",
  "log",
  "num-derive",
@@ -1489,7 +1489,7 @@ dependencies = [
  "fil_actors_runtime",
  "fvm_ipld_blockstore",
  "fvm_ipld_encoding 0.3.0",
- "fvm_shared 3.0.0-alpha.14",
+ "fvm_shared 3.0.0-alpha.15",
  "num-derive",
  "num-traits",
  "serde",
@@ -1508,7 +1508,7 @@ dependencies = [
  "fvm_ipld_blockstore",
  "fvm_ipld_encoding 0.3.0",
  "fvm_ipld_hamt 0.6.1",
- "fvm_shared 3.0.0-alpha.14",
+ "fvm_shared 3.0.0-alpha.15",
  "lazy_static",
  "log",
  "num-derive",
@@ -1528,8 +1528,8 @@ dependencies = [
  "fvm_ipld_blockstore",
  "fvm_ipld_encoding 0.3.0",
  "fvm_ipld_hamt 0.6.1",
- "fvm_sdk 3.0.0-alpha.17",
- "fvm_shared 3.0.0-alpha.14",
+ "fvm_sdk 3.0.0-alpha.18",
+ "fvm_shared 3.0.0-alpha.15",
  "itertools 0.10.5",
  "log",
  "multihash 0.16.3",
@@ -1882,8 +1882,8 @@ dependencies = [
 
 [[package]]
 name = "fvm"
-version = "3.0.0-alpha.14"
-source = "git+https://github.com/Zondax/ref-fvm?rev=14fdd638fe29beaf4259a02a65a141b736fff17d#14fdd638fe29beaf4259a02a65a141b736fff17d"
+version = "3.0.0-alpha.15"
+source = "git+https://github.com/Zondax/ref-fvm?rev=f9c8d33a088a7c20dace258bac0818d8af478d65#f9c8d33a088a7c20dace258bac0818d8af478d65"
 dependencies = [
  "anyhow",
  "blake2b_simd",
@@ -1898,14 +1898,16 @@ dependencies = [
  "fvm_ipld_blockstore",
  "fvm_ipld_encoding 0.3.0",
  "fvm_ipld_hamt 0.6.1",
- "fvm_shared 3.0.0-alpha.14",
+ "fvm_shared 3.0.0-alpha.15",
  "lazy_static",
  "libipld-core 0.13.1",
  "log",
+ "minstant",
  "multihash 0.16.3",
  "num-derive",
  "num-traits",
  "num_cpus",
+ "once_cell",
  "rand",
  "rayon",
  "replace_with",
@@ -1951,7 +1953,7 @@ dependencies = [
 [[package]]
 name = "fvm_integration_tests"
 version = "0.1.1-alpha.1"
-source = "git+https://github.com/Zondax/ref-fvm?rev=14fdd638fe29beaf4259a02a65a141b736fff17d#14fdd638fe29beaf4259a02a65a141b736fff17d"
+source = "git+https://github.com/Zondax/ref-fvm?rev=f9c8d33a088a7c20dace258bac0818d8af478d65#f9c8d33a088a7c20dace258bac0818d8af478d65"
 dependencies = [
  "anyhow",
  "cid 0.8.6",
@@ -1961,10 +1963,10 @@ dependencies = [
  "fvm",
  "fvm_ipld_amt 0.5.0",
  "fvm_ipld_blockstore",
- "fvm_ipld_car 0.6.0 (git+https://github.com/Zondax/ref-fvm?rev=14fdd638fe29beaf4259a02a65a141b736fff17d)",
+ "fvm_ipld_car 0.6.0 (git+https://github.com/Zondax/ref-fvm?rev=f9c8d33a088a7c20dace258bac0818d8af478d65)",
  "fvm_ipld_encoding 0.3.0",
  "fvm_ipld_hamt 0.6.1",
- "fvm_shared 3.0.0-alpha.14",
+ "fvm_shared 3.0.0-alpha.15",
  "lazy_static",
  "libsecp256k1",
  "multihash 0.16.3",
@@ -1998,7 +2000,7 @@ dependencies = [
 [[package]]
 name = "fvm_ipld_amt"
 version = "0.5.0"
-source = "git+https://github.com/Zondax/ref-fvm?rev=14fdd638fe29beaf4259a02a65a141b736fff17d#14fdd638fe29beaf4259a02a65a141b736fff17d"
+source = "git+https://github.com/Zondax/ref-fvm?rev=f9c8d33a088a7c20dace258bac0818d8af478d65#f9c8d33a088a7c20dace258bac0818d8af478d65"
 dependencies = [
  "anyhow",
  "cid 0.8.6",
@@ -2025,7 +2027,7 @@ dependencies = [
 [[package]]
 name = "fvm_ipld_blockstore"
 version = "0.1.1"
-source = "git+https://github.com/Zondax/ref-fvm?rev=14fdd638fe29beaf4259a02a65a141b736fff17d#14fdd638fe29beaf4259a02a65a141b736fff17d"
+source = "git+https://github.com/Zondax/ref-fvm?rev=f9c8d33a088a7c20dace258bac0818d8af478d65#f9c8d33a088a7c20dace258bac0818d8af478d65"
 dependencies = [
  "anyhow",
  "cid 0.8.6",
@@ -2050,7 +2052,7 @@ dependencies = [
 [[package]]
 name = "fvm_ipld_car"
 version = "0.6.0"
-source = "git+https://github.com/Zondax/ref-fvm?rev=14fdd638fe29beaf4259a02a65a141b736fff17d#14fdd638fe29beaf4259a02a65a141b736fff17d"
+source = "git+https://github.com/Zondax/ref-fvm?rev=f9c8d33a088a7c20dace258bac0818d8af478d65#f9c8d33a088a7c20dace258bac0818d8af478d65"
 dependencies = [
  "cid 0.8.6",
  "futures",
@@ -2082,7 +2084,7 @@ dependencies = [
 [[package]]
 name = "fvm_ipld_encoding"
 version = "0.3.0"
-source = "git+https://github.com/Zondax/ref-fvm?rev=14fdd638fe29beaf4259a02a65a141b736fff17d#14fdd638fe29beaf4259a02a65a141b736fff17d"
+source = "git+https://github.com/Zondax/ref-fvm?rev=f9c8d33a088a7c20dace258bac0818d8af478d65#f9c8d33a088a7c20dace258bac0818d8af478d65"
 dependencies = [
  "anyhow",
  "cid 0.8.6",
@@ -2119,7 +2121,7 @@ dependencies = [
 [[package]]
 name = "fvm_ipld_hamt"
 version = "0.6.1"
-source = "git+https://github.com/Zondax/ref-fvm?rev=14fdd638fe29beaf4259a02a65a141b736fff17d#14fdd638fe29beaf4259a02a65a141b736fff17d"
+source = "git+https://github.com/Zondax/ref-fvm?rev=f9c8d33a088a7c20dace258bac0818d8af478d65#f9c8d33a088a7c20dace258bac0818d8af478d65"
 dependencies = [
  "anyhow",
  "byteorder",
@@ -2172,12 +2174,12 @@ dependencies = [
 
 [[package]]
 name = "fvm_sdk"
-version = "3.0.0-alpha.17"
-source = "git+https://github.com/Zondax/ref-fvm?rev=14fdd638fe29beaf4259a02a65a141b736fff17d#14fdd638fe29beaf4259a02a65a141b736fff17d"
+version = "3.0.0-alpha.18"
+source = "git+https://github.com/Zondax/ref-fvm?rev=f9c8d33a088a7c20dace258bac0818d8af478d65#f9c8d33a088a7c20dace258bac0818d8af478d65"
 dependencies = [
  "cid 0.8.6",
  "fvm_ipld_encoding 0.3.0",
- "fvm_shared 3.0.0-alpha.14",
+ "fvm_shared 3.0.0-alpha.15",
  "lazy_static",
  "log",
  "num-traits",
@@ -2215,8 +2217,8 @@ dependencies = [
 
 [[package]]
 name = "fvm_shared"
-version = "3.0.0-alpha.14"
-source = "git+https://github.com/Zondax/ref-fvm?rev=14fdd638fe29beaf4259a02a65a141b736fff17d#14fdd638fe29beaf4259a02a65a141b736fff17d"
+version = "3.0.0-alpha.15"
+source = "git+https://github.com/Zondax/ref-fvm?rev=f9c8d33a088a7c20dace258bac0818d8af478d65#f9c8d33a088a7c20dace258bac0818d8af478d65"
 dependencies = [
  "anyhow",
  "bitflags",
@@ -2271,7 +2273,7 @@ checksum = "c05aeb6a22b8f62540c194aac980f2115af067bfe15a0734d7277a768d396b31"
 dependencies = [
  "cfg-if",
  "libc",
- "wasi",
+ "wasi 0.11.0+wasi-snapshot-preview1",
 ]
 
 [[package]]
@@ -2778,6 +2780,17 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "96590ba8f175222643a85693f33d26e9c8a015f599c216509b1a6894af675d34"
 dependencies = [
  "adler",
+]
+
+[[package]]
+name = "minstant"
+version = "0.1.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "bc5dcfca9a0725105ac948b84cfeb69c3942814c696326743797215413f854b9"
+dependencies = [
+ "ctor",
+ "libc",
+ "wasi 0.7.0",
 ]
 
 [[package]]
@@ -3802,7 +3815,7 @@ dependencies = [
  "fvm_integration_tests",
  "fvm_ipld_blockstore",
  "fvm_ipld_encoding 0.3.0",
- "fvm_shared 3.0.0-alpha.14",
+ "fvm_shared 3.0.0-alpha.15",
  "hex",
  "multihash 0.16.3",
  "rand_core",
@@ -3976,6 +3989,12 @@ name = "waker-fn"
 version = "1.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "9d5b2c62b4012a3e1eca5a7e077d13b3bf498c4073e33ccd58626607748ceeca"
+
+[[package]]
+name = "wasi"
+version = "0.7.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b89c3ce4ce14bdc6fb6beaf9ec7928ca331de5df7e5ea278375642a2f478570d"
 
 [[package]]
 name = "wasi"

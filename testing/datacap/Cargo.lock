@@ -1276,7 +1276,7 @@ dependencies = [
 [[package]]
 name = "fvm"
 version = "3.0.0-alpha.15"
-source = "git+https://github.com/Zondax/ref-fvm?rev=b69cfb12ac399782e7b6d2ac01d74d2de73659ab#b69cfb12ac399782e7b6d2ac01d74d2de73659ab"
+source = "git+https://github.com/Zondax/ref-fvm?rev=f9c8d33a088a7c20dace258bac0818d8af478d65#f9c8d33a088a7c20dace258bac0818d8af478d65"
 dependencies = [
  "anyhow",
  "blake2b_simd",
@@ -1346,7 +1346,7 @@ dependencies = [
 [[package]]
 name = "fvm_integration_tests"
 version = "0.1.1-alpha.1"
-source = "git+https://github.com/Zondax/ref-fvm?rev=b69cfb12ac399782e7b6d2ac01d74d2de73659ab#b69cfb12ac399782e7b6d2ac01d74d2de73659ab"
+source = "git+https://github.com/Zondax/ref-fvm?rev=f9c8d33a088a7c20dace258bac0818d8af478d65#f9c8d33a088a7c20dace258bac0818d8af478d65"
 dependencies = [
  "anyhow",
  "cid",
@@ -1393,7 +1393,7 @@ dependencies = [
 [[package]]
 name = "fvm_ipld_amt"
 version = "0.5.0"
-source = "git+https://github.com/Zondax/ref-fvm?rev=b69cfb12ac399782e7b6d2ac01d74d2de73659ab#b69cfb12ac399782e7b6d2ac01d74d2de73659ab"
+source = "git+https://github.com/Zondax/ref-fvm?rev=f9c8d33a088a7c20dace258bac0818d8af478d65#f9c8d33a088a7c20dace258bac0818d8af478d65"
 dependencies = [
  "anyhow",
  "cid",
@@ -1408,7 +1408,7 @@ dependencies = [
 [[package]]
 name = "fvm_ipld_blockstore"
 version = "0.1.1"
-source = "git+https://github.com/Zondax/ref-fvm?rev=b69cfb12ac399782e7b6d2ac01d74d2de73659ab#b69cfb12ac399782e7b6d2ac01d74d2de73659ab"
+source = "git+https://github.com/Zondax/ref-fvm?rev=f9c8d33a088a7c20dace258bac0818d8af478d65#f9c8d33a088a7c20dace258bac0818d8af478d65"
 dependencies = [
  "anyhow",
  "cid",
@@ -1418,7 +1418,7 @@ dependencies = [
 [[package]]
 name = "fvm_ipld_car"
 version = "0.6.0"
-source = "git+https://github.com/Zondax/ref-fvm?rev=b69cfb12ac399782e7b6d2ac01d74d2de73659ab#b69cfb12ac399782e7b6d2ac01d74d2de73659ab"
+source = "git+https://github.com/Zondax/ref-fvm?rev=f9c8d33a088a7c20dace258bac0818d8af478d65#f9c8d33a088a7c20dace258bac0818d8af478d65"
 dependencies = [
  "cid",
  "futures",
@@ -1450,7 +1450,7 @@ dependencies = [
 [[package]]
 name = "fvm_ipld_encoding"
 version = "0.3.0"
-source = "git+https://github.com/Zondax/ref-fvm?rev=b69cfb12ac399782e7b6d2ac01d74d2de73659ab#b69cfb12ac399782e7b6d2ac01d74d2de73659ab"
+source = "git+https://github.com/Zondax/ref-fvm?rev=f9c8d33a088a7c20dace258bac0818d8af478d65#f9c8d33a088a7c20dace258bac0818d8af478d65"
 dependencies = [
  "anyhow",
  "cid",
@@ -1487,7 +1487,7 @@ dependencies = [
 [[package]]
 name = "fvm_ipld_hamt"
 version = "0.6.1"
-source = "git+https://github.com/Zondax/ref-fvm?rev=b69cfb12ac399782e7b6d2ac01d74d2de73659ab#b69cfb12ac399782e7b6d2ac01d74d2de73659ab"
+source = "git+https://github.com/Zondax/ref-fvm?rev=f9c8d33a088a7c20dace258bac0818d8af478d65#f9c8d33a088a7c20dace258bac0818d8af478d65"
 dependencies = [
  "anyhow",
  "byteorder",
@@ -1521,7 +1521,7 @@ dependencies = [
 [[package]]
 name = "fvm_sdk"
 version = "3.0.0-alpha.18"
-source = "git+https://github.com/Zondax/ref-fvm?rev=b69cfb12ac399782e7b6d2ac01d74d2de73659ab#b69cfb12ac399782e7b6d2ac01d74d2de73659ab"
+source = "git+https://github.com/Zondax/ref-fvm?rev=f9c8d33a088a7c20dace258bac0818d8af478d65#f9c8d33a088a7c20dace258bac0818d8af478d65"
 dependencies = [
  "cid",
  "fvm_ipld_encoding 0.3.0",
@@ -1564,7 +1564,7 @@ dependencies = [
 [[package]]
 name = "fvm_shared"
 version = "3.0.0-alpha.15"
-source = "git+https://github.com/Zondax/ref-fvm?rev=b69cfb12ac399782e7b6d2ac01d74d2de73659ab#b69cfb12ac399782e7b6d2ac01d74d2de73659ab"
+source = "git+https://github.com/Zondax/ref-fvm?rev=f9c8d33a088a7c20dace258bac0818d8af478d65#f9c8d33a088a7c20dace258bac0818d8af478d65"
 dependencies = [
  "anyhow",
  "bitflags",
