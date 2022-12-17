@@ -158,7 +158,7 @@ library RemoveExpiredAllocationsCBOR {
         }
 
         bytes32 tmp;
-        (tmp, byteIdx) = rawResp.readBytes(byteIdx);
+        (tmp, byteIdx) = rawResp.readBytes32(byteIdx);
         ret.datacap_recovered = Misc.toInt256(tmp);
     }
 }

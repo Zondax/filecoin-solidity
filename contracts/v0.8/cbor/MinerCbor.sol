@@ -124,7 +124,7 @@ library GetBeneficiaryCBOR {
     using CBORDecoder for bytes;
 
     function deserialize(MinerTypes.GetBeneficiaryReturn memory ret, bytes memory rawResp) internal pure {
-        bytes memory tmp;
+        bytes32 tmp;
         uint byteIdx = 0;
         uint len;
 
