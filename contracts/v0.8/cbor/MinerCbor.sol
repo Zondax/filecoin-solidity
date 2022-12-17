@@ -1,18 +1,18 @@
 /*******************************************************************************
-*   (c) 2022 Zondax AG
-*
-*  Licensed under the Apache License, Version 2.0 (the "License");
-*  you may not use this file except in compliance with the License.
-*  You may obtain a copy of the License at
-*
-*      http://www.apache.org/licenses/LICENSE-2.0
-*
-*  Unless required by applicable law or agreed to in writing, software
-*  distributed under the License is distributed on an "AS IS" BASIS,
-*  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-*  See the License for the specific language governing permissions and
-*  limitations under the License.
-********************************************************************************/
+ *   (c) 2022 Zondax AG
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ ********************************************************************************/
 //
 // DRAFT!! THIS CODE HAS NOT BEEN AUDITED - USE ONLY FOR PROTOTYPING
 //
@@ -89,9 +89,9 @@ library GetAvailableBalanceCBOR {
         uint byteIdx = 0;
         uint len;
 
-        bytes memory tmp;
-        (tmp, byteIdx) = rawResp.readBytes(byteIdx);
-        ret.available_balance = int256(Misc.toUint256(tmp, 0));
+        bytes32 tmp;
+        (tmp, byteIdx) = rawResp.readBytes32(byteIdx);
+        ret.available_balance = Misc.toInt256(tmp);
     }
 }
 
@@ -124,7 +124,7 @@ library GetBeneficiaryCBOR {
     using CBORDecoder for bytes;
 
     function deserialize(MinerTypes.GetBeneficiaryReturn memory ret, bytes memory rawResp) internal pure {
-        bytes memory tmp;
+        bytes32 tmp;
         uint byteIdx = 0;
         uint len;
 
@@ -139,11 +139,11 @@ library GetBeneficiaryCBOR {
         (len, byteIdx) = rawResp.readFixedArray(byteIdx);
         assert(len == 3);
 
-        (tmp, byteIdx) = rawResp.readBytes(byteIdx);
-        ret.active.term.quota = int256(Misc.toUint256(tmp, 0));
+        (tmp, byteIdx) = rawResp.readBytes32(byteIdx);
+        ret.active.term.quota = Misc.toInt256(tmp);
 
-        (tmp, byteIdx) = rawResp.readBytes(byteIdx);
-        ret.active.term.used_quota = int256(Misc.toUint256(tmp, 0));
+        (tmp, byteIdx) = rawResp.readBytes32(byteIdx);
+        ret.active.term.used_quota = Misc.toInt256(tmp);
 
         (ret.active.term.expiration, byteIdx) = rawResp.readUInt64(byteIdx);
 
@@ -167,7 +167,7 @@ library GetVestingFundsCBOR {
     function deserialize(MinerTypes.GetVestingFundsReturn memory ret, bytes memory rawResp) internal pure {
         int64 epoch;
         int256 amount;
-        bytes memory tmp;
+        bytes32 tmp;
 
         uint byteIdx = 0;
         uint len;
@@ -180,9 +180,9 @@ library GetVestingFundsCBOR {
 
         for (uint i = 0; i < len; i++) {
             (epoch, byteIdx) = rawResp.readInt64(byteIdx);
-            (tmp, byteIdx) = rawResp.readBytes(byteIdx);
+            (tmp, byteIdx) = rawResp.readBytes32(byteIdx);
 
-            amount = int256(Misc.toUint256(tmp, 0));
+            amount = Misc.toInt256(tmp);
             ret.vesting_funds[i] = CommonTypes.VestingFunds(epoch, amount);
         }
     }
