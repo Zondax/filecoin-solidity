@@ -398,4 +398,24 @@ fn main() {
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
     assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "582000000000000000000000000000000002f050fe938943acc45f65568000000000");
 
+
+
+    println!("Calling `revoke_allowance`");
+
+    let message = Message {
+        from: sender[0].1,
+        to: Address::new_id(contract_actor_id),
+        gas_limit: 1000000000,
+        method_num: 2,
+        sequence: 12,
+        params: RawBytes::new(hex::decode("588455E1C7A3000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000015011EDA43D05CA6D7D637E7065EF6B8C5DB89E5FB0C0000000000000000000000").unwrap()),
+        ..Message::default()
+    };
+
+    let res = executor
+        .execute_message(message, ApplyKind::Explicit, 100)
+        .unwrap();
+
+    assert_eq!(res.msg_receipt.exit_code.value(), 0);
+    assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "58200000000000000000000000000000000000000000000000000000000000000000");
 }
