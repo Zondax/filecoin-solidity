@@ -295,8 +295,28 @@ fn main() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
-    dbg!(&res);
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
     assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "58c00000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000035fe46d2f74110000000000000000000000000000000000000000000000000000053444835ec58000000000000000000000000000000000002f050fe938943acc427e27bb16270000000000000000000000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000000000000");
+
+
+    println!("Calling `burn`");
+
+    let message = Message {
+        from: sender[0].1,
+        to: Address::new_id(contract_actor_id),
+        gas_limit: 1000000000,
+        method_num: 2,
+        sequence: 7,
+        params: RawBytes::new(hex::decode("5824958FD4A00000000000000000000000000000000000000000000000000DE0B6B3A7640000").unwrap()),
+        ..Message::default()
+    };
+
+    let res = executor
+        .execute_message(message, ApplyKind::Explicit, 100)
+        .unwrap();
+
+    assert_eq!(res.msg_receipt.exit_code.value(), 0);
+    assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "58200000000000000000000000000000000000000000000000360c2789aae8740000");
+
 
 }
