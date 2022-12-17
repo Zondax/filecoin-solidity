@@ -1,18 +1,18 @@
 /*******************************************************************************
-*   (c) 2022 Zondax AG
-*
-*  Licensed under the Apache License, Version 2.0 (the "License");
-*  you may not use this file except in compliance with the License.
-*  You may obtain a copy of the License at
-*
-*      http://www.apache.org/licenses/LICENSE-2.0
-*
-*  Unless required by applicable law or agreed to in writing, software
-*  distributed under the License is distributed on an "AS IS" BASIS,
-*  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-*  See the License for the specific language governing permissions and
-*  limitations under the License.
-********************************************************************************/
+ *   (c) 2022 Zondax AG
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ ********************************************************************************/
 //
 // DRAFT!! THIS CODE HAS NOT BEEN AUDITED - USE ONLY FOR PROTOTYPING
 //
@@ -42,12 +42,12 @@ library WithdrawBalanceCBOR {
     }
 
     function deserialize(MarketTypes.WithdrawBalanceReturn memory ret, bytes memory rawResp) internal pure {
-        bytes memory tmp;
+        bytes32 tmp;
         uint byteIdx = 0;
         uint len;
 
-        (tmp, byteIdx) = rawResp.readBytes(byteIdx);
-        ret.amount_withdrawn = Misc.toUint256(tmp, 0);
+        (tmp, byteIdx) = rawResp.readBytes32(byteIdx);
+        ret.amount_withdrawn = Misc.toUint256(tmp);
     }
 }
 
@@ -81,16 +81,16 @@ library GetBalanceCBOR {
     function deserialize(MarketTypes.GetBalanceReturn memory ret, bytes memory rawResp) internal pure {
         uint byteIdx = 0;
         uint len;
-        bytes memory tmp;
+        bytes32 tmp;
 
         (len, byteIdx) = rawResp.readFixedArray(byteIdx);
         assert(len == 2);
 
-        (tmp, byteIdx) = rawResp.readBytes(byteIdx);
-        ret.balance = Misc.toInt256(tmp, 0);
+        (tmp, byteIdx) = rawResp.readBytes32(byteIdx);
+        ret.balance = Misc.toInt256(tmp);
 
-        (tmp, byteIdx) = rawResp.readBytes(byteIdx);
-        ret.locked = Misc.toInt256(tmp, 0);
+        (tmp, byteIdx) = rawResp.readBytes32(byteIdx);
+        ret.locked = Misc.toInt256(tmp);
     }
 }
 
@@ -245,16 +245,15 @@ library GetDealEpochPriceCBOR {
     }
 
     function deserialize(MarketTypes.GetDealEpochPriceReturn memory ret, bytes memory rawResp) internal pure {
-        bytes memory tmp;
+        bytes32 tmp;
         uint byteIdx = 0;
         uint len;
 
         (len, byteIdx) = rawResp.readFixedArray(byteIdx);
         assert(len == 2);
 
-
-        (tmp, byteIdx) = rawResp.readBytes(byteIdx);
-        ret.price_per_epoch = Misc.toUint256(tmp, 0);
+        (tmp, byteIdx) = rawResp.readBytes32(byteIdx);
+        ret.price_per_epoch = Misc.toUint256(tmp);
     }
 }
 
@@ -272,15 +271,15 @@ library GetDealClientCollateralCBOR {
     }
 
     function deserialize(MarketTypes.GetDealClientCollateralReturn memory ret, bytes memory rawResp) internal pure {
-        bytes memory tmp;
+        bytes32 tmp;
         uint byteIdx = 0;
         uint len;
 
         (len, byteIdx) = rawResp.readFixedArray(byteIdx);
         assert(len == 2);
 
-        (tmp, byteIdx) = rawResp.readBytes(byteIdx);
-        ret.collateral = Misc.toUint256(tmp, 0);
+        (tmp, byteIdx) = rawResp.readBytes32(byteIdx);
+        ret.collateral = Misc.toUint256(tmp);
     }
 }
 
@@ -298,16 +297,15 @@ library GetDealProviderCollateralCBOR {
     }
 
     function deserialize(MarketTypes.GetDealProviderCollateralReturn memory ret, bytes memory rawResp) internal pure {
-        bytes memory tmp;
+        bytes32 tmp;
         uint byteIdx = 0;
         uint len;
 
         (len, byteIdx) = rawResp.readFixedArray(byteIdx);
         assert(len == 2);
 
-
-        (tmp, byteIdx) = rawResp.readBytes(byteIdx);
-        ret.collateral = Misc.toUint256(tmp, 0);
+        (tmp, byteIdx) = rawResp.readBytes32(byteIdx);
+        ret.collateral = Misc.toUint256(tmp);
     }
 }
 

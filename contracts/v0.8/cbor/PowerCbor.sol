@@ -100,9 +100,9 @@ library NetworkRawPowerCBOR {
         uint byteIdx = 0;
         uint len;
 
-        bytes memory tmp;
-        (tmp, byteIdx) = rawResp.readBytes(byteIdx);
-        ret.raw_byte_power = Misc.toInt256(tmp, 0);
+        bytes32 tmp;
+        (tmp, byteIdx) = rawResp.readBytes32(byteIdx);
+        ret.raw_byte_power = Misc.toInt256(tmp);
     }
 }
 
@@ -128,9 +128,9 @@ library MinerRawPowerCBOR {
         (len, byteIdx) = rawResp.readFixedArray(byteIdx);
         assert(len == 2);
 
-        bytes memory tmp;
-        (tmp, byteIdx) = rawResp.readBytes(byteIdx);
-        ret.raw_byte_power = int256(Misc.toUint256(tmp, 0));
+        bytes32 tmp;
+        (tmp, byteIdx) = rawResp.readBytes32(byteIdx);
+        ret.raw_byte_power = Misc.toInt256(tmp);
 
         (ret.meets_consensus_minimum, byteIdx) = rawResp.readBool(byteIdx);
     }
