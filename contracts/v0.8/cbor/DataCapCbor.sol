@@ -180,7 +180,7 @@ library TransferFromCBOR {
         bytes32 tmp;
 
         (len, byteIdx) = rawResp.readFixedArray(byteIdx);
-        assert(len == 3);
+        assert(len == 4);
 
         (tmp, byteIdx) = rawResp.readBytes32(byteIdx);
         ret.from_balance = Misc.toInt256(tmp);
