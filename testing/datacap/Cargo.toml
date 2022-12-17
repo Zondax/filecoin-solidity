@@ -19,6 +19,7 @@ hex = "0.4.3"
 
 fil_actors_runtime = { version = "10.0.0-alpha.1", git = "https://github.com/filecoin-project/builtin-actors", branch = "next", features = ["m2-native"] }
 fil_actor_eam = { version = "10.0.0-alpha.1", git = "https://github.com/filecoin-project/builtin-actors", branch = "next" }
+fil_actor_datacap = { version = "10.0.0-alpha.1", git = "https://github.com/filecoin-project/builtin-actors", branch = "next" }
 
 [patch.crates-io]
 fvm_shared = { version = "3.0.0-alpha.14", git = "https://github.com/Zondax/ref-fvm", rev = "f9c8d33a088a7c20dace258bac0818d8af478d65" }
@@ -28,3 +29,7 @@ fvm_ipld_amt = { version = "0.5.0", git = "https://github.com/Zondax/ref-fvm", r
 fvm_ipld_blockstore = { version = "0.1.1", git = "https://github.com/Zondax/ref-fvm", rev = "f9c8d33a088a7c20dace258bac0818d8af478d65" }
 fvm = { version = "3.0.0-alpha.14", git = "https://github.com/Zondax/ref-fvm", rev = "f9c8d33a088a7c20dace258bac0818d8af478d65", default-features = false, features = ["m2-native"] }
 fvm_sdk = { version = "3.0.0-alpha.17", git = "https://github.com/Zondax/ref-fvm", rev = "f9c8d33a088a7c20dace258bac0818d8af478d65" }
+fvm_actor_utils = { git = "https://github.com/filecoin-project/filecoin-actor-utils", branch = "feat/fvm-m2" }
+frc46_token = { git = "https://github.com/filecoin-project/filecoin-actor-utils", branch = "feat/fvm-m2" }
+frc42_dispatch = { git = "https://github.com/filecoin-project/filecoin-actor-utils", branch = "feat/fvm-m2" }
+

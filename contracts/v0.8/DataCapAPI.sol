@@ -171,4 +171,12 @@ contract DataCapAPI {
 
         return response;
     }
+
+    // FIXME This function should not be part of the library, but it is necessary in order to mint some tokens on rust test
+    // FIXME it will handle native method calls from other actors (in case of mint, it will call the receiverHook method of the smart contract)
+    // FIXME This should be part of the smart contract that make use of the datacap library (today it is a contract and should be changed)
+    function handle_filecoin_method(uint64 method, uint64 codec, bytes calldata params) public pure returns (uint64) {
+        require((codec == 0) == (params.length == 0));
+        return method;
+    }
 }

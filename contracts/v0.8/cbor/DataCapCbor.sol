@@ -68,12 +68,16 @@ library BytesCBOR {
     }
 
     function deserializeInt256(bytes memory ret) internal pure returns (int256) {
-        bytes memory tmp;
+        bytes32 tmp;
         uint byteIdx = 0;
         uint len;
 
-        (tmp, byteIdx) = ret.readBytes(byteIdx);
-        return Misc.toInt256(tmp, 0);
+        if (ret.length > 0) {
+            (tmp, byteIdx) = ret.readBytes32(byteIdx);
+            return Misc.toInt256(tmp);
+        }
+
+        return 0;
     }
 }
 
@@ -140,16 +144,16 @@ library TransferCBOR {
     function deserialize(DataCapTypes.TransferReturn memory ret, bytes memory rawResp) internal pure {
         uint byteIdx = 0;
         uint len;
-        bytes memory tmp;
+        bytes32 tmp;
 
         (len, byteIdx) = rawResp.readFixedArray(byteIdx);
         assert(len == 3);
 
-        (tmp, byteIdx) = rawResp.readBytes(byteIdx);
-        ret.from_balance = Misc.toInt256(tmp, 0);
+        (tmp, byteIdx) = rawResp.readBytes32(byteIdx);
+        ret.from_balance = Misc.toInt256(tmp);
 
-        (tmp, byteIdx) = rawResp.readBytes(byteIdx);
-        ret.to_balance = Misc.toInt256(tmp, 0);
+        (tmp, byteIdx) = rawResp.readBytes32(byteIdx);
+        ret.to_balance = Misc.toInt256(tmp);
 
         (ret.recipient_data, byteIdx) = rawResp.readBytes(byteIdx);
     }
@@ -177,19 +181,19 @@ library TransferFromCBOR {
     function deserialize(DataCapTypes.TransferFromReturn memory ret, bytes memory rawResp) internal pure {
         uint byteIdx = 0;
         uint len;
-        bytes memory tmp;
+        bytes32 tmp;
 
         (len, byteIdx) = rawResp.readFixedArray(byteIdx);
-        assert(len == 3);
+        assert(len == 4);
 
-        (tmp, byteIdx) = rawResp.readBytes(byteIdx);
-        ret.from_balance = Misc.toInt256(tmp, 0);
+        (tmp, byteIdx) = rawResp.readBytes32(byteIdx);
+        ret.from_balance = Misc.toInt256(tmp);
 
-        (tmp, byteIdx) = rawResp.readBytes(byteIdx);
-        ret.to_balance = Misc.toInt256(tmp, 0);
+        (tmp, byteIdx) = rawResp.readBytes32(byteIdx);
+        ret.to_balance = Misc.toInt256(tmp);
 
-        (tmp, byteIdx) = rawResp.readBytes(byteIdx);
-        ret.allowance = Misc.toInt256(tmp, 0);
+        (tmp, byteIdx) = rawResp.readBytes32(byteIdx);
+        ret.allowance = Misc.toInt256(tmp);
 
         (ret.recipient_data, byteIdx) = rawResp.readBytes(byteIdx);
     }
@@ -267,13 +271,13 @@ library BurnCBOR {
     function deserialize(DataCapTypes.BurnReturn memory ret, bytes memory rawResp) internal pure {
         uint byteIdx = 0;
         uint len;
-        bytes memory tmp;
+        bytes32 tmp;
 
         (len, byteIdx) = rawResp.readFixedArray(byteIdx);
         assert(len == 1);
 
-        (tmp, byteIdx) = rawResp.readBytes(byteIdx);
-        ret.balance = Misc.toInt256(tmp, 0);
+        (tmp, byteIdx) = rawResp.readBytes32(byteIdx);
+        ret.balance = Misc.toInt256(tmp);
     }
 }
 
@@ -297,15 +301,15 @@ library BurnFromCBOR {
     function deserialize(DataCapTypes.BurnFromReturn memory ret, bytes memory rawResp) internal pure {
         uint byteIdx = 0;
         uint len;
-        bytes memory tmp;
+        bytes32 tmp;
 
         (len, byteIdx) = rawResp.readFixedArray(byteIdx);
         assert(len == 2);
 
-        (tmp, byteIdx) = rawResp.readBytes(byteIdx);
-        ret.balance = Misc.toInt256(tmp, 0);
+        (tmp, byteIdx) = rawResp.readBytes32(byteIdx);
+        ret.balance = Misc.toInt256(tmp);
 
-        (tmp, byteIdx) = rawResp.readBytes(byteIdx);
-        ret.allowance = Misc.toInt256(tmp, 0);
+        (tmp, byteIdx) = rawResp.readBytes32(byteIdx);
+        ret.allowance = Misc.toInt256(tmp);
     }
 }
