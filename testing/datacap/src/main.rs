@@ -42,15 +42,15 @@ fn main() {
 
     // Create embryo address to deploy the contract on it (assign some FILs to it)
     let tmp = hex::decode("DAFEA492D9c6733ae3d56b7Ed1ADB60692c98Bc5").unwrap();
-    let contract_eth_address = tmp.as_slice();
-    let contract_delegated_address = Address::new_delegated(10, contract_eth_address).unwrap();
-    let contract_actor_id: ActorID = tester.create_embryo(&contract_delegated_address,TokenAmount::from_whole(100)).unwrap();
+    let embryo_eth_address = tmp.as_slice();
+    let embryo_delegated_address = Address::new_delegated(10, embryo_eth_address).unwrap();
+    let embryo_actor_id: ActorID = tester.create_embryo(&embryo_delegated_address,TokenAmount::from_whole(100)).unwrap();
 
 
-    println!("Contract address delegated type [{}]", contract_delegated_address);
-    println!("Contract address delegated type on hex [{}]",hex::encode(contract_delegated_address.to_bytes()));
-    println!("Contract address ID type on decimal [{}]",contract_actor_id);
-    println!("Contract address ID type on hex [{}]",hex::encode(Address::new_id(contract_actor_id).to_bytes()));
+    println!("Embryo address delegated type [{}]", embryo_delegated_address);
+    println!("Embryo address delegated type on hex [{}]",hex::encode(embryo_delegated_address.to_bytes()));
+    println!("Embryo address ID type on decimal [{}]",embryo_actor_id);
+    println!("Embryo address ID type on hex [{}]",hex::encode(Address::new_id(embryo_actor_id).to_bytes()));
 
     println!("{}", format!("Sender address id [{}] and bytes [{}]", &sender[0].0, hex::encode(&sender[0].1.to_bytes())));
     println!("{}", format!("Sender address id [{}] and bytes [{}]", &sender[1].0, hex::encode(&sender[1].1.to_bytes())));
@@ -84,7 +84,7 @@ fn main() {
     };
 
     let message = Message {
-        from: Address::new_id(contract_actor_id),
+        from: Address::new_id(embryo_actor_id),
         to: EAM_ACTOR_ADDR,
         gas_limit: 1000000000,
         method_num: 3,
@@ -101,7 +101,12 @@ fn main() {
 
     let exec_return : Return = RawBytes::deserialize(&res.msg_receipt.return_data).unwrap();
 
-    /*
+    println!("Contract address ID type on decimal [{}]",exec_return.actor_id);
+    println!("Contract address robust type [{}]",exec_return.robust_address);
+    println!("Contract address eth address type [{}]",hex::encode(exec_return.eth_address.0));
+
+    let contract_actor_id = exec_return.actor_id;
+
     // We need to mint tokens for the contract actor address in order to be able to execute methods like transfer, etc
     // NOTICE: The only address that can mint tokens is the governor, which is defined on the ref-fvm repo (on integration module)
     // NOTICE: We firt deploy the contract because the embryo address by its own cannot receive minted tokens.
@@ -127,14 +132,13 @@ fn main() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
-    dbg!(&res);
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
-    */
+
     println!("Calling `name`");
 
     let message = Message {
         from: sender[0].1,
-        to: Address::new_id(exec_return.actor_id),
+        to: Address::new_id(contract_actor_id),
         gas_limit: 1000000000,
         method_num: 2,
         sequence: 0,
@@ -154,7 +158,7 @@ fn main() {
 
     let message = Message {
         from: sender[0].1,
-        to: Address::new_id(exec_return.actor_id),
+        to: Address::new_id(contract_actor_id),
         gas_limit: 1000000000,
         method_num: 2,
         sequence: 1,
@@ -175,7 +179,7 @@ fn main() {
 
     let message = Message {
         from: sender[0].1,
-        to: Address::new_id(exec_return.actor_id),
+        to: Address::new_id(contract_actor_id),
         gas_limit: 1000000000,
         method_num: 2,
         sequence: 2,
@@ -188,14 +192,14 @@ fn main() {
         .unwrap();
 
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
-    assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "58200000000000000000000000000000000000000000000000000000000000000000");
+    assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "582000000000000000000000000000000000000000000000003635c9adc5dea00000");
 
 
     println!("Calling `balance`");
 
     let message = Message {
         from: sender[0].1,
-        to: Address::new_id(exec_return.actor_id),
+        to: Address::new_id(contract_actor_id),
         gas_limit: 1000000000,
         method_num: 2,
         sequence: 3,
@@ -215,7 +219,7 @@ fn main() {
 
     let message = Message {
         from: sender[0].1,
-        to: Address::new_id(exec_return.actor_id),
+        to: Address::new_id(contract_actor_id),
         gas_limit: 1000000000,
         method_num: 2,
         sequence: 4,
@@ -229,12 +233,12 @@ fn main() {
 
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
     assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "58200000000000000000000000000000000000000000000000000000000000000000");
-/*
+
     println!("Calling `transfer`");
 
     let message = Message {
         from: sender[0].1,
-        to: Address::new_id(exec_return.actor_id),
+        to: Address::new_id(contract_actor_id),
         gas_limit: 1000000000,
         method_num: 2,
         sequence: 5,
@@ -246,7 +250,6 @@ fn main() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
-    dbg!(&res);
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
-    assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "58200000000000000000000000000000000000000000000000000000000000000000");*/
+    assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "58a000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000361a08405e8fd800000000000000000000000000000000000000000000000000001bc16d674ec8000000000000000000000000000000000000000000000000000000000000000000600000000000000000000000000000000000000000000000000000000000000000");
 }
