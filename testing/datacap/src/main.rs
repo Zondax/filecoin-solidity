@@ -102,6 +102,7 @@ fn main() {
     let exec_return : Return = RawBytes::deserialize(&res.msg_receipt.return_data).unwrap();
 
     println!("Contract address ID type on decimal [{}]",exec_return.actor_id);
+    println!("Contract address ID type on hex [{}]", hex::encode(Address::new_id(exec_return.actor_id).to_bytes()));
     println!("Contract address robust type [{}]",exec_return.robust_address);
     println!("Contract address eth address type [{}]",hex::encode(exec_return.eth_address.0));
 
@@ -112,7 +113,7 @@ fn main() {
     // NOTICE: We firt deploy the contract because the embryo address by its own cannot receive minted tokens.
     println!("Minting some tokens on datacap actor");
 
-    let mint_params = fil_actor_datacap::MintParams{
+    let mint_params_1 = fil_actor_datacap::MintParams{
         to: Address::new_id(contract_actor_id),
         amount: TokenAmount::from_whole(1000),
         operators: vec![Address::new_id(sender[0].0),Address::new_id(sender[1].0)]
@@ -124,7 +125,32 @@ fn main() {
         gas_limit: 1000000000,
         method_num: 116935346, // Coming from get_method_nums command
         sequence: 0,
-        params: RawBytes::serialize(mint_params).unwrap(),
+        params: RawBytes::serialize(mint_params_1).unwrap(),
+        ..Message::default()
+    };
+
+    let res = executor
+        .execute_message(message, ApplyKind::Explicit, 100)
+        .unwrap();
+
+    assert_eq!(res.msg_receipt.exit_code.value(), 0);
+
+
+    println!("Minting more tokens on datacap actor");
+
+    let mint_params_2 = fil_actor_datacap::MintParams{
+        to: Address::new_id(sender[0].0),
+        amount: TokenAmount::from_whole(1000),
+        operators: vec![Address::new_id(contract_actor_id)]
+    };
+
+    let message = Message {
+        from: Address::new_id(200),
+        to: DATACAP_TOKEN_ACTOR_ADDR,
+        gas_limit: 1000000000,
+        method_num: 116935346, // Coming from get_method_nums command
+        sequence: 1,
+        params: RawBytes::serialize(mint_params_2).unwrap(),
         ..Message::default()
     };
 
@@ -192,7 +218,7 @@ fn main() {
         .unwrap();
 
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
-    assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "582000000000000000000000000000000000000000000000003635c9adc5dea00000");
+    assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "582000000000000000000000000000000000000000000000006c6b935b8bbd400000");
 
 
     println!("Calling `balance`");
@@ -252,4 +278,25 @@ fn main() {
 
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
     assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "58a000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000361a08405e8fd800000000000000000000000000000000000000000000000000001bc16d674ec8000000000000000000000000000000000000000000000000000000000000000000600000000000000000000000000000000000000000000000000000000000000000");
+
+    println!("Calling `transfer_from`");
+
+    let message = Message {
+        from: sender[0].1,
+        to: Address::new_id(contract_actor_id),
+        gas_limit: 1000000000,
+        method_num: 2,
+        sequence: 6,
+        params: RawBytes::new(hex::decode("5901443EB577B10000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000008000000000000000000000000000000000000000000000000000000000000000C00000000000000000000000000000000000000000000000003782DACE9D90000000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000000015011EDA43D05CA6D7D637E7065EF6B8C5DB89E5FB0C0000000000000000000000000000000000000000000000000000000000000000000000000000000000000300C80100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000").unwrap()),
+        ..Message::default()
+    };
+
+    let res = executor
+        .execute_message(message, ApplyKind::Explicit, 100)
+        .unwrap();
+
+    dbg!(&res);
+    assert_eq!(res.msg_receipt.exit_code.value(), 0);
+    assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "58c00000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000035fe46d2f74110000000000000000000000000000000000000000000000000000053444835ec58000000000000000000000000000000000002f050fe938943acc427e27bb16270000000000000000000000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000000000000");
+
 }
