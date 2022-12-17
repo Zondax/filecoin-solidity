@@ -358,5 +358,44 @@ fn main() {
     assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "582000000000000000000000000000000002f050fe938943acc41a01c4fdbb0c0000");
 
 
+    println!("Calling `increase_allowance`");
+
+    let message = Message {
+        from: sender[0].1,
+        to: Address::new_id(contract_actor_id),
+        gas_limit: 1000000000,
+        method_num: 2,
+        sequence: 10,
+        params: RawBytes::new(hex::decode("58A46BE03C810000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000003635C9ADC5DEA000000000000000000000000000000000000000000000000000000000000000000015011EDA43D05CA6D7D637E7065EF6B8C5DB89E5FB0C0000000000000000000000").unwrap()),
+        ..Message::default()
+    };
+
+    let res = executor
+        .execute_message(message, ApplyKind::Explicit, 100)
+        .unwrap();
+
+    assert_eq!(res.msg_receipt.exit_code.value(), 0);
+    assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "582000000000000000000000000000000002f050fe938943acfa952f0445dea00000");
+
+
+
+    println!("Calling `decrease_allowance`");
+
+    let message = Message {
+        from: sender[0].1,
+        to: Address::new_id(contract_actor_id),
+        gas_limit: 1000000000,
+        method_num: 2,
+        sequence: 11,
+        params: RawBytes::new(hex::decode("58A46E7E2C520000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000003635C9ADC5DEA000000000000000000000000000000000000000000000000000000000000000000015011EDA43D05CA6D7D637E7065EF6B8C5DB89E5FB0C0000000000000000000000").unwrap()),
+        ..Message::default()
+    };
+
+    let res = executor
+        .execute_message(message, ApplyKind::Explicit, 100)
+        .unwrap();
+
+    assert_eq!(res.msg_receipt.exit_code.value(), 0);
+    assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "582000000000000000000000000000000002f050fe938943acc45f65568000000000");
 
 }
