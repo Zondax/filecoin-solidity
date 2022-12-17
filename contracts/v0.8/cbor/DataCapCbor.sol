@@ -72,8 +72,12 @@ library BytesCBOR {
         uint byteIdx = 0;
         uint len;
 
-        (tmp, byteIdx) = ret.readBytes32(byteIdx);
-        return Misc.toInt256(tmp);
+        if (ret.length > 0) {
+            (tmp, byteIdx) = ret.readBytes32(byteIdx);
+            return Misc.toInt256(tmp);
+        }
+
+        return 0;
     }
 }
 
