@@ -18,9 +18,15 @@ use std::str::FromStr;
 use cid::Cid;
 use fvm_shared::piece::PaddedPieceSize;
 use fvm_shared::clock::ChainEpoch;
-use serde::{de, Deserialize, Deserializer, Serialize, Serializer};
 use fvm_ipld_encoding::{BytesSer, Cbor};
 use libipld_core::ipld::Ipld;
+use rand_core::OsRng;
+use fvm::state_tree::{ActorState};
+use fvm_ipld_encoding::CborStore;
+use multihash::Code;
+use bls_signatures::Serialize;
+use fvm_shared::sector::RegisteredPoStProof;
+use fvm_ipld_encoding::BytesDe;
 
 const WASM_COMPILED_PATH: &str =
    "../../build/v0.8/MarketAPI.bin";
@@ -40,10 +46,10 @@ pub enum Label {
 }
 
 /// Serialize the Label like an untagged enum.
-impl Serialize for Label {
+impl serde::Serialize for Label {
     fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
     where
-        S: Serializer,
+        S: serde::Serializer,
     {
         match self {
             Label::String(v) => v.serialize(serializer),
@@ -53,12 +59,12 @@ impl Serialize for Label {
 }
 
 /// Deserialize the Label like an untagged enum.
-impl<'de> Deserialize<'de> for Label {
+impl<'de> serde::Deserialize<'de> for Label {
     fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
     where
-        D: Deserializer<'de>,
+        D: serde::Deserializer<'de>,
     {
-        Ipld::deserialize(deserializer).and_then(|ipld| ipld.try_into().map_err(de::Error::custom))
+        Ipld::deserialize(deserializer).and_then(|ipld| ipld.try_into().map_err(serde::de::Error::custom))
     }
 }
 
@@ -100,6 +106,16 @@ pub struct DealProposal {
     pub client_collateral: TokenAmount,
 }
 
+#[derive(Serialize_tuple, Deserialize_tuple, Debug, Clone, Eq, PartialEq)]
+pub struct CreateMinerParams {
+    pub owner: Address,
+    pub worker: Address,
+    pub window_post_proof_type: RegisteredPoStProof,
+    #[serde(with = "strict_bytes")]
+    pub peer: Vec<u8>,
+    pub multiaddrs: Vec<BytesDe>,
+}
+
 fn main() {
     println!("Testing solidity API");
 
@@ -111,14 +127,74 @@ fn main() {
         Tester::new(NetworkVersion::V18, StateTreeVersion::V5, bundle_root, bs).unwrap();
 
     let sender: [Account; 1] = tester.create_accounts().unwrap();
+    let client: [Account; 1] = tester.create_accounts().unwrap();
 
-    // Our account address is 100 so hex"0064"
-    // dbg!(sender[0].1);
+    /***********************************************
+     *
+     * Instantiate Account Actor with a BLS address
+     *
+     ***********************************************/
+
+    let bls_private_key = bls_signatures::PrivateKey::generate(&mut OsRng);
+    let worker = Address::new_bls(&bls_private_key.public_key().as_bytes()).unwrap();
+
+    let state_tree = tester
+        .state_tree
+        .as_mut()
+        .unwrap();
+    let assigned_addr = state_tree.register_new_address(&worker).unwrap();
+    let state = fvm::account_actor::State {
+        address: worker,
+    };
+
+    let cid = state_tree.store().put_cbor(&state, Code::Blake2b256).unwrap();
+
+    let actor_state = ActorState {
+        // CID of Accounts actor. You get this as output from builtin-actors compiling process
+        //code: Cid::from_str("bafk2bzacecijtwhjgnb24n452lat6m66yumpdsdunv3pupl5kow7j725twjtc").unwrap(),
+        code: Cid::from_str("bafk2bzaceddmas33nnn2izdexi5xjzuahzezl62aa5ah5bqwzzjceusskr6ty").unwrap(),
+        state: cid,
+        sequence: 0,
+        balance: TokenAmount::from_atto(10000),
+        address: Some(worker),
+    };
+
+    state_tree
+        .set_actor(assigned_addr, actor_state)
+        .unwrap();
 
     // Instantiate machine
     tester.instantiate_machine(DummyExterns).unwrap();
 
     let executor = tester.executor.as_mut().unwrap();
+
+    println!("Create Miner actor to be able to publish deal");
+
+    let constructor_params = CreateMinerParams{
+        owner: sender[0].1,
+        worker,
+        window_post_proof_type: fvm_shared::sector::RegisteredPoStProof::StackedDRGWindow2KiBV1,
+        peer: vec![1, 2, 3],
+        multiaddrs: vec![BytesDe(vec![1, 2, 3])],
+    };
+
+    let message = Message {
+        from: sender[0].1,
+        to: Address::new_id(4),
+        gas_limit: 1000000000,
+        method_num: 2,
+        params: RawBytes::serialize(constructor_params).unwrap(),
+        ..Message::default()
+    };
+
+    let res = executor
+    .execute_message(message, ApplyKind::Explicit, 100)
+    .unwrap();
+
+    //let exec_return : ExecReturn = RawBytes::deserialize(&res.msg_receipt.return_data).unwrap();
+    //dbg!(hex::encode(&exec_return.id_address.to_bytes()));
+
+    assert_eq!(res.msg_receipt.exit_code.value(), 0);
 
     println!("Calling init actor (EVM)");
 
@@ -140,6 +216,7 @@ fn main() {
         to: EAM_ACTOR_ADDR,
         gas_limit: 1000000000,
         method_num: 3,
+        sequence: 1,
         params: RawBytes::serialize(constructor_params).unwrap(),
         ..Message::default()
     };
@@ -158,8 +235,8 @@ fn main() {
         piece_cid: Cid::from_str("baga6ea4seaqlkg6mss5qs56jqtajg5ycrhpkj2b66cgdkukf2qjmmzz6ayksuci").unwrap(),
         piece_size: PaddedPieceSize(8388608),
         verified_deal: false,
-        client: Address::from_str("f01109").unwrap(),
-        provider: Address::from_str("f01113").unwrap(),
+        client: Address::new_id(client[0].0),
+        provider: Address::new_id(103),
         label: Label::String("mAXCg5AIg8YBXbFjtdBy1iZjpDYAwRSt0elGLF5GvTqulEii1VcM".to_string()),
         start_epoch: ChainEpoch::from(25245),
         end_epoch: ChainEpoch::from(545150),
@@ -170,7 +247,7 @@ fn main() {
 
     let deal = ClientDealProposal{
         proposal,
-        client_signature: Signature::new_secp256k1([0u8;65].to_vec()),
+        client_signature: Signature::new_bls("dont matter".as_bytes().to_vec()),
     };
 
     let params = PublishStorageDealsParams{
@@ -178,12 +255,13 @@ fn main() {
     };
 
     let message = Message {
-        from: sender[0].1,
-        to: Address::new_id(exec_return.actor_id),
+        from: worker, // from need to be the miner
+        to: Address::new_id(5),
         gas_limit: 1000000000,
         method_num: 4,
-        sequence: 1,
+        sequence: 0,
         params: RawBytes::serialize(params).unwrap(),
+        //params: RawBytes::new(hex::decode("8181828bd82a5828000181e2039220206b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b190800f4420068420066656c6162656c0a1a0008ca0a42000a42000a42000a584d028bd82a5828000181e2039220206b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b190800f4420068420066656c6162656c0a1a0008ca0a42000a42000a42000a").unwrap()),
         ..Message::default()
     };
 
