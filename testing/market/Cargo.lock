@@ -942,11 +942,11 @@ dependencies = [
 [[package]]
 name = "fil_actor_eam"
 version = "10.0.0-alpha.1"
-source = "git+https://github.com/filecoin-project/builtin-actors?branch=next#f40fa42a9892d614b30cd032a5534fe5530001cd"
+source = "git+https://github.com/filecoin-project/builtin-actors?rev=eb3fc0dd5a23985168f4c6ec37d48e27511a8845#eb3fc0dd5a23985168f4c6ec37d48e27511a8845"
 dependencies = [
  "anyhow",
  "cid",
- "fil_actors_runtime",
+ "fil_actors_runtime 10.0.0-alpha.1 (git+https://github.com/filecoin-project/builtin-actors?rev=eb3fc0dd5a23985168f4c6ec37d48e27511a8845)",
  "fvm_ipld_blockstore",
  "fvm_ipld_encoding",
  "fvm_shared",
@@ -964,6 +964,34 @@ dependencies = [
 name = "fil_actors_runtime"
 version = "10.0.0-alpha.1"
 source = "git+https://github.com/filecoin-project/builtin-actors?branch=next#f40fa42a9892d614b30cd032a5534fe5530001cd"
+dependencies = [
+ "anyhow",
+ "byteorder",
+ "cid",
+ "fvm_ipld_amt",
+ "fvm_ipld_blockstore",
+ "fvm_ipld_encoding",
+ "fvm_ipld_hamt",
+ "fvm_sdk",
+ "fvm_shared",
+ "itertools 0.10.5",
+ "log",
+ "multihash",
+ "num-derive",
+ "num-traits",
+ "paste",
+ "regex",
+ "serde",
+ "serde_repr",
+ "sha2 0.10.6",
+ "thiserror",
+ "unsigned-varint",
+]
+
+[[package]]
+name = "fil_actors_runtime"
+version = "10.0.0-alpha.1"
+source = "git+https://github.com/filecoin-project/builtin-actors?rev=eb3fc0dd5a23985168f4c6ec37d48e27511a8845#eb3fc0dd5a23985168f4c6ec37d48e27511a8845"
 dependencies = [
  "anyhow",
  "byteorder",
@@ -1270,7 +1298,7 @@ source = "git+https://github.com/rllola/ref-fvm?branch=lola/fixes#d5761faec99d86
 dependencies = [
  "anyhow",
  "cid",
- "fil_actors_runtime",
+ "fil_actors_runtime 10.0.0-alpha.1 (git+https://github.com/filecoin-project/builtin-actors?branch=next)",
  "futures",
  "fvm",
  "fvm_ipld_amt",
@@ -2767,14 +2795,16 @@ dependencies = [
 name = "testing"
 version = "0.1.0"
 dependencies = [
+ "cid",
  "fil_actor_eam",
- "fil_actors_runtime",
+ "fil_actors_runtime 10.0.0-alpha.1 (git+https://github.com/filecoin-project/builtin-actors?rev=eb3fc0dd5a23985168f4c6ec37d48e27511a8845)",
  "fvm",
  "fvm_integration_tests",
  "fvm_ipld_blockstore",
  "fvm_ipld_encoding",
  "fvm_shared",
  "hex",
+ "libipld-core 0.13.1",
  "serde",
  "serde_tuple",
  "wabt",

@@ -7,7 +7,7 @@ edition = "2021"
 
 [dependencies]
 fvm_ipld_blockstore = { version = "0.1.1" }
-fvm_shared = { version = "3.0.0-alpha.13" }
+fvm_shared = { version = "3.0.0-alpha.13", default-features = false }
 fvm = { version = "3.0.0-alpha.12", default-features = false, features = ["m2-native"] }
 fvm_ipld_encoding = { version = "0.3.0" }
 fvm_integration_tests = { version = "0.1.1-alpha.1", git = "https://github.com/rllola/ref-fvm", branch = "lola/fixes" }
@@ -16,12 +16,15 @@ serde = { version = "1.0", features = ["derive"] }
 serde_tuple = "0.5"
 wabt = "0.10.0"
 hex = "0.4.3"
+cid = "0.8.6"
+libipld-core = { version = "0.13.1", features = ["serde-codec"] }
 
-fil_actors_runtime = { version = "10.0.0-alpha.1", git = "https://github.com/filecoin-project/builtin-actors", branch = "next", features = ["m2-native"] }
-fil_actor_eam = { version = "10.0.0-alpha.1", git = "https://github.com/filecoin-project/builtin-actors", branch = "next" }
+fil_actors_runtime = { version = "10.0.0-alpha.1", git = "https://github.com/filecoin-project/builtin-actors", rev = "eb3fc0dd5a23985168f4c6ec37d48e27511a8845", features = ["m2-native"] }
+fil_actor_eam = { version = "10.0.0-alpha.1", git = "https://github.com/filecoin-project/builtin-actors", rev = "eb3fc0dd5a23985168f4c6ec37d48e27511a8845"}
+#fil_actor_market = { version = "10.0.0-alpha.1", git = "https://github.com/filecoin-project/builtin-actors", rev = "eb3fc0dd5a23985168f4c6ec37d48e27511a8845" }
 
 [patch.crates-io]
-fvm_shared = { version = "3.0.0-alpha.14", git = "https://github.com/rllola/ref-fvm", branch = "lola/fixes" }
+fvm_shared = { version = "3.0.0-alpha.14", git = "https://github.com/rllola/ref-fvm", branch = "lola/fixes", default-features = false }
 fvm_ipld_encoding = { version = "0.3.0", git = "https://github.com/rllola/ref-fvm", branch = "lola/fixes" }
 fvm_ipld_hamt = { version = "0.6.1", git = "https://github.com/rllola/ref-fvm", branch = "lola/fixes" }
 fvm_ipld_amt = { version = "0.5.0", git = "https://github.com/rllola/ref-fvm", branch = "lola/fixes" }

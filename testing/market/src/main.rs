@@ -13,7 +13,14 @@ use fvm::executor::{ApplyKind, Executor};
 use fil_actor_eam::Return;
 use fvm_ipld_encoding::RawBytes;
 use fil_actors_runtime::{EAM_ACTOR_ADDR};
-
+use fvm_shared::crypto::signature::Signature;
+use std::str::FromStr;
+use cid::Cid;
+use fvm_shared::piece::PaddedPieceSize;
+use fvm_shared::clock::ChainEpoch;
+use serde::{de, Deserialize, Deserializer, Serialize, Serializer};
+use fvm_ipld_encoding::{BytesSer, Cbor};
+use libipld_core::ipld::Ipld;
 
 const WASM_COMPILED_PATH: &str =
    "../../build/v0.8/MarketAPI.bin";
@@ -24,6 +31,73 @@ pub struct Create2Params {
     pub initcode: Vec<u8>,
     #[serde(with = "strict_bytes")]
     pub salt: [u8; 32],
+}
+
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub enum Label {
+    String(String),
+    Bytes(Vec<u8>),
+}
+
+/// Serialize the Label like an untagged enum.
+impl Serialize for Label {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        match self {
+            Label::String(v) => v.serialize(serializer),
+            Label::Bytes(v) => BytesSer(v).serialize(serializer),
+        }
+    }
+}
+
+/// Deserialize the Label like an untagged enum.
+impl<'de> Deserialize<'de> for Label {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: Deserializer<'de>,
+    {
+        Ipld::deserialize(deserializer).and_then(|ipld| ipld.try_into().map_err(de::Error::custom))
+    }
+}
+
+impl TryFrom<Ipld> for Label {
+    type Error = String;
+
+    fn try_from(ipld: Ipld) -> Result<Self, Self::Error> {
+        match ipld {
+            Ipld::String(s) => Ok(Label::String(s)),
+            Ipld::Bytes(b) => Ok(Label::Bytes(b)),
+            other => Err(format!("Expected `Ipld::String` or `Ipld::Bytes`, got {:#?}", other)),
+        }
+    }
+}
+
+#[derive(Clone, Debug, PartialEq, Eq, Serialize_tuple, Deserialize_tuple)]
+pub struct ClientDealProposal {
+    pub proposal: DealProposal,
+    pub client_signature: Signature,
+}
+
+#[derive(Serialize_tuple, Deserialize_tuple, Debug, Clone, Eq, PartialEq)]
+pub struct PublishStorageDealsParams {
+    pub deals: Vec<ClientDealProposal>,
+}   
+
+#[derive(Clone, Debug, PartialEq, Eq, Serialize_tuple, Deserialize_tuple)]
+pub struct DealProposal {
+    pub piece_cid: Cid,
+    pub piece_size: PaddedPieceSize,
+    pub verified_deal: bool,
+    pub client: Address,
+    pub provider: Address,
+    pub label: Label,
+    pub start_epoch: ChainEpoch,
+    pub end_epoch: ChainEpoch,
+    pub storage_price_per_epoch: TokenAmount,
+    pub provider_collateral: TokenAmount,
+    pub client_collateral: TokenAmount,
 }
 
 fn main() {
@@ -77,6 +151,49 @@ fn main() {
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
 
     let exec_return : Return = RawBytes::deserialize(&res.msg_receipt.return_data).unwrap();
+
+    println!("Adding a deal!");
+
+    let proposal = DealProposal {
+        piece_cid: Cid::from_str("baga6ea4seaqlkg6mss5qs56jqtajg5ycrhpkj2b66cgdkukf2qjmmzz6ayksuci").unwrap(),
+        piece_size: PaddedPieceSize(8388608),
+        verified_deal: false,
+        client: Address::from_str("f01109").unwrap(),
+        provider: Address::from_str("f01113").unwrap(),
+        label: Label::String("mAXCg5AIg8YBXbFjtdBy1iZjpDYAwRSt0elGLF5GvTqulEii1VcM".to_string()),
+        start_epoch: ChainEpoch::from(25245),
+        end_epoch: ChainEpoch::from(545150),
+        storage_price_per_epoch: TokenAmount::from_atto(1_100_000_000_000_i64),
+        provider_collateral: TokenAmount::default(),
+        client_collateral: TokenAmount::default(),
+    };
+
+    let deal = ClientDealProposal{
+        proposal,
+        client_signature: Signature::new_secp256k1([0u8;65].to_vec()),
+    };
+
+    let params = PublishStorageDealsParams{
+        deals: vec![deal],
+    };
+
+    let message = Message {
+        from: sender[0].1,
+        to: Address::new_id(exec_return.actor_id),
+        gas_limit: 1000000000,
+        method_num: 4,
+        sequence: 1,
+        params: RawBytes::serialize(params).unwrap(),
+        ..Message::default()
+    };
+
+    let res = executor
+        .execute_message(message, ApplyKind::Explicit, 100)
+        .unwrap();
+
+    dbg!(&res);
+
+    assert_eq!(res.msg_receipt.exit_code.value(), 0);
 
     println!("Calling `add_balance`");
 
