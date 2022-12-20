@@ -67,7 +67,7 @@ library MarketTypes {
     }
 
     struct GetDealClientReturn {
-        bytes client;
+        uint64 client;
     }
 
     struct GetDealProviderParams {
@@ -75,7 +75,7 @@ library MarketTypes {
     }
 
     struct GetDealProviderReturn {
-        bytes provider;
+        uint64 provider;
     }
 
     struct GetDealLabelParams {

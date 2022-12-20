@@ -168,8 +168,8 @@ contract MarketAPI {
         deal_67.cid = "baga6ea4seaqlkg6mss5qs56jqtajg5ycrhpkj2b66cgdkukf2qjmmzz6ayksuci";
         deal_67.size = 8388608;
         deal_67.verified = false;
-        deal_67.client = "t01109";
-        deal_67.provider = "t01113";
+        deal_67.client = 101;
+        deal_67.provider = 103;
         deal_67.label = "mAXCg5AIg8YBXbFjtdBy1iZjpDYAwRSt0elGLF5GvTqulEii1VcM";
         deal_67.start = 25245;
         deal_67.end = 545150;

@@ -268,6 +268,38 @@ dependencies = [
 ]
 
 [[package]]
+name = "bls-signatures"
+version = "0.13.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "9fcead733e20b9afbf3784a3f33cc6d728e0f11a593a35bd6c5c4503db19e06e"
+dependencies = [
+ "bls12_381",
+ "ff",
+ "group",
+ "hkdf",
+ "pairing",
+ "rand_core",
+ "rayon",
+ "sha2 0.9.9",
+ "subtle",
+ "thiserror",
+]
+
+[[package]]
+name = "bls12_381"
+version = "0.7.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "62250ece575fa9b22068b3a8d59586f01d426dd7785522efd97632959e71c986"
+dependencies = [
+ "digest 0.9.0",
+ "ff",
+ "group",
+ "pairing",
+ "rand_core",
+ "subtle",
+]
+
+[[package]]
 name = "blst"
 version = "0.3.9"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -644,6 +676,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "crypto-mac"
+version = "0.11.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b1d1a86f49236c215f271d40892d5fc950490551400b02ef360692c29815c714"
+dependencies = [
+ "generic-array",
+ "subtle",
+]
+
+[[package]]
 name = "cs_serde_bytes"
 version = "0.12.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -942,11 +984,11 @@ dependencies = [
 [[package]]
 name = "fil_actor_eam"
 version = "10.0.0-alpha.1"
-source = "git+https://github.com/filecoin-project/builtin-actors?branch=next#f40fa42a9892d614b30cd032a5534fe5530001cd"
+source = "git+https://github.com/filecoin-project/builtin-actors?rev=eb3fc0dd5a23985168f4c6ec37d48e27511a8845#eb3fc0dd5a23985168f4c6ec37d48e27511a8845"
 dependencies = [
  "anyhow",
  "cid",
- "fil_actors_runtime",
+ "fil_actors_runtime 10.0.0-alpha.1 (git+https://github.com/filecoin-project/builtin-actors?rev=eb3fc0dd5a23985168f4c6ec37d48e27511a8845)",
  "fvm_ipld_blockstore",
  "fvm_ipld_encoding",
  "fvm_shared",
@@ -964,6 +1006,34 @@ dependencies = [
 name = "fil_actors_runtime"
 version = "10.0.0-alpha.1"
 source = "git+https://github.com/filecoin-project/builtin-actors?branch=next#f40fa42a9892d614b30cd032a5534fe5530001cd"
+dependencies = [
+ "anyhow",
+ "byteorder",
+ "cid",
+ "fvm_ipld_amt",
+ "fvm_ipld_blockstore",
+ "fvm_ipld_encoding",
+ "fvm_ipld_hamt",
+ "fvm_sdk",
+ "fvm_shared",
+ "itertools 0.10.5",
+ "log",
+ "multihash",
+ "num-derive",
+ "num-traits",
+ "paste",
+ "regex",
+ "serde",
+ "serde_repr",
+ "sha2 0.10.6",
+ "thiserror",
+ "unsigned-varint",
+]
+
+[[package]]
+name = "fil_actors_runtime"
+version = "10.0.0-alpha.1"
+source = "git+https://github.com/filecoin-project/builtin-actors?rev=eb3fc0dd5a23985168f4c6ec37d48e27511a8845#eb3fc0dd5a23985168f4c6ec37d48e27511a8845"
 dependencies = [
  "anyhow",
  "byteorder",
@@ -1215,7 +1285,7 @@ dependencies = [
 [[package]]
 name = "fvm"
 version = "3.0.0-alpha.14"
-source = "git+https://github.com/rllola/ref-fvm?branch=lola/fixes#d5761faec99d86b88994afd66750e00b16ce4fd7"
+source = "git+https://github.com/rllola/ref-fvm?branch=lola/fixes#b5477b8d5dca6d62b5bcf7c22e2af21c9ec11c2a"
 dependencies = [
  "anyhow",
  "blake2b_simd",
@@ -1266,11 +1336,11 @@ dependencies = [
 [[package]]
 name = "fvm_integration_tests"
 version = "0.1.1-alpha.1"
-source = "git+https://github.com/rllola/ref-fvm?branch=lola/fixes#d5761faec99d86b88994afd66750e00b16ce4fd7"
+source = "git+https://github.com/rllola/ref-fvm?branch=lola/fixes#b5477b8d5dca6d62b5bcf7c22e2af21c9ec11c2a"
 dependencies = [
  "anyhow",
  "cid",
- "fil_actors_runtime",
+ "fil_actors_runtime 10.0.0-alpha.1 (git+https://github.com/filecoin-project/builtin-actors?branch=next)",
  "futures",
  "fvm",
  "fvm_ipld_amt",
@@ -1295,7 +1365,7 @@ dependencies = [
 [[package]]
 name = "fvm_ipld_amt"
 version = "0.5.0"
-source = "git+https://github.com/rllola/ref-fvm?branch=lola/fixes#d5761faec99d86b88994afd66750e00b16ce4fd7"
+source = "git+https://github.com/rllola/ref-fvm?branch=lola/fixes#b5477b8d5dca6d62b5bcf7c22e2af21c9ec11c2a"
 dependencies = [
  "anyhow",
  "cid",
@@ -1310,7 +1380,7 @@ dependencies = [
 [[package]]
 name = "fvm_ipld_blockstore"
 version = "0.1.1"
-source = "git+https://github.com/rllola/ref-fvm?branch=lola/fixes#d5761faec99d86b88994afd66750e00b16ce4fd7"
+source = "git+https://github.com/rllola/ref-fvm?branch=lola/fixes#b5477b8d5dca6d62b5bcf7c22e2af21c9ec11c2a"
 dependencies = [
  "anyhow",
  "cid",
@@ -1320,7 +1390,7 @@ dependencies = [
 [[package]]
 name = "fvm_ipld_car"
 version = "0.6.0"
-source = "git+https://github.com/rllola/ref-fvm?branch=lola/fixes#d5761faec99d86b88994afd66750e00b16ce4fd7"
+source = "git+https://github.com/rllola/ref-fvm?branch=lola/fixes#b5477b8d5dca6d62b5bcf7c22e2af21c9ec11c2a"
 dependencies = [
  "cid",
  "futures",
@@ -1334,7 +1404,7 @@ dependencies = [
 [[package]]
 name = "fvm_ipld_encoding"
 version = "0.3.0"
-source = "git+https://github.com/rllola/ref-fvm?branch=lola/fixes#d5761faec99d86b88994afd66750e00b16ce4fd7"
+source = "git+https://github.com/rllola/ref-fvm?branch=lola/fixes#b5477b8d5dca6d62b5bcf7c22e2af21c9ec11c2a"
 dependencies = [
  "anyhow",
  "cid",
@@ -1350,7 +1420,7 @@ dependencies = [
 [[package]]
 name = "fvm_ipld_hamt"
 version = "0.6.1"
-source = "git+https://github.com/rllola/ref-fvm?branch=lola/fixes#d5761faec99d86b88994afd66750e00b16ce4fd7"
+source = "git+https://github.com/rllola/ref-fvm?branch=lola/fixes#b5477b8d5dca6d62b5bcf7c22e2af21c9ec11c2a"
 dependencies = [
  "anyhow",
  "byteorder",
@@ -1369,7 +1439,7 @@ dependencies = [
 [[package]]
 name = "fvm_sdk"
 version = "3.0.0-alpha.17"
-source = "git+https://github.com/rllola/ref-fvm?branch=lola/fixes#d5761faec99d86b88994afd66750e00b16ce4fd7"
+source = "git+https://github.com/rllola/ref-fvm?branch=lola/fixes#b5477b8d5dca6d62b5bcf7c22e2af21c9ec11c2a"
 dependencies = [
  "cid",
  "fvm_ipld_encoding",
@@ -1383,12 +1453,12 @@ dependencies = [
 [[package]]
 name = "fvm_shared"
 version = "3.0.0-alpha.14"
-source = "git+https://github.com/rllola/ref-fvm?branch=lola/fixes#d5761faec99d86b88994afd66750e00b16ce4fd7"
+source = "git+https://github.com/rllola/ref-fvm?branch=lola/fixes#b5477b8d5dca6d62b5bcf7c22e2af21c9ec11c2a"
 dependencies = [
  "anyhow",
  "bitflags",
  "blake2b_simd",
- "bls-signatures",
+ "bls-signatures 0.12.0",
  "byteorder",
  "cid",
  "data-encoding",
@@ -1508,12 +1578,32 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7ebdb29d2ea9ed0083cd8cece49bbd968021bd99b0849edb4a9a7ee0fdf6a4e0"
 
 [[package]]
+name = "hkdf"
+version = "0.11.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "01706d578d5c281058480e673ae4086a9f4710d8df1ad80a5b03e39ece5f886b"
+dependencies = [
+ "digest 0.9.0",
+ "hmac 0.11.0",
+]
+
+[[package]]
 name = "hmac"
 version = "0.8.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "126888268dcc288495a26bf004b38c5fdbb31682f992c84ceb046a1f0fe38840"
 dependencies = [
- "crypto-mac",
+ "crypto-mac 0.8.0",
+ "digest 0.9.0",
+]
+
+[[package]]
+name = "hmac"
+version = "0.11.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "2a2a2320eb7ec0ebe8da8f744d7812d9fc4cb4d09344ac01898dbcb6a20ae69b"
+dependencies = [
+ "crypto-mac 0.11.1",
  "digest 0.9.0",
 ]
 
@@ -1525,7 +1615,7 @@ checksum = "17ea0a1394df5b6574da6e0c1ade9e78868c9fb0a4e5ef4428e32da4676b85b1"
 dependencies = [
  "digest 0.9.0",
  "generic-array",
- "hmac",
+ "hmac 0.8.1",
 ]
 
 [[package]]
@@ -2767,14 +2857,19 @@ dependencies = [
 name = "testing"
 version = "0.1.0"
 dependencies = [
+ "bls-signatures 0.13.0",
+ "cid",
  "fil_actor_eam",
- "fil_actors_runtime",
+ "fil_actors_runtime 10.0.0-alpha.1 (git+https://github.com/filecoin-project/builtin-actors?rev=eb3fc0dd5a23985168f4c6ec37d48e27511a8845)",
  "fvm",
  "fvm_integration_tests",
  "fvm_ipld_blockstore",
  "fvm_ipld_encoding",
  "fvm_shared",
  "hex",
+ "libipld-core 0.13.1",
+ "multihash",
+ "rand_core",
  "serde",
  "serde_tuple",
  "wabt",
