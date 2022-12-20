@@ -26,8 +26,8 @@ library MockTypes {
         bytes cid;
         uint64 size;
         bool verified;
-        bytes client;
-        bytes provider;
+        uint64 client;
+        uint64 provider;
         string label;
         int64 start;
         int64 end;

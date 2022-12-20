@@ -69,13 +69,13 @@ contract FilecoinMarketMockTest {
         return response;
     }
 
-    function get_deal_client_test() public returns (bytes memory) {
+    function get_deal_client_test() public returns (MarketTypes.GetDealClientReturn memory) {
         MarketAPI marketApiInstance = MarketAPI(marketApiAddress);
 
         MarketTypes.GetDealClientParams memory params = MarketTypes.GetDealClientParams(74);
 
         MarketTypes.GetDealClientReturn memory response = marketApiInstance.get_deal_client(params);
-        return response.client;
+        return response;
     }
 
     function get_deal_provider_test() public returns (MarketTypes.GetDealProviderReturn memory) {

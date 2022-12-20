@@ -134,16 +134,10 @@ library GetDealClientCBOR {
     }
 
     function deserialize(MarketTypes.GetDealClientReturn memory ret, bytes memory rawResp) internal pure {
-        bytes memory client;
         uint byteIdx = 0;
         uint len;
 
-        (len, byteIdx) = rawResp.readFixedArray(byteIdx);
-        assert(len == 2);
-
-        (client, byteIdx) = rawResp.readBytes(byteIdx);
-
-        ret.client = client;
+        (ret.client, byteIdx) = rawResp.readUInt64(byteIdx);
     }
 }
 
@@ -161,16 +155,10 @@ library GetDealProviderCBOR {
     }
 
     function deserialize(MarketTypes.GetDealProviderReturn memory ret, bytes memory rawResp) internal pure {
-        bytes memory provider;
         uint byteIdx = 0;
         uint len;
 
-        (len, byteIdx) = rawResp.readFixedArray(byteIdx);
-        assert(len == 2);
-
-        (provider, byteIdx) = rawResp.readBytes(byteIdx);
-
-        ret.provider = provider;
+        (ret.provider, byteIdx) = rawResp.readUInt64(byteIdx);
     }
 }
 
@@ -191,9 +179,6 @@ library GetDealLabelCBOR {
         string memory label;
         uint byteIdx = 0;
         uint len;
-
-        (len, byteIdx) = rawResp.readFixedArray(byteIdx);
-        assert(len == 2);
 
         (label, byteIdx) = rawResp.readString(byteIdx);
 
@@ -249,9 +234,6 @@ library GetDealEpochPriceCBOR {
         uint byteIdx = 0;
         uint len;
 
-        (len, byteIdx) = rawResp.readFixedArray(byteIdx);
-        assert(len == 2);
-
         (tmp, byteIdx) = rawResp.readBytes32(byteIdx);
         ret.price_per_epoch = Misc.toUint256(tmp);
     }
@@ -274,9 +256,6 @@ library GetDealClientCollateralCBOR {
         bytes32 tmp;
         uint byteIdx = 0;
         uint len;
-
-        (len, byteIdx) = rawResp.readFixedArray(byteIdx);
-        assert(len == 2);
 
         (tmp, byteIdx) = rawResp.readBytes32(byteIdx);
         ret.collateral = Misc.toUint256(tmp);
@@ -301,9 +280,6 @@ library GetDealProviderCollateralCBOR {
         uint byteIdx = 0;
         uint len;
 
-        (len, byteIdx) = rawResp.readFixedArray(byteIdx);
-        assert(len == 2);
-
         (tmp, byteIdx) = rawResp.readBytes32(byteIdx);
         ret.collateral = Misc.toUint256(tmp);
     }
@@ -326,9 +302,6 @@ library GetDealVerifiedCBOR {
         bool verified;
         uint byteIdx = 0;
         uint len;
-
-        (len, byteIdx) = rawResp.readFixedArray(byteIdx);
-        assert(len == 2);
 
         (verified, byteIdx) = rawResp.readBool(byteIdx);
 

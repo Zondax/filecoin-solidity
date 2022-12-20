@@ -89,7 +89,12 @@ library CBORDecoder {
         uint len;
 
         (maj, len, byteIdx) = parseCborHeader(cborParams, byteIdx);
-        assert(maj == MajByteString);
+        assert(maj == MajTag || maj == MajByteString);
+
+        if (maj == MajTag) {
+            (maj, len, byteIdx) = parseCborHeader(cborParams, byteIdx);
+            assert(maj == MajByteString);
+        }
 
         uint max_len = byteIdx + len;
         bytes memory slice = new bytes(len);

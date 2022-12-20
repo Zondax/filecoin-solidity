@@ -160,8 +160,8 @@ fn main() {
  
      let actor_state = ActorState {
          // CID of Accounts actor. You get this as output from builtin-actors compiling process
-         //code: Cid::from_str("bafk2bzacecijtwhjgnb24n452lat6m66yumpdsdunv3pupl5kow7j725twjtc").unwrap(),
-         code: Cid::from_str("bafk2bzaceddmas33nnn2izdexi5xjzuahzezl62aa5ah5bqwzzjceusskr6ty").unwrap(),
+         code: Cid::from_str("bafk2bzacecijtwhjgnb24n452lat6m66yumpdsdunv3pupl5kow7j725twjtc").unwrap(),
+         //code: Cid::from_str("bafk2bzaceddmas33nnn2izdexi5xjzuahzezl62aa5ah5bqwzzjceusskr6ty").unwrap(),
          state: cid,
          sequence: 0,
          balance: TokenAmount::from_whole(1_000_000),
@@ -188,8 +188,8 @@ fn main() {
 
     let actor_state = ActorState {
         // CID of Accounts actor. You get this as output from builtin-actors compiling process
-        //code: Cid::from_str("bafk2bzacecijtwhjgnb24n452lat6m66yumpdsdunv3pupl5kow7j725twjtc").unwrap(),
-        code: Cid::from_str("bafk2bzaceddmas33nnn2izdexi5xjzuahzezl62aa5ah5bqwzzjceusskr6ty").unwrap(),
+        code: Cid::from_str("bafk2bzacecijtwhjgnb24n452lat6m66yumpdsdunv3pupl5kow7j725twjtc").unwrap(),
+        //code: Cid::from_str("bafk2bzaceddmas33nnn2izdexi5xjzuahzezl62aa5ah5bqwzzjceusskr6ty").unwrap(),
         state: cid,
         sequence: 0,
         balance: TokenAmount::from_whole(1_000_000),
@@ -227,9 +227,6 @@ fn main() {
     let res = executor
     .execute_message(message, ApplyKind::Explicit, 100)
     .unwrap();
-
-    //let exec_return : ExecReturn = RawBytes::deserialize(&res.msg_receipt.return_data).unwrap();
-    //dbg!(hex::encode(&exec_return.id_address.to_bytes()));
 
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
 
@@ -364,8 +361,6 @@ fn main() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
-    dbg!(&res);
-
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
 
     println!("Calling `add_balance`");
@@ -385,7 +380,7 @@ fn main() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
-    //assert_eq!(res.msg_receipt.exit_code.value(), 0);
+    assert_eq!(res.msg_receipt.exit_code.value(), 0);
 
     println!("Calling `withdraw_balance`");
 
@@ -403,7 +398,7 @@ fn main() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
-    //assert_eq!(res.msg_receipt.exit_code.value(), 0);
+    assert_eq!(res.msg_receipt.exit_code.value(), 0);
 
     println!("Calling `get_balance`");
 
@@ -421,7 +416,7 @@ fn main() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
-    //assert_eq!(res.msg_receipt.exit_code.value(), 0);
+    assert_eq!(res.msg_receipt.exit_code.value(), 0);
 
     println!("Calling `get_deal_data_commitment`");
 
@@ -439,9 +434,6 @@ fn main() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
-    dbg!(&res);
-
-    // FIXME : "no such deal"
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
 
     println!("Calling `get_deal_client`");
@@ -452,7 +444,7 @@ fn main() {
         gas_limit: 1000000000,
         method_num: 2,
         sequence: 6,
-        params: RawBytes::new(hex::decode("58248b7f02fd0000000000000000000000000000000000000000000000000000000000000001").unwrap()),
+        params: RawBytes::new(hex::decode("58248b7f02fd0000000000000000000000000000000000000000000000000000000000000000").unwrap()),
         ..Message::default()
     };
 
@@ -460,14 +452,7 @@ fn main() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
-    if res.msg_receipt.exit_code.value() != 33 {
-        dbg!(&res);
-    }
-
-    // FIXME : "actor error"
-    assert_eq!(res.msg_receipt.exit_code.value(), 33);
-    //assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "586408c379a0000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000136163746f72206572726f7220636f646520313700000000000000000000000000");
-
+    assert_eq!(res.msg_receipt.exit_code.value(), 0);
 
     println!("Calling `get_deal_provider`");
 
@@ -477,7 +462,7 @@ fn main() {
         gas_limit: 1000000000,
         method_num: 2,
         sequence: 7,
-        params: RawBytes::new(hex::decode("582455d956090000000000000000000000000000000000000000000000000000000000000001").unwrap()),
+        params: RawBytes::new(hex::decode("582455d956090000000000000000000000000000000000000000000000000000000000000000").unwrap()),
         ..Message::default()
     };
 
@@ -485,14 +470,7 @@ fn main() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
-    if res.msg_receipt.exit_code.value() != 33 {
-        dbg!(&res);
-    }
-
-    // FIXME : "actor error"
-    assert_eq!(res.msg_receipt.exit_code.value(), 33);
-    //assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "586408c379a0000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000136163746f72206572726f7220636f646520313700000000000000000000000000");
-
+    assert_eq!(res.msg_receipt.exit_code.value(), 0);
 
     println!("Calling `get_deal_label`");
 
@@ -502,7 +480,7 @@ fn main() {
         gas_limit: 1000000000,
         method_num: 2,
         sequence: 8,
-        params: RawBytes::new(hex::decode("58249f4b7c7d0000000000000000000000000000000000000000000000000000000000000001").unwrap()),
+        params: RawBytes::new(hex::decode("58249f4b7c7d0000000000000000000000000000000000000000000000000000000000000000").unwrap()),
         ..Message::default()
     };
 
@@ -510,14 +488,7 @@ fn main() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
-    if res.msg_receipt.exit_code.value() != 33 {
-        dbg!(&res);
-    }
-
-    // FIXME : "actor error"
-    assert_eq!(res.msg_receipt.exit_code.value(), 33);
-    //assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "586408c379a0000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000136163746f72206572726f7220636f646520313700000000000000000000000000");
-
+    assert_eq!(res.msg_receipt.exit_code.value(), 0);
 
     println!("Calling `get_deal_term`");
 
@@ -527,7 +498,7 @@ fn main() {
         gas_limit: 1000000000,
         method_num: 2,
         sequence: 9,
-        params: RawBytes::new(hex::decode("5824ad36f1840000000000000000000000000000000000000000000000000000000000000001").unwrap()),
+        params: RawBytes::new(hex::decode("5824ad36f1840000000000000000000000000000000000000000000000000000000000000000").unwrap()),
         ..Message::default()
     };
 
@@ -535,14 +506,7 @@ fn main() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
-    if res.msg_receipt.exit_code.value() != 33 {
-        dbg!(&res);
-    }
-
-    // FIXME : "actor error"
-    assert_eq!(res.msg_receipt.exit_code.value(), 33);
-    //assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "586408c379a0000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000136163746f72206572726f7220636f646520313700000000000000000000000000");
-
+    assert_eq!(res.msg_receipt.exit_code.value(), 0);
 
     println!("Calling `get_deal_total_price`");
 
@@ -552,7 +516,7 @@ fn main() {
         gas_limit: 1000000000,
         method_num: 2,
         sequence: 10,
-        params: RawBytes::new(hex::decode("5824412a4b9a0000000000000000000000000000000000000000000000000000000000000001").unwrap()),
+        params: RawBytes::new(hex::decode("5824412a4b9a0000000000000000000000000000000000000000000000000000000000000000").unwrap()),
         ..Message::default()
     };
 
@@ -560,14 +524,7 @@ fn main() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
-    if res.msg_receipt.exit_code.value() != 33 {
-        dbg!(&res);
-    }
-
-    // FIXME : "actor error"
-    assert_eq!(res.msg_receipt.exit_code.value(), 33);
-    //assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "586408c379a0000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000136163746f72206572726f7220636f646520313700000000000000000000000000");
-
+    assert_eq!(res.msg_receipt.exit_code.value(), 0);
 
     println!("Calling `get_deal_client_collateral`");
 
@@ -577,7 +534,7 @@ fn main() {
         gas_limit: 1000000000,
         method_num: 2,
         sequence: 11,
-        params: RawBytes::new(hex::decode("58248777b7c80000000000000000000000000000000000000000000000000000000000000001").unwrap()),
+        params: RawBytes::new(hex::decode("58248777b7c80000000000000000000000000000000000000000000000000000000000000000").unwrap()),
         ..Message::default()
     };
 
@@ -585,14 +542,7 @@ fn main() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
-    if res.msg_receipt.exit_code.value() != 33 {
-        dbg!(&res);
-    }
-
-    // FIXME : "actor error"
-    assert_eq!(res.msg_receipt.exit_code.value(), 33);
-    //assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "586408c379a0000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000136163746f72206572726f7220636f646520313700000000000000000000000000");
-
+    assert_eq!(res.msg_receipt.exit_code.value(), 0);
 
     println!("Calling `get_deal_provider_collateral`");
 
@@ -602,7 +552,7 @@ fn main() {
         gas_limit: 1000000000,
         method_num: 2,
         sequence: 12,
-        params: RawBytes::new(hex::decode("58241a2811e70000000000000000000000000000000000000000000000000000000000000001").unwrap()),
+        params: RawBytes::new(hex::decode("58241a2811e70000000000000000000000000000000000000000000000000000000000000000").unwrap()),
         ..Message::default()
     };
 
@@ -610,14 +560,7 @@ fn main() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
-    if res.msg_receipt.exit_code.value() != 33 {
-        dbg!(&res);
-    }
-
-    // FIXME : "actor error"
-    assert_eq!(res.msg_receipt.exit_code.value(), 33);
-    //assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "586408c379a0000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000136163746f72206572726f7220636f646520313700000000000000000000000000");
-
+    assert_eq!(res.msg_receipt.exit_code.value(), 0);
 
     println!("Calling `get_deal_verified`");
 
@@ -627,7 +570,7 @@ fn main() {
         gas_limit: 1000000000,
         method_num: 2,
         sequence: 13,
-        params: RawBytes::new(hex::decode("58245c4ddef30000000000000000000000000000000000000000000000000000000000000001").unwrap()),
+        params: RawBytes::new(hex::decode("58245c4ddef30000000000000000000000000000000000000000000000000000000000000000").unwrap()),
         ..Message::default()
     };
 
@@ -635,14 +578,7 @@ fn main() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
-    if res.msg_receipt.exit_code.value() != 33 {
-        dbg!(&res);
-    }
-
-    // FIXME : "actor error"
-    assert_eq!(res.msg_receipt.exit_code.value(), 33);
-    //assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "586408c379a0000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000136163746f72206572726f7220636f646520313700000000000000000000000000");
-
+    assert_eq!(res.msg_receipt.exit_code.value(), 0);
 
     println!("Calling `get_deal_activation`");
 
@@ -652,7 +588,7 @@ fn main() {
         gas_limit: 1000000000,
         method_num: 2,
         sequence: 14,
-        params: RawBytes::new(hex::decode("5824f241560c0000000000000000000000000000000000000000000000000000000000000001").unwrap()),
+        params: RawBytes::new(hex::decode("5824f241560c0000000000000000000000000000000000000000000000000000000000000000").unwrap()),
         ..Message::default()
     };
 
@@ -660,14 +596,7 @@ fn main() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
-    if res.msg_receipt.exit_code.value() != 33 {
-        dbg!(&res);
-    }
-
-    // FIXME : "actor error"
-    assert_eq!(res.msg_receipt.exit_code.value(), 33);
-    //assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "586408c379a0000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000136163746f72206572726f7220636f646520313700000000000000000000000000");
-
+    assert_eq!(res.msg_receipt.exit_code.value(), 0);
 
     println!("Calling `publish_storage_deals`");
 
@@ -677,7 +606,7 @@ fn main() {
         gas_limit: 1000000000,
         method_num: 2,
         sequence: 15,
-        params: RawBytes::new(hex::decode("58246E65901F0000000000000000000000000000000000000000000000000000000000000001").unwrap()),
+        params: RawBytes::new(hex::decode("58246E65901F0000000000000000000000000000000000000000000000000000000000000000").unwrap()),
         ..Message::default()
     };
 
@@ -685,12 +614,6 @@ fn main() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
-
-    if res.msg_receipt.exit_code.value() != 33 {
-        dbg!(&res);
-    }
-
-    // FIXME : "actor error"
+    // FIXME
     assert_eq!(res.msg_receipt.exit_code.value(), 33);
-    assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "40");
 }
