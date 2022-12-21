@@ -52,7 +52,15 @@ library GetOwnerCBOR {
         uint byteIdx = 0;
         uint len;
 
+        (len, byteIdx) = rawResp.readFixedArray(byteIdx);
+        assert(len == 2);
+
         (ret.owner, byteIdx) = rawResp.readBytes(byteIdx);
+
+        if (!rawResp.isNullNext(byteIdx)) {
+            (ret.proposed, byteIdx) = rawResp.readBytes(byteIdx);
+        }
+
     }
 }
 
