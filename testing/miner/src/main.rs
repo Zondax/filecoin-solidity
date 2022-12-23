@@ -72,8 +72,8 @@ fn main() {
 
     let actor_state = ActorState {
         // CID of Accounts actor. You get this as output from builtin-actors compiling process
-        //code: Cid::from_str("bafk2bzacecgc56qrvqorqcgxeyoc6cwccl2zwtsewjq7c4j7le2avixe6hm4a").unwrap(),
-        code: Cid::from_str("bafk2bzaceddmas33nnn2izdexi5xjzuahzezl62aa5ah5bqwzzjceusskr6ty").unwrap(),
+        code: Cid::from_str("bafk2bzacecgc56qrvqorqcgxeyoc6cwccl2zwtsewjq7c4j7le2avixe6hm4a").unwrap(),
+        //code: Cid::from_str("bafk2bzaceddmas33nnn2izdexi5xjzuahzezl62aa5ah5bqwzzjceusskr6ty").unwrap(),
         state: cid,
         sequence: 0,
         balance: TokenAmount::from_atto(10000),
@@ -107,8 +107,8 @@ fn main() {
 
     let exec_params = fil_actor_init::ExecParams{
         // CID of StorageMiner actor. You get this as output from builtin-actors compiling process
-        //code_cid: Cid::from_str("bafk2bzacebtkz47l4fk6p3xxdlm2hrhezumd3or37xahkgdxr5an32uqucllw").unwrap(),
-        code_cid: Cid::from_str("bafk2bzacea5ua7isdc4nx3huvbgsjdikfkxj2mhwveuyvtxtk5techk5rddl6").unwrap(),
+        code_cid: Cid::from_str("bafk2bzacebtkz47l4fk6p3xxdlm2hrhezumd3or37xahkgdxr5an32uqucllw").unwrap(),
+        //code_cid: Cid::from_str("bafk2bzacea5ua7isdc4nx3huvbgsjdikfkxj2mhwveuyvtxtk5techk5rddl6").unwrap(),
         constructor_params: RawBytes::serialize(constructor_params).unwrap(),
     };
 
@@ -182,7 +182,7 @@ fn main() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
-    //assert_eq!(res.msg_receipt.exit_code.value(), 0);
+    assert_eq!(res.msg_receipt.exit_code.value(), 0);
 
     println!("Calling `get_beneficiary`");
 
@@ -200,7 +200,7 @@ fn main() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
-    //assert_eq!(res.msg_receipt.exit_code.value(), 0);
+    assert_eq!(res.msg_receipt.exit_code.value(), 0);
 
     println!("Calling `change_beneficiary`");
 
@@ -218,7 +218,7 @@ fn main() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
-    //assert_eq!(res.msg_receipt.exit_code.value(), 0);
+    assert_eq!(res.msg_receipt.exit_code.value(), 0);
 
     println!("Calling `get_owner`");
 
@@ -358,15 +358,13 @@ fn main() {
         gas_limit: 1000000000,
         method_num: 2,
         sequence: 12,
-        params: RawBytes::new(hex::decode("590184DAF85095000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000000000002006600000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000080000000000000000000000000000000000000000000000000000000000000000200660000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000020067000000000000000000000000000000000000000000000000000000000000").unwrap()),
+        params: RawBytes::new(hex::decode("590124DAF85095000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000000000002006600000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000080000000000000000000000000000000000000000000000000000000000000000200650000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000").unwrap()),
         ..Message::default()
     };
 
     let res = executor
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
-
-    dbg!(&res);
 
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
 
