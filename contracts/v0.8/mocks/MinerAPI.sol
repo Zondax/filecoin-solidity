@@ -53,7 +53,9 @@ contract MinerAPI {
     function get_owner() public view returns (MinerTypes.GetOwnerReturn memory) {
         require(owner.length != 0);
 
-        return MinerTypes.GetOwnerReturn(owner);
+        bytes memory proposed = "0x00";
+
+        return MinerTypes.GetOwnerReturn(owner, proposed);
     }
 
     /// @param addr New owner address

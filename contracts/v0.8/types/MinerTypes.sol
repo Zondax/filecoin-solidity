@@ -41,7 +41,9 @@ library MinerTypes {
 
     struct GetOwnerReturn {
         bytes owner;
+        bytes proposed;
     }
+
     struct IsControllingAddressParam {
         bytes addr;
     }

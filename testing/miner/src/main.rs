@@ -97,7 +97,7 @@ fn main() {
     println!("Create Miner actor for solidity contract to interact with");
 
     let constructor_params = fil_actor_miner::MinerConstructorParams{
-        owner: sender[0].1,
+        owner: Address::new_id(103),
         worker,
         control_addresses: vec![],
         window_post_proof_type: fvm_shared::sector::RegisteredPoStProof::StackedDRGWindow2KiBV1,
@@ -166,6 +166,8 @@ fn main() {
 
     println!("Calling `change_owner_address`");
 
+    dbg!(&sender[0]);
+
     let message = Message {
         from: sender[0].1,
         to: Address::new_id(exec_return.actor_id),
@@ -180,8 +182,7 @@ fn main() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
-    assert_eq!(res.msg_receipt.exit_code.value(), 33);
-    assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "586408c379a0000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000136163746f72206572726f7220636f646520313800000000000000000000000000");
+    assert_eq!(res.msg_receipt.exit_code.value(), 0);
 
     println!("Calling `get_beneficiary`");
 
@@ -217,12 +218,7 @@ fn main() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
-    if res.msg_receipt.exit_code.value() != 33 {
-        dbg!(&res);
-    }
-
-    assert_eq!(res.msg_receipt.exit_code.value(), 33);
-    assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "586408c379a0000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000136163746f72206572726f7220636f646520313800000000000000000000000000");
+    assert_eq!(res.msg_receipt.exit_code.value(), 0);
 
     println!("Calling `get_owner`");
 
@@ -240,8 +236,7 @@ fn main() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
-    // FIXME
-    assert_eq!(res.msg_receipt.exit_code.value(), 33);
+    assert_eq!(res.msg_receipt.exit_code.value(), 0);
 
     println!("Calling `get_available_balance`");
 
@@ -296,8 +291,7 @@ fn main() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
-    // FIXME
-    assert_eq!(res.msg_receipt.exit_code.value(), 33);
+    assert_eq!(res.msg_receipt.exit_code.value(), 0);
 
 
     println!("Calling `confirm_change_worker_address`");
@@ -316,9 +310,7 @@ fn main() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
-    // FIXME
-    assert_eq!(res.msg_receipt.exit_code.value(), 33);
-
+    assert_eq!(res.msg_receipt.exit_code.value(), 0);
 
     println!("Calling `get_peer_id`");
 
@@ -338,7 +330,6 @@ fn main() {
 
 
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
-
 
     println!("Calling `get_multiaddresses`");
 
@@ -367,7 +358,7 @@ fn main() {
         gas_limit: 1000000000,
         method_num: 2,
         sequence: 12,
-        params: RawBytes::new(hex::decode("590184DAF85095000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000000000002006600000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000080000000000000000000000000000000000000000000000000000000000000000200660000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000020067000000000000000000000000000000000000000000000000000000000000").unwrap()),
+        params: RawBytes::new(hex::decode("590124DAF85095000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000000000002006600000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000080000000000000000000000000000000000000000000000000000000000000000200650000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000").unwrap()),
         ..Message::default()
     };
 
@@ -375,8 +366,7 @@ fn main() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
-    // FIXME
-    assert_eq!(res.msg_receipt.exit_code.value(), 33);
+    assert_eq!(res.msg_receipt.exit_code.value(), 0);
 
     println!("Calling `is_controlling_address`");
 
@@ -430,8 +420,7 @@ fn main() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
-    // FIXME
-    assert_eq!(res.msg_receipt.exit_code.value(), 33);
+    assert_eq!(res.msg_receipt.exit_code.value(), 0);
 
     println!("Calling `change_peer_id`");
 
@@ -449,6 +438,5 @@ fn main() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
-    // FIXME
-    assert_eq!(res.msg_receipt.exit_code.value(), 33);
+    assert_eq!(res.msg_receipt.exit_code.value(), 0);
 }
