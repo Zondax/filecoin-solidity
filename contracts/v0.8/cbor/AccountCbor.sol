@@ -40,6 +40,17 @@ library AuthenticateMessageCBOR {
 
         return buf.data();
     }
+
+    function deserialize(AccountTypes.AuthenticateMessageParams memory ret, bytes memory rawResp) internal pure {
+        uint byteIdx = 0;
+        uint len;
+
+        (len, byteIdx) = rawResp.readFixedArray(byteIdx);
+        assert(len == 2);
+
+        (ret.signature, byteIdx) = rawResp.readBytes(byteIdx);
+        (ret.message, byteIdx) = rawResp.readBytes(byteIdx);
+    }
 }
 
 library BytesCBOR {
