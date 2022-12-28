@@ -94,6 +94,7 @@ fn main() {
         .unwrap();
 
     // FIXME: "caller f0201 is not a verifier"
+    // it necessary to instantiate a state with a verifier so this call returns success
     assert_eq!(res.msg_receipt.exit_code.value(), 33);
 
     println!("Calling `claim_allocations`");
@@ -114,4 +115,22 @@ fn main() {
 
     // Should not fail as actor would return an empty list of allocations
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
+
+    println!("Calling `universal_receiver_hook`");
+    let message = Message {
+        from: sender[0].1,
+        to: Address::new_id(exec_return.actor_id),
+        gas_limit: 1000000000,
+        method_num: 2,
+        sequence: 3,
+        params: RawBytes::new(hex::decode("58A4AA7E0F7B000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000C9000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000031245AB0000000000000000000000000000000000000000000000000000000000").unwrap()),
+        ..Message::default()
+    };
+
+    let res = executor
+        .execute_message(message, ApplyKind::Explicit, 100)
+        .unwrap();
+
+    // this fails
+    assert_eq!(res.msg_receipt.exit_code.value(), 33);
 }
