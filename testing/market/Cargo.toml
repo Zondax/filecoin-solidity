@@ -10,7 +10,7 @@ fvm_ipld_blockstore = { version = "0.1.1" }
 fvm_shared = { version = "3.0.0-alpha.13", default-features = false }
 fvm = { version = "3.0.0-alpha.12", default-features = false, features = ["m2-native"] }
 fvm_ipld_encoding = { version = "0.3.0" }
-fvm_integration_tests = { version = "0.1.1-alpha.1", git = "https://github.com/rllola/ref-fvm", branch = "lola/fixes" }
+fvm_integration_tests = { version = "0.1.1-alpha.1", git = "https://github.com/Zondax/ref-fvm", branch = "lola/fixes" }
 # fvm_integration_tests = { version = "0.1.1-alpha.1", path = "../../../ref-fvm/testing/integration" }
 
 bls-signatures = "0.13.0"
@@ -24,18 +24,17 @@ cid = "0.8.6"
 libipld-core = { version = "0.13.1", features = ["serde-codec"] }
 multihash = { version = "0.16.1", default-features = false }
 
-fil_actors_runtime = { version = "10.0.0-alpha.1", git = "https://github.com/filecoin-project/builtin-actors", rev = "eb3fc0dd5a23985168f4c6ec37d48e27511a8845", features = ["m2-native"] }
-fil_actor_eam = { version = "10.0.0-alpha.1", git = "https://github.com/filecoin-project/builtin-actors", rev = "eb3fc0dd5a23985168f4c6ec37d48e27511a8845"}
-#fil_actor_market = { version = "10.0.0-alpha.1", git = "https://github.com/filecoin-project/builtin-actors", rev = "eb3fc0dd5a23985168f4c6ec37d48e27511a8845" }
+fil_actors_runtime = { version = "10.0.0-alpha.1", git = "https://github.com/filecoin-project/builtin-actors", tag = "dev/20221218-fvm-m2", features = ["m2-native"] }
+fil_actor_eam = { version = "10.0.0-alpha.1", git = "https://github.com/filecoin-project/builtin-actors", tag = "dev/20221218-fvm-m2" }
 
 [patch.crates-io]
-fvm_shared = { version = "3.0.0-alpha.14", git = "https://github.com/rllola/ref-fvm", branch = "lola/fixes", default-features = false }
-fvm_ipld_encoding = { version = "0.3.0", git = "https://github.com/rllola/ref-fvm", branch = "lola/fixes" }
-fvm_ipld_hamt = { version = "0.6.1", git = "https://github.com/rllola/ref-fvm", branch = "lola/fixes" }
-fvm_ipld_amt = { version = "0.5.0", git = "https://github.com/rllola/ref-fvm", branch = "lola/fixes" }
-fvm_ipld_blockstore = { version = "0.1.1", git = "https://github.com/rllola/ref-fvm", branch = "lola/fixes" }
-fvm = { version = "3.0.0-alpha.14", git = "https://github.com/rllola/ref-fvm", branch = "lola/fixes", default-features = false, features = ["m2-native"] }
-fvm_sdk = { version = "3.0.0-alpha.17", git = "https://github.com/rllola/ref-fvm", branch = "lola/fixes" }
+fvm_shared = { version = "3.0.0-alpha.14", git = "https://github.com/Zondax/ref-fvm", branch = "lola/fixes", default-features = false }
+fvm_ipld_encoding = { version = "0.3.0", git = "https://github.com/Zondax/ref-fvm", branch = "lola/fixes" }
+fvm_ipld_hamt = { version = "0.6.1", git = "https://github.com/Zondax/ref-fvm", branch = "lola/fixes" }
+fvm_ipld_amt = { version = "0.5.0", git = "https://github.com/Zondax/ref-fvm", branch = "lola/fixes" }
+fvm_ipld_blockstore = { version = "0.1.1", git = "https://github.com/Zondax/ref-fvm", branch = "lola/fixes" }
+fvm = { version = "3.0.0-alpha.14", git = "https://github.com/Zondax/ref-fvm", branch = "lola/fixes", default-features = false, features = ["m2-native"] }
+fvm_sdk = { version = "3.0.0-alpha.17", git = "https://github.com/Zondax/ref-fvm", branch = "lola/fixes" }
 
 # fvm_shared = { version = "3.0.0-alpha.14", path = "../../../ref-fvm/shared", default-features = false }
 # fvm_ipld_encoding = { version = "0.3.0", path = "../../../ref-fvm/ipld/encoding" }

@@ -1191,10 +1191,10 @@ dependencies = [
 [[package]]
 name = "fil_actor_account"
 version = "10.0.0-alpha.1"
-source = "git+https://github.com/filecoin-project/builtin-actors?branch=next#16a587513d8e4a47be4e3ab4f7d697225dcb2869"
+source = "git+https://github.com/filecoin-project/builtin-actors?tag=dev/20221218-fvm-m2#0a3b57816f67da16587d9a2cd6e0352a6da54438"
 dependencies = [
  "anyhow",
- "fil_actors_runtime",
+ "fil_actors_runtime 10.0.0-alpha.1 (git+https://github.com/filecoin-project/builtin-actors?tag=dev/20221218-fvm-m2)",
  "frc42_dispatch",
  "fvm_ipld_blockstore",
  "fvm_ipld_encoding 0.3.0",
@@ -1226,9 +1226,9 @@ dependencies = [
 [[package]]
 name = "fil_actor_cron"
 version = "10.0.0-alpha.1"
-source = "git+https://github.com/filecoin-project/builtin-actors?branch=next#16a587513d8e4a47be4e3ab4f7d697225dcb2869"
+source = "git+https://github.com/filecoin-project/builtin-actors?tag=dev/20221218-fvm-m2#0a3b57816f67da16587d9a2cd6e0352a6da54438"
 dependencies = [
- "fil_actors_runtime",
+ "fil_actors_runtime 10.0.0-alpha.1 (git+https://github.com/filecoin-project/builtin-actors?tag=dev/20221218-fvm-m2)",
  "fvm_ipld_blockstore",
  "fvm_ipld_encoding 0.3.0",
  "fvm_shared 3.0.0-alpha.15",
@@ -1241,10 +1241,10 @@ dependencies = [
 [[package]]
 name = "fil_actor_datacap"
 version = "10.0.0-alpha.1"
-source = "git+https://github.com/filecoin-project/builtin-actors?branch=next#16a587513d8e4a47be4e3ab4f7d697225dcb2869"
+source = "git+https://github.com/filecoin-project/builtin-actors?tag=dev/20221218-fvm-m2#0a3b57816f67da16587d9a2cd6e0352a6da54438"
 dependencies = [
  "cid 0.8.6",
- "fil_actors_runtime",
+ "fil_actors_runtime 10.0.0-alpha.1 (git+https://github.com/filecoin-project/builtin-actors?tag=dev/20221218-fvm-m2)",
  "frc42_dispatch",
  "frc46_token",
  "fvm_actor_utils",
@@ -1262,11 +1262,11 @@ dependencies = [
 [[package]]
 name = "fil_actor_eam"
 version = "10.0.0-alpha.1"
-source = "git+https://github.com/filecoin-project/builtin-actors?branch=next#16a587513d8e4a47be4e3ab4f7d697225dcb2869"
+source = "git+https://github.com/filecoin-project/builtin-actors?tag=dev/20221218-fvm-m2#0a3b57816f67da16587d9a2cd6e0352a6da54438"
 dependencies = [
  "anyhow",
  "cid 0.8.6",
- "fil_actors_runtime",
+ "fil_actors_runtime 10.0.0-alpha.1 (git+https://github.com/filecoin-project/builtin-actors?tag=dev/20221218-fvm-m2)",
  "fvm_ipld_blockstore",
  "fvm_ipld_encoding 0.3.0",
  "fvm_shared 3.0.0-alpha.15",
@@ -1283,7 +1283,7 @@ dependencies = [
 [[package]]
 name = "fil_actor_embryo"
 version = "10.0.0-alpha.1"
-source = "git+https://github.com/filecoin-project/builtin-actors?branch=next#16a587513d8e4a47be4e3ab4f7d697225dcb2869"
+source = "git+https://github.com/filecoin-project/builtin-actors?tag=dev/20221218-fvm-m2#0a3b57816f67da16587d9a2cd6e0352a6da54438"
 dependencies = [
  "fvm_sdk 3.0.0-alpha.18",
  "fvm_shared 3.0.0-alpha.15",
@@ -1292,9 +1292,9 @@ dependencies = [
 [[package]]
 name = "fil_actor_ethaccount"
 version = "10.0.0-alpha.1"
-source = "git+https://github.com/filecoin-project/builtin-actors?branch=next#16a587513d8e4a47be4e3ab4f7d697225dcb2869"
+source = "git+https://github.com/filecoin-project/builtin-actors?tag=dev/20221218-fvm-m2#0a3b57816f67da16587d9a2cd6e0352a6da54438"
 dependencies = [
- "fil_actors_runtime",
+ "fil_actors_runtime 10.0.0-alpha.1 (git+https://github.com/filecoin-project/builtin-actors?tag=dev/20221218-fvm-m2)",
  "fvm_ipld_encoding 0.3.0",
  "fvm_shared 3.0.0-alpha.15",
  "hex-literal",
@@ -1306,14 +1306,14 @@ dependencies = [
 [[package]]
 name = "fil_actor_evm"
 version = "10.0.0-alpha.1"
-source = "git+https://github.com/filecoin-project/builtin-actors?branch=next#16a587513d8e4a47be4e3ab4f7d697225dcb2869"
+source = "git+https://github.com/filecoin-project/builtin-actors?tag=dev/20221218-fvm-m2#0a3b57816f67da16587d9a2cd6e0352a6da54438"
 dependencies = [
  "anyhow",
  "arrayvec 0.7.2",
  "bytes",
  "cid 0.8.6",
  "derive_more",
- "fil_actors_runtime",
+ "fil_actors_runtime 10.0.0-alpha.1 (git+https://github.com/filecoin-project/builtin-actors?tag=dev/20221218-fvm-m2)",
  "fixed-hash",
  "fvm_ipld_blockstore",
  "fvm_ipld_encoding 0.3.0",
@@ -1328,6 +1328,7 @@ dependencies = [
  "near-blake2",
  "num-derive",
  "num-traits",
+ "once_cell",
  "rlp",
  "serde",
  "serde_tuple",
@@ -1340,11 +1341,11 @@ dependencies = [
 [[package]]
 name = "fil_actor_init"
 version = "10.0.0-alpha.1"
-source = "git+https://github.com/filecoin-project/builtin-actors?branch=next#16a587513d8e4a47be4e3ab4f7d697225dcb2869"
+source = "git+https://github.com/filecoin-project/builtin-actors?tag=dev/20221218-fvm-m2#0a3b57816f67da16587d9a2cd6e0352a6da54438"
 dependencies = [
  "anyhow",
  "cid 0.8.6",
- "fil_actors_runtime",
+ "fil_actors_runtime 10.0.0-alpha.1 (git+https://github.com/filecoin-project/builtin-actors?tag=dev/20221218-fvm-m2)",
  "frc42_dispatch",
  "fvm_ipld_blockstore",
  "fvm_ipld_encoding 0.3.0",
@@ -1359,11 +1360,11 @@ dependencies = [
 [[package]]
 name = "fil_actor_market"
 version = "10.0.0-alpha.1"
-source = "git+https://github.com/filecoin-project/builtin-actors?branch=next#16a587513d8e4a47be4e3ab4f7d697225dcb2869"
+source = "git+https://github.com/filecoin-project/builtin-actors?tag=dev/20221218-fvm-m2#0a3b57816f67da16587d9a2cd6e0352a6da54438"
 dependencies = [
  "anyhow",
  "cid 0.8.6",
- "fil_actors_runtime",
+ "fil_actors_runtime 10.0.0-alpha.1 (git+https://github.com/filecoin-project/builtin-actors?tag=dev/20221218-fvm-m2)",
  "frc42_dispatch",
  "frc46_token",
  "fvm_ipld_bitfield",
@@ -1382,12 +1383,12 @@ dependencies = [
 [[package]]
 name = "fil_actor_miner"
 version = "10.0.0-alpha.1"
-source = "git+https://github.com/filecoin-project/builtin-actors?branch=next#16a587513d8e4a47be4e3ab4f7d697225dcb2869"
+source = "git+https://github.com/filecoin-project/builtin-actors?tag=dev/20221218-fvm-m2#0a3b57816f67da16587d9a2cd6e0352a6da54438"
 dependencies = [
  "anyhow",
  "byteorder",
  "cid 0.8.6",
- "fil_actors_runtime",
+ "fil_actors_runtime 10.0.0-alpha.1 (git+https://github.com/filecoin-project/builtin-actors?tag=dev/20221218-fvm-m2)",
  "frc42_dispatch",
  "fvm_ipld_amt 0.5.0",
  "fvm_ipld_bitfield",
@@ -1407,11 +1408,11 @@ dependencies = [
 [[package]]
 name = "fil_actor_multisig"
 version = "10.0.0-alpha.1"
-source = "git+https://github.com/filecoin-project/builtin-actors?branch=next#16a587513d8e4a47be4e3ab4f7d697225dcb2869"
+source = "git+https://github.com/filecoin-project/builtin-actors?tag=dev/20221218-fvm-m2#0a3b57816f67da16587d9a2cd6e0352a6da54438"
 dependencies = [
  "anyhow",
  "cid 0.8.6",
- "fil_actors_runtime",
+ "fil_actors_runtime 10.0.0-alpha.1 (git+https://github.com/filecoin-project/builtin-actors?tag=dev/20221218-fvm-m2)",
  "frc42_dispatch",
  "fvm_ipld_blockstore",
  "fvm_ipld_encoding 0.3.0",
@@ -1427,11 +1428,11 @@ dependencies = [
 [[package]]
 name = "fil_actor_paych"
 version = "10.0.0-alpha.1"
-source = "git+https://github.com/filecoin-project/builtin-actors?branch=next#16a587513d8e4a47be4e3ab4f7d697225dcb2869"
+source = "git+https://github.com/filecoin-project/builtin-actors?tag=dev/20221218-fvm-m2#0a3b57816f67da16587d9a2cd6e0352a6da54438"
 dependencies = [
  "anyhow",
  "cid 0.8.6",
- "fil_actors_runtime",
+ "fil_actors_runtime 10.0.0-alpha.1 (git+https://github.com/filecoin-project/builtin-actors?tag=dev/20221218-fvm-m2)",
  "frc42_dispatch",
  "fvm_ipld_blockstore",
  "fvm_ipld_encoding 0.3.0",
@@ -1444,11 +1445,11 @@ dependencies = [
 [[package]]
 name = "fil_actor_power"
 version = "10.0.0-alpha.1"
-source = "git+https://github.com/filecoin-project/builtin-actors?branch=next#16a587513d8e4a47be4e3ab4f7d697225dcb2869"
+source = "git+https://github.com/filecoin-project/builtin-actors?tag=dev/20221218-fvm-m2#0a3b57816f67da16587d9a2cd6e0352a6da54438"
 dependencies = [
  "anyhow",
  "cid 0.8.6",
- "fil_actors_runtime",
+ "fil_actors_runtime 10.0.0-alpha.1 (git+https://github.com/filecoin-project/builtin-actors?tag=dev/20221218-fvm-m2)",
  "frc42_dispatch",
  "fvm_ipld_blockstore",
  "fvm_ipld_encoding 0.3.0",
@@ -1466,9 +1467,9 @@ dependencies = [
 [[package]]
 name = "fil_actor_reward"
 version = "10.0.0-alpha.1"
-source = "git+https://github.com/filecoin-project/builtin-actors?branch=next#16a587513d8e4a47be4e3ab4f7d697225dcb2869"
+source = "git+https://github.com/filecoin-project/builtin-actors?tag=dev/20221218-fvm-m2#0a3b57816f67da16587d9a2cd6e0352a6da54438"
 dependencies = [
- "fil_actors_runtime",
+ "fil_actors_runtime 10.0.0-alpha.1 (git+https://github.com/filecoin-project/builtin-actors?tag=dev/20221218-fvm-m2)",
  "fvm_ipld_blockstore",
  "fvm_ipld_encoding 0.3.0",
  "fvm_shared 3.0.0-alpha.15",
@@ -1482,11 +1483,11 @@ dependencies = [
 [[package]]
 name = "fil_actor_system"
 version = "10.0.0-alpha.1"
-source = "git+https://github.com/filecoin-project/builtin-actors?branch=next#16a587513d8e4a47be4e3ab4f7d697225dcb2869"
+source = "git+https://github.com/filecoin-project/builtin-actors?tag=dev/20221218-fvm-m2#0a3b57816f67da16587d9a2cd6e0352a6da54438"
 dependencies = [
  "anyhow",
  "cid 0.8.6",
- "fil_actors_runtime",
+ "fil_actors_runtime 10.0.0-alpha.1 (git+https://github.com/filecoin-project/builtin-actors?tag=dev/20221218-fvm-m2)",
  "fvm_ipld_blockstore",
  "fvm_ipld_encoding 0.3.0",
  "fvm_shared 3.0.0-alpha.15",
@@ -1498,11 +1499,11 @@ dependencies = [
 [[package]]
 name = "fil_actor_verifreg"
 version = "10.0.0-alpha.1"
-source = "git+https://github.com/filecoin-project/builtin-actors?branch=next#16a587513d8e4a47be4e3ab4f7d697225dcb2869"
+source = "git+https://github.com/filecoin-project/builtin-actors?tag=dev/20221218-fvm-m2#0a3b57816f67da16587d9a2cd6e0352a6da54438"
 dependencies = [
  "anyhow",
  "cid 0.8.6",
- "fil_actors_runtime",
+ "fil_actors_runtime 10.0.0-alpha.1 (git+https://github.com/filecoin-project/builtin-actors?tag=dev/20221218-fvm-m2)",
  "frc42_dispatch",
  "frc46_token",
  "fvm_ipld_blockstore",
@@ -1514,6 +1515,34 @@ dependencies = [
  "num-derive",
  "num-traits",
  "serde",
+]
+
+[[package]]
+name = "fil_actors_runtime"
+version = "10.0.0-alpha.1"
+source = "git+https://github.com/filecoin-project/builtin-actors?tag=dev/20221218-fvm-m2#0a3b57816f67da16587d9a2cd6e0352a6da54438"
+dependencies = [
+ "anyhow",
+ "byteorder",
+ "cid 0.8.6",
+ "fvm_ipld_amt 0.5.0",
+ "fvm_ipld_blockstore",
+ "fvm_ipld_encoding 0.3.0",
+ "fvm_ipld_hamt 0.6.1",
+ "fvm_sdk 3.0.0-alpha.18",
+ "fvm_shared 3.0.0-alpha.15",
+ "itertools 0.10.5",
+ "log",
+ "multihash 0.16.3",
+ "num-derive",
+ "num-traits",
+ "paste",
+ "regex",
+ "serde",
+ "serde_repr",
+ "sha2 0.10.6",
+ "thiserror",
+ "unsigned-varint",
 ]
 
 [[package]]
@@ -1547,7 +1576,7 @@ dependencies = [
 [[package]]
 name = "fil_builtin_actors_bundle"
 version = "10.0.0-alpha.1"
-source = "git+https://github.com/filecoin-project/builtin-actors?branch=next#16a587513d8e4a47be4e3ab4f7d697225dcb2869"
+source = "git+https://github.com/filecoin-project/builtin-actors?tag=dev/20221218-fvm-m2#0a3b57816f67da16587d9a2cd6e0352a6da54438"
 dependencies = [
  "cid 0.8.6",
  "clap",
@@ -1567,7 +1596,7 @@ dependencies = [
  "fil_actor_reward",
  "fil_actor_system",
  "fil_actor_verifreg",
- "fil_actors_runtime",
+ "fil_actors_runtime 10.0.0-alpha.1 (git+https://github.com/filecoin-project/builtin-actors?tag=dev/20221218-fvm-m2)",
  "num-traits",
 ]
 
@@ -1883,7 +1912,7 @@ dependencies = [
 [[package]]
 name = "fvm"
 version = "3.0.0-alpha.15"
-source = "git+https://github.com/Zondax/ref-fvm?rev=f9c8d33a088a7c20dace258bac0818d8af478d65#f9c8d33a088a7c20dace258bac0818d8af478d65"
+source = "git+https://github.com/Zondax/ref-fvm?branch=lola/fixes#e6020e9e4d79f2675dd2c4f3039c1859eb8f8832"
 dependencies = [
  "anyhow",
  "blake2b_simd",
@@ -1953,17 +1982,17 @@ dependencies = [
 [[package]]
 name = "fvm_integration_tests"
 version = "0.1.1-alpha.1"
-source = "git+https://github.com/Zondax/ref-fvm?rev=f9c8d33a088a7c20dace258bac0818d8af478d65#f9c8d33a088a7c20dace258bac0818d8af478d65"
+source = "git+https://github.com/Zondax/ref-fvm?branch=lola/fixes#e6020e9e4d79f2675dd2c4f3039c1859eb8f8832"
 dependencies = [
  "anyhow",
  "cid 0.8.6",
- "fil_actors_runtime",
+ "fil_actors_runtime 10.0.0-alpha.1 (git+https://github.com/filecoin-project/builtin-actors?branch=next)",
  "frc46_token",
  "futures",
  "fvm",
  "fvm_ipld_amt 0.5.0",
  "fvm_ipld_blockstore",
- "fvm_ipld_car 0.6.0 (git+https://github.com/Zondax/ref-fvm?rev=f9c8d33a088a7c20dace258bac0818d8af478d65)",
+ "fvm_ipld_car 0.6.0 (git+https://github.com/Zondax/ref-fvm?branch=lola/fixes)",
  "fvm_ipld_encoding 0.3.0",
  "fvm_ipld_hamt 0.6.1",
  "fvm_shared 3.0.0-alpha.15",
@@ -2000,7 +2029,7 @@ dependencies = [
 [[package]]
 name = "fvm_ipld_amt"
 version = "0.5.0"
-source = "git+https://github.com/Zondax/ref-fvm?rev=f9c8d33a088a7c20dace258bac0818d8af478d65#f9c8d33a088a7c20dace258bac0818d8af478d65"
+source = "git+https://github.com/Zondax/ref-fvm?branch=lola/fixes#e6020e9e4d79f2675dd2c4f3039c1859eb8f8832"
 dependencies = [
  "anyhow",
  "cid 0.8.6",
@@ -2027,7 +2056,7 @@ dependencies = [
 [[package]]
 name = "fvm_ipld_blockstore"
 version = "0.1.1"
-source = "git+https://github.com/Zondax/ref-fvm?rev=f9c8d33a088a7c20dace258bac0818d8af478d65#f9c8d33a088a7c20dace258bac0818d8af478d65"
+source = "git+https://github.com/Zondax/ref-fvm?branch=lola/fixes#e6020e9e4d79f2675dd2c4f3039c1859eb8f8832"
 dependencies = [
  "anyhow",
  "cid 0.8.6",
@@ -2052,7 +2081,7 @@ dependencies = [
 [[package]]
 name = "fvm_ipld_car"
 version = "0.6.0"
-source = "git+https://github.com/Zondax/ref-fvm?rev=f9c8d33a088a7c20dace258bac0818d8af478d65#f9c8d33a088a7c20dace258bac0818d8af478d65"
+source = "git+https://github.com/Zondax/ref-fvm?branch=lola/fixes#e6020e9e4d79f2675dd2c4f3039c1859eb8f8832"
 dependencies = [
  "cid 0.8.6",
  "futures",
@@ -2084,7 +2113,7 @@ dependencies = [
 [[package]]
 name = "fvm_ipld_encoding"
 version = "0.3.0"
-source = "git+https://github.com/Zondax/ref-fvm?rev=f9c8d33a088a7c20dace258bac0818d8af478d65#f9c8d33a088a7c20dace258bac0818d8af478d65"
+source = "git+https://github.com/Zondax/ref-fvm?branch=lola/fixes#e6020e9e4d79f2675dd2c4f3039c1859eb8f8832"
 dependencies = [
  "anyhow",
  "cid 0.8.6",
@@ -2121,7 +2150,7 @@ dependencies = [
 [[package]]
 name = "fvm_ipld_hamt"
 version = "0.6.1"
-source = "git+https://github.com/Zondax/ref-fvm?rev=f9c8d33a088a7c20dace258bac0818d8af478d65#f9c8d33a088a7c20dace258bac0818d8af478d65"
+source = "git+https://github.com/Zondax/ref-fvm?branch=lola/fixes#e6020e9e4d79f2675dd2c4f3039c1859eb8f8832"
 dependencies = [
  "anyhow",
  "byteorder",
@@ -2175,7 +2204,7 @@ dependencies = [
 [[package]]
 name = "fvm_sdk"
 version = "3.0.0-alpha.18"
-source = "git+https://github.com/Zondax/ref-fvm?rev=f9c8d33a088a7c20dace258bac0818d8af478d65#f9c8d33a088a7c20dace258bac0818d8af478d65"
+source = "git+https://github.com/Zondax/ref-fvm?branch=lola/fixes#e6020e9e4d79f2675dd2c4f3039c1859eb8f8832"
 dependencies = [
  "cid 0.8.6",
  "fvm_ipld_encoding 0.3.0",
@@ -2218,7 +2247,7 @@ dependencies = [
 [[package]]
 name = "fvm_shared"
 version = "3.0.0-alpha.15"
-source = "git+https://github.com/Zondax/ref-fvm?rev=f9c8d33a088a7c20dace258bac0818d8af478d65#f9c8d33a088a7c20dace258bac0818d8af478d65"
+source = "git+https://github.com/Zondax/ref-fvm?branch=lola/fixes#e6020e9e4d79f2675dd2c4f3039c1859eb8f8832"
 dependencies = [
  "anyhow",
  "bitflags",
@@ -3808,7 +3837,7 @@ dependencies = [
  "fil_actor_eam",
  "fil_actor_init",
  "fil_actor_miner",
- "fil_actors_runtime",
+ "fil_actors_runtime 10.0.0-alpha.1 (git+https://github.com/filecoin-project/builtin-actors?tag=dev/20221218-fvm-m2)",
  "fil_builtin_actors_bundle",
  "fvm",
  "fvm_integration_tests",
