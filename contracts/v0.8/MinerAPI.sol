@@ -41,6 +41,9 @@ contract MinerAPI {
     using ChangeMultiaddrsCBOR for MinerTypes.ChangeMultiaddrsParams;
     using GetPeerIDCBOR for MinerTypes.GetPeerIDReturn;
     using GetMultiaddrsCBOR for MinerTypes.GetMultiaddrsReturn;
+    using WithdrawBalanceCBOR for MinerTypes.WithdrawBalanceParams;
+    using WithdrawBalanceCBOR for MinerTypes.WithdrawBalanceReturn;
+
 
     /// @notice Income and returned collateral are paid to this address
     /// @notice This address is also allowed to change the worker address for the miner
@@ -255,6 +258,22 @@ contract MinerAPI {
         bytes memory result = Actor.readRespData(raw_response);
 
         MinerTypes.GetMultiaddrsReturn memory response;
+        response.deserialize(result);
+
+        return response;
+    }
+
+    /// @notice FIXME
+    /// @param target The miner address (type ID) you want to interact with
+    /// @param params the amount you want to withdraw
+    function withdraw_balance(bytes memory target, MinerTypes.WithdrawBalanceParams memory params) public returns (MinerTypes.WithdrawBalanceReturn memory) {
+        bytes memory raw_request = params.serialize();
+
+        bytes memory raw_response = Actor.call(MinerTypes.WithdrawBalanceMethodNum, target, raw_request);
+
+        bytes memory result = Actor.readRespData(raw_response);
+
+        MinerTypes.WithdrawBalanceReturn memory response;
         response.deserialize(result);
 
         return response;

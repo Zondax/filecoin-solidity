@@ -38,6 +38,7 @@ library MinerTypes {
     uint constant ConfirmChangeWorkerAddressMethodNum = 2354970453;
     uint constant GetPeerIDMethodNum = 2812875329;
     uint constant GetMultiaddrsMethodNum = 1332909407;
+    uint constant WithdrawBalanceMethodNum = 2280458852;
 
     struct GetOwnerReturn {
         bytes owner;
@@ -78,16 +79,28 @@ library MinerTypes {
         bytes new_worker;
         bytes[] new_control_addresses;
     }
+
     struct ChangePeerIDParams {
         bytes new_id;
     }
+
     struct ChangeMultiaddrsParams {
         bytes[] new_multi_addrs;
     }
+
     struct GetPeerIDReturn {
         bytes peer_id;
     }
+
     struct GetMultiaddrsReturn {
         bytes[] multi_addrs;
+    }
+
+    struct WithdrawBalanceParams {
+        bytes amount_requested;
+    }
+
+    struct WithdrawBalanceReturn {
+        bytes amount_withdrawn;
     }
 }

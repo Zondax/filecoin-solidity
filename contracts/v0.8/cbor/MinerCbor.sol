@@ -285,3 +285,25 @@ library GetMultiaddrsCBOR {
         }
     }
 }
+
+library WithdrawBalanceCBOR {
+    using CBOR for CBOR.CBORBuffer;
+    using CBORDecoder for bytes;
+
+    function serialize(MinerTypes.WithdrawBalanceParams memory params) internal pure returns (bytes memory) {
+        // FIXME what should the max length be on the buffer?
+        CBOR.CBORBuffer memory buf = CBOR.create(64);
+
+        buf.startFixedArray(1);
+        buf.writeBytes(params.amount_requested);
+
+        return buf.data();
+    }
+
+    function deserialize(MinerTypes.WithdrawBalanceReturn memory ret, bytes memory rawResp) internal pure {
+        uint byteIdx = 0;
+        uint len;
+
+        (ret.amount_withdrawn, byteIdx) = rawResp.readBytes(byteIdx);
+    }
+}
