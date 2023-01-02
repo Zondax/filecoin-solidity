@@ -29,7 +29,7 @@ use fvm_shared::sector::RegisteredPoStProof;
 use fvm_ipld_encoding::BytesDe;
 
 const WASM_COMPILED_PATH: &str =
-   "../../build/v0.8/MarketAPI.bin";
+   "../../build/v0.8/tests/MarketApiTest.bin";
 
 #[derive(Serialize_tuple, Deserialize_tuple)]
 pub struct Create2Params {
