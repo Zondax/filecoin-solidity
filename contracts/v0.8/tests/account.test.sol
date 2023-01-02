@@ -22,7 +22,7 @@ import "../types/AccountTypes.sol";
 import "../AccountAPI.sol";
 
 /// @author Zondax AG
-library AccountApiTest {
+contract AccountApiTest {
     function authenticate_message(bytes memory target, AccountTypes.AuthenticateMessageParams memory params) public {
         AccountAPI.authenticate_message(target, params);
     }

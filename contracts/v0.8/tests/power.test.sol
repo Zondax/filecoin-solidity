@@ -22,7 +22,7 @@ import "../types/PowerTypes.sol";
 import "../PowerAPI.sol";
 
 /// @author Zondax AG
-library PowerApiTest {
+contract PowerApiTest {
     function create_miner(PowerTypes.CreateMinerParams memory params) public returns (PowerTypes.CreateMinerReturn memory) {
         return PowerAPI.create_miner(params);
     }

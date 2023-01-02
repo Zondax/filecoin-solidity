@@ -22,7 +22,7 @@ import "../types/DataCapTypes.sol";
 import "../DataCapAPI.sol";
 
 /// @author Zondax AG
-library DataCapApiTest {
+contract DataCapApiTest {
     function name() public returns (string memory) {
         return DataCapAPI.name();
     }
