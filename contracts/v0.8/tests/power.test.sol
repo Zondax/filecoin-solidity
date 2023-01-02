@@ -23,23 +23,23 @@ import "../PowerAPI.sol";
 
 /// @author Zondax AG
 library PowerApiTest {
-    function create_miner(PowerTypes.CreateMinerParams memory params) internal returns (PowerTypes.CreateMinerReturn memory) {
+    function create_miner(PowerTypes.CreateMinerParams memory params) public returns (PowerTypes.CreateMinerReturn memory) {
         return PowerAPI.create_miner(params);
     }
 
-    function miner_count() internal returns (PowerTypes.MinerCountReturn memory) {
+    function miner_count() public returns (PowerTypes.MinerCountReturn memory) {
         return PowerAPI.miner_count();
     }
 
-    function miner_consensus_count() internal returns (PowerTypes.MinerConsensusCountReturn memory) {
+    function miner_consensus_count() public returns (PowerTypes.MinerConsensusCountReturn memory) {
         return PowerAPI.miner_consensus_count();
     }
 
-    function network_raw_power() internal returns (PowerTypes.NetworkRawPowerReturn memory) {
+    function network_raw_power() public returns (PowerTypes.NetworkRawPowerReturn memory) {
         return PowerAPI.network_raw_power();
     }
 
-    function miner_raw_power(PowerTypes.MinerRawPowerParams memory params) internal returns (PowerTypes.MinerRawPowerReturn memory) {
+    function miner_raw_power(PowerTypes.MinerRawPowerParams memory params) public returns (PowerTypes.MinerRawPowerReturn memory) {
         return PowerAPI.miner_raw_power(params);
     }
 }
