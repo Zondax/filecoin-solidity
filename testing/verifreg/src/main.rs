@@ -1,11 +1,13 @@
 use fil_actor_eam::Return;
 use fil_actors_runtime::EAM_ACTOR_ADDR;
+use fil_actors_runtime::VERIFIED_REGISTRY_ACTOR_ADDR;
+//use fil_actors
+use fvm_shared::bigint::{bigint_ser, BigInt};
 
 use fvm::executor::{ApplyKind, Executor};
 use fvm_integration_tests::bundle;
 use fvm_integration_tests::dummy::DummyExterns;
 use fvm_integration_tests::tester::{Account, Tester};
-use fvm_integration_tests::verifiedregistry_actor::State as VerifState;
 use fvm_ipld_blockstore::MemoryBlockstore;
 use fvm_ipld_encoding::RawBytes;
 use fvm_ipld_encoding::{strict_bytes, tuple::*};
@@ -14,6 +16,7 @@ use fvm_shared::address::Address;
 use fvm::state_tree::ActorState;
 use fvm_shared::bigint::bigint_ser::{BigIntDe, BigIntSer};
 use fvm_shared::message::Message;
+use fvm_shared::sector::StoragePower;
 use fvm_shared::state::StateTreeVersion;
 use fvm_shared::version::NetworkVersion;
 use std::env;
@@ -28,6 +31,13 @@ pub struct Create2Params {
     pub initcode: Vec<u8>,
     #[serde(with = "strict_bytes")]
     pub salt: [u8; 32],
+}
+
+#[derive(Clone, Debug, PartialEq, Eq, Serialize_tuple, Deserialize_tuple)]
+pub struct VerifierParams {
+    pub address: Address,
+    #[serde(with = "bigint_ser")]
+    pub allowance: StoragePower,
 }
 
 fn main() {
@@ -86,12 +96,17 @@ fn main() {
     //let verifier_allowance = fvm_shared::sector::StoragePower::from(2 * 1048576u64);
     //let x = RawBytes::serialize(BigIntSer(&verifier_allowance)).unwrap();
     //let data: Address = verified_client.1;
+    //let params = fil_actor_verifreg::AddVerifiedClientParams {
+    //address: verified_client,
+    //allowance: verifier_allowance,
+    //};
 
     println!("Calling `add_verified_client`");
     let message = Message {
         from: sender.1,
         to: Address::new_id(exec_return.actor_id),
         gas_limit: 1000000000,
+        // get method number for method add_verified_client
         method_num: 2,
         sequence: 1,
         params: RawBytes::new(hex::decode("58E455707461000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000080000000000000000000000000000000000000000000000000000000000000001501DCE5B7F69E73494891556A350F8CC357614916D5000000000000000000000000000000000000000000000000000000000000000000000000000000000000060044002000000000000000000000000000000000000000000000000000000000").unwrap()),
@@ -105,7 +120,8 @@ fn main() {
     // FIXME: "caller f0102 is not a verifier"
     // it necessary to instantiate a state with a verifier so this call returns success
     //dbg!("add_verified_client {:?}", &res);
-    assert_eq!(res.msg_receipt.exit_code.value(), 33);
+    println!("add_verified_client {:?}", &res);
+    assert_eq!(res.msg_receipt.exit_code.value(), 0);
 
     println!("Calling `get_claims`");
 
