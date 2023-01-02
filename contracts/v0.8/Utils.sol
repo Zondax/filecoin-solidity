@@ -30,16 +30,20 @@ library Utils {
 
     event ReceivedDataCap(string received);
 
-    function handle_filecoin_method(uint64 method, uint64, bytes calldata params) public returns (AccountTypes.AuthenticateMessageParams memory response) {
+    function handle_filecoin_method(
+        uint64 method,
+        uint64,
+        bytes calldata params
+    ) internal returns (AccountTypes.AuthenticateMessageParams memory response) {
         // dispatch methods
         if (method == AccountTypes.AuthenticateMessageMethodNum) {
             // deserialize params here
             AccountTypes.AuthenticateMessageParams memory response;
             response.deserialize(params);
         } else if (method == DataCapTypes.ReceiverHookMethodNum) {
-             emit ReceivedDataCap("DataCap Received!");
+            emit ReceivedDataCap("DataCap Received!");
         } else {
-             revert("the filecoin method that was called is not handled");
+            revert("the filecoin method that was called is not handled");
         }
-    } 
+    }
 }

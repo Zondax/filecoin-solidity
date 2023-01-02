@@ -26,7 +26,7 @@ import "./utils/Actor.sol";
 
 /// @title This contract is a proxy to the Multisig actor. Calling one of its methods will result in a cross-actor call being performed.
 /// @author Zondax AG
-contract MultisigAPI {
+library MultisigAPI {
     using BytesCBOR for bytes;
     using ProposeCBOR for MultisigTypes.ProposeParams;
     using ProposeCBOR for MultisigTypes.ProposeReturn;
@@ -39,7 +39,7 @@ contract MultisigAPI {
     using LockBalanceCBOR for MultisigTypes.LockBalanceParams;
 
     /// @notice FIXME
-    function propose(bytes memory target, MultisigTypes.ProposeParams memory params) public returns (MultisigTypes.ProposeReturn memory) {
+    function propose(bytes memory target, MultisigTypes.ProposeParams memory params) internal returns (MultisigTypes.ProposeReturn memory) {
         bytes memory raw_request = params.serialize();
 
         bytes memory raw_response = Actor.call(MultisigTypes.ProposeMethodNum, target, raw_request);
@@ -53,7 +53,7 @@ contract MultisigAPI {
     }
 
     /// @notice FIXME
-    function approve(bytes memory target, MultisigTypes.TxnIDParams memory params) public returns (MultisigTypes.ApproveReturn memory) {
+    function approve(bytes memory target, MultisigTypes.TxnIDParams memory params) internal returns (MultisigTypes.ApproveReturn memory) {
         bytes memory raw_request = params.serialize();
 
         bytes memory raw_response = Actor.call(MultisigTypes.ApproveMethodNum, target, raw_request);
@@ -67,7 +67,7 @@ contract MultisigAPI {
     }
 
     /// @notice FIXME
-    function cancel(bytes memory target, MultisigTypes.TxnIDParams memory params) public {
+    function cancel(bytes memory target, MultisigTypes.TxnIDParams memory params) internal {
         bytes memory raw_request = params.serialize();
 
         bytes memory raw_response = Actor.call(MultisigTypes.CancelMethodNum, target, raw_request);
@@ -76,7 +76,7 @@ contract MultisigAPI {
     }
 
     /// @notice FIXME
-    function add_signer(bytes memory target, MultisigTypes.AddSignerParams memory params) public {
+    function add_signer(bytes memory target, MultisigTypes.AddSignerParams memory params) internal {
         bytes memory raw_request = params.serialize();
 
         bytes memory raw_response = Actor.call(MultisigTypes.AddSignerMethodNum, target, raw_request);
@@ -85,7 +85,7 @@ contract MultisigAPI {
     }
 
     /// @notice FIXME
-    function remove_signer(bytes memory target, MultisigTypes.RemoveSignerParams memory params) public {
+    function remove_signer(bytes memory target, MultisigTypes.RemoveSignerParams memory params) internal {
         bytes memory raw_request = params.serialize();
 
         bytes memory raw_response = Actor.call(MultisigTypes.RemoveSignerMethodNum, target, raw_request);
@@ -94,7 +94,7 @@ contract MultisigAPI {
     }
 
     /// @notice FIXME
-    function swap_signer(bytes memory target, MultisigTypes.SwapSignerParams memory params) public {
+    function swap_signer(bytes memory target, MultisigTypes.SwapSignerParams memory params) internal {
         bytes memory raw_request = params.serialize();
 
         bytes memory raw_response = Actor.call(MultisigTypes.SwapSignerMethodNum, target, raw_request);
@@ -103,7 +103,7 @@ contract MultisigAPI {
     }
 
     /// @notice FIXME
-    function swap_signer(bytes memory target, MultisigTypes.ChangeNumApprovalsThresholdParams memory params) public {
+    function swap_signer(bytes memory target, MultisigTypes.ChangeNumApprovalsThresholdParams memory params) internal {
         bytes memory raw_request = params.serialize();
 
         bytes memory raw_response = Actor.call(MultisigTypes.ChangeNumApprovalsThresholdMethodNum, target, raw_request);
@@ -112,7 +112,7 @@ contract MultisigAPI {
     }
 
     /// @notice FIXME
-    function lock_balance(bytes memory target, MultisigTypes.LockBalanceParams memory params) public {
+    function lock_balance(bytes memory target, MultisigTypes.LockBalanceParams memory params) internal {
         bytes memory raw_request = params.serialize();
 
         bytes memory raw_response = Actor.call(MultisigTypes.LockBalanceMethodNum, target, raw_request);
@@ -121,7 +121,7 @@ contract MultisigAPI {
     }
 
     /// @notice FIXME
-    function universal_receiver_hook(bytes memory target, bytes memory params) public {
+    function universal_receiver_hook(bytes memory target, bytes memory params) internal {
         bytes memory raw_request = params.serializeBytes();
 
         bytes memory raw_response = Actor.call(MultisigTypes.UniversalReceiverHookMethodNum, target, raw_request);
