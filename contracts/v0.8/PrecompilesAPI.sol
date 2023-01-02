@@ -18,14 +18,13 @@
 //
 pragma solidity ^0.8.0;
 
-
 /// @title This library simplify the call of FEVM precompiles contracts.
 /// @author Zondax AG
 library PrecompilesAPI {
     uint64 constant GAS_LIMIT = 100000000;
     uint64 constant MAX_RAW_RESPONSE_SIZE = 0x300;
 
-    function resolve_address(bytes memory addr) internal returns (bytes memory) {
+    function resolveAddress(bytes memory addr) internal returns (bytes memory) {
         bytes memory raw_response = new bytes(MAX_RAW_RESPONSE_SIZE);
         uint len;
 
@@ -49,7 +48,7 @@ library PrecompilesAPI {
         return raw_response;
     }
 
-    function lookup_address(uint64 actor_id) internal returns (bytes memory) {
+    function lookupAddress(uint64 actor_id) internal returns (bytes memory) {
         bytes memory raw_response = new bytes(MAX_RAW_RESPONSE_SIZE);
         uint len;
 
@@ -65,7 +64,7 @@ library PrecompilesAPI {
         return raw_response;
     }
 
-    function get_actor_type(uint64 actor_id) internal returns (bytes memory) {
+    function getActorType(uint64 actor_id) internal returns (bytes memory) {
         bytes memory raw_response = new bytes(MAX_RAW_RESPONSE_SIZE);
         uint len;
 
@@ -81,7 +80,12 @@ library PrecompilesAPI {
         return raw_response;
     }
 
-    function get_randomness(int32 randomness_type, int64 personalization, uint32 randomness_epoch, bytes memory entropy) internal returns (bytes memory) {
+    function getRandomness(
+        int32 randomness_type,
+        int64 personalization,
+        uint32 randomness_epoch,
+        bytes memory entropy
+    ) internal returns (bytes memory) {
         bytes memory raw_response = new bytes(MAX_RAW_RESPONSE_SIZE);
         uint len;
 
@@ -99,5 +103,4 @@ library PrecompilesAPI {
         }
         return raw_response;
     }
-
 }

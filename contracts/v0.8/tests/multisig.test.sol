@@ -36,26 +36,26 @@ contract MultisigApiTest {
     }
 
     function add_signer(bytes memory target, MultisigTypes.AddSignerParams memory params) public {
-        return MultisigAPI.add_signer(target, params);
+        return MultisigAPI.addSigner(target, params);
     }
 
     function remove_signer(bytes memory target, MultisigTypes.RemoveSignerParams memory params) public {
-        return MultisigAPI.remove_signer(target, params);
+        return MultisigAPI.removeSigner(target, params);
     }
 
     function swap_signer(bytes memory target, MultisigTypes.SwapSignerParams memory params) public {
-        return MultisigAPI.swap_signer(target, params);
+        return MultisigAPI.swapSigner(target, params);
     }
 
     function change_num_approvals_threshold(bytes memory target, MultisigTypes.ChangeNumApprovalsThresholdParams memory params) public {
-        return MultisigAPI.change_num_approvals_threshold(target, params);
+        return MultisigAPI.changeNumApprovalsThreshold(target, params);
     }
 
     function lock_balance(bytes memory target, MultisigTypes.LockBalanceParams memory params) public {
-        return MultisigAPI.lock_balance(target, params);
+        return MultisigAPI.lockBalance(target, params);
     }
 
     function universal_receiver_hook(bytes memory target, bytes memory params) public {
-        return MultisigAPI.universal_receiver_hook(target, params);
+        return MultisigAPI.universalReceiverHook(target, params);
     }
 }

@@ -60,7 +60,7 @@ library DataCapAPI {
         return result.deserializeString();
     }
 
-    function total_supply() internal returns (int256) {
+    function totalSupply() internal returns (int256) {
         bytes memory raw_request = BytesCBOR.serializeNull();
 
         bytes memory raw_response = Actor.call(DataCapTypes.TotalSupplyMethodNum, DataCapTypes.ActorCode, raw_request);
@@ -103,7 +103,7 @@ library DataCapAPI {
         return response;
     }
 
-    function transfer_from(DataCapTypes.TransferFromParams memory params) internal returns (DataCapTypes.TransferFromReturn memory) {
+    function transferFrom(DataCapTypes.TransferFromParams memory params) internal returns (DataCapTypes.TransferFromReturn memory) {
         bytes memory raw_request = params.serialize();
 
         bytes memory raw_response = Actor.call(DataCapTypes.TransferFromMethodNum, DataCapTypes.ActorCode, raw_request);
@@ -116,7 +116,7 @@ library DataCapAPI {
         return response;
     }
 
-    function increase_allowance(DataCapTypes.IncreaseAllowanceParams memory params) internal returns (int256) {
+    function increaseAllowance(DataCapTypes.IncreaseAllowanceParams memory params) internal returns (int256) {
         bytes memory raw_request = params.serialize();
 
         bytes memory raw_response = Actor.call(DataCapTypes.IncreaseAllowanceMethodNum, DataCapTypes.ActorCode, raw_request);
@@ -126,7 +126,7 @@ library DataCapAPI {
         return result.deserializeInt256();
     }
 
-    function decrease_allowance(DataCapTypes.DecreaseAllowanceParams memory params) internal returns (int256) {
+    function decreaseAllowance(DataCapTypes.DecreaseAllowanceParams memory params) internal returns (int256) {
         bytes memory raw_request = params.serialize();
 
         bytes memory raw_response = Actor.call(DataCapTypes.DecreaseAllowanceMethodNum, DataCapTypes.ActorCode, raw_request);
@@ -136,7 +136,7 @@ library DataCapAPI {
         return result.deserializeInt256();
     }
 
-    function revoke_allowance(DataCapTypes.RevokeAllowanceParams memory params) internal returns (int256) {
+    function revokeAllowance(DataCapTypes.RevokeAllowanceParams memory params) internal returns (int256) {
         bytes memory raw_request = params.serialize();
 
         bytes memory raw_response = Actor.call(DataCapTypes.RevokeAllowanceMethodNum, DataCapTypes.ActorCode, raw_request);
@@ -159,7 +159,7 @@ library DataCapAPI {
         return response;
     }
 
-    function burn_from(DataCapTypes.BurnFromParams memory params) internal returns (DataCapTypes.BurnFromReturn memory) {
+    function burnFrom(DataCapTypes.BurnFromParams memory params) internal returns (DataCapTypes.BurnFromReturn memory) {
         bytes memory raw_request = params.serialize();
 
         bytes memory raw_response = Actor.call(DataCapTypes.BurnFromMethodNum, DataCapTypes.ActorCode, raw_request);

@@ -38,7 +38,7 @@ library VerifRegAPI {
     using UniversalReceiverHookCBOR for VerifRegTypes.UniversalReceiverParams;
     using UniversalReceiverHookCBOR for VerifRegTypes.AllocationsResponse;
 
-    function get_claims(VerifRegTypes.GetClaimsParams memory params) internal returns (VerifRegTypes.GetClaimsReturn memory) {
+    function getClaims(VerifRegTypes.GetClaimsParams memory params) internal returns (VerifRegTypes.GetClaimsReturn memory) {
         bytes memory raw_request = params.serialize();
 
         bytes memory raw_response = Actor.call(VerifRegTypes.GetClaimsMethodNum, VerifRegTypes.ActorCode, raw_request);
@@ -51,7 +51,7 @@ library VerifRegAPI {
         return response;
     }
 
-    function add_verified_client(VerifRegTypes.AddVerifierClientParams memory params) internal {
+    function addVerifiedClient(VerifRegTypes.AddVerifierClientParams memory params) internal {
         bytes memory raw_request = params.serialize();
 
         bytes memory raw_response = Actor.call(VerifRegTypes.AddVerifierClientMethodNum, VerifRegTypes.ActorCode, raw_request);
@@ -61,7 +61,7 @@ library VerifRegAPI {
         return;
     }
 
-    function remove_expired_allocations(
+    function removeExpiredAllocations(
         VerifRegTypes.RemoveExpiredAllocationsParams memory params
     ) internal returns (VerifRegTypes.RemoveExpiredAllocationsReturn memory) {
         bytes memory raw_request = params.serialize();
@@ -76,7 +76,7 @@ library VerifRegAPI {
         return response;
     }
 
-    function extend_claim_terms(VerifRegTypes.ExtendClaimTermsParams memory params) internal returns (CommonTypes.BatchReturn memory) {
+    function extendClaimTerms(VerifRegTypes.ExtendClaimTermsParams memory params) internal returns (CommonTypes.BatchReturn memory) {
         bytes memory raw_request = params.serialize();
 
         bytes memory raw_response = Actor.call(VerifRegTypes.ExtendClaimTermsMethodNum, VerifRegTypes.ActorCode, raw_request);
@@ -89,7 +89,7 @@ library VerifRegAPI {
         return response;
     }
 
-    function remove_expired_claims(
+    function removeExpiredClaims(
         VerifRegTypes.RemoveExpiredClaimsParams memory params
     ) internal returns (VerifRegTypes.RemoveExpiredClaimsReturn memory) {
         bytes memory raw_request = params.serialize();
@@ -104,7 +104,7 @@ library VerifRegAPI {
         return response;
     }
 
-    function universal_receiver_hook(
+    function universalReceiverHook(
         VerifRegTypes.UniversalReceiverParams memory params
     ) internal returns (VerifRegTypes.AllocationsResponse memory) {
         bytes memory raw_request = params.serialize();

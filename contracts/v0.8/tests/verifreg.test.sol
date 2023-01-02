@@ -24,32 +24,32 @@ import "../VerifRegAPI.sol";
 /// @author Zondax AG
 contract VerifRegApiTest {
     function get_claims(VerifRegTypes.GetClaimsParams memory params) public returns (VerifRegTypes.GetClaimsReturn memory) {
-        return VerifRegAPI.get_claims(params);
+        return VerifRegAPI.getClaims(params);
     }
 
     function add_verified_client(VerifRegTypes.AddVerifierClientParams memory params) public {
-        VerifRegAPI.add_verified_client(params);
+        VerifRegAPI.addVerifiedClient(params);
     }
 
     function remove_expired_allocations(
         VerifRegTypes.RemoveExpiredAllocationsParams memory params
     ) public returns (VerifRegTypes.RemoveExpiredAllocationsReturn memory) {
-        return VerifRegAPI.remove_expired_allocations(params);
+        return VerifRegAPI.removeExpiredAllocations(params);
     }
 
     function extend_claim_terms(VerifRegTypes.ExtendClaimTermsParams memory params) public returns (CommonTypes.BatchReturn memory) {
-        return VerifRegAPI.extend_claim_terms(params);
+        return VerifRegAPI.extendClaimTerms(params);
     }
 
     function remove_expired_claims(
         VerifRegTypes.RemoveExpiredClaimsParams memory params
     ) public returns (VerifRegTypes.RemoveExpiredClaimsReturn memory) {
-        return VerifRegAPI.remove_expired_claims(params);
+        return VerifRegAPI.removeExpiredClaims(params);
     }
 
     function universal_receiver_hook(
         VerifRegTypes.UniversalReceiverParams memory params
     ) public returns (VerifRegTypes.AllocationsResponse memory) {
-        return VerifRegAPI.universal_receiver_hook(params);
+        return VerifRegAPI.universalReceiverHook(params);
     }
 }

@@ -30,7 +30,7 @@ library Utils {
 
     event ReceivedDataCap(string received);
 
-    function handle_filecoin_method(
+    function handleFilecoinMethod(
         uint64 method,
         uint64,
         bytes calldata params

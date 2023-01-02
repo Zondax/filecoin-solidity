@@ -24,10 +24,10 @@ import "../AccountAPI.sol";
 /// @author Zondax AG
 contract AccountApiTest {
     function authenticate_message(bytes memory target, AccountTypes.AuthenticateMessageParams memory params) public {
-        AccountAPI.authenticate_message(target, params);
+        AccountAPI.authenticateMessage(target, params);
     }
 
     function universal_receiver_hook(bytes memory target, bytes memory params) public {
-        AccountAPI.universal_receiver_hook(target, params);
+        AccountAPI.universalReceiverHook(target, params);
     }
 }

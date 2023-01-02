@@ -24,22 +24,22 @@ import "../PowerAPI.sol";
 /// @author Zondax AG
 contract PowerApiTest {
     function create_miner(PowerTypes.CreateMinerParams memory params) public returns (PowerTypes.CreateMinerReturn memory) {
-        return PowerAPI.create_miner(params);
+        return PowerAPI.createMiner(params);
     }
 
     function miner_count() public returns (PowerTypes.MinerCountReturn memory) {
-        return PowerAPI.miner_count();
+        return PowerAPI.minerCount();
     }
 
     function miner_consensus_count() public returns (PowerTypes.MinerConsensusCountReturn memory) {
-        return PowerAPI.miner_consensus_count();
+        return PowerAPI.minerConsensusCount();
     }
 
     function network_raw_power() public returns (PowerTypes.NetworkRawPowerReturn memory) {
-        return PowerAPI.network_raw_power();
+        return PowerAPI.networkRawPower();
     }
 
     function miner_raw_power(PowerTypes.MinerRawPowerParams memory params) public returns (PowerTypes.MinerRawPowerReturn memory) {
-        return PowerAPI.miner_raw_power(params);
+        return PowerAPI.minerRawPower(params);
     }
 }

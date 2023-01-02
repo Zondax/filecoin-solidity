@@ -24,69 +24,69 @@ import "../types/MinerTypes.sol";
 /// @author Zondax AG
 contract MinerApiTest {
     function get_owner(bytes memory target) public returns (MinerTypes.GetOwnerReturn memory) {
-        return MinerAPI.get_owner(target);
+        return MinerAPI.getOwner(target);
     }
 
     function change_owner_address(bytes memory target, bytes memory addr) public {
-        MinerAPI.change_owner_address(target, addr);
+        MinerAPI.changeOwnerAddress(target, addr);
     }
 
     function is_controlling_address(bytes memory target, bytes memory addr) public returns (MinerTypes.IsControllingAddressReturn memory) {
-        return MinerAPI.is_controlling_address(target, addr);
+        return MinerAPI.isControllingAddress(target, addr);
     }
 
     function get_sector_size(bytes memory target) public returns (MinerTypes.GetSectorSizeReturn memory) {
-        return MinerAPI.get_sector_size(target);
+        return MinerAPI.getSectorSize(target);
     }
 
     function get_available_balance(bytes memory target) public returns (MinerTypes.GetAvailableBalanceReturn memory) {
-        return MinerAPI.get_available_balance(target);
+        return MinerAPI.getAvailableBalance(target);
     }
 
     function get_vesting_funds(bytes memory target) public returns (MinerTypes.GetVestingFundsReturn memory) {
-        return MinerAPI.get_vesting_funds(target);
+        return MinerAPI.getVestingFunds(target);
     }
 
     function change_beneficiary(bytes memory target, MinerTypes.ChangeBeneficiaryParams memory params) public {
-        return MinerAPI.change_beneficiary(target, params);
+        return MinerAPI.changeBeneficiary(target, params);
     }
 
     function get_beneficiary(bytes memory target) public returns (MinerTypes.GetBeneficiaryReturn memory) {
-        return MinerAPI.get_beneficiary(target);
+        return MinerAPI.getBeneficiary(target);
     }
 
     function change_worker_address(bytes memory target, MinerTypes.ChangeWorkerAddressParams memory params) public {
-        MinerAPI.change_worker_address(target, params);
+        MinerAPI.changeWorkerAddress(target, params);
     }
 
     function change_peer_id(bytes memory target, MinerTypes.ChangePeerIDParams memory params) public {
-        MinerAPI.change_peer_id(target, params);
+        MinerAPI.changePeerId(target, params);
     }
 
     function change_multiaddresses(bytes memory target, MinerTypes.ChangeMultiaddrsParams memory params) public {
-        MinerAPI.change_multiaddresses(target, params);
+        MinerAPI.changeMultiaddresses(target, params);
     }
 
     function repay_debt(bytes memory target) public {
-        MinerAPI.repay_debt(target);
+        MinerAPI.repayDebt(target);
     }
 
     function confirm_change_worker_address(bytes memory target) public {
-        MinerAPI.confirm_change_worker_address(target);
+        MinerAPI.confirmChangeWorkerAddress(target);
     }
 
     function get_peer_id(bytes memory target) public returns (MinerTypes.GetPeerIDReturn memory) {
-        return MinerAPI.get_peer_id(target);
+        return MinerAPI.getPeerId(target);
     }
 
     function get_multiaddresses(bytes memory target) public returns (MinerTypes.GetMultiaddrsReturn memory) {
-        return MinerAPI.get_multiaddresses(target);
+        return MinerAPI.getMultiaddresses(target);
     }
 
     function withdraw_balance(
         bytes memory target,
         MinerTypes.WithdrawBalanceParams memory params
     ) public returns (MinerTypes.WithdrawBalanceReturn memory) {
-        return MinerAPI.withdraw_balance(target, params);
+        return MinerAPI.withdrawBalance(target, params);
     }
 }

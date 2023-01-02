@@ -32,7 +32,7 @@ contract DataCapApiTest {
     }
 
     function total_supply() public returns (int256) {
-        return DataCapAPI.total_supply();
+        return DataCapAPI.totalSupply();
     }
 
     function balance(bytes memory addr) public returns (int256) {
@@ -48,19 +48,19 @@ contract DataCapApiTest {
     }
 
     function transfer_from(DataCapTypes.TransferFromParams memory params) public returns (DataCapTypes.TransferFromReturn memory) {
-        return DataCapAPI.transfer_from(params);
+        return DataCapAPI.transferFrom(params);
     }
 
     function increase_allowance(DataCapTypes.IncreaseAllowanceParams memory params) public returns (int256) {
-        return DataCapAPI.increase_allowance(params);
+        return DataCapAPI.increaseAllowance(params);
     }
 
     function decrease_allowance(DataCapTypes.DecreaseAllowanceParams memory params) public returns (int256) {
-        return DataCapAPI.decrease_allowance(params);
+        return DataCapAPI.decreaseAllowance(params);
     }
 
     function revoke_allowance(DataCapTypes.RevokeAllowanceParams memory params) public returns (int256) {
-        return DataCapAPI.revoke_allowance(params);
+        return DataCapAPI.revokeAllowance(params);
     }
 
     function burn(DataCapTypes.BurnParams memory params) public returns (DataCapTypes.BurnReturn memory) {
@@ -68,7 +68,7 @@ contract DataCapApiTest {
     }
 
     function burn_from(DataCapTypes.BurnFromParams memory params) public returns (DataCapTypes.BurnFromReturn memory) {
-        return DataCapAPI.burn_from(params);
+        return DataCapAPI.burnFrom(params);
     }
 
     function handle_filecoin_method(uint64 method, uint64 codec, bytes calldata params) public pure returns (uint64) {

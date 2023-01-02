@@ -24,70 +24,70 @@ import "../types/MarketTypes.sol";
 /// @author Zondax AG
 contract MarketApiTest {
     function add_balance(bytes memory provider_or_client) public payable {
-        MarketAPI.add_balance(provider_or_client);
+        MarketAPI.addBalance(provider_or_client);
     }
 
     function withdraw_balance(MarketTypes.WithdrawBalanceParams memory params) public returns (MarketTypes.WithdrawBalanceReturn memory) {
-        return MarketAPI.withdraw_balance(params);
+        return MarketAPI.withdrawBalance(params);
     }
 
     function get_balance(bytes memory addr) public returns (MarketTypes.GetBalanceReturn memory) {
-        return MarketAPI.get_balance(addr);
+        return MarketAPI.getBalance(addr);
     }
 
     function get_deal_data_commitment(
         MarketTypes.GetDealDataCommitmentParams memory params
     ) public returns (MarketTypes.GetDealDataCommitmentReturn memory) {
-        return MarketAPI.get_deal_data_commitment(params);
+        return MarketAPI.getDealDataCommitment(params);
     }
 
     function get_deal_client(MarketTypes.GetDealClientParams memory params) public returns (MarketTypes.GetDealClientReturn memory) {
-        return MarketAPI.get_deal_client(params);
+        return MarketAPI.getDealClient(params);
     }
 
     function get_deal_provider(MarketTypes.GetDealProviderParams memory params) public returns (MarketTypes.GetDealProviderReturn memory) {
-        return MarketAPI.get_deal_provider(params);
+        return MarketAPI.getDealProvider(params);
     }
 
     function get_deal_label(MarketTypes.GetDealLabelParams memory params) public returns (MarketTypes.GetDealLabelReturn memory) {
-        return MarketAPI.get_deal_label(params);
+        return MarketAPI.getDealLabel(params);
     }
 
     function get_deal_term(MarketTypes.GetDealTermParams memory params) public returns (MarketTypes.GetDealTermReturn memory) {
-        return MarketAPI.get_deal_term(params);
+        return MarketAPI.getDealTerm(params);
     }
 
     function get_deal_total_price(
         MarketTypes.GetDealEpochPriceParams memory params
     ) public returns (MarketTypes.GetDealEpochPriceReturn memory) {
-        return MarketAPI.get_deal_total_price(params);
+        return MarketAPI.getDealTotalPrice(params);
     }
 
     function get_deal_client_collateral(
         MarketTypes.GetDealClientCollateralParams memory params
     ) public returns (MarketTypes.GetDealClientCollateralReturn memory) {
-        return MarketAPI.get_deal_client_collateral(params);
+        return MarketAPI.getDealClientCollateral(params);
     }
 
     function get_deal_provider_collateral(
         MarketTypes.GetDealProviderCollateralParams memory params
     ) public returns (MarketTypes.GetDealProviderCollateralReturn memory) {
-        return MarketAPI.get_deal_provider_collateral(params);
+        return MarketAPI.getDealProviderCollateral(params);
     }
 
     function get_deal_verified(MarketTypes.GetDealVerifiedParams memory params) public returns (MarketTypes.GetDealVerifiedReturn memory) {
-        return MarketAPI.get_deal_verified(params);
+        return MarketAPI.getDealVerified(params);
     }
 
     function get_deal_activation(
         MarketTypes.GetDealActivationParams memory params
     ) public returns (MarketTypes.GetDealActivationReturn memory) {
-        return MarketAPI.get_deal_activation(params);
+        return MarketAPI.getDealActivation(params);
     }
 
     function publish_storage_deals(
         MarketTypes.PublishStorageDealsParams memory params
     ) public returns (MarketTypes.PublishStorageDealsReturn memory) {
-        return MarketAPI.publish_storage_deals(params);
+        return MarketAPI.publishStorageDeals(params);
     }
 }

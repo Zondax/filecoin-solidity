@@ -76,7 +76,7 @@ library MultisigAPI {
     }
 
     /// @notice FIXME
-    function add_signer(bytes memory target, MultisigTypes.AddSignerParams memory params) internal {
+    function addSigner(bytes memory target, MultisigTypes.AddSignerParams memory params) internal {
         bytes memory raw_request = params.serialize();
 
         bytes memory raw_response = Actor.call(MultisigTypes.AddSignerMethodNum, target, raw_request);
@@ -85,7 +85,7 @@ library MultisigAPI {
     }
 
     /// @notice FIXME
-    function remove_signer(bytes memory target, MultisigTypes.RemoveSignerParams memory params) internal {
+    function removeSigner(bytes memory target, MultisigTypes.RemoveSignerParams memory params) internal {
         bytes memory raw_request = params.serialize();
 
         bytes memory raw_response = Actor.call(MultisigTypes.RemoveSignerMethodNum, target, raw_request);
@@ -103,7 +103,7 @@ library MultisigAPI {
     }
 
     /// @notice FIXME
-    function change_num_approvals_threshold(bytes memory target, MultisigTypes.ChangeNumApprovalsThresholdParams memory params) internal {
+    function changeNumApprovalsThreshold(bytes memory target, MultisigTypes.ChangeNumApprovalsThresholdParams memory params) internal {
         bytes memory raw_request = params.serialize();
 
         bytes memory raw_response = Actor.call(MultisigTypes.ChangeNumApprovalsThresholdMethodNum, target, raw_request);
@@ -112,7 +112,7 @@ library MultisigAPI {
     }
 
     /// @notice FIXME
-    function lock_balance(bytes memory target, MultisigTypes.LockBalanceParams memory params) internal {
+    function lockBalance(bytes memory target, MultisigTypes.LockBalanceParams memory params) internal {
         bytes memory raw_request = params.serialize();
 
         bytes memory raw_response = Actor.call(MultisigTypes.LockBalanceMethodNum, target, raw_request);
@@ -121,7 +121,7 @@ library MultisigAPI {
     }
 
     /// @notice FIXME
-    function universal_receiver_hook(bytes memory target, bytes memory params) internal {
+    function universalReceiverHook(bytes memory target, bytes memory params) internal {
         bytes memory raw_request = params.serializeBytes();
 
         bytes memory raw_response = Actor.call(MultisigTypes.UniversalReceiverHookMethodNum, target, raw_request);
