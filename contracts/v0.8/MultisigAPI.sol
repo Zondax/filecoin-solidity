@@ -94,7 +94,7 @@ library MultisigAPI {
     }
 
     /// @notice FIXME
-    function swap_signer(bytes memory target, MultisigTypes.SwapSignerParams memory params) internal {
+    function swapSigner(bytes memory target, MultisigTypes.SwapSignerParams memory params) internal {
         bytes memory raw_request = params.serialize();
 
         bytes memory raw_response = Actor.call(MultisigTypes.SwapSignerMethodNum, target, raw_request);
