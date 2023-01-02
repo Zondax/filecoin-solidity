@@ -24,7 +24,7 @@ use cid::Cid;
 use std::str::FromStr;
 
 const WASM_COMPILED_PATH: &str =
-   "../../build/v0.8/PowerAPI.bin";
+   "../../build/v0.8/tests/PowerApiTest.bin";
 
 #[derive(Serialize_tuple, Deserialize_tuple)]
 pub struct Create2Params {
