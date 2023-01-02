@@ -103,7 +103,7 @@ library MultisigAPI {
     }
 
     /// @notice FIXME
-    function swap_signer(bytes memory target, MultisigTypes.ChangeNumApprovalsThresholdParams memory params) internal {
+    function change_num_approvals_threshold(bytes memory target, MultisigTypes.ChangeNumApprovalsThresholdParams memory params) internal {
         bytes memory raw_request = params.serialize();
 
         bytes memory raw_response = Actor.call(MultisigTypes.ChangeNumApprovalsThresholdMethodNum, target, raw_request);
