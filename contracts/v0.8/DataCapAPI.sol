@@ -25,7 +25,7 @@ import "./utils/Actor.sol";
 
 /// @title This contract is a proxy to the singleton DataCap actor (address: f0X). Calling one of its methods will result in a cross-actor call being performed.
 /// @author Zondax AG
-contract DataCapAPI {
+library DataCapAPI {
     using BytesCBOR for bytes;
     using GetAllowanceCBOR for DataCapTypes.GetAllowanceParams;
     using TransferCBOR for DataCapTypes.TransferParams;
@@ -40,7 +40,7 @@ contract DataCapAPI {
     using BurnFromCBOR for DataCapTypes.BurnFromParams;
     using BurnFromCBOR for DataCapTypes.BurnFromReturn;
 
-    function name() public returns (string memory) {
+    function name() internal returns (string memory) {
         bytes memory raw_request = new bytes(0);
 
         bytes memory raw_response = Actor.call(DataCapTypes.NameMethodNum, DataCapTypes.ActorCode, raw_request);
@@ -50,7 +50,7 @@ contract DataCapAPI {
         return result.deserializeString();
     }
 
-    function symbol() public returns (string memory) {
+    function symbol() internal returns (string memory) {
         bytes memory raw_request = new bytes(0);
 
         bytes memory raw_response = Actor.call(DataCapTypes.SymbolMethodNum, DataCapTypes.ActorCode, raw_request);
@@ -60,7 +60,7 @@ contract DataCapAPI {
         return result.deserializeString();
     }
 
-    function total_supply() public returns (int256) {
+    function totalSupply() internal returns (int256) {
         bytes memory raw_request = BytesCBOR.serializeNull();
 
         bytes memory raw_response = Actor.call(DataCapTypes.TotalSupplyMethodNum, DataCapTypes.ActorCode, raw_request);
@@ -70,7 +70,7 @@ contract DataCapAPI {
         return result.deserializeInt256();
     }
 
-    function balance(bytes memory addr) public returns (int256) {
+    function balance(bytes memory addr) internal returns (int256) {
         bytes memory raw_request = addr.serializeAddress();
 
         bytes memory raw_response = Actor.call(DataCapTypes.BalanceOfMethodNum, DataCapTypes.ActorCode, raw_request);
@@ -80,7 +80,7 @@ contract DataCapAPI {
         return result.deserializeInt256();
     }
 
-    function allowance(DataCapTypes.GetAllowanceParams memory params) public returns (int256) {
+    function allowance(DataCapTypes.GetAllowanceParams memory params) internal returns (int256) {
         bytes memory raw_request = params.serialize();
 
         bytes memory raw_response = Actor.call(DataCapTypes.AllowanceMethodNum, DataCapTypes.ActorCode, raw_request);
@@ -90,7 +90,7 @@ contract DataCapAPI {
         return result.deserializeInt256();
     }
 
-    function transfer(DataCapTypes.TransferParams memory params) public returns (DataCapTypes.TransferReturn memory) {
+    function transfer(DataCapTypes.TransferParams memory params) internal returns (DataCapTypes.TransferReturn memory) {
         bytes memory raw_request = params.serialize();
 
         bytes memory raw_response = Actor.call(DataCapTypes.TransferMethodNum, DataCapTypes.ActorCode, raw_request);
@@ -103,7 +103,7 @@ contract DataCapAPI {
         return response;
     }
 
-    function transfer_from(DataCapTypes.TransferFromParams memory params) public returns (DataCapTypes.TransferFromReturn memory) {
+    function transferFrom(DataCapTypes.TransferFromParams memory params) internal returns (DataCapTypes.TransferFromReturn memory) {
         bytes memory raw_request = params.serialize();
 
         bytes memory raw_response = Actor.call(DataCapTypes.TransferFromMethodNum, DataCapTypes.ActorCode, raw_request);
@@ -116,7 +116,7 @@ contract DataCapAPI {
         return response;
     }
 
-    function increase_allowance(DataCapTypes.IncreaseAllowanceParams memory params) public returns (int256) {
+    function increaseAllowance(DataCapTypes.IncreaseAllowanceParams memory params) internal returns (int256) {
         bytes memory raw_request = params.serialize();
 
         bytes memory raw_response = Actor.call(DataCapTypes.IncreaseAllowanceMethodNum, DataCapTypes.ActorCode, raw_request);
@@ -126,7 +126,7 @@ contract DataCapAPI {
         return result.deserializeInt256();
     }
 
-    function decrease_allowance(DataCapTypes.DecreaseAllowanceParams memory params) public returns (int256) {
+    function decreaseAllowance(DataCapTypes.DecreaseAllowanceParams memory params) internal returns (int256) {
         bytes memory raw_request = params.serialize();
 
         bytes memory raw_response = Actor.call(DataCapTypes.DecreaseAllowanceMethodNum, DataCapTypes.ActorCode, raw_request);
@@ -136,7 +136,7 @@ contract DataCapAPI {
         return result.deserializeInt256();
     }
 
-    function revoke_allowance(DataCapTypes.RevokeAllowanceParams memory params) public returns (int256) {
+    function revokeAllowance(DataCapTypes.RevokeAllowanceParams memory params) internal returns (int256) {
         bytes memory raw_request = params.serialize();
 
         bytes memory raw_response = Actor.call(DataCapTypes.RevokeAllowanceMethodNum, DataCapTypes.ActorCode, raw_request);
@@ -146,7 +146,7 @@ contract DataCapAPI {
         return result.deserializeInt256();
     }
 
-    function burn(DataCapTypes.BurnParams memory params) public returns (DataCapTypes.BurnReturn memory) {
+    function burn(DataCapTypes.BurnParams memory params) internal returns (DataCapTypes.BurnReturn memory) {
         bytes memory raw_request = params.serialize();
 
         bytes memory raw_response = Actor.call(DataCapTypes.BurnMethodNum, DataCapTypes.ActorCode, raw_request);
@@ -159,7 +159,7 @@ contract DataCapAPI {
         return response;
     }
 
-    function burn_from(DataCapTypes.BurnFromParams memory params) public returns (DataCapTypes.BurnFromReturn memory) {
+    function burnFrom(DataCapTypes.BurnFromParams memory params) internal returns (DataCapTypes.BurnFromReturn memory) {
         bytes memory raw_request = params.serialize();
 
         bytes memory raw_response = Actor.call(DataCapTypes.BurnFromMethodNum, DataCapTypes.ActorCode, raw_request);
@@ -170,13 +170,5 @@ contract DataCapAPI {
         response.deserialize(result);
 
         return response;
-    }
-
-    // FIXME This function should not be part of the library, but it is necessary in order to mint some tokens on rust test
-    // FIXME it will handle native method calls from other actors (in case of mint, it will call the receiverHook method of the smart contract)
-    // FIXME This should be part of the smart contract that make use of the datacap library (today it is a contract and should be changed)
-    function handle_filecoin_method(uint64 method, uint64 codec, bytes calldata params) public pure returns (uint64) {
-        require((codec == 0) == (params.length == 0));
-        return method;
     }
 }

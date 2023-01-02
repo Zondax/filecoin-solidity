@@ -26,12 +26,12 @@ import "./utils/Actor.sol";
 
 /// @title This contract is a proxy to the Account actor. Calling one of its methods will result in a cross-actor call being performed.
 /// @author Zondax AG
-contract AccountAPI {
+library AccountAPI {
     using AuthenticateMessageCBOR for AccountTypes.AuthenticateMessageParams;
     using BytesCBOR for bytes;
 
     /// @notice FIXME
-    function authenticate_message(bytes memory target, AccountTypes.AuthenticateMessageParams memory params) public {
+    function authenticateMessage(bytes memory target, AccountTypes.AuthenticateMessageParams memory params) internal {
         bytes memory raw_request = params.serialize();
 
         bytes memory raw_response = Actor.call(AccountTypes.AuthenticateMessageMethodNum, target, raw_request);
@@ -40,7 +40,7 @@ contract AccountAPI {
     }
 
     /// @notice FIXME
-    function universal_receiver_hook(bytes memory target, bytes memory params) public {
+    function universalReceiverHook(bytes memory target, bytes memory params) internal {
         bytes memory raw_request = params.serializeBytes();
 
         bytes memory raw_response = Actor.call(AccountTypes.UniversalReceiverHookMethodNum, target, raw_request);

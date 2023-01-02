@@ -13,7 +13,7 @@ use fvm_ipld_encoding::RawBytes;
 use fil_actors_runtime::{EAM_ACTOR_ADDR};
 
 const WASM_COMPILED_PATH: &str =
-   "../../build/v0.8/InitAPI.bin";
+   "../../build/v0.8/tests/InitApiTest.bin";
 
 #[derive(Serialize_tuple, Deserialize_tuple)]
 pub struct Create2Params {

@@ -16,7 +16,7 @@ use fvm_shared::ActorID;
 use fvm_shared::econ::TokenAmount;
 
 const WASM_COMPILED_PATH: &str =
-   "../../build/v0.8/DataCapAPI.bin";
+   "../../build/v0.8/tests/DataCapApiTest.bin";
 
 #[derive(Serialize_tuple, Deserialize_tuple)]
 pub struct Create2Params {

@@ -15,7 +15,7 @@ use fvm_shared::address::Address;
 
 
 const WASM_COMPILED_PATH: &str =
-   "../../build/v0.8/VerifRegAPI.bin";
+   "../../build/v0.8/tests/VerifRegApiTest.bin";
 
 #[derive(Serialize_tuple, Deserialize_tuple)]
 pub struct Create2Params {

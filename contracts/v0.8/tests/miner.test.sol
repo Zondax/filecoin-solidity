@@ -16,97 +16,77 @@
 //
 // DRAFT!! THIS CODE HAS NOT BEEN AUDITED - USE ONLY FOR PROTOTYPING
 //
-pragma solidity >=0.4.25 <=0.8.15;
+pragma solidity >=0.4.25 <=0.8.17;
 
-// TODO: Use the API or mocks to interact with
-import {MinerAPI} from "../MinerAPI.sol";
-// OR
-//import {MinerAPI} from "../mocks/MinerAPI.sol";
+import "../MinerAPI.sol";
+import "../types/MinerTypes.sol";
 
-import {CommonTypes} from "../types/CommonTypes.sol";
-import {MinerTypes} from "../types/MinerTypes.sol";
-
-contract FilecoinMinerMockTest {
-    address minerApiAddress;
-
-    constructor(address _minerApiAddress) {
-        minerApiAddress = _minerApiAddress;
+/// @author Zondax AG
+contract MinerApiTest {
+    function get_owner(bytes memory target) public returns (MinerTypes.GetOwnerReturn memory) {
+        return MinerAPI.getOwner(target);
     }
 
-    // This function is only available on mocks
-    /*
-    function mock_set_owner_test() public {
-        MinerAPI minerApiInstance = MinerAPI(minerApiAddress);
-
-        bytes memory target = hex"0011";
-        bytes memory addr = "t01113";
-        minerApiInstance.mock_set_owner(addr);
-    }
-    */
-
-    function get_owner_test() public returns (MinerTypes.GetOwnerReturn memory) {
-        MinerAPI minerApiInstance = MinerAPI(minerApiAddress);
-
-        bytes memory target = hex"0011";
-        MinerTypes.GetOwnerReturn memory response = minerApiInstance.get_owner(target);
-        return response;
+    function change_owner_address(bytes memory target, bytes memory addr) public {
+        MinerAPI.changeOwnerAddress(target, addr);
     }
 
-    function is_controlling_address_test() public returns (MinerTypes.IsControllingAddressReturn memory) {
-        MinerAPI minerApiInstance = MinerAPI(minerApiAddress);
-
-        bytes memory target = hex"0011";
-        bytes memory addr = hex"0021";
-        MinerTypes.IsControllingAddressReturn memory response = minerApiInstance.is_controlling_address(target, addr);
-        return response;
+    function is_controlling_address(bytes memory target, bytes memory addr) public returns (MinerTypes.IsControllingAddressReturn memory) {
+        return MinerAPI.isControllingAddress(target, addr);
     }
 
-    function get_sector_size_test() public returns (MinerTypes.GetSectorSizeReturn memory) {
-        MinerAPI minerApiInstance = MinerAPI(minerApiAddress);
-
-        bytes memory target = hex"0011";
-        MinerTypes.GetSectorSizeReturn memory response = minerApiInstance.get_sector_size(target);
-        return response;
+    function get_sector_size(bytes memory target) public returns (MinerTypes.GetSectorSizeReturn memory) {
+        return MinerAPI.getSectorSize(target);
     }
 
-    function get_available_balance_test() public returns (MinerTypes.GetAvailableBalanceReturn memory) {
-        MinerAPI minerApiInstance = MinerAPI(minerApiAddress);
-
-        bytes memory target = hex"0011";
-        MinerTypes.GetAvailableBalanceReturn memory response = minerApiInstance.get_available_balance(target);
-        return response;
+    function get_available_balance(bytes memory target) public returns (MinerTypes.GetAvailableBalanceReturn memory) {
+        return MinerAPI.getAvailableBalance(target);
     }
 
-    function get_vesting_funds_test() public returns (MinerTypes.GetVestingFundsReturn memory) {
-        MinerAPI minerApiInstance = MinerAPI(minerApiAddress);
-
-        bytes memory target = hex"0011";
-        MinerTypes.GetVestingFundsReturn memory response = minerApiInstance.get_vesting_funds(target);
-
-        return response;
+    function get_vesting_funds(bytes memory target) public returns (MinerTypes.GetVestingFundsReturn memory) {
+        return MinerAPI.getVestingFunds(target);
     }
 
-    function change_beneficiary_test() public {
-        MinerAPI minerApiInstance = MinerAPI(minerApiAddress);
-
-        bytes memory target = hex"0011";
-        MinerTypes.ChangeBeneficiaryParams memory params;
-        minerApiInstance.change_beneficiary(target, params);
+    function change_beneficiary(bytes memory target, MinerTypes.ChangeBeneficiaryParams memory params) public {
+        return MinerAPI.changeBeneficiary(target, params);
     }
 
-    function get_beneficiary_test() public returns (MinerTypes.GetBeneficiaryReturn memory) {
-        MinerAPI minerApiInstance = MinerAPI(minerApiAddress);
-
-        bytes memory target = hex"0011";
-        MinerTypes.GetBeneficiaryReturn memory response = minerApiInstance.get_beneficiary(target);
-        return response;
+    function get_beneficiary(bytes memory target) public returns (MinerTypes.GetBeneficiaryReturn memory) {
+        return MinerAPI.getBeneficiary(target);
     }
 
-    function change_owner_address_test() public {
-        MinerAPI minerApiInstance = MinerAPI(minerApiAddress);
+    function change_worker_address(bytes memory target, MinerTypes.ChangeWorkerAddressParams memory params) public {
+        MinerAPI.changeWorkerAddress(target, params);
+    }
 
-        bytes memory target = hex"0011";
-        bytes memory addr = hex"0021";
-        minerApiInstance.change_owner_address(target, addr);
+    function change_peer_id(bytes memory target, MinerTypes.ChangePeerIDParams memory params) public {
+        MinerAPI.changePeerId(target, params);
+    }
+
+    function change_multiaddresses(bytes memory target, MinerTypes.ChangeMultiaddrsParams memory params) public {
+        MinerAPI.changeMultiaddresses(target, params);
+    }
+
+    function repay_debt(bytes memory target) public {
+        MinerAPI.repayDebt(target);
+    }
+
+    function confirm_change_worker_address(bytes memory target) public {
+        MinerAPI.confirmChangeWorkerAddress(target);
+    }
+
+    function get_peer_id(bytes memory target) public returns (MinerTypes.GetPeerIDReturn memory) {
+        return MinerAPI.getPeerId(target);
+    }
+
+    function get_multiaddresses(bytes memory target) public returns (MinerTypes.GetMultiaddrsReturn memory) {
+        return MinerAPI.getMultiaddresses(target);
+    }
+
+    function withdraw_balance(
+        bytes memory target,
+        MinerTypes.WithdrawBalanceParams memory params
+    ) public returns (MinerTypes.WithdrawBalanceReturn memory) {
+        return MinerAPI.withdrawBalance(target, params);
     }
 }
