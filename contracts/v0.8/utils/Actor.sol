@@ -47,11 +47,10 @@ library Actor {
             mstore(add(input, 0x40), DEFAULT_FLAG)
             // cbor codec is mandatory for now
             mstore(add(input, 0x60), CODEC)
-            // address size
-            mstore(add(input, 0x80), actor_code_len)
             // params size
-            mstore(add(input, 0xa0), raw_request_len)
-
+            mstore(add(input, 0x80), raw_request_len)
+            // address size
+            mstore(add(input, 0xa0), actor_code_len)
             // actual params (copy by slice of 32 bytes)
             let start_index := 0xc0
             let offset := 0
