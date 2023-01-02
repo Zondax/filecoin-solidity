@@ -1,18 +1,18 @@
 /*******************************************************************************
-*   (c) 2022 Zondax AG
-*
-*  Licensed under the Apache License, Version 2.0 (the "License");
-*  you may not use this file except in compliance with the License.
-*  You may obtain a copy of the License at
-*
-*      http://www.apache.org/licenses/LICENSE-2.0
-*
-*  Unless required by applicable law or agreed to in writing, software
-*  distributed under the License is distributed on an "AS IS" BASIS,
-*  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-*  See the License for the specific language governing permissions and
-*  limitations under the License.
-********************************************************************************/
+ *   (c) 2022 Zondax AG
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ ********************************************************************************/
 // DRAFT!! THIS CODE HAS NOT BEEN AUDITED - USE ONLY FOR PROTOTYPING
 pragma solidity >=0.4.25 <=0.8.15;
 
@@ -31,13 +31,14 @@ library Actor {
     function call(uint method_num, bytes memory actor_code, bytes memory raw_request) internal returns (bytes memory) {
         bytes memory raw_response = new bytes(MAX_RAW_RESPONSE_SIZE);
 
-        uint len;
+        uint raw_request_len;
+        uint actor_code_len;
         uint amount = msg.value;
 
-        require(actor_code[0] == 0x00, "actor address needs to be type ID");
-
         assembly {
-            len := mload(raw_request)
+            raw_request_len := mload(raw_request)
+            actor_code_len := mload(actor_code)
+
             let input := mload(0x40)
             mstore(input, method_num)
             // value to send
@@ -47,23 +48,38 @@ library Actor {
             // cbor codec is mandatory for now
             mstore(add(input, 0x60), CODEC)
             // address size
-            mstore(add(input, 0x80), mload(actor_code))
+            mstore(add(input, 0x80), actor_code_len)
             // params size
-            mstore(add(input, 0xa0), len)
+            mstore(add(input, 0xa0), raw_request_len)
+
             // actual params (copy by slice of 32 bytes)
+            let start_index := 0xc0
             let offset := 0
             for {
                 offset := 0x00
-            } lt(offset, len) {
+            } lt(offset, raw_request_len) {
                 offset := add(offset, 0x20)
             } {
-                mstore(add(input, add(0xc0, offset)), mload(add(raw_request, add(0x20, offset))))
+                mstore(add(input, add(start_index, offset)), mload(add(raw_request, add(0x20, offset))))
             }
-            if mod(len, 0x20) {
-                offset := add(sub(offset, 0x20), mod(len, 0x20))
+            if mod(raw_request_len, 0x20) {
+                offset := add(sub(offset, 0x20), mod(raw_request_len, 0x20))
             }
-            // actual address
-            mstore(add(input, add(0xc0, offset)), mload(add(actor_code, 0x20)))
+
+            // actual address (copy by slice of 32 bytes)
+            start_index := add(start_index, offset)
+            offset := 0
+            for {
+                offset := 0x00
+            } lt(offset, actor_code_len) {
+                offset := add(offset, 0x20)
+            } {
+                mstore(add(input, add(start_index, offset)), mload(add(actor_code, add(0x20, offset))))
+            }
+            if mod(actor_code_len, 0x20) {
+                offset := add(sub(offset, 0x20), mod(actor_code_len, 0x20))
+            }
+
             // no params
 
             // FIXME set inputSize according to the input length
@@ -91,5 +107,5 @@ library Actor {
         Misc.copy(src, dst, size);
 
         return result;
-    }   
+    }
 }
