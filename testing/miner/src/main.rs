@@ -23,7 +23,7 @@ use fvm::state_tree::{ActorState};
 use fvm_shared::econ::TokenAmount;
 
 const WASM_COMPILED_PATH: &str =
-   "../../build/v0.8/MinerAPI.bin";
+   "../../build/v0.8/tests/MinerApiTest.bin";
 
 #[derive(Serialize_tuple, Deserialize_tuple, Clone, Debug)]
 struct State {
