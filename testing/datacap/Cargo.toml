@@ -31,7 +31,7 @@ fvm = { version = "3.0.0-alpha.14", git = "https://github.com/Zondax/ref-fvm", b
 fvm_sdk = { version = "3.0.0-alpha.17", git = "https://github.com/Zondax/ref-fvm", branch = "lola/fixes" }
 
 # Replacing dependencies on fil_actor_datacap in order to point to newer version (that support fevm)
-fvm_actor_utils = { git = "https://github.com/filecoin-project/filecoin-actor-utils", branch = "feat/fvm-m2" }
-frc46_token = { git = "https://github.com/filecoin-project/filecoin-actor-utils", branch = "feat/fvm-m2" }
-frc42_dispatch = { git = "https://github.com/filecoin-project/filecoin-actor-utils", branch = "feat/fvm-m2" }
+fvm_actor_utils = { version = "2.0.0", git = "https://github.com/filecoin-project/filecoin-actor-utils", branch = "feat/fvm-m2" }
+frc46_token = { version = "3.0.0", git = "https://github.com/filecoin-project/filecoin-actor-utils", branch = "feat/fvm-m2" }
+frc42_dispatch = { version = "2.0.0", git = "https://github.com/filecoin-project/filecoin-actor-utils", branch = "feat/fvm-m2" }
 
