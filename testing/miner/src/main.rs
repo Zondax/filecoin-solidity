@@ -77,7 +77,7 @@ fn main() {
         state: cid,
         sequence: 0,
         balance: TokenAmount::from_atto(10000),
-        address: Some(worker),
+        delegated_address: Some(worker),
     };
 
     state_tree
