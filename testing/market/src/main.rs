@@ -160,7 +160,7 @@ fn main() {
  
      let actor_state = ActorState {
          // CID of Accounts actor. You get this as output from builtin-actors compiling process
-         code: Cid::from_str("bafk2bzacecgc56qrvqorqcgxeyoc6cwccl2zwtsewjq7c4j7le2avixe6hm4a").unwrap(),
+         code: Cid::from_str("bafk2bzaced4egdjgpdpxgg37rz7zrqegwioeqbeo7gfw3a4il6tkdrssfjsoy").unwrap(),
          //code: Cid::from_str("bafk2bzaceddmas33nnn2izdexi5xjzuahzezl62aa5ah5bqwzzjceusskr6ty").unwrap(),
          state: cid,
          sequence: 0,
@@ -188,7 +188,7 @@ fn main() {
 
     let actor_state = ActorState {
         // CID of Accounts actor. You get this as output from builtin-actors compiling process
-        code: Cid::from_str("bafk2bzacecgc56qrvqorqcgxeyoc6cwccl2zwtsewjq7c4j7le2avixe6hm4a").unwrap(),
+        code: Cid::from_str("bafk2bzaced4egdjgpdpxgg37rz7zrqegwioeqbeo7gfw3a4il6tkdrssfjsoy").unwrap(),
         //code: Cid::from_str("bafk2bzaceddmas33nnn2izdexi5xjzuahzezl62aa5ah5bqwzzjceusskr6ty").unwrap(),
         state: cid,
         sequence: 0,
