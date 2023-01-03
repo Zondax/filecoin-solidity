@@ -17,6 +17,9 @@
 pragma solidity >=0.4.25 <=0.8.15;
 
 library Misc {
+    uint64 constant CBOR_CODEC = 0x71;
+    uint64 constant NONE_CODEC = 0x00;
+
     function toUint256(bytes32 _bytes) internal pure returns (uint256 value) {
         return uint256(_bytes);
     }

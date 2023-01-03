@@ -34,7 +34,7 @@ library AccountAPI {
     function authenticateMessage(bytes memory target, AccountTypes.AuthenticateMessageParams memory params) internal {
         bytes memory raw_request = params.serialize();
 
-        bytes memory raw_response = Actor.call(AccountTypes.AuthenticateMessageMethodNum, target, raw_request);
+        bytes memory raw_response = Actor.call(AccountTypes.AuthenticateMessageMethodNum, target, raw_request, Misc.CBOR_CODEC);
 
         bytes memory result = Actor.readRespData(raw_response);
     }
@@ -43,7 +43,7 @@ library AccountAPI {
     function universalReceiverHook(bytes memory target, bytes memory params) internal {
         bytes memory raw_request = params.serializeBytes();
 
-        bytes memory raw_response = Actor.call(AccountTypes.UniversalReceiverHookMethodNum, target, raw_request);
+        bytes memory raw_response = Actor.call(AccountTypes.UniversalReceiverHookMethodNum, target, raw_request, Misc.CBOR_CODEC);
 
         bytes memory result = Actor.readRespData(raw_response);
     }
