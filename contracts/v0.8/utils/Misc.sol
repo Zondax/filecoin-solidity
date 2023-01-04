@@ -14,7 +14,7 @@
  *  limitations under the License.
  ********************************************************************************/
 // DRAFT!! THIS CODE HAS NOT BEEN AUDITED - USE ONLY FOR PROTOTYPING
-pragma solidity >=0.4.25 <=0.8.15;
+pragma solidity >=0.4.25 <=0.8.17;
 
 library Misc {
     uint64 constant CBOR_CODEC = 0x71;

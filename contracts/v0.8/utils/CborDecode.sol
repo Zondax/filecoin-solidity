@@ -14,7 +14,7 @@
  *  limitations under the License.
  ********************************************************************************/
 // DRAFT!! THIS CODE HAS NOT BEEN AUDITED - USE ONLY FOR PROTOTYPING
-pragma solidity >=0.4.25 <=0.8.15;
+pragma solidity >=0.4.25 <=0.8.17;
 
 // 	MajUnsignedInt = 0
 // 	MajSignedInt   = 1
