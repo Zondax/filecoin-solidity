@@ -18,6 +18,7 @@
 //
 pragma solidity >=0.4.25 <=0.8.17;
 
+import "../cbor/BigNumberCbor.sol";
 import "./CommonTypes.sol";
 
 /// @title Filecoin miner actor types for Solidity.
@@ -57,7 +58,7 @@ library MinerTypes {
         uint64 sector_size;
     }
     struct GetAvailableBalanceReturn {
-        int256 available_balance;
+        BigNumber available_balance;
     }
 
     struct GetVestingFundsReturn {
@@ -66,7 +67,7 @@ library MinerTypes {
 
     struct ChangeBeneficiaryParams {
         bytes new_beneficiary;
-        int256 new_quota;
+        BigNumber new_quota;
         uint64 new_expiration;
     }
 

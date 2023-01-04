@@ -24,12 +24,14 @@ import {CommonTypes} from "../types/CommonTypes.sol";
 import {MinerTypes} from "../types/MinerTypes.sol";
 import "../utils/CborDecode.sol";
 import "../utils/Misc.sol";
+import "./BigNumberCbor.sol";
 
 /// @title FIXME
 /// @author Zondax AG
 library ChangeBeneficiaryCBOR {
     using CBOR for CBOR.CBORBuffer;
     using CBORDecoder for bytes;
+    using BigNumberCBOR for BigNumber;
 
     function serialize(MinerTypes.ChangeBeneficiaryParams memory params) internal pure returns (bytes memory) {
         // FIXME what should the max length be on the buffer?
@@ -37,7 +39,7 @@ library ChangeBeneficiaryCBOR {
 
         buf.startFixedArray(3);
         buf.writeBytes(params.new_beneficiary);
-        buf.writeBytes(Misc.toBytes(uint256(params.new_quota)));
+        buf.writeBytes(params.new_quota.serializeBigNum());
         buf.writeUInt64(params.new_expiration);
 
         return buf.data();
@@ -60,7 +62,6 @@ library GetOwnerCBOR {
         if (!rawResp.isNullNext(byteIdx)) {
             (ret.proposed, byteIdx) = rawResp.readBytes(byteIdx);
         }
-
     }
 }
 
@@ -92,14 +93,19 @@ library GetSectorSizeCBOR {
 library GetAvailableBalanceCBOR {
     using CBOR for CBOR.CBORBuffer;
     using CBORDecoder for bytes;
+    using BigNumberCBOR for bytes;
 
-    function deserialize(MinerTypes.GetAvailableBalanceReturn memory ret, bytes memory rawResp) internal pure {
+    function deserialize(MinerTypes.GetAvailableBalanceReturn memory ret, bytes memory rawResp) internal {
         uint byteIdx = 0;
         uint len;
 
-        bytes32 tmp;
-        (tmp, byteIdx) = rawResp.readBytes32(byteIdx);
-        ret.available_balance = Misc.toInt256(tmp);
+        bytes memory tmp;
+        (tmp, byteIdx) = rawResp.readBytes(byteIdx);
+        if (tmp.length > 0) {
+            ret.available_balance = tmp.deserializeBigNum();
+        } else {
+            ret.available_balance = BigNumber(new bytes(0), false);
+        }
     }
 }
 
