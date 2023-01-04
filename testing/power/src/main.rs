@@ -170,6 +170,7 @@ fn main() {
         .unwrap();
 
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
+    assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "58200000000000000000000000000000000000000000000000000000000000000001");
 
     println!("Calling `network_raw_power`");
 
@@ -188,6 +189,7 @@ fn main() {
         .unwrap();
 
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
+    assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "58200000000000000000000000000000000000000000000000000000000000000000");
 
     println!("Calling `miner_raw_power`");
 
@@ -206,6 +208,7 @@ fn main() {
         .unwrap();
 
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
+    assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "584000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000");
 
     println!("Calling `miner_consensus_count`");
 
@@ -224,4 +227,5 @@ fn main() {
         .unwrap();
 
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
+    assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "58200000000000000000000000000000000000000000000000000000000000000000");
 }
