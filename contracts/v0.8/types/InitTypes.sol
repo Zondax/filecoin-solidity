@@ -18,8 +18,6 @@
 //
 pragma solidity >=0.4.25 <=0.8.17;
 
-import "./CommonTypes.sol";
-
 /// @title Filecoin init actor types for Solidity.
 /// @author Zondax AG
 library InitTypes {

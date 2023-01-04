@@ -19,7 +19,6 @@
 pragma solidity >=0.4.25 <=0.8.17;
 
 import "../cbor/BigNumberCbor.sol";
-import "./CommonTypes.sol";
 
 /// @title Filecoin datacap actor types for Solidity.
 /// @author Zondax AG
