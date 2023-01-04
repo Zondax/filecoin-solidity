@@ -28,12 +28,12 @@ hex = "0.4.3"
 cid = "0.8.6"
 multihash = { version = "0.16.1", default-features = false }
 
-actors-v10 = { package = "fil_builtin_actors_bundle", git = "https://github.com/filecoin-project/builtin-actors", tag = "dev/20221218-fvm-m2", features = ["m2-native"] }
-fil_actors_runtime = { version = "10.0.0-alpha.1", git = "https://github.com/filecoin-project/builtin-actors", tag = "dev/20221218-fvm-m2", features = ["m2-native"] }
-fil_actor_eam = { version = "10.0.0-alpha.1", git = "https://github.com/filecoin-project/builtin-actors", tag = "dev/20221218-fvm-m2" }
-fil_actor_init = { version = "10.0.0-alpha.1", git = "https://github.com/filecoin-project/builtin-actors", tag = "dev/20221218-fvm-m2" }
-fil_actor_miner = { version = "10.0.0-alpha.1", git = "https://github.com/filecoin-project/builtin-actors", tag = "dev/20221218-fvm-m2" }
-fil_actor_multisig = { version = "10.0.0-alpha.1", git = "https://github.com/filecoin-project/builtin-actors", tag = "dev/20221218-fvm-m2" }
+actors-v10 = { package = "fil_builtin_actors_bundle", git = "https://github.com/filecoin-project/builtin-actors", tag = "dev/20221219-fvm-m2-patch.1", features = ["m2-native"] }
+fil_actors_runtime = { version = "10.0.0-alpha.1", git = "https://github.com/filecoin-project/builtin-actors", tag = "dev/20221219-fvm-m2-patch.1", features = ["m2-native"] }
+fil_actor_eam = { version = "10.0.0-alpha.1", git = "https://github.com/filecoin-project/builtin-actors", tag = "dev/20221219-fvm-m2-patch.1" }
+fil_actor_init = { version = "10.0.0-alpha.1", git = "https://github.com/filecoin-project/builtin-actors", tag = "dev/20221219-fvm-m2-patch.1" }
+fil_actor_miner = { version = "10.0.0-alpha.1", git = "https://github.com/filecoin-project/builtin-actors", tag = "dev/20221219-fvm-m2-patch.1" }
+fil_actor_multisig = { version = "10.0.0-alpha.1", git = "https://github.com/filecoin-project/builtin-actors", tag = "dev/20221219-fvm-m2-patch.1" }
 
 [patch.crates-io]
 fvm_shared = { version = "3.0.0-alpha.14", git = "https://github.com/Zondax/ref-fvm", branch = "lola/fixes" }
@@ -43,3 +43,7 @@ fvm_ipld_amt = { version = "0.5.0", git = "https://github.com/Zondax/ref-fvm", b
 fvm_ipld_blockstore = { version = "0.1.1", git = "https://github.com/Zondax/ref-fvm", branch = "lola/fixes" }
 fvm = { version = "3.0.0-alpha.14", git = "https://github.com/Zondax/ref-fvm", branch = "lola/fixes", default-features = false, features = ["m2-native"] }
 fvm_sdk = { version = "3.0.0-alpha.17", git = "https://github.com/Zondax/ref-fvm", branch = "lola/fixes" }
+
+fvm_actor_utils = { version = "2.0.0", git = "https://github.com/filecoin-project/filecoin-actor-utils", branch = "feat/fvm-m2" }
+frc46_token = { version = "3.0.0", git = "https://github.com/filecoin-project/filecoin-actor-utils", branch = "feat/fvm-m2" }
+frc42_dispatch = { version = "2.0.0", git = "https://github.com/filecoin-project/filecoin-actor-utils", branch = "feat/fvm-m2" }

@@ -42,7 +42,7 @@ library MultisigAPI {
     function propose(bytes memory target, MultisigTypes.ProposeParams memory params) internal returns (MultisigTypes.ProposeReturn memory) {
         bytes memory raw_request = params.serialize();
 
-        bytes memory raw_response = Actor.call(MultisigTypes.ProposeMethodNum, target, raw_request);
+        bytes memory raw_response = Actor.call(MultisigTypes.ProposeMethodNum, target, raw_request, Misc.CBOR_CODEC);
 
         bytes memory result = Actor.readRespData(raw_response);
 
@@ -56,7 +56,7 @@ library MultisigAPI {
     function approve(bytes memory target, MultisigTypes.TxnIDParams memory params) internal returns (MultisigTypes.ApproveReturn memory) {
         bytes memory raw_request = params.serialize();
 
-        bytes memory raw_response = Actor.call(MultisigTypes.ApproveMethodNum, target, raw_request);
+        bytes memory raw_response = Actor.call(MultisigTypes.ApproveMethodNum, target, raw_request, Misc.CBOR_CODEC);
 
         bytes memory result = Actor.readRespData(raw_response);
 
@@ -70,7 +70,7 @@ library MultisigAPI {
     function cancel(bytes memory target, MultisigTypes.TxnIDParams memory params) internal {
         bytes memory raw_request = params.serialize();
 
-        bytes memory raw_response = Actor.call(MultisigTypes.CancelMethodNum, target, raw_request);
+        bytes memory raw_response = Actor.call(MultisigTypes.CancelMethodNum, target, raw_request, Misc.CBOR_CODEC);
 
         bytes memory result = Actor.readRespData(raw_response);
     }
@@ -79,7 +79,7 @@ library MultisigAPI {
     function addSigner(bytes memory target, MultisigTypes.AddSignerParams memory params) internal {
         bytes memory raw_request = params.serialize();
 
-        bytes memory raw_response = Actor.call(MultisigTypes.AddSignerMethodNum, target, raw_request);
+        bytes memory raw_response = Actor.call(MultisigTypes.AddSignerMethodNum, target, raw_request, Misc.CBOR_CODEC);
 
         bytes memory result = Actor.readRespData(raw_response);
     }
@@ -88,7 +88,7 @@ library MultisigAPI {
     function removeSigner(bytes memory target, MultisigTypes.RemoveSignerParams memory params) internal {
         bytes memory raw_request = params.serialize();
 
-        bytes memory raw_response = Actor.call(MultisigTypes.RemoveSignerMethodNum, target, raw_request);
+        bytes memory raw_response = Actor.call(MultisigTypes.RemoveSignerMethodNum, target, raw_request, Misc.CBOR_CODEC);
 
         bytes memory result = Actor.readRespData(raw_response);
     }
@@ -97,7 +97,7 @@ library MultisigAPI {
     function swapSigner(bytes memory target, MultisigTypes.SwapSignerParams memory params) internal {
         bytes memory raw_request = params.serialize();
 
-        bytes memory raw_response = Actor.call(MultisigTypes.SwapSignerMethodNum, target, raw_request);
+        bytes memory raw_response = Actor.call(MultisigTypes.SwapSignerMethodNum, target, raw_request, Misc.CBOR_CODEC);
 
         bytes memory result = Actor.readRespData(raw_response);
     }
@@ -106,7 +106,7 @@ library MultisigAPI {
     function changeNumApprovalsThreshold(bytes memory target, MultisigTypes.ChangeNumApprovalsThresholdParams memory params) internal {
         bytes memory raw_request = params.serialize();
 
-        bytes memory raw_response = Actor.call(MultisigTypes.ChangeNumApprovalsThresholdMethodNum, target, raw_request);
+        bytes memory raw_response = Actor.call(MultisigTypes.ChangeNumApprovalsThresholdMethodNum, target, raw_request, Misc.CBOR_CODEC);
 
         bytes memory result = Actor.readRespData(raw_response);
     }
@@ -115,7 +115,7 @@ library MultisigAPI {
     function lockBalance(bytes memory target, MultisigTypes.LockBalanceParams memory params) internal {
         bytes memory raw_request = params.serialize();
 
-        bytes memory raw_response = Actor.call(MultisigTypes.LockBalanceMethodNum, target, raw_request);
+        bytes memory raw_response = Actor.call(MultisigTypes.LockBalanceMethodNum, target, raw_request, Misc.CBOR_CODEC);
 
         bytes memory result = Actor.readRespData(raw_response);
     }
@@ -124,7 +124,7 @@ library MultisigAPI {
     function universalReceiverHook(bytes memory target, bytes memory params) internal {
         bytes memory raw_request = params.serializeBytes();
 
-        bytes memory raw_response = Actor.call(MultisigTypes.UniversalReceiverHookMethodNum, target, raw_request);
+        bytes memory raw_response = Actor.call(MultisigTypes.UniversalReceiverHookMethodNum, target, raw_request, Misc.CBOR_CODEC);
 
         bytes memory result = Actor.readRespData(raw_response);
     }

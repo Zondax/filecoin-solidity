@@ -160,12 +160,12 @@ fn main() {
  
      let actor_state = ActorState {
          // CID of Accounts actor. You get this as output from builtin-actors compiling process
-         code: Cid::from_str("bafk2bzacecgc56qrvqorqcgxeyoc6cwccl2zwtsewjq7c4j7le2avixe6hm4a").unwrap(),
+         code: Cid::from_str("bafk2bzaced4egdjgpdpxgg37rz7zrqegwioeqbeo7gfw3a4il6tkdrssfjsoy").unwrap(),
          //code: Cid::from_str("bafk2bzaceddmas33nnn2izdexi5xjzuahzezl62aa5ah5bqwzzjceusskr6ty").unwrap(),
          state: cid,
          sequence: 0,
          balance: TokenAmount::from_whole(1_000_000),
-         address: Some(client),
+         delegated_address: Some(client),
      };
  
      state_tree
@@ -188,12 +188,12 @@ fn main() {
 
     let actor_state = ActorState {
         // CID of Accounts actor. You get this as output from builtin-actors compiling process
-        code: Cid::from_str("bafk2bzacecgc56qrvqorqcgxeyoc6cwccl2zwtsewjq7c4j7le2avixe6hm4a").unwrap(),
+        code: Cid::from_str("bafk2bzaced4egdjgpdpxgg37rz7zrqegwioeqbeo7gfw3a4il6tkdrssfjsoy").unwrap(),
         //code: Cid::from_str("bafk2bzaceddmas33nnn2izdexi5xjzuahzezl62aa5ah5bqwzzjceusskr6ty").unwrap(),
         state: cid,
         sequence: 0,
         balance: TokenAmount::from_whole(1_000_000),
-        address: Some(worker),
+        delegated_address: Some(worker),
     };
 
     state_tree
