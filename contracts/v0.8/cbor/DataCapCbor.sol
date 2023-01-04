@@ -156,7 +156,7 @@ library TransferFromCBOR {
         buf.startFixedArray(4);
         buf.writeBytes(params.from);
         buf.writeBytes(params.to);
-        buf.writeBytes(Misc.toBytes(params.amount));
+        buf.writeBytes(params.amount.serializeBigNum());
         buf.writeBytes(params.operator_data);
 
         return buf.data();
@@ -188,6 +188,7 @@ library TransferFromCBOR {
 library IncreaseAllowanceCBOR {
     using CBOR for CBOR.CBORBuffer;
     using CBORDecoder for bytes;
+    using BigNumberCBOR for BigNumber;
 
     function serialize(DataCapTypes.IncreaseAllowanceParams memory params) internal pure returns (bytes memory) {
         // FIXME what should the max length be on the buffer?
@@ -195,7 +196,7 @@ library IncreaseAllowanceCBOR {
 
         buf.startFixedArray(2);
         buf.writeBytes(params.operator);
-        buf.writeBytes(Misc.toBytes(params.increase));
+        buf.writeBytes(params.increase.serializeBigNum());
 
         return buf.data();
     }
@@ -206,6 +207,7 @@ library IncreaseAllowanceCBOR {
 library DecreaseAllowanceCBOR {
     using CBOR for CBOR.CBORBuffer;
     using CBORDecoder for bytes;
+    using BigNumberCBOR for BigNumber;
 
     function serialize(DataCapTypes.DecreaseAllowanceParams memory params) internal pure returns (bytes memory) {
         // FIXME what should the max length be on the buffer?
@@ -213,7 +215,7 @@ library DecreaseAllowanceCBOR {
 
         buf.startFixedArray(2);
         buf.writeBytes(params.operator);
-        buf.writeBytes(Misc.toBytes(params.decrease));
+        buf.writeBytes(params.decrease.serializeBigNum());
 
         return buf.data();
     }
@@ -249,7 +251,7 @@ library BurnCBOR {
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
         buf.startFixedArray(1);
-        buf.writeBytes(Misc.toBytes(params.amount));
+        buf.writeBytes(params.amount.serializeBigNum());
 
         return buf.data();
     }
@@ -281,7 +283,7 @@ library BurnFromCBOR {
 
         buf.startFixedArray(2);
         buf.writeBytes(params.owner);
-        buf.writeBytes(Misc.toBytes(params.amount));
+        buf.writeBytes(params.amount.serializeBigNum());
 
         return buf.data();
     }

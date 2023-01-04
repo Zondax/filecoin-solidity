@@ -64,7 +64,7 @@ library DataCapTypes {
         bytes from;
         bytes to;
         /// A non-negative amount to transfer
-        int256 amount;
+        BigNumber amount;
         /// Arbitrary data to pass on via the receiver hook
         bytes operator_data;
     }
@@ -82,12 +82,12 @@ library DataCapTypes {
     struct IncreaseAllowanceParams {
         bytes operator;
         /// A non-negative amount to increase the allowance by
-        int256 increase;
+        BigNumber increase;
     }
     struct DecreaseAllowanceParams {
         bytes operator;
         /// A non-negative amount to decrease the allowance by
-        int256 decrease;
+        BigNumber decrease;
     }
     struct RevokeAllowanceParams {
         bytes operator;
@@ -95,7 +95,7 @@ library DataCapTypes {
 
     struct BurnParams {
         /// A non-negative amount to burn
-        int256 amount;
+        BigNumber amount;
     }
 
     struct BurnReturn {
@@ -106,7 +106,7 @@ library DataCapTypes {
     struct BurnFromParams {
         bytes owner;
         /// A non-negative amount to burn
-        int256 amount;
+        BigNumber amount;
     }
 
     struct BurnFromReturn {
