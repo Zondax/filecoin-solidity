@@ -60,7 +60,7 @@ library DataCapAPI {
         return result.deserializeString();
     }
 
-    function totalSupply() public returns (int256) {
+    function totalSupply() internal returns (int256) {
         bytes memory raw_request = new bytes(0);
 
         bytes memory raw_response = Actor.call(DataCapTypes.TotalSupplyMethodNum, DataCapTypes.ActorCode, raw_request, Misc.NONE_CODEC);
