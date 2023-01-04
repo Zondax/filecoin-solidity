@@ -18,6 +18,7 @@
 //
 pragma solidity >=0.4.25 <=0.8.17;
 
+import "../cbor/BigNumberCbor.sol";
 import "./CommonTypes.sol";
 
 /// @title Filecoin market actor types for Solidity.
@@ -41,16 +42,16 @@ library MarketTypes {
 
     struct WithdrawBalanceParams {
         bytes provider_or_client;
-        int256 tokenAmount;
+        BigNumber tokenAmount;
     }
 
     struct WithdrawBalanceReturn {
-        uint256 amount_withdrawn;
+        BigNumber amount_withdrawn;
     }
 
     struct GetBalanceReturn {
-        int256 balance;
-        int256 locked;
+        BigNumber balance;
+        BigNumber locked;
     }
 
     struct GetDealDataCommitmentParams {
@@ -100,7 +101,7 @@ library MarketTypes {
     }
 
     struct GetDealEpochPriceReturn {
-        uint256 price_per_epoch;
+        BigNumber price_per_epoch;
     }
 
     struct GetDealClientCollateralParams {
@@ -108,7 +109,7 @@ library MarketTypes {
     }
 
     struct GetDealClientCollateralReturn {
-        uint256 collateral;
+        BigNumber collateral;
     }
 
     struct GetDealProviderCollateralParams {
@@ -116,7 +117,7 @@ library MarketTypes {
     }
 
     struct GetDealProviderCollateralReturn {
-        uint256 collateral;
+        BigNumber collateral;
     }
 
     struct GetDealVerifiedParams {

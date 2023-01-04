@@ -21,6 +21,7 @@ pragma solidity >=0.4.25 <=0.8.17;
 import "solidity-cborutils/contracts/CBOR.sol";
 
 import {MarketTypes} from "../types/MarketTypes.sol";
+import "./BigNumberCbor.sol";
 import "../utils/CborDecode.sol";
 import "../utils/Misc.sol";
 
@@ -29,6 +30,8 @@ import "../utils/Misc.sol";
 library WithdrawBalanceCBOR {
     using CBOR for CBOR.CBORBuffer;
     using CBORDecoder for bytes;
+    using BigNumberCBOR for BigNumber;
+    using BigNumberCBOR for bytes;
 
     function serialize(MarketTypes.WithdrawBalanceParams memory params) internal pure returns (bytes memory) {
         // FIXME what should the max length be on the buffer?
@@ -36,18 +39,18 @@ library WithdrawBalanceCBOR {
 
         buf.startFixedArray(2);
         buf.writeBytes(params.provider_or_client);
-        buf.writeBytes(Misc.toBytes(params.tokenAmount));
+        buf.writeBytes(params.tokenAmount.serializeBigNum());
 
         return buf.data();
     }
 
-    function deserialize(MarketTypes.WithdrawBalanceReturn memory ret, bytes memory rawResp) internal pure {
-        bytes32 tmp;
+    function deserialize(MarketTypes.WithdrawBalanceReturn memory ret, bytes memory rawResp) internal {
+        bytes memory tmp;
         uint byteIdx = 0;
         uint len;
 
-        (tmp, byteIdx) = rawResp.readBytes32(byteIdx);
-        ret.amount_withdrawn = Misc.toUint256(tmp);
+        (tmp, byteIdx) = rawResp.readBytes(byteIdx);
+        ret.amount_withdrawn = tmp.deserializeBigNum();
     }
 }
 
@@ -77,20 +80,21 @@ library AddressCBOR {
 
 library GetBalanceCBOR {
     using CBORDecoder for bytes;
+    using BigNumberCBOR for bytes;
 
-    function deserialize(MarketTypes.GetBalanceReturn memory ret, bytes memory rawResp) internal pure {
+    function deserialize(MarketTypes.GetBalanceReturn memory ret, bytes memory rawResp) internal {
         uint byteIdx = 0;
         uint len;
-        bytes32 tmp;
+        bytes memory tmp;
 
         (len, byteIdx) = rawResp.readFixedArray(byteIdx);
         assert(len == 2);
 
-        (tmp, byteIdx) = rawResp.readBytes32(byteIdx);
-        ret.balance = Misc.toInt256(tmp);
+        (tmp, byteIdx) = rawResp.readBytes(byteIdx);
+        ret.balance = tmp.deserializeBigNum();
 
-        (tmp, byteIdx) = rawResp.readBytes32(byteIdx);
-        ret.locked = Misc.toInt256(tmp);
+        (tmp, byteIdx) = rawResp.readBytes(byteIdx);
+        ret.locked = tmp.deserializeBigNum();
     }
 }
 
@@ -219,6 +223,7 @@ library GetDealTermCBOR {
 library GetDealEpochPriceCBOR {
     using CBOR for CBOR.CBORBuffer;
     using CBORDecoder for bytes;
+    using BigNumberCBOR for bytes;
 
     function serialize(MarketTypes.GetDealEpochPriceParams memory params) internal pure returns (bytes memory) {
         // FIXME what should the max length be on the buffer?
@@ -229,19 +234,20 @@ library GetDealEpochPriceCBOR {
         return buf.data();
     }
 
-    function deserialize(MarketTypes.GetDealEpochPriceReturn memory ret, bytes memory rawResp) internal pure {
-        bytes32 tmp;
+    function deserialize(MarketTypes.GetDealEpochPriceReturn memory ret, bytes memory rawResp) internal {
+        bytes memory tmp;
         uint byteIdx = 0;
         uint len;
 
-        (tmp, byteIdx) = rawResp.readBytes32(byteIdx);
-        ret.price_per_epoch = Misc.toUint256(tmp);
+        (tmp, byteIdx) = rawResp.readBytes(byteIdx);
+        ret.price_per_epoch = tmp.deserializeBigNum();
     }
 }
 
 library GetDealClientCollateralCBOR {
     using CBOR for CBOR.CBORBuffer;
     using CBORDecoder for bytes;
+    using BigNumberCBOR for bytes;
 
     function serialize(MarketTypes.GetDealClientCollateralParams memory params) internal pure returns (bytes memory) {
         // FIXME what should the max length be on the buffer?
@@ -252,19 +258,20 @@ library GetDealClientCollateralCBOR {
         return buf.data();
     }
 
-    function deserialize(MarketTypes.GetDealClientCollateralReturn memory ret, bytes memory rawResp) internal pure {
-        bytes32 tmp;
+    function deserialize(MarketTypes.GetDealClientCollateralReturn memory ret, bytes memory rawResp) internal {
+        bytes memory tmp;
         uint byteIdx = 0;
         uint len;
 
-        (tmp, byteIdx) = rawResp.readBytes32(byteIdx);
-        ret.collateral = Misc.toUint256(tmp);
+        (tmp, byteIdx) = rawResp.readBytes(byteIdx);
+        ret.collateral = tmp.deserializeBigNum();
     }
 }
 
 library GetDealProviderCollateralCBOR {
     using CBOR for CBOR.CBORBuffer;
     using CBORDecoder for bytes;
+    using BigNumberCBOR for bytes;
 
     function serialize(MarketTypes.GetDealProviderCollateralParams memory params) internal pure returns (bytes memory) {
         // FIXME what should the max length be on the buffer?
@@ -275,13 +282,13 @@ library GetDealProviderCollateralCBOR {
         return buf.data();
     }
 
-    function deserialize(MarketTypes.GetDealProviderCollateralReturn memory ret, bytes memory rawResp) internal pure {
-        bytes32 tmp;
+    function deserialize(MarketTypes.GetDealProviderCollateralReturn memory ret, bytes memory rawResp) internal {
+        bytes memory tmp;
         uint byteIdx = 0;
         uint len;
 
-        (tmp, byteIdx) = rawResp.readBytes32(byteIdx);
-        ret.collateral = Misc.toUint256(tmp);
+        (tmp, byteIdx) = rawResp.readBytes(byteIdx);
+        ret.collateral = tmp.deserializeBigNum();
     }
 }
 
