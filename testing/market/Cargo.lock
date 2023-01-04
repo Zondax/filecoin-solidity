@@ -993,11 +993,11 @@ dependencies = [
 [[package]]
 name = "fil_actor_eam"
 version = "10.0.0-alpha.1"
-source = "git+https://github.com/filecoin-project/builtin-actors?tag=dev/20221218-fvm-m2#0a3b57816f67da16587d9a2cd6e0352a6da54438"
+source = "git+https://github.com/filecoin-project/builtin-actors?tag=dev/20221219-fvm-m2-patch.1#aed216d4deefbf9cdc39770e6869360bb6d30144"
 dependencies = [
  "anyhow",
  "cid",
- "fil_actors_runtime 10.0.0-alpha.1 (git+https://github.com/filecoin-project/builtin-actors?tag=dev/20221218-fvm-m2)",
+ "fil_actors_runtime 10.0.0-alpha.1 (git+https://github.com/filecoin-project/builtin-actors?tag=dev/20221219-fvm-m2-patch.1)",
  "fvm_ipld_blockstore",
  "fvm_ipld_encoding 0.3.2",
  "fvm_shared 3.0.0-alpha.15",
@@ -1009,33 +1009,6 @@ dependencies = [
  "rlp",
  "serde",
  "serde_tuple",
-]
-
-[[package]]
-name = "fil_actors_runtime"
-version = "10.0.0-alpha.1"
-source = "git+https://github.com/filecoin-project/builtin-actors?tag=dev/20221218-fvm-m2#0a3b57816f67da16587d9a2cd6e0352a6da54438"
-dependencies = [
- "anyhow",
- "byteorder",
- "cid",
- "fvm_ipld_amt 0.5.0",
- "fvm_ipld_blockstore",
- "fvm_ipld_encoding 0.3.2",
- "fvm_ipld_hamt 0.6.1",
- "fvm_shared 3.0.0-alpha.15",
- "itertools 0.10.5",
- "log",
- "multihash",
- "num-derive",
- "num-traits",
- "paste",
- "regex",
- "serde",
- "serde_repr",
- "sha2 0.10.6",
- "thiserror",
- "unsigned-varint",
 ]
 
 [[package]]
@@ -1385,6 +1358,7 @@ dependencies = [
 [[package]]
 name = "fvm"
 version = "3.0.0-alpha.17"
+source = "git+https://github.com/Zondax/ref-fvm?branch=lola/fixes#38898908c8c24b63c116ac9e01bbcbbcc1c6797c"
 dependencies = [
  "anyhow",
  "blake2b_simd",
@@ -1454,6 +1428,7 @@ dependencies = [
 [[package]]
 name = "fvm_integration_tests"
 version = "0.1.1-alpha.1"
+source = "git+https://github.com/Zondax/ref-fvm?branch=lola/fixes#38898908c8c24b63c116ac9e01bbcbbcc1c6797c"
 dependencies = [
  "anyhow",
  "cid",
@@ -1500,6 +1475,7 @@ dependencies = [
 [[package]]
 name = "fvm_ipld_amt"
 version = "0.5.0"
+source = "git+https://github.com/Zondax/ref-fvm?branch=lola/fixes#38898908c8c24b63c116ac9e01bbcbbcc1c6797c"
 dependencies = [
  "anyhow",
  "cid",
@@ -1526,6 +1502,7 @@ dependencies = [
 [[package]]
 name = "fvm_ipld_blockstore"
 version = "0.1.1"
+source = "git+https://github.com/Zondax/ref-fvm?branch=lola/fixes#38898908c8c24b63c116ac9e01bbcbbcc1c6797c"
 dependencies = [
  "anyhow",
  "cid",
@@ -1535,6 +1512,7 @@ dependencies = [
 [[package]]
 name = "fvm_ipld_car"
 version = "0.6.0"
+source = "git+https://github.com/Zondax/ref-fvm?branch=lola/fixes#38898908c8c24b63c116ac9e01bbcbbcc1c6797c"
 dependencies = [
  "cid",
  "futures",
@@ -1566,6 +1544,7 @@ dependencies = [
 [[package]]
 name = "fvm_ipld_encoding"
 version = "0.3.2"
+source = "git+https://github.com/Zondax/ref-fvm?branch=lola/fixes#38898908c8c24b63c116ac9e01bbcbbcc1c6797c"
 dependencies = [
  "anyhow",
  "cid",
@@ -1602,6 +1581,7 @@ dependencies = [
 [[package]]
 name = "fvm_ipld_hamt"
 version = "0.6.1"
+source = "git+https://github.com/Zondax/ref-fvm?branch=lola/fixes#38898908c8c24b63c116ac9e01bbcbbcc1c6797c"
 dependencies = [
  "anyhow",
  "byteorder",
@@ -1635,6 +1615,7 @@ dependencies = [
 [[package]]
 name = "fvm_sdk"
 version = "3.0.0-alpha.19"
+source = "git+https://github.com/Zondax/ref-fvm?branch=lola/fixes#38898908c8c24b63c116ac9e01bbcbbcc1c6797c"
 dependencies = [
  "cid",
  "fvm_ipld_encoding 0.3.2",
@@ -1677,6 +1658,7 @@ dependencies = [
 [[package]]
 name = "fvm_shared"
 version = "3.0.0-alpha.15"
+source = "git+https://github.com/Zondax/ref-fvm?branch=lola/fixes#38898908c8c24b63c116ac9e01bbcbbcc1c6797c"
 dependencies = [
  "anyhow",
  "bitflags",

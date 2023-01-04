@@ -89,7 +89,7 @@ pub struct ClientDealProposal {
 #[derive(Serialize_tuple, Deserialize_tuple, Debug, Clone, Eq, PartialEq)]
 pub struct PublishStorageDealsParams {
     pub deals: Vec<ClientDealProposal>,
-}   
+}
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize_tuple, Deserialize_tuple)]
 pub struct DealProposal {
@@ -146,7 +146,7 @@ fn main() {
      ***********************************************/
      let bls_private_key_client = bls_signatures::PrivateKey::generate(&mut OsRng);
      let client = Address::new_bls(&bls_private_key_client.public_key().as_bytes()).unwrap();
- 
+
      let state_tree = tester
          .state_tree
          .as_mut()
@@ -155,19 +155,19 @@ fn main() {
      let state = fvm::account_actor::State {
          address: client,
      };
- 
+
      let cid = state_tree.store().put_cbor(&state, Code::Blake2b256).unwrap();
- 
+
      let actor_state = ActorState {
          // CID of Accounts actor. You get this as output from builtin-actors compiling process
-         code: Cid::from_str("bafk2bzaced4egdjgpdpxgg37rz7zrqegwioeqbeo7gfw3a4il6tkdrssfjsoy").unwrap(),
+         code: Cid::from_str("bafk2bzacec4z6abuom2na7vetpymgi7sxnmud5o4tr3h6ip5evsfbmfuo2vzi").unwrap(),
          //code: Cid::from_str("bafk2bzaceddmas33nnn2izdexi5xjzuahzezl62aa5ah5bqwzzjceusskr6ty").unwrap(),
          state: cid,
          sequence: 0,
          balance: TokenAmount::from_whole(1_000_000),
          delegated_address: Some(client),
      };
- 
+
      state_tree
          .set_actor(assigned_addr, actor_state)
          .unwrap();
@@ -188,7 +188,7 @@ fn main() {
 
     let actor_state = ActorState {
         // CID of Accounts actor. You get this as output from builtin-actors compiling process
-        code: Cid::from_str("bafk2bzaced4egdjgpdpxgg37rz7zrqegwioeqbeo7gfw3a4il6tkdrssfjsoy").unwrap(),
+        code: Cid::from_str("bafk2bzacec4z6abuom2na7vetpymgi7sxnmud5o4tr3h6ip5evsfbmfuo2vzi").unwrap(),
         //code: Cid::from_str("bafk2bzaceddmas33nnn2izdexi5xjzuahzezl62aa5ah5bqwzzjceusskr6ty").unwrap(),
         state: cid,
         sequence: 0,
@@ -319,7 +319,7 @@ fn main() {
         .unwrap();
 
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
-    
+
     let message = Message {
         from: worker,
         to: Address::new_id(5),
@@ -341,7 +341,7 @@ fn main() {
         proposal,
         client_signature: Signature::new_bls(sig.as_bytes()),
     };
-    
+
     let params = PublishStorageDealsParams{
         deals: vec![deal],
     };
@@ -381,6 +381,7 @@ fn main() {
         .unwrap();
 
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
+    assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "40");
 
     println!("Calling `withdraw_balance`");
 
@@ -399,6 +400,8 @@ fn main() {
         .unwrap();
 
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
+    assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "58200000000000000000000000000000000000000000000000000000000000000064");
+
 
     println!("Calling `get_balance`");
 
@@ -417,6 +420,7 @@ fn main() {
         .unwrap();
 
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
+    assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "58400000000000000000000000000000000000000000000000056bc75e2d6310000000000000000000000000000000000000000000000000000007f3556c02eb7800");
 
     println!("Calling `get_deal_data_commitment`");
 
@@ -435,6 +439,7 @@ fn main() {
         .unwrap();
 
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
+    assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "58c00000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000008000000000000000000000000000000000000000000000000000000000000000000028000181e203922020b51bcc94bb0977c984c093770289dea4e83ef08c355145d412c6673e06152a09000000000000000000000000000000000000000000000000");
 
     println!("Calling `get_deal_client`");
 
@@ -453,6 +458,7 @@ fn main() {
         .unwrap();
 
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
+    assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "58200000000000000000000000000000000000000000000000000000000000000065");
 
     println!("Calling `get_deal_provider`");
 
@@ -471,6 +477,7 @@ fn main() {
         .unwrap();
 
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
+    assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "58200000000000000000000000000000000000000000000000000000000000000067");
 
     println!("Calling `get_deal_label`");
 
@@ -489,6 +496,7 @@ fn main() {
         .unwrap();
 
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
+    assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "58a00000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000346d41584367354149673859425862466a7464427931695a6a704459417752537430656c474c463547765471756c4569693156634d000000000000000000000000");
 
     println!("Calling `get_deal_term`");
 
@@ -507,6 +515,7 @@ fn main() {
         .unwrap();
 
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
+    assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "5840000000000000000000000000000000000000000000000000000000000000629d000000000000000000000000000000000000000000000000000000000007eee1");
 
     println!("Calling `get_deal_total_price`");
 
@@ -525,6 +534,7 @@ fn main() {
         .unwrap();
 
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
+    assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "582000000000000000000000000000000000000000000000000007efc7ed5e24f800");
 
     println!("Calling `get_deal_client_collateral`");
 
@@ -543,6 +553,7 @@ fn main() {
         .unwrap();
 
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
+    assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "582000000000000000000000000000000000000000000000000000038d7ea4c68000");
 
     println!("Calling `get_deal_provider_collateral`");
 
@@ -561,6 +572,7 @@ fn main() {
         .unwrap();
 
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
+    assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "582000000000000000000000000000000000000000000000000000038d7ea4c68000");
 
     println!("Calling `get_deal_verified`");
 
@@ -579,6 +591,7 @@ fn main() {
         .unwrap();
 
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
+    assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "58200000000000000000000000000000000000000000000000000000000000000000");
 
     println!("Calling `get_deal_activation`");
 
@@ -597,6 +610,7 @@ fn main() {
         .unwrap();
 
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
+    assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "584000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000");
 
     println!("Calling `publish_storage_deals`");
 
