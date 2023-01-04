@@ -24,6 +24,7 @@ import {CommonTypes} from "../types/CommonTypes.sol";
 import {DataCapTypes} from "../types/DataCapTypes.sol";
 import "../utils/CborDecode.sol";
 import "../utils/Misc.sol";
+import "./BigNumbersCbor.sol";
 
 library BytesCBOR {
     using CBOR for CBOR.CBORBuffer;
@@ -128,32 +129,34 @@ library GetAllowanceCBOR {
 library TransferCBOR {
     using CBOR for CBOR.CBORBuffer;
     using CBORDecoder for bytes;
+    using BigNumberCBOR for BigNumber;
+    using BigNumberCBOR for bytes;
 
-    function serialize(DataCapTypes.TransferParams memory params) internal pure returns (bytes memory) {
+    function serialize(DataCapTypes.TransferParams memory params) internal returns (bytes memory) {
         // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
         buf.startFixedArray(3);
         buf.writeBytes(params.to);
-        buf.writeBytes(Misc.toBytes(params.amount));
+        buf.writeBytes(params.amount.serializeBigNum());
         buf.writeBytes(params.operator_data);
 
         return buf.data();
     }
 
-    function deserialize(DataCapTypes.TransferReturn memory ret, bytes memory rawResp) internal pure {
+    function deserialize(DataCapTypes.TransferReturn memory ret, bytes memory rawResp) internal {
         uint byteIdx = 0;
         uint len;
-        bytes32 tmp;
+        bytes memory tmp;
 
         (len, byteIdx) = rawResp.readFixedArray(byteIdx);
         assert(len == 3);
 
-        (tmp, byteIdx) = rawResp.readBytes32(byteIdx);
-        ret.from_balance = Misc.toInt256(tmp);
+        (tmp, byteIdx) = rawResp.readBytes(byteIdx);
+        ret.from_balance = tmp.deserializeBigNum();
 
-        (tmp, byteIdx) = rawResp.readBytes32(byteIdx);
-        ret.to_balance = Misc.toInt256(tmp);
+        (tmp, byteIdx) = rawResp.readBytes(byteIdx);
+        ret.to_balance = tmp.deserializeBigNum();
 
         (ret.recipient_data, byteIdx) = rawResp.readBytes(byteIdx);
     }

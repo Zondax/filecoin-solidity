@@ -18,6 +18,7 @@
 //
 pragma solidity >=0.4.25 <=0.8.17;
 
+import "../cbor/BigNumbersCbor.sol";
 import "./CommonTypes.sol";
 
 /// @title Filecoin datacap actor types for Solidity.
@@ -46,15 +47,15 @@ library DataCapTypes {
     struct TransferParams {
         bytes to;
         /// A non-negative amount to transfer
-        int256 amount;
+        BigNumber amount;
         /// Arbitrary data to pass on via the receiver hook
         bytes operator_data;
     }
 
     struct TransferReturn {
-        int256 from_balance;
+        BigNumber from_balance;
         /// The new balance of the `to` address
-        int256 to_balance;
+        BigNumber to_balance;
         /// (Optional) data returned from receiver hook
         bytes recipient_data;
     }
