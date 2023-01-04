@@ -183,6 +183,7 @@ fn main() {
         .unwrap();
 
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
+    assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "40");
 
     println!("Calling `get_beneficiary`");
 
@@ -201,6 +202,7 @@ fn main() {
         .unwrap();
 
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
+    assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "5901e000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000040000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002006700000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000a000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000");
 
     println!("Calling `change_beneficiary`");
 
@@ -219,6 +221,7 @@ fn main() {
         .unwrap();
 
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
+    assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "40");
 
     println!("Calling `get_owner`");
 
@@ -237,6 +240,7 @@ fn main() {
         .unwrap();
 
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
+    assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "58e00000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000000000002006700000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000020066000000000000000000000000000000000000000000000000000000000000");
 
     println!("Calling `get_available_balance`");
 
@@ -255,6 +259,7 @@ fn main() {
         .unwrap();
 
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
+    assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "58200000000000000000000000000000000000000000000000000000000000000000");
 
 
     println!("Calling `get_vesting_funds`");
@@ -274,6 +279,7 @@ fn main() {
         .unwrap();
 
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
+    assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "5860000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000000");
 
     println!("Calling `repay_debt`");
 
@@ -292,6 +298,7 @@ fn main() {
         .unwrap();
 
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
+    assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "40");
 
 
     println!("Calling `confirm_change_worker_address`");
@@ -311,6 +318,7 @@ fn main() {
         .unwrap();
 
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
+    assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "40");
 
     println!("Calling `get_peer_id`");
 
@@ -330,6 +338,7 @@ fn main() {
 
 
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
+    assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "58800000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000030102030000000000000000000000000000000000000000000000000000000000");
 
     println!("Calling `get_multiaddresses`");
 
@@ -348,6 +357,7 @@ fn main() {
         .unwrap();
 
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
+    assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "58c0000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000030102030000000000000000000000000000000000000000000000000000000000");
 
 
     println!("Calling `change_worker_address`");
@@ -367,6 +377,7 @@ fn main() {
         .unwrap();
 
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
+    assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "40");
 
     println!("Calling `is_controlling_address`");
 
@@ -385,6 +396,7 @@ fn main() {
        .unwrap();
 
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
+    assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "58200000000000000000000000000000000000000000000000000000000000000000");
 
     println!("Calling `get_sector_size`");
 
@@ -403,6 +415,7 @@ fn main() {
         .unwrap();
 
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
+    assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "58200000000000000000000000000000000000000000000000000000000000000800");
 
     println!("Calling `change_multiaddresses`");
 
@@ -421,6 +434,7 @@ fn main() {
         .unwrap();
 
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
+    assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "40");
 
     println!("Calling `change_peer_id`");
 
@@ -439,6 +453,7 @@ fn main() {
         .unwrap();
 
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
+    assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "40");
 
     println!("Calling `withdraw_balance`");
 
@@ -457,4 +472,5 @@ fn main() {
         .unwrap();
 
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
+    assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "5860000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000000");
 }
