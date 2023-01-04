@@ -18,7 +18,7 @@
 //
 pragma solidity >=0.4.25 <=0.8.17;
 
-import "../cbor/BigNumbersCbor.sol";
+import "../cbor/BigNumberCbor.sol";
 import "./CommonTypes.sol";
 
 /// @title Filecoin datacap actor types for Solidity.
@@ -70,11 +70,11 @@ library DataCapTypes {
     }
 
     struct TransferFromReturn {
-        int256 from_balance;
+        BigNumber from_balance;
         /// The new balance of the `to` address
-        int256 to_balance;
+        BigNumber to_balance;
         /// The new remaining allowance between `owner` and `operator` (caller)
-        int256 allowance;
+        BigNumber allowance;
         /// (Optional) data returned from receiver hook
         bytes recipient_data;
     }
@@ -100,7 +100,7 @@ library DataCapTypes {
 
     struct BurnReturn {
         /// New balance in the account after the successful burn
-        int256 balance;
+        BigNumber balance;
     }
 
     struct BurnFromParams {
@@ -111,8 +111,8 @@ library DataCapTypes {
 
     struct BurnFromReturn {
         /// New balance in the account after the successful burn
-        int256 balance;
+        BigNumber balance;
         /// New remaining allowance between the owner and operator (caller)
-        int256 allowance;
+        BigNumber allowance;
     }
 }
