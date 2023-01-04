@@ -20,6 +20,7 @@ pragma solidity >=0.4.25 <=0.8.17;
 
 import "./types/DataCapTypes.sol";
 import "./cbor/DataCapCbor.sol";
+import "./cbor/BigNumberCbor.sol";
 
 import "./utils/Actor.sol";
 
@@ -60,34 +61,34 @@ library DataCapAPI {
         return result.deserializeString();
     }
 
-    function totalSupply() internal returns (int256) {
+    function totalSupply() internal returns (BigNumber memory) {
         bytes memory raw_request = new bytes(0);
 
         bytes memory raw_response = Actor.call(DataCapTypes.TotalSupplyMethodNum, DataCapTypes.ActorCode, raw_request, Misc.NONE_CODEC);
 
         bytes memory result = Actor.readRespData(raw_response);
 
-        return result.deserializeInt256();
+        return result.deserializeBigNum();
     }
 
-    function balance(bytes memory addr) internal returns (int256) {
+    function balance(bytes memory addr) internal returns (BigNumber memory) {
         bytes memory raw_request = addr.serializeAddress();
 
         bytes memory raw_response = Actor.call(DataCapTypes.BalanceOfMethodNum, DataCapTypes.ActorCode, raw_request, Misc.CBOR_CODEC);
 
         bytes memory result = Actor.readRespData(raw_response);
 
-        return result.deserializeInt256();
+        return result.deserializeBigNum();
     }
 
-    function allowance(DataCapTypes.GetAllowanceParams memory params) internal returns (int256) {
+    function allowance(DataCapTypes.GetAllowanceParams memory params) internal returns (BigNumber memory) {
         bytes memory raw_request = params.serialize();
 
         bytes memory raw_response = Actor.call(DataCapTypes.AllowanceMethodNum, DataCapTypes.ActorCode, raw_request, Misc.CBOR_CODEC);
 
         bytes memory result = Actor.readRespData(raw_response);
 
-        return result.deserializeInt256();
+        return result.deserializeBigNum();
     }
 
     function transfer(DataCapTypes.TransferParams memory params) internal returns (DataCapTypes.TransferReturn memory) {
@@ -116,34 +117,44 @@ library DataCapAPI {
         return response;
     }
 
-    function increaseAllowance(DataCapTypes.IncreaseAllowanceParams memory params) internal returns (int256) {
+    function increaseAllowance(DataCapTypes.IncreaseAllowanceParams memory params) internal returns (BigNumber memory) {
         bytes memory raw_request = params.serialize();
 
-        bytes memory raw_response = Actor.call(DataCapTypes.IncreaseAllowanceMethodNum, DataCapTypes.ActorCode, raw_request, Misc.CBOR_CODEC);
+        bytes memory raw_response = Actor.call(
+            DataCapTypes.IncreaseAllowanceMethodNum,
+            DataCapTypes.ActorCode,
+            raw_request,
+            Misc.CBOR_CODEC
+        );
 
         bytes memory result = Actor.readRespData(raw_response);
 
-        return result.deserializeInt256();
+        return result.deserializeBigNum();
     }
 
-    function decreaseAllowance(DataCapTypes.DecreaseAllowanceParams memory params) internal returns (int256) {
+    function decreaseAllowance(DataCapTypes.DecreaseAllowanceParams memory params) internal returns (BigNumber memory) {
         bytes memory raw_request = params.serialize();
 
-        bytes memory raw_response = Actor.call(DataCapTypes.DecreaseAllowanceMethodNum, DataCapTypes.ActorCode, raw_request, Misc.CBOR_CODEC);
+        bytes memory raw_response = Actor.call(
+            DataCapTypes.DecreaseAllowanceMethodNum,
+            DataCapTypes.ActorCode,
+            raw_request,
+            Misc.CBOR_CODEC
+        );
 
         bytes memory result = Actor.readRespData(raw_response);
 
-        return result.deserializeInt256();
+        return result.deserializeBigNum();
     }
 
-    function revokeAllowance(DataCapTypes.RevokeAllowanceParams memory params) internal returns (int256) {
+    function revokeAllowance(DataCapTypes.RevokeAllowanceParams memory params) internal returns (BigNumber memory) {
         bytes memory raw_request = params.serialize();
 
         bytes memory raw_response = Actor.call(DataCapTypes.RevokeAllowanceMethodNum, DataCapTypes.ActorCode, raw_request, Misc.CBOR_CODEC);
 
         bytes memory result = Actor.readRespData(raw_response);
 
-        return result.deserializeInt256();
+        return result.deserializeBigNum();
     }
 
     function burn(DataCapTypes.BurnParams memory params) internal returns (DataCapTypes.BurnReturn memory) {

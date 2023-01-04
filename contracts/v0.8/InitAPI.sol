@@ -16,7 +16,7 @@
 //
 // DRAFT!! THIS CODE HAS NOT BEEN AUDITED - USE ONLY FOR PROTOTYPING
 //
-pragma solidity >=0.4.25 <=0.8.15;
+pragma solidity >=0.4.25 <=0.8.17;
 
 import "./types/InitTypes.sol";
 import "./cbor/InitCbor.sol";

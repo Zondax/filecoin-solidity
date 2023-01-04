@@ -24,10 +24,12 @@ import {CommonTypes} from "../types/CommonTypes.sol";
 import {DataCapTypes} from "../types/DataCapTypes.sol";
 import "../utils/CborDecode.sol";
 import "../utils/Misc.sol";
+import "./BigNumberCbor.sol";
 
 library BytesCBOR {
     using CBOR for CBOR.CBORBuffer;
     using CBORDecoder for bytes;
+    using BigNumberCBOR for bytes;
 
     function serializeAddress(bytes memory addr) internal pure returns (bytes memory) {
         // FIXME what should the max length be on the buffer?
@@ -67,41 +69,19 @@ library BytesCBOR {
         return response;
     }
 
-    function deserializeInt256(bytes memory ret) internal pure returns (int256) {
-        bytes32 tmp;
+    function deserializeBigNum(bytes memory ret) internal returns (BigNumber memory) {
+        bytes memory tmp;
         uint byteIdx = 0;
         uint len;
 
         if (ret.length > 0) {
-            (tmp, byteIdx) = ret.readBytes32(byteIdx);
-            return Misc.toInt256(tmp);
+            (tmp, byteIdx) = ret.readBytes(byteIdx);
+            if (tmp.length > 0) {
+                return tmp.deserializeBigNum();
+            }
         }
 
-        return 0;
-    }
-}
-
-library Int256CBOR {
-    using CBOR for CBOR.CBORBuffer;
-    using CBORDecoder for bytes;
-
-    function serializeAddress(bytes memory addr) internal pure returns (bytes memory) {
-        // FIXME what should the max length be on the buffer?
-        CBOR.CBORBuffer memory buf = CBOR.create(64);
-
-        buf.writeBytes(addr);
-
-        return buf.data();
-    }
-
-    function deserializeAddress(bytes memory ret) internal pure returns (bytes memory) {
-        bytes memory addr;
-        uint byteIdx = 0;
-        uint len;
-
-        (addr, byteIdx) = ret.readBytes(byteIdx);
-
-        return addr;
+        return BigNumber(new bytes(0), false);
     }
 }
 
@@ -128,32 +108,34 @@ library GetAllowanceCBOR {
 library TransferCBOR {
     using CBOR for CBOR.CBORBuffer;
     using CBORDecoder for bytes;
+    using BigNumberCBOR for BigNumber;
+    using BigNumberCBOR for bytes;
 
-    function serialize(DataCapTypes.TransferParams memory params) internal pure returns (bytes memory) {
+    function serialize(DataCapTypes.TransferParams memory params) internal returns (bytes memory) {
         // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
         buf.startFixedArray(3);
         buf.writeBytes(params.to);
-        buf.writeBytes(Misc.toBytes(params.amount));
+        buf.writeBytes(params.amount.serializeBigNum());
         buf.writeBytes(params.operator_data);
 
         return buf.data();
     }
 
-    function deserialize(DataCapTypes.TransferReturn memory ret, bytes memory rawResp) internal pure {
+    function deserialize(DataCapTypes.TransferReturn memory ret, bytes memory rawResp) internal {
         uint byteIdx = 0;
         uint len;
-        bytes32 tmp;
+        bytes memory tmp;
 
         (len, byteIdx) = rawResp.readFixedArray(byteIdx);
         assert(len == 3);
 
-        (tmp, byteIdx) = rawResp.readBytes32(byteIdx);
-        ret.from_balance = Misc.toInt256(tmp);
+        (tmp, byteIdx) = rawResp.readBytes(byteIdx);
+        ret.from_balance = tmp.deserializeBigNum();
 
-        (tmp, byteIdx) = rawResp.readBytes32(byteIdx);
-        ret.to_balance = Misc.toInt256(tmp);
+        (tmp, byteIdx) = rawResp.readBytes(byteIdx);
+        ret.to_balance = tmp.deserializeBigNum();
 
         (ret.recipient_data, byteIdx) = rawResp.readBytes(byteIdx);
     }
@@ -164,6 +146,8 @@ library TransferCBOR {
 library TransferFromCBOR {
     using CBOR for CBOR.CBORBuffer;
     using CBORDecoder for bytes;
+    using BigNumberCBOR for BigNumber;
+    using BigNumberCBOR for bytes;
 
     function serialize(DataCapTypes.TransferFromParams memory params) internal pure returns (bytes memory) {
         // FIXME what should the max length be on the buffer?
@@ -172,28 +156,28 @@ library TransferFromCBOR {
         buf.startFixedArray(4);
         buf.writeBytes(params.from);
         buf.writeBytes(params.to);
-        buf.writeBytes(Misc.toBytes(params.amount));
+        buf.writeBytes(params.amount.serializeBigNum());
         buf.writeBytes(params.operator_data);
 
         return buf.data();
     }
 
-    function deserialize(DataCapTypes.TransferFromReturn memory ret, bytes memory rawResp) internal pure {
+    function deserialize(DataCapTypes.TransferFromReturn memory ret, bytes memory rawResp) internal {
         uint byteIdx = 0;
         uint len;
-        bytes32 tmp;
+        bytes memory tmp;
 
         (len, byteIdx) = rawResp.readFixedArray(byteIdx);
         assert(len == 4);
 
-        (tmp, byteIdx) = rawResp.readBytes32(byteIdx);
-        ret.from_balance = Misc.toInt256(tmp);
+        (tmp, byteIdx) = rawResp.readBytes(byteIdx);
+        ret.from_balance = tmp.deserializeBigNum();
 
-        (tmp, byteIdx) = rawResp.readBytes32(byteIdx);
-        ret.to_balance = Misc.toInt256(tmp);
+        (tmp, byteIdx) = rawResp.readBytes(byteIdx);
+        ret.to_balance = tmp.deserializeBigNum();
 
-        (tmp, byteIdx) = rawResp.readBytes32(byteIdx);
-        ret.allowance = Misc.toInt256(tmp);
+        (tmp, byteIdx) = rawResp.readBytes(byteIdx);
+        ret.allowance = tmp.deserializeBigNum();
 
         (ret.recipient_data, byteIdx) = rawResp.readBytes(byteIdx);
     }
@@ -204,6 +188,7 @@ library TransferFromCBOR {
 library IncreaseAllowanceCBOR {
     using CBOR for CBOR.CBORBuffer;
     using CBORDecoder for bytes;
+    using BigNumberCBOR for BigNumber;
 
     function serialize(DataCapTypes.IncreaseAllowanceParams memory params) internal pure returns (bytes memory) {
         // FIXME what should the max length be on the buffer?
@@ -211,7 +196,7 @@ library IncreaseAllowanceCBOR {
 
         buf.startFixedArray(2);
         buf.writeBytes(params.operator);
-        buf.writeBytes(Misc.toBytes(params.increase));
+        buf.writeBytes(params.increase.serializeBigNum());
 
         return buf.data();
     }
@@ -222,6 +207,7 @@ library IncreaseAllowanceCBOR {
 library DecreaseAllowanceCBOR {
     using CBOR for CBOR.CBORBuffer;
     using CBORDecoder for bytes;
+    using BigNumberCBOR for BigNumber;
 
     function serialize(DataCapTypes.DecreaseAllowanceParams memory params) internal pure returns (bytes memory) {
         // FIXME what should the max length be on the buffer?
@@ -229,7 +215,7 @@ library DecreaseAllowanceCBOR {
 
         buf.startFixedArray(2);
         buf.writeBytes(params.operator);
-        buf.writeBytes(Misc.toBytes(params.decrease));
+        buf.writeBytes(params.decrease.serializeBigNum());
 
         return buf.data();
     }
@@ -257,27 +243,29 @@ library RevokeAllowanceCBOR {
 library BurnCBOR {
     using CBOR for CBOR.CBORBuffer;
     using CBORDecoder for bytes;
+    using BigNumberCBOR for BigNumber;
+    using BigNumberCBOR for bytes;
 
     function serialize(DataCapTypes.BurnParams memory params) internal pure returns (bytes memory) {
         // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
         buf.startFixedArray(1);
-        buf.writeBytes(Misc.toBytes(params.amount));
+        buf.writeBytes(params.amount.serializeBigNum());
 
         return buf.data();
     }
 
-    function deserialize(DataCapTypes.BurnReturn memory ret, bytes memory rawResp) internal pure {
+    function deserialize(DataCapTypes.BurnReturn memory ret, bytes memory rawResp) internal {
         uint byteIdx = 0;
         uint len;
-        bytes32 tmp;
+        bytes memory tmp;
 
         (len, byteIdx) = rawResp.readFixedArray(byteIdx);
         assert(len == 1);
 
-        (tmp, byteIdx) = rawResp.readBytes32(byteIdx);
-        ret.balance = Misc.toInt256(tmp);
+        (tmp, byteIdx) = rawResp.readBytes(byteIdx);
+        ret.balance = tmp.deserializeBigNum();
     }
 }
 
@@ -286,6 +274,8 @@ library BurnCBOR {
 library BurnFromCBOR {
     using CBOR for CBOR.CBORBuffer;
     using CBORDecoder for bytes;
+    using BigNumberCBOR for BigNumber;
+    using BigNumberCBOR for bytes;
 
     function serialize(DataCapTypes.BurnFromParams memory params) internal pure returns (bytes memory) {
         // FIXME what should the max length be on the buffer?
@@ -293,23 +283,23 @@ library BurnFromCBOR {
 
         buf.startFixedArray(2);
         buf.writeBytes(params.owner);
-        buf.writeBytes(Misc.toBytes(params.amount));
+        buf.writeBytes(params.amount.serializeBigNum());
 
         return buf.data();
     }
 
-    function deserialize(DataCapTypes.BurnFromReturn memory ret, bytes memory rawResp) internal pure {
+    function deserialize(DataCapTypes.BurnFromReturn memory ret, bytes memory rawResp) internal {
         uint byteIdx = 0;
         uint len;
-        bytes32 tmp;
+        bytes memory tmp;
 
         (len, byteIdx) = rawResp.readFixedArray(byteIdx);
         assert(len == 2);
 
-        (tmp, byteIdx) = rawResp.readBytes32(byteIdx);
-        ret.balance = Misc.toInt256(tmp);
+        (tmp, byteIdx) = rawResp.readBytes(byteIdx);
+        ret.balance = tmp.deserializeBigNum();
 
-        (tmp, byteIdx) = rawResp.readBytes32(byteIdx);
-        ret.allowance = Misc.toInt256(tmp);
+        (tmp, byteIdx) = rawResp.readBytes(byteIdx);
+        ret.allowance = tmp.deserializeBigNum();
     }
 }

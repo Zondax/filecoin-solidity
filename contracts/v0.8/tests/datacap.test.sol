@@ -19,6 +19,7 @@
 pragma solidity >=0.4.25 <=0.8.17;
 
 import "../types/DataCapTypes.sol";
+import "../cbor/BigNumberCbor.sol";
 import "../DataCapAPI.sol";
 
 /// @author Zondax AG
@@ -31,15 +32,15 @@ contract DataCapApiTest {
         return DataCapAPI.symbol();
     }
 
-    function total_supply() public returns (int256) {
+    function total_supply() public returns (BigNumber memory) {
         return DataCapAPI.totalSupply();
     }
 
-    function balance(bytes memory addr) public returns (int256) {
+    function balance(bytes memory addr) public returns (BigNumber memory) {
         return DataCapAPI.balance(addr);
     }
 
-    function allowance(DataCapTypes.GetAllowanceParams memory params) public returns (int256) {
+    function allowance(DataCapTypes.GetAllowanceParams memory params) public returns (BigNumber memory) {
         return DataCapAPI.allowance(params);
     }
 
@@ -51,15 +52,15 @@ contract DataCapApiTest {
         return DataCapAPI.transferFrom(params);
     }
 
-    function increase_allowance(DataCapTypes.IncreaseAllowanceParams memory params) public returns (int256) {
+    function increase_allowance(DataCapTypes.IncreaseAllowanceParams memory params) public returns (BigNumber memory) {
         return DataCapAPI.increaseAllowance(params);
     }
 
-    function decrease_allowance(DataCapTypes.DecreaseAllowanceParams memory params) public returns (int256) {
+    function decrease_allowance(DataCapTypes.DecreaseAllowanceParams memory params) public returns (BigNumber memory) {
         return DataCapAPI.decreaseAllowance(params);
     }
 
-    function revoke_allowance(DataCapTypes.RevokeAllowanceParams memory params) public returns (int256) {
+    function revoke_allowance(DataCapTypes.RevokeAllowanceParams memory params) public returns (BigNumber memory) {
         return DataCapAPI.revokeAllowance(params);
     }
 

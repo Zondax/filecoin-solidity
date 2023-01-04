@@ -97,7 +97,7 @@ install_solc_win:
 	@echo "No Windows. Only Linux."
 
 install_solc_mac:
-	wget https://github.com/ethereum/solidity/releases/download/v0.8.15/solc-macos
+	wget https://github.com/ethereum/solidity/releases/download/v0.8.17/solc-macos
 	mv solc-macos bin/solc
 	chmod +x bin/solc
 
