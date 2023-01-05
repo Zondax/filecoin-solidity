@@ -349,6 +349,7 @@ library GetDealActivationCBOR {
 library PublishStorageDealsCBOR {
     using CBOR for CBOR.CBORBuffer;
     using CBORDecoder for bytes;
+    using BigNumberCBOR for BigNumber;
 
     function serialize(MarketTypes.PublishStorageDealsParams memory params) internal pure returns (bytes memory) {
         // FIXME what should the max length be on the buffer?
@@ -368,9 +369,9 @@ library PublishStorageDealsCBOR {
             buf.writeString(params.deals[i].proposal.label);
             buf.writeInt64(params.deals[i].proposal.start_epoch);
             buf.writeInt64(params.deals[i].proposal.end_epoch);
-            buf.writeBytes(Misc.toBytes(uint256(params.deals[i].proposal.storage_price_per_epoch)));
-            buf.writeBytes(Misc.toBytes(uint256(params.deals[i].proposal.provider_collateral)));
-            buf.writeBytes(Misc.toBytes(uint256(params.deals[i].proposal.client_collateral)));
+            buf.writeBytes(params.deals[i].proposal.storage_price_per_epoch.serializeBigNum());
+            buf.writeBytes(params.deals[i].proposal.provider_collateral.serializeBigNum());
+            buf.writeBytes(params.deals[i].proposal.client_collateral.serializeBigNum());
 
             buf.writeBytes(params.deals[i].client_signature);
         }
