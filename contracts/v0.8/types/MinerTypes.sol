@@ -19,7 +19,7 @@
 // SPDX-License-Identifier: Apache-2.0
 pragma solidity >=0.4.25 <=0.8.17;
 
-import "../cbor/BigNumberCbor.sol";
+import "../cbor/BigIntCbor.sol";
 import "./CommonTypes.sol";
 
 /// @title Filecoin miner actor types for Solidity.
@@ -59,7 +59,7 @@ library MinerTypes {
         uint64 sector_size;
     }
     struct GetAvailableBalanceReturn {
-        BigNumber available_balance;
+        BigInt available_balance;
     }
 
     struct GetVestingFundsReturn {
@@ -68,7 +68,7 @@ library MinerTypes {
 
     struct ChangeBeneficiaryParams {
         bytes new_beneficiary;
-        BigNumber new_quota;
+        BigInt new_quota;
         uint64 new_expiration;
     }
 

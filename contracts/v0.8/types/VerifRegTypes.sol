@@ -19,7 +19,7 @@
 // SPDX-License-Identifier: Apache-2.0
 pragma solidity >=0.4.25 <=0.8.17;
 
-import "../cbor/BigNumberCbor.sol";
+import "../cbor/BigIntCbor.sol";
 import "./CommonTypes.sol";
 
 /// @title Filecoin Verified Registry actor types for Solidity.
@@ -58,7 +58,7 @@ library VerifRegTypes {
         // Results for each processed allocation.
         CommonTypes.BatchReturn results;
         // The amount of datacap reclaimed for the client.
-        BigNumber datacap_recovered;
+        BigInt datacap_recovered;
     }
     struct RemoveExpiredClaimsParams {
         // Provider to clean up (need not be the caller)

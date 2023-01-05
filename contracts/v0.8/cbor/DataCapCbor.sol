@@ -25,12 +25,12 @@ import {CommonTypes} from "../types/CommonTypes.sol";
 import {DataCapTypes} from "../types/DataCapTypes.sol";
 import "../utils/CborDecode.sol";
 import "../utils/Misc.sol";
-import "./BigNumberCbor.sol";
+import "./BigIntCbor.sol";
 
 library BytesCBOR {
     using CBOR for CBOR.CBORBuffer;
     using CBORDecoder for bytes;
-    using BigNumberCBOR for bytes;
+    using BigIntCBOR for bytes;
 
     function serializeAddress(bytes memory addr) internal pure returns (bytes memory) {
         // FIXME what should the max length be on the buffer?
@@ -68,7 +68,7 @@ library BytesCBOR {
         return response;
     }
 
-    function deserializeBigNum(bytes memory ret) internal pure returns (BigNumber memory) {
+    function deserializeBigNum(bytes memory ret) internal pure returns (BigInt memory) {
         bytes memory tmp;
         uint byteIdx = 0;
 
@@ -79,7 +79,7 @@ library BytesCBOR {
             }
         }
 
-        return BigNumber(new bytes(0), false);
+        return BigInt(new bytes(0), false);
     }
 }
 
@@ -106,8 +106,8 @@ library GetAllowanceCBOR {
 library TransferCBOR {
     using CBOR for CBOR.CBORBuffer;
     using CBORDecoder for bytes;
-    using BigNumberCBOR for BigNumber;
-    using BigNumberCBOR for bytes;
+    using BigIntCBOR for BigInt;
+    using BigIntCBOR for bytes;
 
     function serialize(DataCapTypes.TransferParams memory params) internal pure returns (bytes memory) {
         // FIXME what should the max length be on the buffer?
@@ -144,8 +144,8 @@ library TransferCBOR {
 library TransferFromCBOR {
     using CBOR for CBOR.CBORBuffer;
     using CBORDecoder for bytes;
-    using BigNumberCBOR for BigNumber;
-    using BigNumberCBOR for bytes;
+    using BigIntCBOR for BigInt;
+    using BigIntCBOR for bytes;
 
     function serialize(DataCapTypes.TransferFromParams memory params) internal pure returns (bytes memory) {
         // FIXME what should the max length be on the buffer?
@@ -186,7 +186,7 @@ library TransferFromCBOR {
 library IncreaseAllowanceCBOR {
     using CBOR for CBOR.CBORBuffer;
     using CBORDecoder for bytes;
-    using BigNumberCBOR for BigNumber;
+    using BigIntCBOR for BigInt;
 
     function serialize(DataCapTypes.IncreaseAllowanceParams memory params) internal pure returns (bytes memory) {
         // FIXME what should the max length be on the buffer?
@@ -205,7 +205,7 @@ library IncreaseAllowanceCBOR {
 library DecreaseAllowanceCBOR {
     using CBOR for CBOR.CBORBuffer;
     using CBORDecoder for bytes;
-    using BigNumberCBOR for BigNumber;
+    using BigIntCBOR for BigInt;
 
     function serialize(DataCapTypes.DecreaseAllowanceParams memory params) internal pure returns (bytes memory) {
         // FIXME what should the max length be on the buffer?
@@ -241,8 +241,8 @@ library RevokeAllowanceCBOR {
 library BurnCBOR {
     using CBOR for CBOR.CBORBuffer;
     using CBORDecoder for bytes;
-    using BigNumberCBOR for BigNumber;
-    using BigNumberCBOR for bytes;
+    using BigIntCBOR for BigInt;
+    using BigIntCBOR for bytes;
 
     function serialize(DataCapTypes.BurnParams memory params) internal pure returns (bytes memory) {
         // FIXME what should the max length be on the buffer?
@@ -272,8 +272,8 @@ library BurnCBOR {
 library BurnFromCBOR {
     using CBOR for CBOR.CBORBuffer;
     using CBORDecoder for bytes;
-    using BigNumberCBOR for BigNumber;
-    using BigNumberCBOR for bytes;
+    using BigIntCBOR for BigInt;
+    using BigIntCBOR for bytes;
 
     function serialize(DataCapTypes.BurnFromParams memory params) internal pure returns (bytes memory) {
         // FIXME what should the max length be on the buffer?

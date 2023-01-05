@@ -19,7 +19,7 @@
 // SPDX-License-Identifier: Apache-2.0
 pragma solidity >=0.4.25 <=0.8.17;
 
-import {BigNumbers, BigNumber as BigNum} from "@zondax/solidity-bignumber/src/BigNumbers.sol";
+import {BigNumbers, BigNumber} from "@zondax/solidity-bignumber/src/BigNumbers.sol";
 
 import "../types/MinerTypes.sol";
 
@@ -87,13 +87,13 @@ contract MinerAPI {
     /// @notice Can go negative if the miner is in IP debt.
     /// @return the available balance of this miner.
     function get_available_balance() public pure returns (MinerTypes.GetAvailableBalanceReturn memory) {
-        return MinerTypes.GetAvailableBalanceReturn(BigNumber(hex"021E19E0C9BAB2400000", false));
+        return MinerTypes.GetAvailableBalanceReturn(BigInt(hex"021E19E0C9BAB2400000", false));
     }
 
     /// @return the funds vesting in this miner as a list of (vesting_epoch, vesting_amount) tuples.
     function get_vesting_funds() public pure returns (MinerTypes.GetVestingFundsReturn memory) {
         CommonTypes.VestingFunds[] memory vesting_funds = new CommonTypes.VestingFunds[](1);
-        vesting_funds[0] = CommonTypes.VestingFunds(1668514825, BigNumber(hex"6C6B935B8BBD400000", false));
+        vesting_funds[0] = CommonTypes.VestingFunds(1668514825, BigInt(hex"6C6B935B8BBD400000", false));
 
         return MinerTypes.GetVestingFundsReturn(vesting_funds);
     }
@@ -103,10 +103,10 @@ contract MinerAPI {
     /// @notice See FIP-0029, https://github.com/filecoin-project/FIPs/blob/master/FIPS/fip-0029.md
     function change_beneficiary(MinerTypes.ChangeBeneficiaryParams memory params) public {
         if (!isBeneficiarySet) {
-            BigNum memory zero = BigNumbers.zero();
+            BigNumber memory zero = BigNumbers.zero();
             CommonTypes.BeneficiaryTerm memory term = CommonTypes.BeneficiaryTerm(
                 params.new_quota,
-                BigNumber(zero.val, zero.neg),
+                BigInt(zero.val, zero.neg),
                 params.new_expiration
             );
             activeBeneficiary = CommonTypes.ActiveBeneficiary(params.new_beneficiary, term);

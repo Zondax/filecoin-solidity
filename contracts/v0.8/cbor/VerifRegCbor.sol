@@ -25,7 +25,7 @@ import {CommonTypes} from "../types/CommonTypes.sol";
 import {VerifRegTypes} from "../types/VerifRegTypes.sol";
 import "../utils/CborDecode.sol";
 import "../utils/Misc.sol";
-import "./BigNumberCbor.sol";
+import "./BigIntCbor.sol";
 
 /// @title FIXME
 /// @author Zondax AG
@@ -112,7 +112,7 @@ library AddVerifierClientCBOR {
 library RemoveExpiredAllocationsCBOR {
     using CBOR for CBOR.CBORBuffer;
     using CBORDecoder for bytes;
-    using BigNumberCBOR for bytes;
+    using BigIntCBOR for bytes;
 
     function serialize(VerifRegTypes.RemoveExpiredAllocationsParams memory params) internal pure returns (bytes memory) {
         // FIXME what should the max length be on the buffer?

@@ -25,14 +25,14 @@ import {CommonTypes} from "../types/CommonTypes.sol";
 import {MinerTypes} from "../types/MinerTypes.sol";
 import "../utils/CborDecode.sol";
 import "../utils/Misc.sol";
-import "./BigNumberCbor.sol";
+import "./BigIntCbor.sol";
 
 /// @title FIXME
 /// @author Zondax AG
 library ChangeBeneficiaryCBOR {
     using CBOR for CBOR.CBORBuffer;
     using CBORDecoder for bytes;
-    using BigNumberCBOR for BigNumber;
+    using BigIntCBOR for BigInt;
 
     function serialize(MinerTypes.ChangeBeneficiaryParams memory params) internal pure returns (bytes memory) {
         // FIXME what should the max length be on the buffer?
@@ -91,7 +91,7 @@ library GetSectorSizeCBOR {
 library GetAvailableBalanceCBOR {
     using CBOR for CBOR.CBORBuffer;
     using CBORDecoder for bytes;
-    using BigNumberCBOR for bytes;
+    using BigIntCBOR for bytes;
 
     function deserialize(MinerTypes.GetAvailableBalanceReturn memory ret, bytes memory rawResp) internal pure {
         uint byteIdx = 0;
@@ -101,7 +101,7 @@ library GetAvailableBalanceCBOR {
         if (tmp.length > 0) {
             ret.available_balance = tmp.deserializeBigNum();
         } else {
-            ret.available_balance = BigNumber(new bytes(0), false);
+            ret.available_balance = BigInt(new bytes(0), false);
         }
     }
 }
@@ -132,7 +132,7 @@ library AddressCBOR {
 library GetBeneficiaryCBOR {
     using CBOR for CBOR.CBORBuffer;
     using CBORDecoder for bytes;
-    using BigNumberCBOR for bytes;
+    using BigIntCBOR for bytes;
 
     function deserialize(MinerTypes.GetBeneficiaryReturn memory ret, bytes memory rawResp) internal pure {
         bytes memory tmp;
@@ -154,14 +154,14 @@ library GetBeneficiaryCBOR {
         if (tmp.length > 0) {
             ret.active.term.quota = tmp.deserializeBigNum();
         } else {
-            ret.active.term.quota = BigNumber(new bytes(0), false);
+            ret.active.term.quota = BigInt(new bytes(0), false);
         }
 
         (tmp, byteIdx) = rawResp.readBytes(byteIdx);
         if (tmp.length > 0) {
             ret.active.term.used_quota = tmp.deserializeBigNum();
         } else {
-            ret.active.term.used_quota = BigNumber(new bytes(0), false);
+            ret.active.term.used_quota = BigInt(new bytes(0), false);
         }
 
         (ret.active.term.expiration, byteIdx) = rawResp.readUInt64(byteIdx);
@@ -176,7 +176,7 @@ library GetBeneficiaryCBOR {
             if (tmp.length > 0) {
                 ret.proposed.new_quota = tmp.deserializeBigNum();
             } else {
-                ret.proposed.new_quota = BigNumber(new bytes(0), false);
+                ret.proposed.new_quota = BigInt(new bytes(0), false);
             }
 
             (ret.proposed.new_expiration, byteIdx) = rawResp.readUInt64(byteIdx);
@@ -189,11 +189,11 @@ library GetBeneficiaryCBOR {
 library GetVestingFundsCBOR {
     using CBOR for CBOR.CBORBuffer;
     using CBORDecoder for bytes;
-    using BigNumberCBOR for bytes;
+    using BigIntCBOR for bytes;
 
     function deserialize(MinerTypes.GetVestingFundsReturn memory ret, bytes memory rawResp) internal pure {
         int64 epoch;
-        BigNumber memory amount;
+        BigInt memory amount;
         bytes memory tmp;
 
         uint byteIdx = 0;

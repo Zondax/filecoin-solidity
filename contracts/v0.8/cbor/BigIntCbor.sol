@@ -19,13 +19,13 @@
 // SPDX-License-Identifier: Apache-2.0
 pragma solidity >=0.4.25 <=0.8.17;
 
-struct BigNumber {
+struct BigInt {
     bytes val;
     bool neg;
 }
 
-library BigNumberCBOR {
-    function serializeBigNum(BigNumber memory num) internal pure returns (bytes memory) {
+library BigIntCBOR {
+    function serializeBigNum(BigInt memory num) internal pure returns (bytes memory) {
         // TODO improve gas efficiency by using assembly code
         bytes memory raw = new bytes(num.val.length + 1);
 
@@ -42,7 +42,7 @@ library BigNumberCBOR {
         return raw;
     }
 
-    function deserializeBigNum(bytes memory raw) internal pure returns (BigNumber memory) {
+    function deserializeBigNum(bytes memory raw) internal pure returns (BigInt memory) {
         // TODO improve gas efficiency by using assembly code
         bytes memory val = new bytes(raw.length - 1);
         bool neg = false;
@@ -55,6 +55,6 @@ library BigNumberCBOR {
             val[i - 1] = raw[i];
         }
 
-        return BigNumber(val, neg);
+        return BigInt(val, neg);
     }
 }
