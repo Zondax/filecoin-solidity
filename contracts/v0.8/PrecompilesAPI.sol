@@ -80,28 +80,4 @@ library PrecompilesAPI {
         }
         return raw_response;
     }
-
-    function getRandomness(
-        int32 randomness_type,
-        int64 personalization,
-        uint32 randomness_epoch,
-        bytes memory entropy
-    ) internal returns (bytes memory) {
-        bytes memory raw_response = new bytes(MAX_RAW_RESPONSE_SIZE);
-        uint len;
-
-        assembly {
-            len := mload(entropy)
-            let input := mload(0x40)
-            mstore(input, randomness_type)
-            mstore(add(input, 0x20), personalization)
-            mstore(add(input, 0x40), randomness_epoch)
-            mstore(add(input, 0x60), len)
-
-            if iszero(staticcall(GAS_LIMIT, 0x0c, input, add(0x60, len), raw_response, MAX_RAW_RESPONSE_SIZE)) {
-                revert(0, 0)
-            }
-        }
-        return raw_response;
-    }
 }
