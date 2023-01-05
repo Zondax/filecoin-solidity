@@ -22,7 +22,7 @@ pragma solidity >=0.4.25 <=0.8.17;
 import "solidity-cborutils/contracts/CBOR.sol";
 
 import {MarketTypes} from "../types/MarketTypes.sol";
-import "./BigNumberCbor.sol";
+import "./BigIntCbor.sol";
 import "../utils/CborDecode.sol";
 import "../utils/Misc.sol";
 
@@ -31,8 +31,8 @@ import "../utils/Misc.sol";
 library WithdrawBalanceCBOR {
     using CBOR for CBOR.CBORBuffer;
     using CBORDecoder for bytes;
-    using BigNumberCBOR for BigNumber;
-    using BigNumberCBOR for bytes;
+    using BigIntCBOR for BigInt;
+    using BigIntCBOR for bytes;
 
     function serialize(MarketTypes.WithdrawBalanceParams memory params) internal pure returns (bytes memory) {
         // FIXME what should the max length be on the buffer?
@@ -79,7 +79,7 @@ library AddressCBOR {
 
 library GetBalanceCBOR {
     using CBORDecoder for bytes;
-    using BigNumberCBOR for bytes;
+    using BigIntCBOR for bytes;
 
     function deserialize(MarketTypes.GetBalanceReturn memory ret, bytes memory rawResp) internal pure {
         uint byteIdx = 0;
@@ -219,7 +219,7 @@ library GetDealTermCBOR {
 library GetDealEpochPriceCBOR {
     using CBOR for CBOR.CBORBuffer;
     using CBORDecoder for bytes;
-    using BigNumberCBOR for bytes;
+    using BigIntCBOR for bytes;
 
     function serialize(MarketTypes.GetDealEpochPriceParams memory params) internal pure returns (bytes memory) {
         // FIXME what should the max length be on the buffer?
@@ -242,7 +242,7 @@ library GetDealEpochPriceCBOR {
 library GetDealClientCollateralCBOR {
     using CBOR for CBOR.CBORBuffer;
     using CBORDecoder for bytes;
-    using BigNumberCBOR for bytes;
+    using BigIntCBOR for bytes;
 
     function serialize(MarketTypes.GetDealClientCollateralParams memory params) internal pure returns (bytes memory) {
         // FIXME what should the max length be on the buffer?
@@ -265,7 +265,7 @@ library GetDealClientCollateralCBOR {
 library GetDealProviderCollateralCBOR {
     using CBOR for CBOR.CBORBuffer;
     using CBORDecoder for bytes;
-    using BigNumberCBOR for bytes;
+    using BigIntCBOR for bytes;
 
     function serialize(MarketTypes.GetDealProviderCollateralParams memory params) internal pure returns (bytes memory) {
         // FIXME what should the max length be on the buffer?
@@ -341,7 +341,7 @@ library GetDealActivationCBOR {
 library PublishStorageDealsCBOR {
     using CBOR for CBOR.CBORBuffer;
     using CBORDecoder for bytes;
-    using BigNumberCBOR for BigNumber;
+    using BigIntCBOR for BigInt;
 
     function serialize(MarketTypes.PublishStorageDealsParams memory params) internal pure returns (bytes memory) {
         // FIXME what should the max length be on the buffer?

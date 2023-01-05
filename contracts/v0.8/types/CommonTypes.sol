@@ -19,7 +19,7 @@
 // SPDX-License-Identifier: Apache-2.0
 pragma solidity >=0.4.25 <=0.8.17;
 
-import "../cbor/BigNumberCbor.sol";
+import "../cbor/BigIntCbor.sol";
 
 /// @title Filecoin actors' common types for Solidity.
 /// @author Zondax AG
@@ -87,15 +87,15 @@ library CommonTypes {
 
     struct PendingBeneficiaryChange {
         bytes new_beneficiary;
-        BigNumber new_quota;
+        BigInt new_quota;
         uint64 new_expiration;
         bool approved_by_beneficiary;
         bool approved_by_nominee;
     }
 
     struct BeneficiaryTerm {
-        BigNumber quota;
-        BigNumber used_quota;
+        BigInt quota;
+        BigInt used_quota;
         uint64 expiration;
     }
 
@@ -206,7 +206,7 @@ library CommonTypes {
 
     struct VestingFunds {
         int64 epoch;
-        BigNumber amount;
+        BigInt amount;
     }
     struct SectorDeals {
         int64 sector_type;
@@ -223,9 +223,9 @@ library CommonTypes {
         string label;
         int64 start_epoch;
         int64 end_epoch;
-        BigNumber storage_price_per_epoch;
-        BigNumber provider_collateral;
-        BigNumber client_collateral;
+        BigInt storage_price_per_epoch;
+        BigInt provider_collateral;
+        BigInt client_collateral;
     }
 
     struct ClientDealProposal {

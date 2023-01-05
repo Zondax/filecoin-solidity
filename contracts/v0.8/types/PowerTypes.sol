@@ -19,7 +19,7 @@
 // SPDX-License-Identifier: Apache-2.0
 pragma solidity >=0.4.25 <=0.8.17;
 
-import "../cbor/BigNumberCbor.sol";
+import "../cbor/BigIntCbor.sol";
 import "./CommonTypes.sol";
 
 /// @title Filecoin power actor types for Solidity.
@@ -52,13 +52,13 @@ library PowerTypes {
         int64 miner_consensus_count;
     }
     struct NetworkRawPowerReturn {
-        BigNumber raw_byte_power;
+        BigInt raw_byte_power;
     }
     struct MinerRawPowerParams {
         uint64 miner;
     }
     struct MinerRawPowerReturn {
-        BigNumber raw_byte_power;
+        BigInt raw_byte_power;
         bool meets_consensus_minimum;
     }
 }

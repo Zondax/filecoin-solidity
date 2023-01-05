@@ -25,7 +25,7 @@ import {CommonTypes} from "../types/CommonTypes.sol";
 import {PowerTypes} from "../types/PowerTypes.sol";
 import "../utils/CborDecode.sol";
 import "../utils/Misc.sol";
-import "./BigNumberCbor.sol";
+import "./BigIntCbor.sol";
 
 /// @title FIXME
 /// @author Zondax AG
@@ -96,7 +96,7 @@ library MinerConsensusCountCBOR {
 library NetworkRawPowerCBOR {
     using CBOR for CBOR.CBORBuffer;
     using CBORDecoder for bytes;
-    using BigNumberCBOR for bytes;
+    using BigIntCBOR for bytes;
 
     function deserialize(PowerTypes.NetworkRawPowerReturn memory ret, bytes memory rawResp) internal pure {
         uint byteIdx = 0;
@@ -106,7 +106,7 @@ library NetworkRawPowerCBOR {
         if (tmp.length > 0) {
             ret.raw_byte_power = tmp.deserializeBigNum();
         } else {
-            ret.raw_byte_power = BigNumber(new bytes(0), false);
+            ret.raw_byte_power = BigInt(new bytes(0), false);
         }
     }
 }
@@ -116,7 +116,7 @@ library NetworkRawPowerCBOR {
 library MinerRawPowerCBOR {
     using CBOR for CBOR.CBORBuffer;
     using CBORDecoder for bytes;
-    using BigNumberCBOR for bytes;
+    using BigIntCBOR for bytes;
 
     function serialize(PowerTypes.MinerRawPowerParams memory params) internal pure returns (bytes memory) {
         // FIXME what should the max length be on the buffer?
@@ -139,7 +139,7 @@ library MinerRawPowerCBOR {
         if (tmp.length > 0) {
             ret.raw_byte_power = tmp.deserializeBigNum();
         } else {
-            ret.raw_byte_power = BigNumber(new bytes(0), false);
+            ret.raw_byte_power = BigInt(new bytes(0), false);
         }
 
         (ret.meets_consensus_minimum, byteIdx) = rawResp.readBool(byteIdx);

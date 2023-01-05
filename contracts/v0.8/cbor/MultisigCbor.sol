@@ -24,7 +24,7 @@ import "solidity-cborutils/contracts/CBOR.sol";
 import {MultisigTypes} from "../types/MultisigTypes.sol";
 import "../utils/CborDecode.sol";
 import "../utils/Misc.sol";
-import "./BigNumberCbor.sol";
+import "./BigIntCbor.sol";
 
 library BytesCBOR {
     using CBOR for CBOR.CBORBuffer;
@@ -45,7 +45,7 @@ library BytesCBOR {
 library ProposeCBOR {
     using CBOR for CBOR.CBORBuffer;
     using CBORDecoder for bytes;
-    using BigNumberCBOR for BigNumber;
+    using BigIntCBOR for BigInt;
 
     function serialize(MultisigTypes.ProposeParams memory params) internal pure returns (bytes memory) {
         // FIXME what should the max length be on the buffer?
@@ -187,7 +187,7 @@ library ChangeNumApprovalsThresholdCBOR {
 library LockBalanceCBOR {
     using CBOR for CBOR.CBORBuffer;
     using CBORDecoder for bytes;
-    using BigNumberCBOR for BigNumber;
+    using BigIntCBOR for BigInt;
 
     function serialize(MultisigTypes.LockBalanceParams memory params) internal pure returns (bytes memory) {
         // FIXME what should the max length be on the buffer?

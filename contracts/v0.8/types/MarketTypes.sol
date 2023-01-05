@@ -19,7 +19,7 @@
 // SPDX-License-Identifier: Apache-2.0
 pragma solidity >=0.4.25 <=0.8.17;
 
-import "../cbor/BigNumberCbor.sol";
+import "../cbor/BigIntCbor.sol";
 import "./CommonTypes.sol";
 
 /// @title Filecoin market actor types for Solidity.
@@ -43,16 +43,16 @@ library MarketTypes {
 
     struct WithdrawBalanceParams {
         bytes provider_or_client;
-        BigNumber tokenAmount;
+        BigInt tokenAmount;
     }
 
     struct WithdrawBalanceReturn {
-        BigNumber amount_withdrawn;
+        BigInt amount_withdrawn;
     }
 
     struct GetBalanceReturn {
-        BigNumber balance;
-        BigNumber locked;
+        BigInt balance;
+        BigInt locked;
     }
 
     struct GetDealDataCommitmentParams {
@@ -102,7 +102,7 @@ library MarketTypes {
     }
 
     struct GetDealEpochPriceReturn {
-        BigNumber price_per_epoch;
+        BigInt price_per_epoch;
     }
 
     struct GetDealClientCollateralParams {
@@ -110,7 +110,7 @@ library MarketTypes {
     }
 
     struct GetDealClientCollateralReturn {
-        BigNumber collateral;
+        BigInt collateral;
     }
 
     struct GetDealProviderCollateralParams {
@@ -118,7 +118,7 @@ library MarketTypes {
     }
 
     struct GetDealProviderCollateralReturn {
-        BigNumber collateral;
+        BigInt collateral;
     }
 
     struct GetDealVerifiedParams {

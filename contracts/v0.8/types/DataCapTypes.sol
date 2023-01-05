@@ -19,7 +19,7 @@
 // SPDX-License-Identifier: Apache-2.0
 pragma solidity >=0.4.25 <=0.8.17;
 
-import "../cbor/BigNumberCbor.sol";
+import "../cbor/BigIntCbor.sol";
 
 /// @title Filecoin datacap actor types for Solidity.
 /// @author Zondax AG
@@ -47,15 +47,15 @@ library DataCapTypes {
     struct TransferParams {
         bytes to;
         /// A non-negative amount to transfer
-        BigNumber amount;
+        BigInt amount;
         /// Arbitrary data to pass on via the receiver hook
         bytes operator_data;
     }
 
     struct TransferReturn {
-        BigNumber from_balance;
+        BigInt from_balance;
         /// The new balance of the `to` address
-        BigNumber to_balance;
+        BigInt to_balance;
         /// (Optional) data returned from receiver hook
         bytes recipient_data;
     }
@@ -64,17 +64,17 @@ library DataCapTypes {
         bytes from;
         bytes to;
         /// A non-negative amount to transfer
-        BigNumber amount;
+        BigInt amount;
         /// Arbitrary data to pass on via the receiver hook
         bytes operator_data;
     }
 
     struct TransferFromReturn {
-        BigNumber from_balance;
+        BigInt from_balance;
         /// The new balance of the `to` address
-        BigNumber to_balance;
+        BigInt to_balance;
         /// The new remaining allowance between `owner` and `operator` (caller)
-        BigNumber allowance;
+        BigInt allowance;
         /// (Optional) data returned from receiver hook
         bytes recipient_data;
     }
@@ -82,12 +82,12 @@ library DataCapTypes {
     struct IncreaseAllowanceParams {
         bytes operator;
         /// A non-negative amount to increase the allowance by
-        BigNumber increase;
+        BigInt increase;
     }
     struct DecreaseAllowanceParams {
         bytes operator;
         /// A non-negative amount to decrease the allowance by
-        BigNumber decrease;
+        BigInt decrease;
     }
     struct RevokeAllowanceParams {
         bytes operator;
@@ -95,24 +95,24 @@ library DataCapTypes {
 
     struct BurnParams {
         /// A non-negative amount to burn
-        BigNumber amount;
+        BigInt amount;
     }
 
     struct BurnReturn {
         /// New balance in the account after the successful burn
-        BigNumber balance;
+        BigInt balance;
     }
 
     struct BurnFromParams {
         bytes owner;
         /// A non-negative amount to burn
-        BigNumber amount;
+        BigInt amount;
     }
 
     struct BurnFromReturn {
         /// New balance in the account after the successful burn
-        BigNumber balance;
+        BigInt balance;
         /// New remaining allowance between the owner and operator (caller)
-        BigNumber allowance;
+        BigInt allowance;
     }
 }
