@@ -1,6 +1,6 @@
 
 ################ BUILD ################
-build: build_api build_tests
+build: build_api build_mock_api build_tests
 
 build_tests:
 	./bin/solc solidity-cborutils=${PWD}/node_modules/solidity-cborutils/ @openzeppelin=${PWD}/node_modules/@openzeppelin/ @ensdomains=${PWD}/node_modules/@ensdomains/ contracts/v0.8/tests/market.test.sol --output-dir ./build/v0.8/tests --overwrite --bin --hashes --opcodes --abi

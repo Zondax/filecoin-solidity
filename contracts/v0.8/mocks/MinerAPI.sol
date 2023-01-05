@@ -19,6 +19,8 @@
 // SPDX-License-Identifier: Apache-2.0
 pragma solidity >=0.4.25 <=0.8.17;
 
+import {BigNumbers, BigNumber as BigNum} from "@zondax/solidity-bignumber/src/BigNumbers.sol";
+
 import "../types/MinerTypes.sol";
 
 /// @title This contract is a proxy to a built-in Miner actor. Calling one of its methods will result in a cross-actor call being performed. However, in this mock library, no actual call is performed.
@@ -71,6 +73,8 @@ contract MinerAPI {
     function is_controlling_address(
         MinerTypes.IsControllingAddressParam memory params
     ) public pure returns (MinerTypes.IsControllingAddressReturn memory) {
+        require(params.addr[0] >= 0x00);
+
         return MinerTypes.IsControllingAddressReturn(false);
     }
 
@@ -83,13 +87,13 @@ contract MinerAPI {
     /// @notice Can go negative if the miner is in IP debt.
     /// @return the available balance of this miner.
     function get_available_balance() public pure returns (MinerTypes.GetAvailableBalanceReturn memory) {
-        return MinerTypes.GetAvailableBalanceReturn(10000000000000000000000);
+        return MinerTypes.GetAvailableBalanceReturn(BigNumber(hex"021E19E0C9BAB2400000", false));
     }
 
     /// @return the funds vesting in this miner as a list of (vesting_epoch, vesting_amount) tuples.
     function get_vesting_funds() public pure returns (MinerTypes.GetVestingFundsReturn memory) {
         CommonTypes.VestingFunds[] memory vesting_funds = new CommonTypes.VestingFunds[](1);
-        vesting_funds[0] = CommonTypes.VestingFunds(1668514825, 2000000000000000000000);
+        vesting_funds[0] = CommonTypes.VestingFunds(1668514825, BigNumber(hex"6C6B935B8BBD400000", false));
 
         return MinerTypes.GetVestingFundsReturn(vesting_funds);
     }
@@ -99,7 +103,12 @@ contract MinerAPI {
     /// @notice See FIP-0029, https://github.com/filecoin-project/FIPs/blob/master/FIPS/fip-0029.md
     function change_beneficiary(MinerTypes.ChangeBeneficiaryParams memory params) public {
         if (!isBeneficiarySet) {
-            CommonTypes.BeneficiaryTerm memory term = CommonTypes.BeneficiaryTerm(params.new_quota, 0, params.new_expiration);
+            BigNum memory zero = BigNumbers.zero();
+            CommonTypes.BeneficiaryTerm memory term = CommonTypes.BeneficiaryTerm(
+                params.new_quota,
+                BigNumber(zero.val, zero.neg),
+                params.new_expiration
+            );
             activeBeneficiary = CommonTypes.ActiveBeneficiary(params.new_beneficiary, term);
             isBeneficiarySet = true;
         } else {
