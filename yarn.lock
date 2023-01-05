@@ -649,6 +649,11 @@
   dependencies:
     "@types/node" "*"
 
+"@zondax/solidity-bignumber@^0.1.0":
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/@zondax/solidity-bignumber/-/solidity-bignumber-0.1.0.tgz#4885ef8751b5cc0ee92639545bdfbec19907dde2"
+  integrity sha512-DdY78jd6syZHJSl7B9mkDo5hso405hYuug1FHkjCO3WSS6vz1kAmi6RWQdTdrZoIZ+4pCXcRUnylBQtM+gpQKA==
+
 abortcontroller-polyfill@^1.7.3:
   version "1.7.5"
   resolved "https://registry.npmjs.org/abortcontroller-polyfill/-/abortcontroller-polyfill-1.7.5.tgz"

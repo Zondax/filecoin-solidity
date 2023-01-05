@@ -1,6 +1,6 @@
 
 ################ BUILD ################
-build: build_api build_mock_api build_tests
+build: build_api build_tests
 
 build_tests:
 	./bin/solc solidity-cborutils=${PWD}/node_modules/solidity-cborutils/ @openzeppelin=${PWD}/node_modules/@openzeppelin/ @ensdomains=${PWD}/node_modules/@ensdomains/ contracts/v0.8/tests/market.test.sol --output-dir ./build/v0.8/tests --overwrite --bin --hashes --opcodes --abi
@@ -24,8 +24,8 @@ build_api:
 	./bin/solc solidity-cborutils=${PWD}/node_modules/solidity-cborutils/ @openzeppelin=${PWD}/node_modules/@openzeppelin/ @ensdomains=${PWD}/node_modules/@ensdomains/ contracts/v0.8/MultisigAPI.sol --output-dir ./build/v0.8 --overwrite --bin --hashes --opcodes --abi
 
 build_mock_api:
-	./bin/solc solidity-cborutils=${PWD}/node_modules/solidity-cborutils/ @openzeppelin=${PWD}/node_modules/@openzeppelin/ @ensdomains=${PWD}/node_modules/@ensdomains/ contracts/v0.8/mocks/MarketAPI.sol --output-dir ./build/v0.8/mocks --overwrite --bin --hashes --opcodes --abi
-	./bin/solc solidity-cborutils=${PWD}/node_modules/solidity-cborutils/ @openzeppelin=${PWD}/node_modules/@openzeppelin/ @ensdomains=${PWD}/node_modules/@ensdomains/ contracts/v0.8/mocks/MinerAPI.sol --output-dir ./build/v0.8/mocks --overwrite --bin --hashes --opcodes --abi
+	./bin/solc @zondax/solidity-bignumber=${PWD}/node_modules/@zondax/solidity-bignumber/ solidity-cborutils=${PWD}/node_modules/solidity-cborutils/ @openzeppelin=${PWD}/node_modules/@openzeppelin/ @ensdomains=${PWD}/node_modules/@ensdomains/ contracts/v0.8/mocks/MarketAPI.sol --output-dir ./build/v0.8/mocks --overwrite --bin --hashes --opcodes --abi
+	./bin/solc @zondax/solidity-bignumber=${PWD}/node_modules/@zondax/solidity-bignumber/ solidity-cborutils=${PWD}/node_modules/solidity-cborutils/ @openzeppelin=${PWD}/node_modules/@openzeppelin/ @ensdomains=${PWD}/node_modules/@ensdomains/ contracts/v0.8/mocks/MinerAPI.sol --output-dir ./build/v0.8/mocks --overwrite --bin --hashes --opcodes --abi
 
 build_builtin_actors:
 	cd testing/builtin-actors && make bundle-devnet-wasm

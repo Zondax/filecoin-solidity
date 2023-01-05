@@ -18,6 +18,7 @@
 //
 pragma solidity >=0.4.25 <=0.8.17;
 
+import "../cbor/BigNumberCbor.sol";
 import "./CommonTypes.sol";
 
 /// @title Filecoin multisig actor types for Solidity.
@@ -35,7 +36,7 @@ library MultisigTypes {
 
     struct ProposeParams {
         bytes to;
-        int256 value;
+        BigNumber value;
         uint64 method;
         bytes params;
     }
@@ -93,6 +94,6 @@ library MultisigTypes {
     struct LockBalanceParams {
         int64 start_epoch;
         int64 unlock_duration;
-        int256 amount;
+        BigNumber amount;
     }
 }

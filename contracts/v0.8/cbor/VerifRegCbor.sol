@@ -24,6 +24,7 @@ import {CommonTypes} from "../types/CommonTypes.sol";
 import {VerifRegTypes} from "../types/VerifRegTypes.sol";
 import "../utils/CborDecode.sol";
 import "../utils/Misc.sol";
+import "./BigNumberCbor.sol";
 
 /// @title FIXME
 /// @author Zondax AG
@@ -110,6 +111,7 @@ library AddVerifierClientCBOR {
 library RemoveExpiredAllocationsCBOR {
     using CBOR for CBOR.CBORBuffer;
     using CBORDecoder for bytes;
+    using BigNumberCBOR for bytes;
 
     function serialize(VerifRegTypes.RemoveExpiredAllocationsParams memory params) internal pure returns (bytes memory) {
         // FIXME what should the max length be on the buffer?
@@ -127,7 +129,7 @@ library RemoveExpiredAllocationsCBOR {
         return buf.data();
     }
 
-    function deserialize(VerifRegTypes.RemoveExpiredAllocationsReturn memory ret, bytes memory rawResp) internal pure {
+    function deserialize(VerifRegTypes.RemoveExpiredAllocationsReturn memory ret, bytes memory rawResp) internal {
         uint byteIdx = 0;
         uint len;
 
@@ -157,9 +159,9 @@ library RemoveExpiredAllocationsCBOR {
             (ret.results.fail_codes[i].code, byteIdx) = rawResp.readUInt32(byteIdx);
         }
 
-        bytes32 tmp;
-        (tmp, byteIdx) = rawResp.readBytes32(byteIdx);
-        ret.datacap_recovered = Misc.toInt256(tmp);
+        bytes memory tmp;
+        (tmp, byteIdx) = rawResp.readBytes(byteIdx);
+        ret.datacap_recovered = tmp.deserializeBigNum();
     }
 }
 

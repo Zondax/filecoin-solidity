@@ -24,6 +24,7 @@ import {CommonTypes} from "../types/CommonTypes.sol";
 import {PowerTypes} from "../types/PowerTypes.sol";
 import "../utils/CborDecode.sol";
 import "../utils/Misc.sol";
+import "./BigNumberCbor.sol";
 
 /// @title FIXME
 /// @author Zondax AG
@@ -95,14 +96,19 @@ library MinerConsensusCountCBOR {
 library NetworkRawPowerCBOR {
     using CBOR for CBOR.CBORBuffer;
     using CBORDecoder for bytes;
+    using BigNumberCBOR for bytes;
 
-    function deserialize(PowerTypes.NetworkRawPowerReturn memory ret, bytes memory rawResp) internal pure {
+    function deserialize(PowerTypes.NetworkRawPowerReturn memory ret, bytes memory rawResp) internal {
         uint byteIdx = 0;
         uint len;
 
-        bytes32 tmp;
-        (tmp, byteIdx) = rawResp.readBytes32(byteIdx);
-        ret.raw_byte_power = Misc.toInt256(tmp);
+        bytes memory tmp;
+        (tmp, byteIdx) = rawResp.readBytes(byteIdx);
+        if (tmp.length > 0) {
+            ret.raw_byte_power = tmp.deserializeBigNum();
+        } else {
+            ret.raw_byte_power = BigNumber(new bytes(0), false);
+        }
     }
 }
 
@@ -111,6 +117,7 @@ library NetworkRawPowerCBOR {
 library MinerRawPowerCBOR {
     using CBOR for CBOR.CBORBuffer;
     using CBORDecoder for bytes;
+    using BigNumberCBOR for bytes;
 
     function serialize(PowerTypes.MinerRawPowerParams memory params) internal pure returns (bytes memory) {
         // FIXME what should the max length be on the buffer?
@@ -121,16 +128,20 @@ library MinerRawPowerCBOR {
         return buf.data();
     }
 
-    function deserialize(PowerTypes.MinerRawPowerReturn memory ret, bytes memory rawResp) internal pure {
+    function deserialize(PowerTypes.MinerRawPowerReturn memory ret, bytes memory rawResp) internal {
         uint byteIdx = 0;
         uint len;
 
         (len, byteIdx) = rawResp.readFixedArray(byteIdx);
         assert(len == 2);
 
-        bytes32 tmp;
-        (tmp, byteIdx) = rawResp.readBytes32(byteIdx);
-        ret.raw_byte_power = Misc.toInt256(tmp);
+        bytes memory tmp;
+        (tmp, byteIdx) = rawResp.readBytes(byteIdx);
+        if (tmp.length > 0) {
+            ret.raw_byte_power = tmp.deserializeBigNum();
+        } else {
+            ret.raw_byte_power = BigNumber(new bytes(0), false);
+        }
 
         (ret.meets_consensus_minimum, byteIdx) = rawResp.readBool(byteIdx);
     }
