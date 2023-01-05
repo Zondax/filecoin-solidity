@@ -46,6 +46,9 @@ fn main() {
 
     let accounts: [Account; 2] = tester.create_accounts().unwrap();
     let (sender, verified_client) = (accounts[0], accounts[1]);
+    // As the governor address for verifreg is 199, we create many many addresses in order to initialize the ID 199 with some tokens
+    // and make it a valid address to use.
+    let accounts: [Account; 200] = tester.create_accounts().unwrap();
 
     // Instantiate machine
     tester.instantiate_machine(DummyExterns).unwrap();
@@ -86,7 +89,7 @@ fn main() {
     let exec_return: Return = RawBytes::deserialize(&res.msg_receipt.return_data).unwrap();
     let contract_actor = exec_return.actor_id;
 
-    let verifier_allowance = fvm_shared::sector::StoragePower::from(2 * 1048576u64);
+    let verifier_allowance = fvm_shared::sector::StoragePower::from(2 * 1024u64);
     let params = VerifierParams {
         address: Address::new_id(contract_actor),
         allowance: verifier_allowance,
@@ -95,11 +98,12 @@ fn main() {
     println!("Registering contract-actor as verifier");
     // by this call we register our contract actor as a verifier
     let message = Message {
-        from: sender.1,
+        //from: sender.1,
+        from: Address::new_id(199),
         to: VERIFIED_REGISTRY_ACTOR_ADDR,
         gas_limit: 1000000000,
         method_num: 2,
-        sequence: 1,
+        sequence: 0,
         params: RawBytes::serialize(params).unwrap(),
         ..Message::default()
     };
@@ -108,8 +112,8 @@ fn main() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
-    dbg!("Registering actor result {:?}", &res);
-    assert_eq!(res.msg_receipt.exit_code.value(), 18);
+    //println!("Registering actor result {:?}", &res);
+    assert_eq!(res.msg_receipt.exit_code.value(), 0);
 
     println!("Calling `add_verified_client`");
     let message = Message {
@@ -117,7 +121,7 @@ fn main() {
         to: Address::new_id(exec_return.actor_id),
         gas_limit: 1000000000,
         method_num: 2,
-        sequence: 2,
+        sequence: 1,
         params: RawBytes::new(hex::decode("58E455707461000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000080000000000000000000000000000000000000000000000000000000000000001501DCE5B7F69E73494891556A350F8CC357614916D5000000000000000000000000000000000000000000000000000000000000000000000000000000000000060044002000000000000000000000000000000000000000000000000000000000").unwrap()),
         ..Message::default()
     };
@@ -136,7 +140,7 @@ fn main() {
         to: Address::new_id(exec_return.actor_id),
         gas_limit: 1000000000,
         method_num: 2,
-        sequence: 3,
+        sequence: 2,
         //  get_claims params [201, [0,1]]
         params: RawBytes::new(hex::decode("58C4DBCB98AB000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000C90000000000000000000000000000000000000000000000000000000000000040000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001").unwrap()),
         ..Message::default()
@@ -155,7 +159,7 @@ fn main() {
         to: Address::new_id(exec_return.actor_id),
         gas_limit: 1000000000,
         method_num: 2,
-        sequence: 4,
+        sequence: 3,
         params: RawBytes::new(hex::decode("58C4D8308B8C000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000660000000000000000000000000000000000000000000000000000000000000040000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001").unwrap()),
         ..Message::default()
     };
@@ -174,7 +178,7 @@ fn main() {
         to: Address::new_id(exec_return.actor_id),
         gas_limit: 1000000000,
         method_num: 2,
-        sequence: 5,
+        sequence: 4,
         //  remove_expired_allocations params [actorId(101), []] empty list which means remove all
         params: RawBytes::new(hex::decode("5884DF5527250000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000006500000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000000").unwrap()),
         ..Message::default()
@@ -192,7 +196,7 @@ fn main() {
         to: Address::new_id(exec_return.actor_id),
         gas_limit: 1000000000,
         method_num: 2,
-        sequence: 6,
+        sequence: 5,
         params: RawBytes::new(hex::decode("58C4D8308B8C000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000660000000000000000000000000000000000000000000000000000000000000040000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001").unwrap()),
         ..Message::default()
     };
@@ -210,7 +214,7 @@ fn main() {
         to: Address::new_id(exec_return.actor_id),
         gas_limit: 1000000000,
         method_num: 2,
-        sequence: 7,
+        sequence: 6,
         params: RawBytes::new(hex::decode("58A4AA7E0F7B000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000C9000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000031245AB0000000000000000000000000000000000000000000000000000000000").unwrap()),
         ..Message::default()
     };
