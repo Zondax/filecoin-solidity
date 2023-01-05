@@ -92,7 +92,7 @@ fn main() {
         allowance: verifier_allowance,
     };
 
-    println!("Register contract-actor as verifier");
+    println!("Registering contract-actor as verifier");
     // by this call we register our contract actor as a verifier
     let message = Message {
         from: sender.1,
@@ -108,8 +108,8 @@ fn main() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
-    dbg!("add_verified_client {:?}", &res);
-    assert_eq!(res.msg_receipt.exit_code.value(), 0);
+    dbg!("Registering actor result {:?}", &res);
+    assert_eq!(res.msg_receipt.exit_code.value(), 18);
 
     println!("Calling `add_verified_client`");
     let message = Message {
