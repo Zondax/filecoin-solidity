@@ -35,14 +35,18 @@ library Utils {
         uint64 method,
         uint64,
         bytes calldata params
-    ) internal returns (AccountTypes.AuthenticateMessageParams memory response) {
+    ) internal returns (AccountTypes.AuthenticateMessageParams memory) {
+        AccountTypes.AuthenticateMessageParams memory response;
         // dispatch methods
         if (method == AccountTypes.AuthenticateMessageMethodNum) {
             // deserialize params here
-            AccountTypes.AuthenticateMessageParams memory response;
             response.deserialize(params);
+
+            return response;
         } else if (method == DataCapTypes.ReceiverHookMethodNum) {
             emit ReceivedDataCap("DataCap Received!");
+
+            return response;
         } else {
             revert("the filecoin method that was called is not handled");
         }

@@ -25,7 +25,7 @@ library PrecompilesAPI {
     uint64 constant GAS_LIMIT = 100000000;
     uint64 constant MAX_RAW_RESPONSE_SIZE = 0x300;
 
-    function resolveAddress(bytes memory addr) internal returns (bytes memory) {
+    function resolveAddress(bytes memory addr) internal view returns (bytes memory) {
         bytes memory raw_response = new bytes(MAX_RAW_RESPONSE_SIZE);
         uint len;
 
@@ -49,7 +49,7 @@ library PrecompilesAPI {
         return raw_response;
     }
 
-    function lookupAddress(uint64 actor_id) internal returns (bytes memory) {
+    function lookupAddress(uint64 actor_id) internal view returns (bytes memory) {
         bytes memory raw_response = new bytes(MAX_RAW_RESPONSE_SIZE);
         uint len;
 
@@ -65,7 +65,7 @@ library PrecompilesAPI {
         return raw_response;
     }
 
-    function getActorType(uint64 actor_id) internal returns (bytes memory) {
+    function getActorType(uint64 actor_id) internal view returns (bytes memory) {
         bytes memory raw_response = new bytes(MAX_RAW_RESPONSE_SIZE);
         uint len;
 
