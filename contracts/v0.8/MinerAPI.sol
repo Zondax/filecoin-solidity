@@ -15,7 +15,8 @@
  ********************************************************************************/
 //
 // DRAFT!! THIS CODE HAS NOT BEEN AUDITED - USE ONLY FOR PROTOTYPING
-//
+
+// SPDX-License-Identifier: Apache-2.0
 pragma solidity >=0.4.25 <=0.8.17;
 
 import "./types/MinerTypes.sol";
@@ -70,7 +71,7 @@ library MinerAPI {
 
         bytes memory raw_response = Actor.call(MinerTypes.ChangeOwnerAddressMethodNum, target, raw_request, Misc.CBOR_CODEC);
 
-        bytes memory result = Actor.readRespData(raw_response);
+        Actor.readRespData(raw_response);
 
         return;
     }
@@ -148,7 +149,7 @@ library MinerAPI {
 
         bytes memory raw_response = Actor.call(MinerTypes.ChangeBeneficiaryMethodNum, target, raw_request, Misc.CBOR_CODEC);
 
-        bytes memory result = Actor.readRespData(raw_response);
+        Actor.readRespData(raw_response);
 
         return;
     }
@@ -169,67 +170,67 @@ library MinerAPI {
         return response;
     }
 
-    /// @notice FIXME
+    /// @notice TODO fill me up
     /// @param target The miner address (type ID) you want to interact with
     function changeWorkerAddress(bytes memory target, MinerTypes.ChangeWorkerAddressParams memory params) internal {
         bytes memory raw_request = params.serialize();
 
         bytes memory raw_response = Actor.call(MinerTypes.ChangeWorkerAddressMethodNum, target, raw_request, Misc.CBOR_CODEC);
 
-        bytes memory result = Actor.readRespData(raw_response);
+        Actor.readRespData(raw_response);
 
         return;
     }
 
-    /// @notice FIXME
+    /// @notice TODO fill me up
     /// @param target The miner address (type ID) you want to interact with
     function changePeerId(bytes memory target, MinerTypes.ChangePeerIDParams memory params) internal {
         bytes memory raw_request = params.serialize();
 
         bytes memory raw_response = Actor.call(MinerTypes.ChangePeerIDMethodNum, target, raw_request, Misc.CBOR_CODEC);
 
-        bytes memory result = Actor.readRespData(raw_response);
+        Actor.readRespData(raw_response);
 
         return;
     }
 
-    /// @notice FIXME
+    /// @notice TODO fill me up
     /// @param target The miner address (type ID) you want to interact with
     function changeMultiaddresses(bytes memory target, MinerTypes.ChangeMultiaddrsParams memory params) internal {
         bytes memory raw_request = params.serialize();
 
         bytes memory raw_response = Actor.call(MinerTypes.ChangeMultiaddrsMethodNum, target, raw_request, Misc.CBOR_CODEC);
 
-        bytes memory result = Actor.readRespData(raw_response);
+        Actor.readRespData(raw_response);
 
         return;
     }
 
-    /// @notice FIXME
+    /// @notice TODO fill me up
     /// @param target The miner address (type ID) you want to interact with
     function repayDebt(bytes memory target) internal {
         bytes memory raw_request = new bytes(0);
 
         bytes memory raw_response = Actor.call(MinerTypes.RepayDebtMethodNum, target, raw_request, Misc.NONE_CODEC);
 
-        bytes memory result = Actor.readRespData(raw_response);
+        Actor.readRespData(raw_response);
 
         return;
     }
 
-    /// @notice FIXME
+    /// @notice TODO fill me up
     /// @param target The miner address (type ID) you want to interact with
     function confirmChangeWorkerAddress(bytes memory target) internal {
         bytes memory raw_request = new bytes(0);
 
         bytes memory raw_response = Actor.call(MinerTypes.ConfirmChangeWorkerAddressMethodNum, target, raw_request, Misc.NONE_CODEC);
 
-        bytes memory result = Actor.readRespData(raw_response);
+        Actor.readRespData(raw_response);
 
         return;
     }
 
-    /// @notice FIXME
+    /// @notice TODO fill me up
     /// @param target The miner address (type ID) you want to interact with
     function getPeerId(bytes memory target) internal returns (MinerTypes.GetPeerIDReturn memory) {
         bytes memory raw_request = new bytes(0);
@@ -244,7 +245,7 @@ library MinerAPI {
         return response;
     }
 
-    /// @notice FIXME
+    /// @notice TODO fill me up
     /// @param target The miner address (type ID) you want to interact with
     function getMultiaddresses(bytes memory target) internal returns (MinerTypes.GetMultiaddrsReturn memory) {
         bytes memory raw_request = new bytes(0);
@@ -259,7 +260,7 @@ library MinerAPI {
         return response;
     }
 
-    /// @notice FIXME
+    /// @notice TODO fill me up
     /// @param target The miner address (type ID) you want to interact with
     /// @param params the amount you want to withdraw
     function withdrawBalance(

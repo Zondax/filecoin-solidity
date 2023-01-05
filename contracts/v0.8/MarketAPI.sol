@@ -15,7 +15,8 @@
  ********************************************************************************/
 //
 // DRAFT!! THIS CODE HAS NOT BEEN AUDITED - USE ONLY FOR PROTOTYPING
-//
+
+// SPDX-License-Identifier: Apache-2.0
 pragma solidity >=0.4.25 <=0.8.17;
 
 import "./types/MarketTypes.sol";
@@ -101,7 +102,12 @@ library MarketAPI {
     ) internal returns (MarketTypes.GetDealDataCommitmentReturn memory) {
         bytes memory raw_request = params.serialize();
 
-        bytes memory raw_response = Actor.call(MarketTypes.GetDealDataCommitmentMethodNum, MarketTypes.ActorCode, raw_request, Misc.CBOR_CODEC);
+        bytes memory raw_response = Actor.call(
+            MarketTypes.GetDealDataCommitmentMethodNum,
+            MarketTypes.ActorCode,
+            raw_request,
+            Misc.CBOR_CODEC
+        );
 
         bytes memory result = Actor.readRespData(raw_response);
 
@@ -189,7 +195,12 @@ library MarketAPI {
     ) internal returns (MarketTypes.GetDealClientCollateralReturn memory) {
         bytes memory raw_request = params.serialize();
 
-        bytes memory raw_response = Actor.call(MarketTypes.GetDealClientCollateralMethodNum, MarketTypes.ActorCode, raw_request, Misc.CBOR_CODEC);
+        bytes memory raw_response = Actor.call(
+            MarketTypes.GetDealClientCollateralMethodNum,
+            MarketTypes.ActorCode,
+            raw_request,
+            Misc.CBOR_CODEC
+        );
 
         bytes memory result = Actor.readRespData(raw_response);
 
@@ -205,7 +216,12 @@ library MarketAPI {
     ) internal returns (MarketTypes.GetDealProviderCollateralReturn memory) {
         bytes memory raw_request = params.serialize();
 
-        bytes memory raw_response = Actor.call(MarketTypes.GetDealProviderCollateralMethodNum, MarketTypes.ActorCode, raw_request, Misc.CBOR_CODEC);
+        bytes memory raw_response = Actor.call(
+            MarketTypes.GetDealProviderCollateralMethodNum,
+            MarketTypes.ActorCode,
+            raw_request,
+            Misc.CBOR_CODEC
+        );
 
         bytes memory result = Actor.readRespData(raw_response);
 
@@ -254,7 +270,12 @@ library MarketAPI {
     ) internal returns (MarketTypes.PublishStorageDealsReturn memory) {
         bytes memory raw_request = params.serialize();
 
-        bytes memory raw_response = Actor.call(MarketTypes.PublishStorageDealsMethodNum, MarketTypes.ActorCode, raw_request, Misc.CBOR_CODEC);
+        bytes memory raw_response = Actor.call(
+            MarketTypes.PublishStorageDealsMethodNum,
+            MarketTypes.ActorCode,
+            raw_request,
+            Misc.CBOR_CODEC
+        );
 
         bytes memory result = Actor.readRespData(raw_response);
 

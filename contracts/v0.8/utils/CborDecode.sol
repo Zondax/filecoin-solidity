@@ -14,6 +14,8 @@
  *  limitations under the License.
  ********************************************************************************/
 // DRAFT!! THIS CODE HAS NOT BEEN AUDITED - USE ONLY FOR PROTOTYPING
+
+// SPDX-License-Identifier: Apache-2.0
 pragma solidity >=0.4.25 <=0.8.17;
 
 // 	MajUnsignedInt = 0
@@ -127,7 +129,7 @@ library CBORDecoder {
 
     function readUInt256(bytes memory cborParams, uint byteIdx) internal pure returns (uint256, uint) {
         uint8 maj;
-        uint value;
+        uint256 value;
 
         (maj, value, byteIdx) = parseCborHeader(cborParams, byteIdx);
         assert(maj == MajTag || maj == MajUnsignedInt);
@@ -140,7 +142,6 @@ library CBORDecoder {
             assert(maj == MajByteString);
 
             require(cborParams.length >= byteIdx + len, "slicing out of range");
-            uint256 value;
             assembly {
                 value := mload(add(cborParams, add(len, byteIdx)))
             }
@@ -166,15 +167,14 @@ library CBORDecoder {
             assert(maj == MajByteString);
 
             require(cborParams.length >= byteIdx + len, "slicing out of range");
-            int256 value;
             assembly {
                 value := mload(add(cborParams, add(len, byteIdx)))
             }
 
-            return (value, byteIdx + len);
+            return (int256(value), byteIdx + len);
         }
 
-        return (int(value), byteIdx);
+        return (int256(value), byteIdx);
     }
 
     function readUInt64(bytes memory cborParams, uint byteIdx) internal pure returns (uint64, uint) {

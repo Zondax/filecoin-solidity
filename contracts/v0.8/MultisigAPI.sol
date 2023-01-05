@@ -15,7 +15,8 @@
  ********************************************************************************/
 //
 // DRAFT!! THIS CODE HAS NOT BEEN AUDITED - USE ONLY FOR PROTOTYPING
-//
+
+// SPDX-License-Identifier: Apache-2.0
 pragma solidity >=0.4.25 <=0.8.17;
 
 import "./types/MultisigTypes.sol";
@@ -38,7 +39,7 @@ library MultisigAPI {
     using ChangeNumApprovalsThresholdCBOR for MultisigTypes.ChangeNumApprovalsThresholdParams;
     using LockBalanceCBOR for MultisigTypes.LockBalanceParams;
 
-    /// @notice FIXME
+    /// @notice TODO fill me up
     function propose(bytes memory target, MultisigTypes.ProposeParams memory params) internal returns (MultisigTypes.ProposeReturn memory) {
         bytes memory raw_request = params.serialize();
 
@@ -52,7 +53,7 @@ library MultisigAPI {
         return response;
     }
 
-    /// @notice FIXME
+    /// @notice TODO fill me up
     function approve(bytes memory target, MultisigTypes.TxnIDParams memory params) internal returns (MultisigTypes.ApproveReturn memory) {
         bytes memory raw_request = params.serialize();
 
@@ -66,66 +67,66 @@ library MultisigAPI {
         return response;
     }
 
-    /// @notice FIXME
+    /// @notice TODO fill me up
     function cancel(bytes memory target, MultisigTypes.TxnIDParams memory params) internal {
         bytes memory raw_request = params.serialize();
 
         bytes memory raw_response = Actor.call(MultisigTypes.CancelMethodNum, target, raw_request, Misc.CBOR_CODEC);
 
-        bytes memory result = Actor.readRespData(raw_response);
+        Actor.readRespData(raw_response);
     }
 
-    /// @notice FIXME
+    /// @notice TODO fill me up
     function addSigner(bytes memory target, MultisigTypes.AddSignerParams memory params) internal {
         bytes memory raw_request = params.serialize();
 
         bytes memory raw_response = Actor.call(MultisigTypes.AddSignerMethodNum, target, raw_request, Misc.CBOR_CODEC);
 
-        bytes memory result = Actor.readRespData(raw_response);
+        Actor.readRespData(raw_response);
     }
 
-    /// @notice FIXME
+    /// @notice TODO fill me up
     function removeSigner(bytes memory target, MultisigTypes.RemoveSignerParams memory params) internal {
         bytes memory raw_request = params.serialize();
 
         bytes memory raw_response = Actor.call(MultisigTypes.RemoveSignerMethodNum, target, raw_request, Misc.CBOR_CODEC);
 
-        bytes memory result = Actor.readRespData(raw_response);
+        Actor.readRespData(raw_response);
     }
 
-    /// @notice FIXME
+    /// @notice TODO fill me up
     function swapSigner(bytes memory target, MultisigTypes.SwapSignerParams memory params) internal {
         bytes memory raw_request = params.serialize();
 
         bytes memory raw_response = Actor.call(MultisigTypes.SwapSignerMethodNum, target, raw_request, Misc.CBOR_CODEC);
 
-        bytes memory result = Actor.readRespData(raw_response);
+        Actor.readRespData(raw_response);
     }
 
-    /// @notice FIXME
+    /// @notice TODO fill me up
     function changeNumApprovalsThreshold(bytes memory target, MultisigTypes.ChangeNumApprovalsThresholdParams memory params) internal {
         bytes memory raw_request = params.serialize();
 
         bytes memory raw_response = Actor.call(MultisigTypes.ChangeNumApprovalsThresholdMethodNum, target, raw_request, Misc.CBOR_CODEC);
 
-        bytes memory result = Actor.readRespData(raw_response);
+        Actor.readRespData(raw_response);
     }
 
-    /// @notice FIXME
+    /// @notice TODO fill me up
     function lockBalance(bytes memory target, MultisigTypes.LockBalanceParams memory params) internal {
         bytes memory raw_request = params.serialize();
 
         bytes memory raw_response = Actor.call(MultisigTypes.LockBalanceMethodNum, target, raw_request, Misc.CBOR_CODEC);
 
-        bytes memory result = Actor.readRespData(raw_response);
+        Actor.readRespData(raw_response);
     }
 
-    /// @notice FIXME
+    /// @notice TODO fill me up
     function universalReceiverHook(bytes memory target, bytes memory params) internal {
         bytes memory raw_request = params.serializeBytes();
 
         bytes memory raw_response = Actor.call(MultisigTypes.UniversalReceiverHookMethodNum, target, raw_request, Misc.CBOR_CODEC);
 
-        bytes memory result = Actor.readRespData(raw_response);
+        Actor.readRespData(raw_response);
     }
 }

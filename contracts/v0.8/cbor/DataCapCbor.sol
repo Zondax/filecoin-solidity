@@ -15,7 +15,8 @@
  ********************************************************************************/
 //
 // DRAFT!! THIS CODE HAS NOT BEEN AUDITED - USE ONLY FOR PROTOTYPING
-//
+
+// SPDX-License-Identifier: Apache-2.0
 pragma solidity >=0.4.25 <=0.8.17;
 
 import "solidity-cborutils/contracts/CBOR.sol";
@@ -52,7 +53,6 @@ library BytesCBOR {
     function deserializeAddress(bytes memory ret) internal pure returns (bytes memory) {
         bytes memory addr;
         uint byteIdx = 0;
-        uint len;
 
         (addr, byteIdx) = ret.readBytes(byteIdx);
 
@@ -62,17 +62,15 @@ library BytesCBOR {
     function deserializeString(bytes memory ret) internal pure returns (string memory) {
         string memory response;
         uint byteIdx = 0;
-        uint len;
 
         (response, byteIdx) = ret.readString(byteIdx);
 
         return response;
     }
 
-    function deserializeBigNum(bytes memory ret) internal returns (BigNumber memory) {
+    function deserializeBigNum(bytes memory ret) internal pure returns (BigNumber memory) {
         bytes memory tmp;
         uint byteIdx = 0;
-        uint len;
 
         if (ret.length > 0) {
             (tmp, byteIdx) = ret.readBytes(byteIdx);
@@ -111,7 +109,7 @@ library TransferCBOR {
     using BigNumberCBOR for BigNumber;
     using BigNumberCBOR for bytes;
 
-    function serialize(DataCapTypes.TransferParams memory params) internal returns (bytes memory) {
+    function serialize(DataCapTypes.TransferParams memory params) internal pure returns (bytes memory) {
         // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
@@ -123,7 +121,7 @@ library TransferCBOR {
         return buf.data();
     }
 
-    function deserialize(DataCapTypes.TransferReturn memory ret, bytes memory rawResp) internal {
+    function deserialize(DataCapTypes.TransferReturn memory ret, bytes memory rawResp) internal pure {
         uint byteIdx = 0;
         uint len;
         bytes memory tmp;
@@ -162,7 +160,7 @@ library TransferFromCBOR {
         return buf.data();
     }
 
-    function deserialize(DataCapTypes.TransferFromReturn memory ret, bytes memory rawResp) internal {
+    function deserialize(DataCapTypes.TransferFromReturn memory ret, bytes memory rawResp) internal pure {
         uint byteIdx = 0;
         uint len;
         bytes memory tmp;
@@ -256,7 +254,7 @@ library BurnCBOR {
         return buf.data();
     }
 
-    function deserialize(DataCapTypes.BurnReturn memory ret, bytes memory rawResp) internal {
+    function deserialize(DataCapTypes.BurnReturn memory ret, bytes memory rawResp) internal pure {
         uint byteIdx = 0;
         uint len;
         bytes memory tmp;
@@ -288,7 +286,7 @@ library BurnFromCBOR {
         return buf.data();
     }
 
-    function deserialize(DataCapTypes.BurnFromReturn memory ret, bytes memory rawResp) internal {
+    function deserialize(DataCapTypes.BurnFromReturn memory ret, bytes memory rawResp) internal pure {
         uint byteIdx = 0;
         uint len;
         bytes memory tmp;

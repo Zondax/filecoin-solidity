@@ -15,7 +15,8 @@
  ********************************************************************************/
 //
 // DRAFT!! THIS CODE HAS NOT BEEN AUDITED - USE ONLY FOR PROTOTYPING
-//
+
+// SPDX-License-Identifier: Apache-2.0
 pragma solidity >=0.4.25 <=0.8.17;
 
 import "./types/VerifRegTypes.sol";
@@ -54,9 +55,14 @@ library VerifRegAPI {
     function addVerifiedClient(VerifRegTypes.AddVerifierClientParams memory params) internal {
         bytes memory raw_request = params.serialize();
 
-        bytes memory raw_response = Actor.call(VerifRegTypes.AddVerifierClientMethodNum, VerifRegTypes.ActorCode, raw_request, Misc.CBOR_CODEC);
+        bytes memory raw_response = Actor.call(
+            VerifRegTypes.AddVerifierClientMethodNum,
+            VerifRegTypes.ActorCode,
+            raw_request,
+            Misc.CBOR_CODEC
+        );
 
-        bytes memory result = Actor.readRespData(raw_response);
+        Actor.readRespData(raw_response);
 
         return;
     }
@@ -66,7 +72,12 @@ library VerifRegAPI {
     ) internal returns (VerifRegTypes.RemoveExpiredAllocationsReturn memory) {
         bytes memory raw_request = params.serialize();
 
-        bytes memory raw_response = Actor.call(VerifRegTypes.RemoveExpiredAllocationsMethodNum, VerifRegTypes.ActorCode, raw_request, Misc.CBOR_CODEC);
+        bytes memory raw_response = Actor.call(
+            VerifRegTypes.RemoveExpiredAllocationsMethodNum,
+            VerifRegTypes.ActorCode,
+            raw_request,
+            Misc.CBOR_CODEC
+        );
 
         bytes memory result = Actor.readRespData(raw_response);
 
@@ -79,7 +90,12 @@ library VerifRegAPI {
     function extendClaimTerms(VerifRegTypes.ExtendClaimTermsParams memory params) internal returns (CommonTypes.BatchReturn memory) {
         bytes memory raw_request = params.serialize();
 
-        bytes memory raw_response = Actor.call(VerifRegTypes.ExtendClaimTermsMethodNum, VerifRegTypes.ActorCode, raw_request, Misc.CBOR_CODEC);
+        bytes memory raw_response = Actor.call(
+            VerifRegTypes.ExtendClaimTermsMethodNum,
+            VerifRegTypes.ActorCode,
+            raw_request,
+            Misc.CBOR_CODEC
+        );
 
         bytes memory result = Actor.readRespData(raw_response);
 
@@ -94,7 +110,12 @@ library VerifRegAPI {
     ) internal returns (VerifRegTypes.RemoveExpiredClaimsReturn memory) {
         bytes memory raw_request = params.serialize();
 
-        bytes memory raw_response = Actor.call(VerifRegTypes.RemoveExpiredClaimsMethodNum, VerifRegTypes.ActorCode, raw_request, Misc.CBOR_CODEC);
+        bytes memory raw_response = Actor.call(
+            VerifRegTypes.RemoveExpiredClaimsMethodNum,
+            VerifRegTypes.ActorCode,
+            raw_request,
+            Misc.CBOR_CODEC
+        );
 
         bytes memory result = Actor.readRespData(raw_response);
 
@@ -109,7 +130,12 @@ library VerifRegAPI {
     ) internal returns (VerifRegTypes.AllocationsResponse memory) {
         bytes memory raw_request = params.serialize();
 
-        bytes memory raw_response = Actor.call(VerifRegTypes.UniversalReceiverMethodNum, VerifRegTypes.ActorCode, raw_request, Misc.CBOR_CODEC);
+        bytes memory raw_response = Actor.call(
+            VerifRegTypes.UniversalReceiverMethodNum,
+            VerifRegTypes.ActorCode,
+            raw_request,
+            Misc.CBOR_CODEC
+        );
 
         bytes memory result = Actor.readRespData(raw_response);
 
