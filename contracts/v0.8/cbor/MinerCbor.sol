@@ -136,9 +136,10 @@ library AddressCBOR {
 library GetBeneficiaryCBOR {
     using CBOR for CBOR.CBORBuffer;
     using CBORDecoder for bytes;
+    using BigNumberCBOR for bytes;
 
-    function deserialize(MinerTypes.GetBeneficiaryReturn memory ret, bytes memory rawResp) internal pure {
-        bytes32 tmp;
+    function deserialize(MinerTypes.GetBeneficiaryReturn memory ret, bytes memory rawResp) internal {
+        bytes memory tmp;
         uint byteIdx = 0;
         uint len;
 
@@ -153,11 +154,19 @@ library GetBeneficiaryCBOR {
         (len, byteIdx) = rawResp.readFixedArray(byteIdx);
         assert(len == 3);
 
-        (tmp, byteIdx) = rawResp.readBytes32(byteIdx);
-        ret.active.term.quota = Misc.toInt256(tmp);
+        (tmp, byteIdx) = rawResp.readBytes(byteIdx);
+        if (tmp.length > 0) {
+            ret.active.term.quota = tmp.deserializeBigNum();
+        } else {
+            ret.active.term.quota = BigNumber(new bytes(0), false);
+        }
 
-        (tmp, byteIdx) = rawResp.readBytes32(byteIdx);
-        ret.active.term.used_quota = Misc.toInt256(tmp);
+        (tmp, byteIdx) = rawResp.readBytes(byteIdx);
+        if (tmp.length > 0) {
+            ret.active.term.used_quota = tmp.deserializeBigNum();
+        } else {
+            ret.active.term.used_quota = BigNumber(new bytes(0), false);
+        }
 
         (ret.active.term.expiration, byteIdx) = rawResp.readUInt64(byteIdx);
 
@@ -166,7 +175,14 @@ library GetBeneficiaryCBOR {
             assert(len == 5);
 
             (ret.proposed.new_beneficiary, byteIdx) = rawResp.readBytes(byteIdx);
-            (ret.proposed.new_quota, byteIdx) = rawResp.readInt256(byteIdx);
+
+            (tmp, byteIdx) = rawResp.readBytes(byteIdx);
+            if (tmp.length > 0) {
+                ret.proposed.new_quota = tmp.deserializeBigNum();
+            } else {
+                ret.proposed.new_quota = BigNumber(new bytes(0), false);
+            }
+
             (ret.proposed.new_expiration, byteIdx) = rawResp.readUInt64(byteIdx);
             (ret.proposed.approved_by_beneficiary, byteIdx) = rawResp.readBool(byteIdx);
             (ret.proposed.approved_by_nominee, byteIdx) = rawResp.readBool(byteIdx);
@@ -177,11 +193,12 @@ library GetBeneficiaryCBOR {
 library GetVestingFundsCBOR {
     using CBOR for CBOR.CBORBuffer;
     using CBORDecoder for bytes;
+    using BigNumberCBOR for bytes;
 
-    function deserialize(MinerTypes.GetVestingFundsReturn memory ret, bytes memory rawResp) internal pure {
+    function deserialize(MinerTypes.GetVestingFundsReturn memory ret, bytes memory rawResp) internal {
         int64 epoch;
-        int256 amount;
-        bytes32 tmp;
+        BigNumber memory amount;
+        bytes memory tmp;
 
         uint byteIdx = 0;
         uint len;
@@ -194,9 +211,9 @@ library GetVestingFundsCBOR {
 
         for (uint i = 0; i < len; i++) {
             (epoch, byteIdx) = rawResp.readInt64(byteIdx);
-            (tmp, byteIdx) = rawResp.readBytes32(byteIdx);
+            (tmp, byteIdx) = rawResp.readBytes(byteIdx);
 
-            amount = Misc.toInt256(tmp);
+            amount = tmp.deserializeBigNum();
             ret.vesting_funds[i] = CommonTypes.VestingFunds(epoch, amount);
         }
     }
@@ -274,9 +291,6 @@ library GetMultiaddrsCBOR {
     using CBORDecoder for bytes;
 
     function deserialize(MinerTypes.GetMultiaddrsReturn memory ret, bytes memory rawResp) internal pure {
-        int64 epoch;
-        int256 amount;
-
         uint byteIdx = 0;
         uint len;
 

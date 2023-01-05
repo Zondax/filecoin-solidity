@@ -1,22 +1,24 @@
 /*******************************************************************************
-*   (c) 2022 Zondax AG
-*
-*  Licensed under the Apache License, Version 2.0 (the "License");
-*  you may not use this file except in compliance with the License.
-*  You may obtain a copy of the License at
-*
-*      http://www.apache.org/licenses/LICENSE-2.0
-*
-*  Unless required by applicable law or agreed to in writing, software
-*  distributed under the License is distributed on an "AS IS" BASIS,
-*  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-*  See the License for the specific language governing permissions and
-*  limitations under the License.
-********************************************************************************/
+ *   (c) 2022 Zondax AG
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ ********************************************************************************/
 //
 // DRAFT!! THIS CODE HAS NOT BEEN AUDITED - USE ONLY FOR PROTOTYPING
 //
 pragma solidity >=0.4.25 <=0.8.17;
+
+import "../cbor/BigNumberCbor.sol";
 
 /// @title Filecoin actors' common types for Solidity.
 /// @author Zondax AG
@@ -84,15 +86,15 @@ library CommonTypes {
 
     struct PendingBeneficiaryChange {
         bytes new_beneficiary;
-        int256 new_quota;
+        BigNumber new_quota;
         uint64 new_expiration;
         bool approved_by_beneficiary;
         bool approved_by_nominee;
     }
 
     struct BeneficiaryTerm {
-        int256 quota;
-        int256 used_quota;
+        BigNumber quota;
+        BigNumber used_quota;
         uint64 expiration;
     }
 
@@ -138,11 +140,6 @@ library CommonTypes {
         uint64 partition;
         uint8 sectors;
         int64 new_expiration;
-    }
-
-    struct FilterEstimate {
-        int256 position;
-        int256 velocity;
     }
 
     struct SectorPreCommitInfoInner {
@@ -208,7 +205,7 @@ library CommonTypes {
 
     struct VestingFunds {
         int64 epoch;
-        int256 amount;
+        BigNumber amount;
     }
     struct SectorDeals {
         int64 sector_type;
@@ -225,9 +222,9 @@ library CommonTypes {
         string label;
         int64 start_epoch;
         int64 end_epoch;
-        int storage_price_per_epoch;
-        int provider_collateral;
-        int client_collateral;
+        BigNumber storage_price_per_epoch;
+        BigNumber provider_collateral;
+        BigNumber client_collateral;
     }
 
     struct ClientDealProposal {

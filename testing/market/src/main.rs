@@ -620,7 +620,7 @@ fn main() {
         gas_limit: 1000000000,
         method_num: 2,
         sequence: 15,
-        params: RawBytes::new(hex::decode("58246E65901F0000000000000000000000000000000000000000000000000000000000000000").unwrap()),
+        params: RawBytes::new(hex::decode("58246E65901F0000000000000000000000000000000000000000000000000000000000000000").unwrap()), // FIXME this arguments are not correct
         ..Message::default()
     };
 
