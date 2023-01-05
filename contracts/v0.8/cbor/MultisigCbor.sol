@@ -23,6 +23,7 @@ import "solidity-cborutils/contracts/CBOR.sol";
 import {MultisigTypes} from "../types/MultisigTypes.sol";
 import "../utils/CborDecode.sol";
 import "../utils/Misc.sol";
+import "./BigNumberCbor.sol";
 
 library BytesCBOR {
     using CBOR for CBOR.CBORBuffer;
@@ -43,6 +44,7 @@ library BytesCBOR {
 library ProposeCBOR {
     using CBOR for CBOR.CBORBuffer;
     using CBORDecoder for bytes;
+    using BigNumberCBOR for BigNumber;
 
     function serialize(MultisigTypes.ProposeParams memory params) internal pure returns (bytes memory) {
         // FIXME what should the max length be on the buffer?
@@ -50,7 +52,7 @@ library ProposeCBOR {
 
         buf.startFixedArray(4);
         buf.writeBytes(params.to);
-        buf.writeBytes(Misc.toBytes(params.value));
+        buf.writeBytes(params.value.serializeBigNum());
         buf.writeUInt64(params.method);
         buf.writeBytes(params.params);
 
@@ -184,6 +186,7 @@ library ChangeNumApprovalsThresholdCBOR {
 library LockBalanceCBOR {
     using CBOR for CBOR.CBORBuffer;
     using CBORDecoder for bytes;
+    using BigNumberCBOR for BigNumber;
 
     function serialize(MultisigTypes.LockBalanceParams memory params) internal pure returns (bytes memory) {
         // FIXME what should the max length be on the buffer?
@@ -192,7 +195,7 @@ library LockBalanceCBOR {
         buf.startFixedArray(3);
         buf.writeInt64(params.start_epoch);
         buf.writeInt64(params.unlock_duration);
-        buf.writeBytes(Misc.toBytes(params.amount));
+        buf.writeBytes(params.amount.serializeBigNum());
 
         return buf.data();
     }
