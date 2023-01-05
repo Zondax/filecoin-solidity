@@ -46,9 +46,9 @@ fn main() {
 
     let accounts: [Account; 2] = tester.create_accounts().unwrap();
     let (sender, verified_client) = (accounts[0], accounts[1]);
-    // As the governor address for verifreg is 199, we create many many addresses in order to initialize the ID 199 with some tokens
-    // and make it a valid address to use.
-    let accounts: [Account; 200] = tester.create_accounts().unwrap();
+    // register address so we can use senderID 199 which is the governor address of the verifreg
+    // actor
+    let _accounts: [Account; 200] = tester.create_accounts().unwrap();
 
     // Instantiate machine
     tester.instantiate_machine(DummyExterns).unwrap();
@@ -112,7 +112,6 @@ fn main() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
-    //println!("Registering actor result {:?}", &res);
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
 
     println!("Calling `add_verified_client`");
@@ -168,7 +167,6 @@ fn main() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
-    //dbg!("extend_claim_term result {:?}", &res);
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
 
     println!("Calling `remove_expired_allocations`");
@@ -205,7 +203,6 @@ fn main() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
-    //dbg!("claims result {:?}", &res);
     assert_eq!(res.msg_receipt.exit_code.value(), 33);
 
     println!("Calling `universal_receiver_hook`");
