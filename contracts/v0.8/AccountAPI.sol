@@ -15,7 +15,8 @@
  ********************************************************************************/
 //
 // DRAFT!! THIS CODE HAS NOT BEEN AUDITED - USE ONLY FOR PROTOTYPING
-//
+
+// SPDX-License-Identifier: Apache-2.0
 pragma solidity >=0.4.25 <=0.8.17;
 
 import "./types/AccountTypes.sol";
@@ -36,7 +37,7 @@ library AccountAPI {
 
         bytes memory raw_response = Actor.call(AccountTypes.AuthenticateMessageMethodNum, target, raw_request, Misc.CBOR_CODEC);
 
-        bytes memory result = Actor.readRespData(raw_response);
+        Actor.readRespData(raw_response);
     }
 
     /// @notice FIXME
@@ -45,6 +46,6 @@ library AccountAPI {
 
         bytes memory raw_response = Actor.call(AccountTypes.UniversalReceiverHookMethodNum, target, raw_request, Misc.CBOR_CODEC);
 
-        bytes memory result = Actor.readRespData(raw_response);
+        Actor.readRespData(raw_response);
     }
 }

@@ -15,7 +15,8 @@
  ********************************************************************************/
 //
 // DRAFT!! THIS CODE HAS NOT BEEN AUDITED - USE ONLY FOR PROTOTYPING
-//
+
+// SPDX-License-Identifier: Apache-2.0
 pragma solidity >=0.4.25 <=0.8.17;
 
 import "solidity-cborutils/contracts/CBOR.sol";
@@ -70,9 +71,7 @@ library IsControllingAddressCBOR {
     using CBORDecoder for bytes;
 
     function deserialize(MinerTypes.IsControllingAddressReturn memory ret, bytes memory rawResp) internal pure {
-        bool is_controlling;
         uint byteIdx = 0;
-        uint len;
 
         (ret.is_controlling, byteIdx) = rawResp.readBool(byteIdx);
     }
@@ -84,7 +83,6 @@ library GetSectorSizeCBOR {
 
     function deserialize(MinerTypes.GetSectorSizeReturn memory ret, bytes memory rawResp) internal pure {
         uint byteIdx = 0;
-        uint len;
 
         (ret.sector_size, byteIdx) = rawResp.readUInt64(byteIdx);
     }
@@ -95,9 +93,8 @@ library GetAvailableBalanceCBOR {
     using CBORDecoder for bytes;
     using BigNumberCBOR for bytes;
 
-    function deserialize(MinerTypes.GetAvailableBalanceReturn memory ret, bytes memory rawResp) internal {
+    function deserialize(MinerTypes.GetAvailableBalanceReturn memory ret, bytes memory rawResp) internal pure {
         uint byteIdx = 0;
-        uint len;
 
         bytes memory tmp;
         (tmp, byteIdx) = rawResp.readBytes(byteIdx);
@@ -125,7 +122,6 @@ library AddressCBOR {
     function deserializeAddress(bytes memory ret) internal pure returns (bytes memory) {
         bytes memory addr;
         uint byteIdx = 0;
-        uint len;
 
         (addr, byteIdx) = ret.readBytes(byteIdx);
 
@@ -138,7 +134,7 @@ library GetBeneficiaryCBOR {
     using CBORDecoder for bytes;
     using BigNumberCBOR for bytes;
 
-    function deserialize(MinerTypes.GetBeneficiaryReturn memory ret, bytes memory rawResp) internal {
+    function deserialize(MinerTypes.GetBeneficiaryReturn memory ret, bytes memory rawResp) internal pure {
         bytes memory tmp;
         uint byteIdx = 0;
         uint len;
@@ -195,7 +191,7 @@ library GetVestingFundsCBOR {
     using CBORDecoder for bytes;
     using BigNumberCBOR for bytes;
 
-    function deserialize(MinerTypes.GetVestingFundsReturn memory ret, bytes memory rawResp) internal {
+    function deserialize(MinerTypes.GetVestingFundsReturn memory ret, bytes memory rawResp) internal pure {
         int64 epoch;
         BigNumber memory amount;
         bytes memory tmp;
@@ -322,7 +318,6 @@ library WithdrawBalanceCBOR {
 
     function deserialize(MinerTypes.WithdrawBalanceReturn memory ret, bytes memory rawResp) internal pure {
         uint byteIdx = 0;
-        uint len;
 
         (ret.amount_withdrawn, byteIdx) = rawResp.readBytes(byteIdx);
     }

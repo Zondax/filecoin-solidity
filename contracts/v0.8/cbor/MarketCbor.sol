@@ -15,7 +15,8 @@
  ********************************************************************************/
 //
 // DRAFT!! THIS CODE HAS NOT BEEN AUDITED - USE ONLY FOR PROTOTYPING
-//
+
+// SPDX-License-Identifier: Apache-2.0
 pragma solidity >=0.4.25 <=0.8.17;
 
 import "solidity-cborutils/contracts/CBOR.sol";
@@ -44,10 +45,9 @@ library WithdrawBalanceCBOR {
         return buf.data();
     }
 
-    function deserialize(MarketTypes.WithdrawBalanceReturn memory ret, bytes memory rawResp) internal {
+    function deserialize(MarketTypes.WithdrawBalanceReturn memory ret, bytes memory rawResp) internal pure {
         bytes memory tmp;
         uint byteIdx = 0;
-        uint len;
 
         (tmp, byteIdx) = rawResp.readBytes(byteIdx);
         ret.amount_withdrawn = tmp.deserializeBigNum();
@@ -70,7 +70,6 @@ library AddressCBOR {
     function deserializeAddress(bytes memory ret) internal pure returns (bytes memory) {
         bytes memory addr;
         uint byteIdx = 0;
-        uint len;
 
         (addr, byteIdx) = ret.readBytes(byteIdx);
 
@@ -82,7 +81,7 @@ library GetBalanceCBOR {
     using CBORDecoder for bytes;
     using BigNumberCBOR for bytes;
 
-    function deserialize(MarketTypes.GetBalanceReturn memory ret, bytes memory rawResp) internal {
+    function deserialize(MarketTypes.GetBalanceReturn memory ret, bytes memory rawResp) internal pure {
         uint byteIdx = 0;
         uint len;
         bytes memory tmp;
@@ -139,7 +138,6 @@ library GetDealClientCBOR {
 
     function deserialize(MarketTypes.GetDealClientReturn memory ret, bytes memory rawResp) internal pure {
         uint byteIdx = 0;
-        uint len;
 
         (ret.client, byteIdx) = rawResp.readUInt64(byteIdx);
     }
@@ -160,7 +158,6 @@ library GetDealProviderCBOR {
 
     function deserialize(MarketTypes.GetDealProviderReturn memory ret, bytes memory rawResp) internal pure {
         uint byteIdx = 0;
-        uint len;
 
         (ret.provider, byteIdx) = rawResp.readUInt64(byteIdx);
     }
@@ -182,7 +179,6 @@ library GetDealLabelCBOR {
     function deserialize(MarketTypes.GetDealLabelReturn memory ret, bytes memory rawResp) internal pure {
         string memory label;
         uint byteIdx = 0;
-        uint len;
 
         (label, byteIdx) = rawResp.readString(byteIdx);
 
@@ -234,10 +230,9 @@ library GetDealEpochPriceCBOR {
         return buf.data();
     }
 
-    function deserialize(MarketTypes.GetDealEpochPriceReturn memory ret, bytes memory rawResp) internal {
+    function deserialize(MarketTypes.GetDealEpochPriceReturn memory ret, bytes memory rawResp) internal pure {
         bytes memory tmp;
         uint byteIdx = 0;
-        uint len;
 
         (tmp, byteIdx) = rawResp.readBytes(byteIdx);
         ret.price_per_epoch = tmp.deserializeBigNum();
@@ -258,10 +253,9 @@ library GetDealClientCollateralCBOR {
         return buf.data();
     }
 
-    function deserialize(MarketTypes.GetDealClientCollateralReturn memory ret, bytes memory rawResp) internal {
+    function deserialize(MarketTypes.GetDealClientCollateralReturn memory ret, bytes memory rawResp) internal pure {
         bytes memory tmp;
         uint byteIdx = 0;
-        uint len;
 
         (tmp, byteIdx) = rawResp.readBytes(byteIdx);
         ret.collateral = tmp.deserializeBigNum();
@@ -282,10 +276,9 @@ library GetDealProviderCollateralCBOR {
         return buf.data();
     }
 
-    function deserialize(MarketTypes.GetDealProviderCollateralReturn memory ret, bytes memory rawResp) internal {
+    function deserialize(MarketTypes.GetDealProviderCollateralReturn memory ret, bytes memory rawResp) internal pure {
         bytes memory tmp;
         uint byteIdx = 0;
-        uint len;
 
         (tmp, byteIdx) = rawResp.readBytes(byteIdx);
         ret.collateral = tmp.deserializeBigNum();
@@ -308,7 +301,6 @@ library GetDealVerifiedCBOR {
     function deserialize(MarketTypes.GetDealVerifiedReturn memory ret, bytes memory rawResp) internal pure {
         bool verified;
         uint byteIdx = 0;
-        uint len;
 
         (verified, byteIdx) = rawResp.readBool(byteIdx);
 

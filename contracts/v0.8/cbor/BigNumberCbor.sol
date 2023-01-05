@@ -15,7 +15,8 @@
  ********************************************************************************/
 //
 // DRAFT!! THIS CODE HAS NOT BEEN AUDITED - USE ONLY FOR PROTOTYPING
-//
+
+// SPDX-License-Identifier: Apache-2.0
 pragma solidity >=0.4.25 <=0.8.17;
 
 struct BigNumber {
@@ -41,7 +42,7 @@ library BigNumberCBOR {
         return raw;
     }
 
-    function deserializeBigNum(bytes memory raw) internal returns (BigNumber memory) {
+    function deserializeBigNum(bytes memory raw) internal pure returns (BigNumber memory) {
         // TODO improve gas efficiency by using assembly code
         bytes memory val = new bytes(raw.length - 1);
         bool neg = false;
