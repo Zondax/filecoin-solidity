@@ -89,8 +89,8 @@ test_multisig_integration: build build_builtin_actors
 ################ DEPS ################
 
 install_solc_linux:
-	wget https://binaries.soliditylang.org/linux-amd64/solc-linux-amd64-v0.8.15+commit.e14f2714
-	mv solc-linux-amd64-v0.8.15+commit.e14f2714 bin/solc
+	wget https://github.com/ethereum/solidity/releases/download/v0.8.17/solc-static-linux
+	mv solc-static-linux bin/solc
 	chmod +x bin/solc
 
 install_solc_win:
