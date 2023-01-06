@@ -3,7 +3,7 @@ title: Milestone 2
 sidebar_position: 3
 ---
 
-During this Milestone we will complete the implementation of all remaining methods and built-in actors marked as “export” and that are ready to be integrated within the library. We will provide short solidity documentation as we keep integrating APIs.
+During this milestone, we completed the implementation of all remaining methods and built-in actors marked as “export” and that are ready to be integrated within the library. We provided short solidity documentation as we were integrating APIs.
 
 ## Deliverables
 
