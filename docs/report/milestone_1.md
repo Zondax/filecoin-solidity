@@ -15,14 +15,16 @@ At this stage we will focus on functionality, and gas-consumption and optimizati
 This mock libraries includes the following features - [Let's go to the project](https://github.com/Zondax/filecoin-solidity/tree/master/contracts/v0.8/mocks) :arrow_upper_right:
 
 ### Technical
-| Type                            | Category  | Link                                                                                                 |
-|---------------------------------|-----------|------------------------------------------------------------------------------------------------------|
-| StorageMarket Actor             | Code      | [:link:](https://github.com/Zondax/filecoin-solidity/blob/master/contracts/v0.8/mocks/MarketAPI.sol) |
-| StorageMiner Actor              | Code      | [:link:](https://github.com/Zondax/filecoin-solidity/blob/master/contracts/v0.8/mocks/MinerAPI.sol)  |
-| Specific types                  | Code      | [:link:](https://github.com/Zondax/filecoin-solidity/tree/master/contracts/v0.8/mocks/types)         |
-| Common types                    | Code      | [:link:](https://github.com/Zondax/filecoin-solidity/tree/master/contracts/v0.8/types)               |
-| NPM package                     | Package   | [:link:](https://www.npmjs.com/package/@zondax/filecoin-solidity)                                    |
-| CI workflow for automatic build | Tests     | [:link:](https://github.com/Zondax/filecoin-solidity/blob/master/.github/workflows/main.yaml)        |
+| Type                            | Category | Link                                                                                                        |
+|---------------------------------|----------|-------------------------------------------------------------------------------------------------------------|
+| StorageMarket                   | Code     | [:link:](https://github.com/Zondax/filecoin-solidity/blob/master/contracts/v0.8/mocks/MarketAPI.sol)        |
+| StorageMiner                    | Code     | [:link:](https://github.com/Zondax/filecoin-solidity/blob/master/contracts/v0.8/mocks/MinerAPI.sol)         |
+| StorageMarket                   | Test     | [:link:](https://github.com/Zondax/filecoin-solidity/blob/master/contracts/v0.8/mocks/test/market.test.sol) |
+| StorageMiner                    | Test     | [:link:](https://github.com/Zondax/filecoin-solidity/blob/master/contracts/v0.8/mocks/test/miner.test.sol)  |
+| Specific types                  | Code     | [:link:](https://github.com/Zondax/filecoin-solidity/tree/master/contracts/v0.8/mocks/types)                |
+| Common types                    | Code     | [:link:](https://github.com/Zondax/filecoin-solidity/tree/master/contracts/v0.8/types)                      |
+| NPM package                     | Package  | [:link:](https://www.npmjs.com/package/@zondax/filecoin-solidity)                                           |
+| CI workflow for automatic build | Tests    | [:link:](https://github.com/Zondax/filecoin-solidity/blob/master/.github/workflows/main.yaml)               |
 
 ### Documentation
 
