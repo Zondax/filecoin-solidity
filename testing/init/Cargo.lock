@@ -3063,6 +3063,7 @@ dependencies = [
 name = "testing"
 version = "0.1.0"
 dependencies = [
+ "cid",
  "fil_actor_eam",
  "fil_actors_runtime 10.0.0-alpha.1 (git+https://github.com/filecoin-project/builtin-actors?tag=dev/20221219-fvm-m2-patch.1)",
  "fvm",

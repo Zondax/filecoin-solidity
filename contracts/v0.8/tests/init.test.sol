@@ -24,11 +24,11 @@ import "../InitAPI.sol";
 
 /// @author Zondax AG
 contract InitApiTest {
-    function exec(InitTypes.ExecParams memory params) internal returns (InitTypes.ExecReturn memory) {
+    function exec(InitTypes.ExecParams memory params) public returns (InitTypes.ExecReturn memory) {
         return InitAPI.exec(params);
     }
 
-    function exec4(InitTypes.Exec4Params memory params) internal returns (InitTypes.Exec4Return memory) {
+    function exec4(InitTypes.Exec4Params memory params) public returns (InitTypes.Exec4Return memory) {
         return InitAPI.exec4(params);
     }
 }
