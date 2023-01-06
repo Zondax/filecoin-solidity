@@ -129,7 +129,7 @@ fn main() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
-    //assert_eq!(res.msg_receipt.exit_code.value(), 0);
+    assert_eq!(res.msg_receipt.exit_code.value(), 0);
 
     println!("Calling `get_claims`");
 
@@ -149,7 +149,7 @@ fn main() {
         .unwrap();
 
     // Should not fail as actor would return an empty list of claims
-    //assert_eq!(res.msg_receipt.exit_code.value(), 0);
+    assert_eq!(res.msg_receipt.exit_code.value(), 0);
 
     println!("Calling `extend_claim_term`");
     let message = Message {
@@ -166,7 +166,7 @@ fn main() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
-    //assert_eq!(res.msg_receipt.exit_code.value(), 0);
+    assert_eq!(res.msg_receipt.exit_code.value(), 0);
 
     println!("Calling `remove_expired_allocations`");
 
@@ -184,8 +184,6 @@ fn main() {
     let res = executor
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
-
-    dbg!(&res);
 
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
 
@@ -220,6 +218,8 @@ fn main() {
     let res = executor
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
+
+    dbg!(&res);
 
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
 }
