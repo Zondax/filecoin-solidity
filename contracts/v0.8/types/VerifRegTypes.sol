@@ -28,7 +28,7 @@ library VerifRegTypes {
     bytes constant ActorCode = hex"0006";
     uint constant GetClaimsMethodNum = 2199871187;
     uint constant AddVerifierClientMethodNum = 3916220144;
-    uint constant RemoveExpiredAllocationsMethodNum = 2873373899;
+    uint constant RemoveExpiredAllocationsMethodNum = 2421068268;
     uint constant ExtendClaimTermsMethodNum = 1752273514;
     uint constant RemoveExpiredClaimsMethodNum = 2873373899;
     uint constant UniversalReceiverMethodNum = 3726118371;

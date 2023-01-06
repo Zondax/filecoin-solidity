@@ -82,7 +82,6 @@ fn main() {
     println!("MinerCountExported {}", MinerCountExported);
     println!("MinerConsensusCountExported {}", MinerConsensusCountExported);
 
-
     println!("VERIFIED REGISTRY EXPORTED METHOD NUM");
 
     let AddVerifiedClientExported = frc42_dispatch::method_hash!("AddVerifiedClient");
