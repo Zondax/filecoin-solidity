@@ -45,7 +45,7 @@ contract MinerAPI {
     }
 
     /// @notice (Mock method) Sets the owner of a Miner, which will be returned via get_owner().
-    function mock_set_owner(bytes memory addr) public {
+    function mockSetOwner(bytes memory addr) public {
         require(owner.length == 0);
         owner = addr;
     }
@@ -53,7 +53,7 @@ contract MinerAPI {
     /// @notice Income and returned collateral are paid to this address
     /// @notice This address is also allowed to change the worker address for the miner
     /// @return the owner address of a Miner
-    function get_owner() public view returns (MinerTypes.GetOwnerReturn memory) {
+    function getOwner() public view returns (MinerTypes.GetOwnerReturn memory) {
         require(owner.length != 0);
 
         bytes memory proposed = "0x00";
@@ -64,13 +64,13 @@ contract MinerAPI {
     /// @param addr New owner address
     /// @notice Proposes or confirms a change of owner address.
     /// @notice If invoked by the current owner, proposes a new owner address for confirmation. If the proposed address is the current owner address, revokes any existing proposal that proposed address.
-    function change_owner_address(bytes memory addr) public {
+    function changeOwnerAddress(bytes memory addr) public {
         owner = addr;
     }
 
     /// @param params The "controlling" addresses are the Owner, the Worker, and all Control Addresses.
     /// @return Whether the provided address is "controlling".
-    function is_controlling_address(
+    function isControllingAddress(
         MinerTypes.IsControllingAddressParam memory params
     ) public pure returns (MinerTypes.IsControllingAddressReturn memory) {
         require(params.addr[0] >= 0x00);
@@ -79,19 +79,19 @@ contract MinerAPI {
     }
 
     /// @return the miner's sector size.
-    function get_sector_size() public view returns (MinerTypes.GetSectorSizeReturn memory) {
+    function getSectorSize() public view returns (MinerTypes.GetSectorSizeReturn memory) {
         return MinerTypes.GetSectorSizeReturn(sectorSizesBytes[CommonTypes.SectorSize._8MiB]);
     }
 
     /// @notice This is calculated as actor balance - (vesting funds + pre-commit deposit + initial pledge requirement + fee debt)
     /// @notice Can go negative if the miner is in IP debt.
     /// @return the available balance of this miner.
-    function get_available_balance() public pure returns (MinerTypes.GetAvailableBalanceReturn memory) {
+    function getAvailableBalance() public pure returns (MinerTypes.GetAvailableBalanceReturn memory) {
         return MinerTypes.GetAvailableBalanceReturn(BigInt(hex"021E19E0C9BAB2400000", false));
     }
 
     /// @return the funds vesting in this miner as a list of (vesting_epoch, vesting_amount) tuples.
-    function get_vesting_funds() public pure returns (MinerTypes.GetVestingFundsReturn memory) {
+    function getVestingFunds() public pure returns (MinerTypes.GetVestingFundsReturn memory) {
         CommonTypes.VestingFunds[] memory vesting_funds = new CommonTypes.VestingFunds[](1);
         vesting_funds[0] = CommonTypes.VestingFunds(1668514825, BigInt(hex"6C6B935B8BBD400000", false));
 
@@ -101,7 +101,7 @@ contract MinerAPI {
     /// @notice Proposes or confirms a change of beneficiary address.
     /// @notice A proposal must be submitted by the owner, and takes effect after approval of both the proposed beneficiary and current beneficiary, if applicable, any current beneficiary that has time and quota remaining.
     /// @notice See FIP-0029, https://github.com/filecoin-project/FIPs/blob/master/FIPS/fip-0029.md
-    function change_beneficiary(MinerTypes.ChangeBeneficiaryParams memory params) public {
+    function changeBeneficiary(MinerTypes.ChangeBeneficiaryParams memory params) public {
         if (!isBeneficiarySet) {
             BigNumber memory zero = BigNumbers.zero();
             CommonTypes.BeneficiaryTerm memory term = CommonTypes.BeneficiaryTerm(
@@ -120,7 +120,7 @@ contract MinerAPI {
 
     /// @notice This method is for use by other actors (such as those acting as beneficiaries), and to abstract the state representation for clients.
     /// @notice Retrieves the currently active and proposed beneficiary information.
-    function get_beneficiary() public view returns (MinerTypes.GetBeneficiaryReturn memory) {
+    function getBeneficiary() public view returns (MinerTypes.GetBeneficiaryReturn memory) {
         require(isBeneficiarySet);
 
         CommonTypes.PendingBeneficiaryChange memory proposed;
