@@ -16,6 +16,7 @@ serde = { version = "1.0", features = ["derive"] }
 serde_tuple = "0.5"
 wabt = "0.10.0"
 hex = "0.4.3"
+cid = "0.8.6"
 
 fil_actors_runtime = { version = "10.0.0-alpha.1", git = "https://github.com/filecoin-project/builtin-actors", tag = "dev/20221219-fvm-m2-patch.1", features = ["m2-native"] }
 fil_actor_eam = { version = "10.0.0-alpha.1", git = "https://github.com/filecoin-project/builtin-actors", tag = "dev/20221219-fvm-m2-patch.1" }

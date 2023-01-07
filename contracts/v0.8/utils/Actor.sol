@@ -80,9 +80,11 @@ library Actor {
                 offset := add(sub(offset, 0x20), mod(actor_code_len, 0x20))
             }
 
+            let len := add(start_index, offset)
+
             // FIXME set inputSize according to the input length
             // delegatecall(gasLimit, to, inputOffset, inputSize, outputOffset, outputSize)
-            if iszero(delegatecall(GAS_LIMIT, CALL_ACTOR_PRECOMPILE_ADDR, input, 0x100, raw_response, MAX_RAW_RESPONSE_SIZE)) {
+            if iszero(delegatecall(GAS_LIMIT, CALL_ACTOR_PRECOMPILE_ADDR, input, len, raw_response, MAX_RAW_RESPONSE_SIZE)) {
                 revert(0, 0)
             }
         }
