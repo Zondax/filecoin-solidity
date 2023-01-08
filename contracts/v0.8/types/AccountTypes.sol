@@ -31,4 +31,11 @@ library AccountTypes {
         bytes signature;
         bytes message;
     }
+
+    struct UniversalReceiverParams {
+        /// Asset type
+        uint32 type_;
+        /// Payload corresponding to asset type
+        bytes payload;
+    }
 }

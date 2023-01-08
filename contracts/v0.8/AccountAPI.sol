@@ -29,6 +29,7 @@ import "./utils/Actor.sol";
 /// @author Zondax AG
 library AccountAPI {
     using AuthenticateMessageCBOR for AccountTypes.AuthenticateMessageParams;
+    using UniversalReceiverHookCBOR for AccountTypes.UniversalReceiverParams;
     using BytesCBOR for bytes;
 
     /// @notice FIXME
@@ -41,8 +42,8 @@ library AccountAPI {
     }
 
     /// @notice FIXME
-    function universalReceiverHook(bytes memory target, bytes memory params) internal {
-        bytes memory raw_request = params.serializeBytes();
+    function universalReceiverHook(bytes memory target, AccountTypes.UniversalReceiverParams memory params) internal {
+        bytes memory raw_request = params.serialize();
 
         bytes memory raw_response = Actor.call(AccountTypes.UniversalReceiverHookMethodNum, target, raw_request, Misc.CBOR_CODEC);
 
