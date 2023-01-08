@@ -3160,7 +3160,6 @@ dependencies = [
  "fvm_shared 3.0.0-alpha.15",
  "hex",
  "multihash",
- "rand_core",
  "serde",
  "serde_tuple",
  "wabt",

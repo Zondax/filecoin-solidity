@@ -28,7 +28,7 @@ contract AccountApiTest {
         AccountAPI.authenticateMessage(target, params);
     }
 
-    function universal_receiver_hook(bytes memory target, bytes memory params) public {
+    function universal_receiver_hook(bytes memory target, AccountTypes.UniversalReceiverParams memory params) public {
         AccountAPI.universalReceiverHook(target, params);
     }
 }

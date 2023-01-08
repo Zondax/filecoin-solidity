@@ -54,6 +54,24 @@ library AuthenticateMessageCBOR {
     }
 }
 
+/// @title FIXME
+/// @author Zondax AG
+library UniversalReceiverHookCBOR {
+    using CBOR for CBOR.CBORBuffer;
+    using CBORDecoder for bytes;
+
+    function serialize(AccountTypes.UniversalReceiverParams memory params) internal pure returns (bytes memory) {
+        // FIXME what should the max length be on the buffer?
+        CBOR.CBORBuffer memory buf = CBOR.create(64);
+
+        buf.startFixedArray(2);
+        buf.writeUInt64(params.type_);
+        buf.writeBytes(params.payload);
+
+        return buf.data();
+    }
+}
+
 library BytesCBOR {
     using CBOR for CBOR.CBORBuffer;
     using CBORDecoder for bytes;
