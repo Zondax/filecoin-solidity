@@ -20,9 +20,9 @@
 pragma solidity >=0.4.25 <=0.8.17;
 
 import "solidity-cborutils/contracts/CBOR.sol";
-import "@ensdomains/buffer/contracts/Buffer.sol";
 
 import {InitTypes} from "../types/InitTypes.sol";
+import "./FilecoinCbor.sol";
 import "../utils/CborDecode.sol";
 import "../utils/Misc.sol";
 
@@ -30,7 +30,7 @@ import "../utils/Misc.sol";
 /// @author Zondax AG
 library ExecCBOR {
     using CBOR for CBOR.CBORBuffer;
-    using Buffer for Buffer.buffer;
+    using FilecoinCbor for CBOR.CBORBuffer;
     using CBORDecoder for bytes;
 
     function serialize(InitTypes.ExecParams memory params) internal pure returns (bytes memory) {
@@ -38,10 +38,7 @@ library ExecCBOR {
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
         buf.startFixedArray(2);
-        // write tag 42
-        buf.buf.appendUint8(uint8((6 << 5 | 24)));
-        buf.buf.appendUint8(uint8((42)));
-        buf.writeBytes(params.code_cid);
+        buf.writeCid(params.code_cid);
         buf.writeBytes(params.constructor_params);
 
         return buf.data();
@@ -63,7 +60,7 @@ library ExecCBOR {
 /// @author Zondax AG
 library Exec4CBOR {
     using CBOR for CBOR.CBORBuffer;
-    using Buffer for Buffer.buffer;
+    using FilecoinCbor for CBOR.CBORBuffer;
     using CBORDecoder for bytes;
 
     function serialize(InitTypes.Exec4Params memory params) internal pure returns (bytes memory) {
@@ -71,10 +68,7 @@ library Exec4CBOR {
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
         buf.startFixedArray(3);
-        // write tag 42
-        buf.buf.appendUint8(uint8((6 << 5 | 24)));
-        buf.buf.appendUint8(uint8((42)));
-        buf.writeBytes(params.code_cid);
+        buf.writeCid(params.code_cid);
         buf.writeBytes(params.constructor_params);
         buf.writeBytes(params.subaddress);
 
