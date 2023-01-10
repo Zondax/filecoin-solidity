@@ -7,7 +7,7 @@ sidebar_position: 2
 
 ### Current data
 
-The following table condense the current deals created in wallaby. These can be seen using any wallaby indexer.
+The following table condenses the current deals created in wallaby. These can be seen using any wallaby indexer.
 
 |Deal ID|Piece CID|Activated|Terminated|size|client|provider|label|start|end|price_per_epoch|client_collateral|provider_collateral|verified|
 |:----|:----|:----|:----|:----|:----|:----|:----|:----|:----|:----|:----|:----|:----|

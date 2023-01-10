@@ -22,4 +22,4 @@ If you have used the mocked library before, you won't find many changes, so it i
 
 ## Disclaimer :warning::warning:
 
-The project is actually on **beta**. Please, feel free to report any possible bug you encounter with while you make use of it.
+The project is actually in **beta**. Please, feel free to report any possible bug you encounter while you make use of it.
