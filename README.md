@@ -14,7 +14,7 @@ _Please visit our website at [zondax.ch](https://www.zondax.ch)_
 
 ## :warning::warning: DISCLAIMER :warning::warning:
 
-#### This project is in beta stage. Please, feel free to report any bug you encounter with.
+The libraries have been developed under the following set of assumptions. Take a look at them [here :link:](https://docs.zondax.ch/fevm/filecoin-solidity/introduction/assumptions)
 
 ---
 
