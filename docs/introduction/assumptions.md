@@ -3,12 +3,12 @@ title: "Assumptions"
 sidebar_position: 3
 ---
 
-A series of assumptions and suppositions have been established in order to assure the correct functionality of the libraries. If any of these are not met, 
-we cannot guarantee the library will work as expected. 
+The libraries has been developed under the following set of assumptions:
 
+- Filecoin actors API has been tested through the rust integration module located in the ref-fvm repository [:link:](https://github.com/Zondax/ref-fvm/tree/lola/fixes).
 
-- Filecoin actors API has been tested through the rust integration module located in the ref-fvm repository [:link:](https://github.com/Zondax/ref-fvm/tree/lola/fixes). 
-The builtin-actors submodule [:link:](https://github.com/Zondax/filecoin-solidity/tree/master/testing) present in this repository is the latest version tested on. 
-Any newer version could break the library functionality. 
+- The builtin-actors submodule [:link:](https://github.com/Zondax/filecoin-solidity/tree/master/testing) in this repository is the latest version tested on.
 
-- 
+- FEVM and Wallaby are still under development. It make happen that newer versions could break or introduce issues in this library.
+
+- Given the immutability of contracts, changes upstreams or in external dependencies may affect the current functionality.
