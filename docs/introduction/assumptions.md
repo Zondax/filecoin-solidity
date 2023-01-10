@@ -3,7 +3,7 @@ title: "Assumptions"
 sidebar_position: 3
 ---
 
-The libraries has been developed under the following set of assumptions:
+The libraries have been developed under the following set of assumptions:
 
 - Filecoin actors API has been tested through the rust integration module located in the ref-fvm repository [:link:](https://github.com/Zondax/ref-fvm/tree/lola/fixes).
 
