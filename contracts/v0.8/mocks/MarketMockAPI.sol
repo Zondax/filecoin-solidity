@@ -28,7 +28,7 @@ import {BigNumbers, BigNumber} from "@zondax/solidity-bignumber/src/BigNumbers.s
 /// @author Zondax AG
 /// @dev Methods prefixed with mock_ will not be available in the real library. These methods are merely used to set mock state. Note that this interface will likely break in the future as we align it
 //       with that of the real library!
-contract MarketAPI {
+contract MarketMockAPI {
     mapping(string => BigNumber) balances;
     mapping(uint64 => MockTypes.Deal) deals;
 

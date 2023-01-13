@@ -22,7 +22,7 @@ pragma solidity >=0.4.25 <=0.8.17;
 /// @title Filecoin init actor types for Solidity.
 /// @author Zondax AG
 library InitTypes {
-    bytes constant ActorCode = hex"0001";
+    bytes constant ActorID = hex"0001";
     uint constant ExecMethodNum = 81225168;
     uint constant Exec4MethodNum = 3;
 

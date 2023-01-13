@@ -25,7 +25,7 @@ import "./CommonTypes.sol";
 /// @title Filecoin market actor types for Solidity.
 /// @author Zondax AG
 library MarketTypes {
-    bytes constant ActorCode = hex"0005";
+    bytes constant ActorID = hex"0005";
     uint constant AddBalanceMethodNum = 822473126;
     uint constant WithdrawBalanceMethodNum = 2280458852;
     uint constant GetBalanceMethodNum = 726108461;

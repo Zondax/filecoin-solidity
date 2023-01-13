@@ -29,16 +29,16 @@ library Actor {
     uint64 constant READ_ONLY_FLAG = 0x00000001; // https://github.com/filecoin-project/ref-fvm/blob/master/shared/src/sys/mod.rs#L60
     uint64 constant DEFAULT_FLAG = 0x00000000;
 
-    function call(uint method_num, bytes memory actor_code, bytes memory raw_request, uint64 codec) internal returns (bytes memory) {
+    function call(uint method_num, bytes memory actor_id, bytes memory raw_request, uint64 codec) internal returns (bytes memory) {
         bytes memory raw_response = new bytes(MAX_RAW_RESPONSE_SIZE);
 
         uint raw_request_len;
-        uint actor_code_len;
+        uint actor_id_len;
         uint amount = msg.value;
 
         assembly {
             raw_request_len := mload(raw_request)
-            actor_code_len := mload(actor_code)
+            actor_id_len := mload(actor_id)
 
             let input := mload(0x40)
             mstore(input, method_num)
@@ -51,7 +51,7 @@ library Actor {
             // params size
             mstore(add(input, 0x80), raw_request_len)
             // address size
-            mstore(add(input, 0xa0), actor_code_len)
+            mstore(add(input, 0xa0), actor_id_len)
             // actual params (copy by slice of 32 bytes)
             let start_index := 0xc0
             let offset := 0
@@ -71,13 +71,13 @@ library Actor {
             offset := 0
             for {
                 offset := 0x00
-            } lt(offset, actor_code_len) {
+            } lt(offset, actor_id_len) {
                 offset := add(offset, 0x20)
             } {
-                mstore(add(input, add(start_index, offset)), mload(add(actor_code, add(0x20, offset))))
+                mstore(add(input, add(start_index, offset)), mload(add(actor_id, add(0x20, offset))))
             }
-            if mod(actor_code_len, 0x20) {
-                offset := add(sub(offset, 0x20), mod(actor_code_len, 0x20))
+            if mod(actor_id_len, 0x20) {
+                offset := add(sub(offset, 0x20), mod(actor_id_len, 0x20))
             }
 
             let len := add(start_index, offset)

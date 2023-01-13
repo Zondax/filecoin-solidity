@@ -27,7 +27,7 @@ import "../types/MinerTypes.sol";
 /// @author Zondax AG
 /// @dev Methods prefixed with mock_ will not be available in the real library. These methods are merely used to set mock state. Note that this interface will likely break in the future as we align it
 //       with that of the real library!
-contract MinerAPI {
+contract MinerMockAPI {
     bytes owner;
     bool isBeneficiarySet = false;
     CommonTypes.ActiveBeneficiary activeBeneficiary;
