@@ -160,7 +160,7 @@ fn main() {
 
      let actor_state = ActorState {
          // CID of Accounts actor. You get this as output from builtin-actors compiling process
-         code: Cid::from_str("bafk2bzaced4egdjgpdpxgg37rz7zrqegwioeqbeo7gfw3a4il6tkdrssfjsoy").unwrap(),
+         code: Cid::from_str("bafk2bzacec4z6abuom2na7vetpymgi7sxnmud5o4tr3h6ip5evsfbmfuo2vzi").unwrap(),
          //code: Cid::from_str("bafk2bzaceddmas33nnn2izdexi5xjzuahzezl62aa5ah5bqwzzjceusskr6ty").unwrap(),
          state: cid,
          sequence: 0,
@@ -188,7 +188,7 @@ fn main() {
 
     let actor_state = ActorState {
         // CID of Accounts actor. You get this as output from builtin-actors compiling process
-        code: Cid::from_str("bafk2bzaced4egdjgpdpxgg37rz7zrqegwioeqbeo7gfw3a4il6tkdrssfjsoy").unwrap(),
+        code: Cid::from_str("bafk2bzacec4z6abuom2na7vetpymgi7sxnmud5o4tr3h6ip5evsfbmfuo2vzi").unwrap(),
         //code: Cid::from_str("bafk2bzaceanfxc6rtvtyjv2wk3ud4cx7qb6iwgif55sq43htuea2gtgfcbd22").unwrap(),
         state: cid,
         sequence: 0,
@@ -434,7 +434,7 @@ fn main() {
         gas_limit: 1000000000,
         method_num: 2,
         sequence: 5,
-        params: RawBytes::new(hex::decode("5824991E04A40000000000000000000000000000000000000000000000000000000000000000").unwrap()),
+        params: RawBytes::new(hex::decode("5824915BD52A0000000000000000000000000000000000000000000000000000000000000000").unwrap()),
         ..Message::default()
     };
 
@@ -453,7 +453,7 @@ fn main() {
         gas_limit: 1000000000,
         method_num: 2,
         sequence: 6,
-        params: RawBytes::new(hex::decode("58248b7f02fd0000000000000000000000000000000000000000000000000000000000000000").unwrap()),
+        params: RawBytes::new(hex::decode("5824AABB67B40000000000000000000000000000000000000000000000000000000000000000").unwrap()),
         ..Message::default()
     };
 
@@ -472,7 +472,7 @@ fn main() {
         gas_limit: 1000000000,
         method_num: 2,
         sequence: 7,
-        params: RawBytes::new(hex::decode("582455d956090000000000000000000000000000000000000000000000000000000000000000").unwrap()),
+        params: RawBytes::new(hex::decode("58240E2F33670000000000000000000000000000000000000000000000000000000000000000").unwrap()),
         ..Message::default()
     };
 
@@ -491,7 +491,7 @@ fn main() {
         gas_limit: 1000000000,
         method_num: 2,
         sequence: 8,
-        params: RawBytes::new(hex::decode("58249f4b7c7d0000000000000000000000000000000000000000000000000000000000000000").unwrap()),
+        params: RawBytes::new(hex::decode("5824B6D312EA0000000000000000000000000000000000000000000000000000000000000000").unwrap()),
         ..Message::default()
     };
 
@@ -510,7 +510,7 @@ fn main() {
         gas_limit: 1000000000,
         method_num: 2,
         sequence: 9,
-        params: RawBytes::new(hex::decode("5824ad36f1840000000000000000000000000000000000000000000000000000000000000000").unwrap()),
+        params: RawBytes::new(hex::decode("58249CFC4C330000000000000000000000000000000000000000000000000000000000000000").unwrap()),
         ..Message::default()
     };
 
@@ -529,7 +529,7 @@ fn main() {
         gas_limit: 1000000000,
         method_num: 2,
         sequence: 10,
-        params: RawBytes::new(hex::decode("5824412a4b9a0000000000000000000000000000000000000000000000000000000000000000").unwrap()),
+        params: RawBytes::new(hex::decode("5824614C34150000000000000000000000000000000000000000000000000000000000000000").unwrap()),
         ..Message::default()
     };
 
@@ -548,7 +548,7 @@ fn main() {
         gas_limit: 1000000000,
         method_num: 2,
         sequence: 11,
-        params: RawBytes::new(hex::decode("58248777b7c80000000000000000000000000000000000000000000000000000000000000000").unwrap()),
+        params: RawBytes::new(hex::decode("5824D5E7B9DB0000000000000000000000000000000000000000000000000000000000000000").unwrap()),
         ..Message::default()
     };
 
@@ -567,7 +567,7 @@ fn main() {
         gas_limit: 1000000000,
         method_num: 2,
         sequence: 12,
-        params: RawBytes::new(hex::decode("58241a2811e70000000000000000000000000000000000000000000000000000000000000000").unwrap()),
+        params: RawBytes::new(hex::decode("58242F2229FE0000000000000000000000000000000000000000000000000000000000000000").unwrap()),
         ..Message::default()
     };
 
@@ -586,7 +586,7 @@ fn main() {
         gas_limit: 1000000000,
         method_num: 2,
         sequence: 13,
-        params: RawBytes::new(hex::decode("58245c4ddef30000000000000000000000000000000000000000000000000000000000000000").unwrap()),
+        params: RawBytes::new(hex::decode("58243219A6290000000000000000000000000000000000000000000000000000000000000000").unwrap()),
         ..Message::default()
     };
 
@@ -605,7 +605,7 @@ fn main() {
         gas_limit: 1000000000,
         method_num: 2,
         sequence: 14,
-        params: RawBytes::new(hex::decode("5824f241560c0000000000000000000000000000000000000000000000000000000000000000").unwrap()),
+        params: RawBytes::new(hex::decode("5824F5C036580000000000000000000000000000000000000000000000000000000000000000").unwrap()),
         ..Message::default()
     };
 
