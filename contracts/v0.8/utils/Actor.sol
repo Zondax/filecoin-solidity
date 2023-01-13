@@ -30,11 +30,14 @@ library Actor {
     uint64 constant DEFAULT_FLAG = 0x00000000;
 
     function call(uint method_num, bytes memory actor_code, bytes memory raw_request, uint64 codec) internal returns (bytes memory) {
+        call_inner(method_num, actor_code, raw_request, codec, msg.value);
+    }
+
+    function call_inner(uint method_num, bytes memory actor_code, bytes memory raw_request, uint64 codec, uint amount) internal returns (bytes memory) {
         bytes memory raw_response = new bytes(MAX_RAW_RESPONSE_SIZE);
 
         uint raw_request_len;
         uint actor_code_len;
-        uint amount = msg.value;
 
         assembly {
             raw_request_len := mload(raw_request)
