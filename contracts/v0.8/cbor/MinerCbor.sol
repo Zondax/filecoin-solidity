@@ -99,7 +99,7 @@ library GetAvailableBalanceCBOR {
         bytes memory tmp;
         (tmp, byteIdx) = rawResp.readBytes(byteIdx);
         if (tmp.length > 0) {
-            ret.available_balance = tmp.deserializeBigNum();
+            ret.available_balance = tmp.deserializeBigInt();
         } else {
             ret.available_balance = BigInt(new bytes(0), false);
         }
@@ -152,14 +152,14 @@ library GetBeneficiaryCBOR {
 
         (tmp, byteIdx) = rawResp.readBytes(byteIdx);
         if (tmp.length > 0) {
-            ret.active.term.quota = tmp.deserializeBigNum();
+            ret.active.term.quota = tmp.deserializeBigInt();
         } else {
             ret.active.term.quota = BigInt(new bytes(0), false);
         }
 
         (tmp, byteIdx) = rawResp.readBytes(byteIdx);
         if (tmp.length > 0) {
-            ret.active.term.used_quota = tmp.deserializeBigNum();
+            ret.active.term.used_quota = tmp.deserializeBigInt();
         } else {
             ret.active.term.used_quota = BigInt(new bytes(0), false);
         }
@@ -174,7 +174,7 @@ library GetBeneficiaryCBOR {
 
             (tmp, byteIdx) = rawResp.readBytes(byteIdx);
             if (tmp.length > 0) {
-                ret.proposed.new_quota = tmp.deserializeBigNum();
+                ret.proposed.new_quota = tmp.deserializeBigInt();
             } else {
                 ret.proposed.new_quota = BigInt(new bytes(0), false);
             }
@@ -209,7 +209,7 @@ library GetVestingFundsCBOR {
             (epoch, byteIdx) = rawResp.readInt64(byteIdx);
             (tmp, byteIdx) = rawResp.readBytes(byteIdx);
 
-            amount = tmp.deserializeBigNum();
+            amount = tmp.deserializeBigInt();
             ret.vesting_funds[i] = CommonTypes.VestingFunds(epoch, amount);
         }
     }

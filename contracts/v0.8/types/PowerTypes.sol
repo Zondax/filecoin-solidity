@@ -39,24 +39,14 @@ library PowerTypes {
         bytes peer;
         bytes[] multiaddrs;
     }
+
     struct CreateMinerReturn {
         /// Canonical ID-based address for the actor.
         bytes id_address;
         /// Re-org safe address for created actor.
         bytes robust_address;
     }
-    struct MinerCountReturn {
-        uint64 miner_count;
-    }
-    struct MinerConsensusCountReturn {
-        int64 miner_consensus_count;
-    }
-    struct NetworkRawPowerReturn {
-        BigInt raw_byte_power;
-    }
-    struct MinerRawPowerParams {
-        uint64 miner;
-    }
+
     struct MinerRawPowerReturn {
         BigInt raw_byte_power;
         bool meets_consensus_minimum;

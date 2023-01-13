@@ -162,7 +162,7 @@ library RemoveExpiredAllocationsCBOR {
 
         bytes memory tmp;
         (tmp, byteIdx) = rawResp.readBytes(byteIdx);
-        ret.datacap_recovered = tmp.deserializeBigNum();
+        ret.datacap_recovered = tmp.deserializeBigInt();
     }
 }
 

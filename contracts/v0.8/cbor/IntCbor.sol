@@ -19,28 +19,20 @@
 // SPDX-License-Identifier: Apache-2.0
 pragma solidity >=0.4.25 <=0.8.17;
 
-import "../types/PowerTypes.sol";
-import "../PowerAPI.sol";
+import "solidity-cborutils/contracts/CBOR.sol";
 
-/// @author Zondax AG
-contract PowerApiTest {
-    function create_miner(PowerTypes.CreateMinerParams memory params) public returns (PowerTypes.CreateMinerReturn memory) {
-        return PowerAPI.createMiner(params);
-    }
+import "../utils/CborDecode.sol";
 
-    function miner_count() public returns (uint64) {
-        return PowerAPI.minerCount();
-    }
+library Uint64CBOR {
+    using CBOR for CBOR.CBORBuffer;
+    using CBORDecoder for bytes;
 
-    function miner_consensus_count() public returns (int64) {
-        return PowerAPI.minerConsensusCount();
-    }
+    function serialize(uint64 id) internal pure returns (bytes memory) {
+        // FIXME what should the max length be on the buffer?
+        CBOR.CBORBuffer memory buf = CBOR.create(64);
 
-    function network_raw_power() public returns (BigInt memory) {
-        return PowerAPI.networkRawPower();
-    }
+        buf.writeUInt64(id);
 
-    function miner_raw_power(uint64 minerID) public returns (PowerTypes.MinerRawPowerReturn memory) {
-        return PowerAPI.minerRawPower(minerID);
+        return buf.data();
     }
 }
