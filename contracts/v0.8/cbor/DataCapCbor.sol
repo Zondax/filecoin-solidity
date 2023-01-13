@@ -27,62 +27,6 @@ import "../utils/CborDecode.sol";
 import "../utils/Misc.sol";
 import "./BigIntCbor.sol";
 
-library BytesCBOR {
-    using CBOR for CBOR.CBORBuffer;
-    using CBORDecoder for bytes;
-    using BigIntCBOR for bytes;
-
-    function serializeAddress(bytes memory addr) internal pure returns (bytes memory) {
-        // FIXME what should the max length be on the buffer?
-        CBOR.CBORBuffer memory buf = CBOR.create(64);
-
-        buf.writeBytes(addr);
-
-        return buf.data();
-    }
-
-    function serializeNull() internal pure returns (bytes memory) {
-        // FIXME what should the max length be on the buffer?
-        CBOR.CBORBuffer memory buf = CBOR.create(64);
-
-        buf.writeNull();
-
-        return buf.data();
-    }
-
-    function deserializeAddress(bytes memory ret) internal pure returns (bytes memory) {
-        bytes memory addr;
-        uint byteIdx = 0;
-
-        (addr, byteIdx) = ret.readBytes(byteIdx);
-
-        return addr;
-    }
-
-    function deserializeString(bytes memory ret) internal pure returns (string memory) {
-        string memory response;
-        uint byteIdx = 0;
-
-        (response, byteIdx) = ret.readString(byteIdx);
-
-        return response;
-    }
-
-    function deserializeBigNum(bytes memory ret) internal pure returns (BigInt memory) {
-        bytes memory tmp;
-        uint byteIdx = 0;
-
-        if (ret.length > 0) {
-            (tmp, byteIdx) = ret.readBytes(byteIdx);
-            if (tmp.length > 0) {
-                return tmp.deserializeBigNum();
-            }
-        }
-
-        return BigInt(new bytes(0), false);
-    }
-}
-
 /// @title FIXME
 /// @author Zondax AG
 library GetAllowanceCBOR {
@@ -263,7 +207,7 @@ library BurnCBOR {
         assert(len == 1);
 
         (tmp, byteIdx) = rawResp.readBytes(byteIdx);
-        ret.balance = tmp.deserializeBigNum();
+        ret.balance = tmp.deserializeBigInt();
     }
 }
 
@@ -295,9 +239,9 @@ library BurnFromCBOR {
         assert(len == 2);
 
         (tmp, byteIdx) = rawResp.readBytes(byteIdx);
-        ret.balance = tmp.deserializeBigNum();
+        ret.balance = tmp.deserializeBigInt();
 
         (tmp, byteIdx) = rawResp.readBytes(byteIdx);
-        ret.allowance = tmp.deserializeBigNum();
+        ret.allowance = tmp.deserializeBigInt();
     }
 }

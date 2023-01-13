@@ -22,6 +22,7 @@ pragma solidity >=0.4.25 <=0.8.17;
 import "./types/DataCapTypes.sol";
 import "./cbor/DataCapCbor.sol";
 import "./cbor/BigIntCbor.sol";
+import "./cbor/BytesCbor.sol";
 
 import "./utils/Actor.sol";
 
