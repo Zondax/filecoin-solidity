@@ -55,41 +55,21 @@ library MarketTypes {
         BigInt locked;
     }
 
-    struct GetDealDataCommitmentParams {
-        uint64 id;
-    }
-
     struct GetDealDataCommitmentReturn {
         bytes data;
         uint64 size;
-    }
-
-    struct GetDealClientParams {
-        uint64 id;
     }
 
     struct GetDealClientReturn {
         uint64 client;
     }
 
-    struct GetDealProviderParams {
-        uint64 id;
-    }
-
     struct GetDealProviderReturn {
         uint64 provider;
     }
 
-    struct GetDealLabelParams {
-        uint64 id;
-    }
-
     struct GetDealLabelReturn {
         string label;
-    }
-
-    struct GetDealTermParams {
-        uint64 id;
     }
 
     struct GetDealTermReturn {
@@ -97,40 +77,20 @@ library MarketTypes {
         int64 end;
     }
 
-    struct GetDealEpochPriceParams {
-        uint64 id;
-    }
-
     struct GetDealEpochPriceReturn {
         BigInt price_per_epoch;
-    }
-
-    struct GetDealClientCollateralParams {
-        uint64 id;
     }
 
     struct GetDealClientCollateralReturn {
         BigInt collateral;
     }
 
-    struct GetDealProviderCollateralParams {
-        uint64 id;
-    }
-
     struct GetDealProviderCollateralReturn {
         BigInt collateral;
     }
 
-    struct GetDealVerifiedParams {
-        uint64 id;
-    }
-
     struct GetDealVerifiedReturn {
         bool verified;
-    }
-
-    struct GetDealActivationParams {
-        uint64 id;
     }
 
     struct GetDealActivationReturn {
