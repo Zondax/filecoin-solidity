@@ -19,7 +19,7 @@
 // SPDX-License-Identifier: Apache-2.0
 pragma solidity >=0.4.25 <=0.8.17;
 
-import "solidity-cborutils/contracts/CBOR.sol";
+import "../../../../solidity-cborutils/contracts/CBOR.sol";
 
 import {MarketTypes} from "../types/MarketTypes.sol";
 import "./BigIntCbor.sol";
