@@ -137,7 +137,7 @@ library MinerRawPowerCBOR {
         bytes memory tmp;
         (tmp, byteIdx) = rawResp.readBytes(byteIdx);
         if (tmp.length > 0) {
-            ret.raw_byte_power = tmp.deserializeBigNum();
+            ret.raw_byte_power = tmp.deserializeBigInt();
         } else {
             ret.raw_byte_power = BigInt(new bytes(0), false);
         }

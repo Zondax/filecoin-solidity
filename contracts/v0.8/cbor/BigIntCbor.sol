@@ -42,7 +42,7 @@ library BigIntCBOR {
         return raw;
     }
 
-    function deserializeBigNum(bytes memory raw) internal pure returns (BigInt memory) {
+    function deserializeBigInt(bytes memory raw) internal pure returns (BigInt memory) {
         // TODO improve gas efficiency by using assembly code
 
         // Is an empty byte a valid BigInt ? We should have the sign byte at least

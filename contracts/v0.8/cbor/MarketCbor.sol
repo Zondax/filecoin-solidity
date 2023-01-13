@@ -50,7 +50,7 @@ library WithdrawBalanceCBOR {
         uint byteIdx = 0;
 
         (tmp, byteIdx) = rawResp.readBytes(byteIdx);
-        ret.amount_withdrawn = tmp.deserializeBigNum();
+        ret.amount_withdrawn = tmp.deserializeBigInt();
     }
 }
 
@@ -90,10 +90,10 @@ library GetBalanceCBOR {
         assert(len == 2);
 
         (tmp, byteIdx) = rawResp.readBytes(byteIdx);
-        ret.balance = tmp.deserializeBigNum();
+        ret.balance = tmp.deserializeBigInt();
 
         (tmp, byteIdx) = rawResp.readBytes(byteIdx);
-        ret.locked = tmp.deserializeBigNum();
+        ret.locked = tmp.deserializeBigInt();
     }
 }
 
@@ -235,7 +235,7 @@ library GetDealEpochPriceCBOR {
         uint byteIdx = 0;
 
         (tmp, byteIdx) = rawResp.readBytes(byteIdx);
-        ret.price_per_epoch = tmp.deserializeBigNum();
+        ret.price_per_epoch = tmp.deserializeBigInt();
     }
 }
 
@@ -258,7 +258,7 @@ library GetDealClientCollateralCBOR {
         uint byteIdx = 0;
 
         (tmp, byteIdx) = rawResp.readBytes(byteIdx);
-        ret.collateral = tmp.deserializeBigNum();
+        ret.collateral = tmp.deserializeBigInt();
     }
 }
 
@@ -281,7 +281,7 @@ library GetDealProviderCollateralCBOR {
         uint byteIdx = 0;
 
         (tmp, byteIdx) = rawResp.readBytes(byteIdx);
-        ret.collateral = tmp.deserializeBigNum();
+        ret.collateral = tmp.deserializeBigInt();
     }
 }
 

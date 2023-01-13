@@ -130,10 +130,10 @@ library TransferCBOR {
         assert(len == 3);
 
         (tmp, byteIdx) = rawResp.readBytes(byteIdx);
-        ret.from_balance = tmp.deserializeBigNum();
+        ret.from_balance = tmp.deserializeBigInt();
 
         (tmp, byteIdx) = rawResp.readBytes(byteIdx);
-        ret.to_balance = tmp.deserializeBigNum();
+        ret.to_balance = tmp.deserializeBigInt();
 
         (ret.recipient_data, byteIdx) = rawResp.readBytes(byteIdx);
     }
@@ -169,13 +169,13 @@ library TransferFromCBOR {
         assert(len == 4);
 
         (tmp, byteIdx) = rawResp.readBytes(byteIdx);
-        ret.from_balance = tmp.deserializeBigNum();
+        ret.from_balance = tmp.deserializeBigInt();
 
         (tmp, byteIdx) = rawResp.readBytes(byteIdx);
-        ret.to_balance = tmp.deserializeBigNum();
+        ret.to_balance = tmp.deserializeBigInt();
 
         (tmp, byteIdx) = rawResp.readBytes(byteIdx);
-        ret.allowance = tmp.deserializeBigNum();
+        ret.allowance = tmp.deserializeBigInt();
 
         (ret.recipient_data, byteIdx) = rawResp.readBytes(byteIdx);
     }
