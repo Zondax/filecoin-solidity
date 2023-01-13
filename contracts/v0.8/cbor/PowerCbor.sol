@@ -66,66 +66,10 @@ library CreateMinerCBOR {
 
 /// @title FIXME
 /// @author Zondax AG
-library MinerCountCBOR {
-    using CBOR for CBOR.CBORBuffer;
-    using CBORDecoder for bytes;
-
-    function deserialize(PowerTypes.MinerCountReturn memory ret, bytes memory rawResp) internal pure {
-        uint byteIdx = 0;
-
-        // REVIEW: The ouput returned is '00' so it unsigned but the type described in buitin is i64.
-        (ret.miner_count, byteIdx) = rawResp.readUInt64(byteIdx);
-    }
-}
-
-/// @title FIXME
-/// @author Zondax AG
-library MinerConsensusCountCBOR {
-    using CBOR for CBOR.CBORBuffer;
-    using CBORDecoder for bytes;
-
-    function deserialize(PowerTypes.MinerConsensusCountReturn memory ret, bytes memory rawResp) internal pure {
-        uint byteIdx = 0;
-
-        (ret.miner_consensus_count, byteIdx) = rawResp.readInt64(byteIdx);
-    }
-}
-
-/// @title FIXME
-/// @author Zondax AG
-library NetworkRawPowerCBOR {
-    using CBOR for CBOR.CBORBuffer;
-    using CBORDecoder for bytes;
-    using BigIntCBOR for bytes;
-
-    function deserialize(PowerTypes.NetworkRawPowerReturn memory ret, bytes memory rawResp) internal pure {
-        uint byteIdx = 0;
-
-        bytes memory tmp;
-        (tmp, byteIdx) = rawResp.readBytes(byteIdx);
-        if (tmp.length > 0) {
-            ret.raw_byte_power = tmp.deserializeBigNum();
-        } else {
-            ret.raw_byte_power = BigInt(new bytes(0), false);
-        }
-    }
-}
-
-/// @title FIXME
-/// @author Zondax AG
 library MinerRawPowerCBOR {
     using CBOR for CBOR.CBORBuffer;
     using CBORDecoder for bytes;
     using BigIntCBOR for bytes;
-
-    function serialize(PowerTypes.MinerRawPowerParams memory params) internal pure returns (bytes memory) {
-        // FIXME what should the max length be on the buffer?
-        CBOR.CBORBuffer memory buf = CBOR.create(64);
-
-        buf.writeUInt64(params.miner);
-
-        return buf.data();
-    }
 
     function deserialize(PowerTypes.MinerRawPowerReturn memory ret, bytes memory rawResp) internal pure {
         uint byteIdx = 0;
