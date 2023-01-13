@@ -59,7 +59,7 @@ Some minutes after requesting tokens on the faucet, you will be your new balance
 ![image](assets/wallaby/8.png)
 
 ## Deploying your smart contract
-The remix IDE is a powerful editor your can use to write your smart contracts. You will be able to write, compile and deploy them directly from it. In order to deploy them on the wallaby network, we will use MetaMask as the current environment. 
+The remix IDE is a powerful editor you can use to write your smart contracts. You will be able to write, compile and deploy them directly from it. In order to deploy them on the wallaby network, we will use MetaMask as the current environment. 
 
 From the main menu, go to "Deploy & Run Transactions". It is the latest icon on the left-side menu. 
 
