@@ -37,7 +37,7 @@ library InitAPI {
     function exec(InitTypes.ExecParams memory params) internal returns (InitTypes.ExecReturn memory) {
         bytes memory raw_request = params.serialize();
 
-        bytes memory raw_response = Actor.call(InitTypes.ExecMethodNum, InitTypes.ActorCode, raw_request, Misc.CBOR_CODEC);
+        bytes memory raw_response = Actor.call(InitTypes.ExecMethodNum, InitTypes.ActorID, raw_request, Misc.CBOR_CODEC);
 
         bytes memory result = Actor.readRespData(raw_response);
 
@@ -51,7 +51,7 @@ library InitAPI {
     function exec4(InitTypes.Exec4Params memory params) internal returns (InitTypes.Exec4Return memory) {
         bytes memory raw_request = params.serialize();
 
-        bytes memory raw_response = Actor.call(InitTypes.Exec4MethodNum, InitTypes.ActorCode, raw_request, Misc.CBOR_CODEC);
+        bytes memory raw_response = Actor.call(InitTypes.Exec4MethodNum, InitTypes.ActorID, raw_request, Misc.CBOR_CODEC);
 
         bytes memory result = Actor.readRespData(raw_response);
 
