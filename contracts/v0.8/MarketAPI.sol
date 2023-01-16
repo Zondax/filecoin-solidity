@@ -29,28 +29,19 @@ import "./utils/Actor.sol";
 /// @author Zondax AG
 library MarketAPI {
     using AddressCBOR for bytes;
+    using DealIDCBOR for uint64;
     using WithdrawBalanceCBOR for MarketTypes.WithdrawBalanceParams;
     using WithdrawBalanceCBOR for MarketTypes.WithdrawBalanceReturn;
     using GetBalanceCBOR for MarketTypes.GetBalanceReturn;
-    using GetDealDataCommitmentCBOR for MarketTypes.GetDealDataCommitmentParams;
     using GetDealDataCommitmentCBOR for MarketTypes.GetDealDataCommitmentReturn;
-    using GetDealClientCBOR for MarketTypes.GetDealClientParams;
     using GetDealClientCBOR for MarketTypes.GetDealClientReturn;
-    using GetDealProviderCBOR for MarketTypes.GetDealProviderParams;
     using GetDealProviderCBOR for MarketTypes.GetDealProviderReturn;
-    using GetDealLabelCBOR for MarketTypes.GetDealLabelParams;
     using GetDealLabelCBOR for MarketTypes.GetDealLabelReturn;
-    using GetDealTermCBOR for MarketTypes.GetDealTermParams;
     using GetDealTermCBOR for MarketTypes.GetDealTermReturn;
-    using GetDealEpochPriceCBOR for MarketTypes.GetDealEpochPriceParams;
     using GetDealEpochPriceCBOR for MarketTypes.GetDealEpochPriceReturn;
-    using GetDealClientCollateralCBOR for MarketTypes.GetDealClientCollateralParams;
     using GetDealClientCollateralCBOR for MarketTypes.GetDealClientCollateralReturn;
-    using GetDealProviderCollateralCBOR for MarketTypes.GetDealProviderCollateralParams;
     using GetDealProviderCollateralCBOR for MarketTypes.GetDealProviderCollateralReturn;
-    using GetDealVerifiedCBOR for MarketTypes.GetDealVerifiedParams;
     using GetDealVerifiedCBOR for MarketTypes.GetDealVerifiedReturn;
-    using GetDealActivationCBOR for MarketTypes.GetDealActivationParams;
     using GetDealActivationCBOR for MarketTypes.GetDealActivationReturn;
     using PublishStorageDealsCBOR for MarketTypes.PublishStorageDealsParams;
     using PublishStorageDealsCBOR for MarketTypes.PublishStorageDealsReturn;
@@ -59,7 +50,7 @@ library MarketAPI {
     function addBalance(bytes memory provider_or_client) internal {
         bytes memory raw_request = provider_or_client.serializeAddress();
 
-        bytes memory raw_response = Actor.call(MarketTypes.AddBalanceMethodNum, MarketTypes.ActorCode, raw_request, Misc.CBOR_CODEC);
+        bytes memory raw_response = Actor.call(MarketTypes.AddBalanceMethodNum, MarketTypes.ActorID, raw_request, Misc.CBOR_CODEC);
 
         Actor.readRespData(raw_response);
 
@@ -71,7 +62,7 @@ library MarketAPI {
     function withdrawBalance(MarketTypes.WithdrawBalanceParams memory params) internal returns (MarketTypes.WithdrawBalanceReturn memory) {
         bytes memory raw_request = params.serialize();
 
-        bytes memory raw_response = Actor.call(MarketTypes.WithdrawBalanceMethodNum, MarketTypes.ActorCode, raw_request, Misc.CBOR_CODEC);
+        bytes memory raw_response = Actor.call(MarketTypes.WithdrawBalanceMethodNum, MarketTypes.ActorID, raw_request, Misc.CBOR_CODEC);
 
         bytes memory result = Actor.readRespData(raw_response);
 
@@ -85,7 +76,7 @@ library MarketAPI {
     function getBalance(bytes memory addr) internal returns (MarketTypes.GetBalanceReturn memory) {
         bytes memory raw_request = addr.serializeAddress();
 
-        bytes memory raw_response = Actor.call(MarketTypes.GetBalanceMethodNum, MarketTypes.ActorCode, raw_request, Misc.CBOR_CODEC);
+        bytes memory raw_response = Actor.call(MarketTypes.GetBalanceMethodNum, MarketTypes.ActorID, raw_request, Misc.CBOR_CODEC);
 
         bytes memory result = Actor.readRespData(raw_response);
 
@@ -97,14 +88,12 @@ library MarketAPI {
 
     /// @return the data commitment and size of a deal proposal.
     /// @notice This will be available after the deal is published (whether or not is is activated) and up until some undefined period after it is terminated.
-    function getDealDataCommitment(
-        MarketTypes.GetDealDataCommitmentParams memory params
-    ) internal returns (MarketTypes.GetDealDataCommitmentReturn memory) {
-        bytes memory raw_request = params.serialize();
+    function getDealDataCommitment(uint64 dealID) internal returns (MarketTypes.GetDealDataCommitmentReturn memory) {
+        bytes memory raw_request = dealID.serialize();
 
         bytes memory raw_response = Actor.call(
             MarketTypes.GetDealDataCommitmentMethodNum,
-            MarketTypes.ActorCode,
+            MarketTypes.ActorID,
             raw_request,
             Misc.CBOR_CODEC
         );
@@ -118,10 +107,10 @@ library MarketAPI {
     }
 
     /// @return the client of a deal proposal.
-    function getDealClient(MarketTypes.GetDealClientParams memory params) internal returns (MarketTypes.GetDealClientReturn memory) {
-        bytes memory raw_request = params.serialize();
+    function getDealClient(uint64 dealID) internal returns (MarketTypes.GetDealClientReturn memory) {
+        bytes memory raw_request = dealID.serialize();
 
-        bytes memory raw_response = Actor.call(MarketTypes.GetDealClientMethodNum, MarketTypes.ActorCode, raw_request, Misc.CBOR_CODEC);
+        bytes memory raw_response = Actor.call(MarketTypes.GetDealClientMethodNum, MarketTypes.ActorID, raw_request, Misc.CBOR_CODEC);
 
         bytes memory result = Actor.readRespData(raw_response);
 
@@ -132,10 +121,10 @@ library MarketAPI {
     }
 
     /// @return the provider of a deal proposal.
-    function getDealProvider(MarketTypes.GetDealProviderParams memory params) internal returns (MarketTypes.GetDealProviderReturn memory) {
-        bytes memory raw_request = params.serialize();
+    function getDealProvider(uint64 dealID) internal returns (MarketTypes.GetDealProviderReturn memory) {
+        bytes memory raw_request = dealID.serialize();
 
-        bytes memory raw_response = Actor.call(MarketTypes.GetDealProviderMethodNum, MarketTypes.ActorCode, raw_request, Misc.CBOR_CODEC);
+        bytes memory raw_response = Actor.call(MarketTypes.GetDealProviderMethodNum, MarketTypes.ActorID, raw_request, Misc.CBOR_CODEC);
 
         bytes memory result = Actor.readRespData(raw_response);
 
@@ -146,10 +135,10 @@ library MarketAPI {
     }
 
     /// @return the label of a deal proposal.
-    function getDealLabel(MarketTypes.GetDealLabelParams memory params) internal returns (MarketTypes.GetDealLabelReturn memory) {
-        bytes memory raw_request = params.serialize();
+    function getDealLabel(uint64 dealID) internal returns (MarketTypes.GetDealLabelReturn memory) {
+        bytes memory raw_request = dealID.serialize();
 
-        bytes memory raw_response = Actor.call(MarketTypes.GetDealLabelMethodNum, MarketTypes.ActorCode, raw_request, Misc.CBOR_CODEC);
+        bytes memory raw_response = Actor.call(MarketTypes.GetDealLabelMethodNum, MarketTypes.ActorID, raw_request, Misc.CBOR_CODEC);
 
         bytes memory result = Actor.readRespData(raw_response);
 
@@ -160,10 +149,10 @@ library MarketAPI {
     }
 
     /// @return the start epoch and duration (in epochs) of a deal proposal.
-    function getDealTerm(MarketTypes.GetDealTermParams memory params) internal returns (MarketTypes.GetDealTermReturn memory) {
-        bytes memory raw_request = params.serialize();
+    function getDealTerm(uint64 dealID) internal returns (MarketTypes.GetDealTermReturn memory) {
+        bytes memory raw_request = dealID.serialize();
 
-        bytes memory raw_response = Actor.call(MarketTypes.GetDealTermMethodNum, MarketTypes.ActorCode, raw_request, Misc.CBOR_CODEC);
+        bytes memory raw_response = Actor.call(MarketTypes.GetDealTermMethodNum, MarketTypes.ActorID, raw_request, Misc.CBOR_CODEC);
 
         bytes memory result = Actor.readRespData(raw_response);
 
@@ -174,12 +163,10 @@ library MarketAPI {
     }
 
     /// @return the per-epoch price of a deal proposal.
-    function getDealTotalPrice(
-        MarketTypes.GetDealEpochPriceParams memory params
-    ) internal returns (MarketTypes.GetDealEpochPriceReturn memory) {
-        bytes memory raw_request = params.serialize();
+    function getDealTotalPrice(uint64 dealID) internal returns (MarketTypes.GetDealEpochPriceReturn memory) {
+        bytes memory raw_request = dealID.serialize();
 
-        bytes memory raw_response = Actor.call(MarketTypes.GetDealEpochPriceMethodNum, MarketTypes.ActorCode, raw_request, Misc.CBOR_CODEC);
+        bytes memory raw_response = Actor.call(MarketTypes.GetDealEpochPriceMethodNum, MarketTypes.ActorID, raw_request, Misc.CBOR_CODEC);
 
         bytes memory result = Actor.readRespData(raw_response);
 
@@ -190,14 +177,12 @@ library MarketAPI {
     }
 
     /// @return the client collateral requirement for a deal proposal.
-    function getDealClientCollateral(
-        MarketTypes.GetDealClientCollateralParams memory params
-    ) internal returns (MarketTypes.GetDealClientCollateralReturn memory) {
-        bytes memory raw_request = params.serialize();
+    function getDealClientCollateral(uint64 dealID) internal returns (MarketTypes.GetDealClientCollateralReturn memory) {
+        bytes memory raw_request = dealID.serialize();
 
         bytes memory raw_response = Actor.call(
             MarketTypes.GetDealClientCollateralMethodNum,
-            MarketTypes.ActorCode,
+            MarketTypes.ActorID,
             raw_request,
             Misc.CBOR_CODEC
         );
@@ -211,14 +196,12 @@ library MarketAPI {
     }
 
     /// @return the provider collateral requirement for a deal proposal.
-    function getDealProviderCollateral(
-        MarketTypes.GetDealProviderCollateralParams memory params
-    ) internal returns (MarketTypes.GetDealProviderCollateralReturn memory) {
-        bytes memory raw_request = params.serialize();
+    function getDealProviderCollateral(uint64 dealID) internal returns (MarketTypes.GetDealProviderCollateralReturn memory) {
+        bytes memory raw_request = dealID.serialize();
 
         bytes memory raw_response = Actor.call(
             MarketTypes.GetDealProviderCollateralMethodNum,
-            MarketTypes.ActorCode,
+            MarketTypes.ActorID,
             raw_request,
             Misc.CBOR_CODEC
         );
@@ -233,10 +216,10 @@ library MarketAPI {
 
     /// @return the verified flag for a deal proposal.
     /// @notice Note that the source of truth for verified allocations and claims is the verified registry actor.
-    function getDealVerified(MarketTypes.GetDealVerifiedParams memory params) internal returns (MarketTypes.GetDealVerifiedReturn memory) {
-        bytes memory raw_request = params.serialize();
+    function getDealVerified(uint64 dealID) internal returns (MarketTypes.GetDealVerifiedReturn memory) {
+        bytes memory raw_request = dealID.serialize();
 
-        bytes memory raw_response = Actor.call(MarketTypes.GetDealVerifiedMethodNum, MarketTypes.ActorCode, raw_request, Misc.CBOR_CODEC);
+        bytes memory raw_response = Actor.call(MarketTypes.GetDealVerifiedMethodNum, MarketTypes.ActorID, raw_request, Misc.CBOR_CODEC);
 
         bytes memory result = Actor.readRespData(raw_response);
 
@@ -249,12 +232,10 @@ library MarketAPI {
     /// @notice Fetches activation state for a deal.
     /// @notice This will be available from when the proposal is published until an undefined period after the deal finishes (either normally or by termination).
     /// @return USR_NOT_FOUND if the deal doesn't exist (yet), or EX_DEAL_EXPIRED if the deal has been removed from state.
-    function getDealActivation(
-        MarketTypes.GetDealActivationParams memory params
-    ) internal returns (MarketTypes.GetDealActivationReturn memory) {
-        bytes memory raw_request = params.serialize();
+    function getDealActivation(uint64 dealID) internal returns (MarketTypes.GetDealActivationReturn memory) {
+        bytes memory raw_request = dealID.serialize();
 
-        bytes memory raw_response = Actor.call(MarketTypes.GetDealActivationMethodNum, MarketTypes.ActorCode, raw_request, Misc.CBOR_CODEC);
+        bytes memory raw_response = Actor.call(MarketTypes.GetDealActivationMethodNum, MarketTypes.ActorID, raw_request, Misc.CBOR_CODEC);
 
         bytes memory result = Actor.readRespData(raw_response);
 
@@ -270,12 +251,7 @@ library MarketAPI {
     ) internal returns (MarketTypes.PublishStorageDealsReturn memory) {
         bytes memory raw_request = params.serialize();
 
-        bytes memory raw_response = Actor.call(
-            MarketTypes.PublishStorageDealsMethodNum,
-            MarketTypes.ActorCode,
-            raw_request,
-            Misc.CBOR_CODEC
-        );
+        bytes memory raw_response = Actor.call(MarketTypes.PublishStorageDealsMethodNum, MarketTypes.ActorID, raw_request, Misc.CBOR_CODEC);
 
         bytes memory result = Actor.readRespData(raw_response);
 

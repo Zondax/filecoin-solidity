@@ -19,7 +19,7 @@
 // SPDX-License-Identifier: Apache-2.0
 pragma solidity >=0.4.25 <=0.8.17;
 
-import {MinerAPI} from "../MinerAPI.sol";
+import {MinerMockAPI} from "../MinerMockAPI.sol";
 import {CommonTypes} from "../../types/CommonTypes.sol";
 import {MinerTypes} from "../../types/MinerTypes.sol";
 
@@ -31,12 +31,12 @@ contract MinerTestApi {
     }
 
     function test_get_owner() public view {
-        MinerAPI marketApiInstance = MinerAPI(minerApiAddress);
+        MinerMockAPI marketApiInstance = MinerMockAPI(minerApiAddress);
         marketApiInstance.getOwner();
     }
 
     function test_get_sector_size() public view {
-        MinerAPI marketApiInstance = MinerAPI(minerApiAddress);
+        MinerMockAPI marketApiInstance = MinerMockAPI(minerApiAddress);
         marketApiInstance.getSectorSize();
     }
 }

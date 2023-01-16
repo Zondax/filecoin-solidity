@@ -28,7 +28,7 @@ import {BigNumbers, BigNumber} from "@zondax/solidity-bignumber/src/BigNumbers.s
 /// @author Zondax AG
 /// @dev Methods prefixed with mock_ will not be available in the real library. These methods are merely used to set mock state. Note that this interface will likely break in the future as we align it
 //       with that of the real library!
-contract MarketAPI {
+contract MarketMockAPI {
     mapping(string => BigNumber) balances;
     mapping(uint64 => MockTypes.Deal) deals;
 
@@ -72,93 +72,79 @@ contract MarketAPI {
     /// @return the data commitment and size of a deal proposal.
     /// @notice This will be available after the deal is published (whether or not is is activated) and up until some undefined period after it is terminated.
     /// @dev set data values correctly, currently returning fixed data, feel free to adjust in your local mock.
-    function getDealDataCommitment(
-        MarketTypes.GetDealDataCommitmentParams memory params
-    ) public view returns (MarketTypes.GetDealDataCommitmentReturn memory) {
-        require(deals[params.id].id > 0);
+    function getDealDataCommitment(uint64 dealID) public view returns (MarketTypes.GetDealDataCommitmentReturn memory) {
+        require(deals[dealID].id > 0);
 
-        return MarketTypes.GetDealDataCommitmentReturn(bytes("0x111111"), deals[params.id].size);
+        return MarketTypes.GetDealDataCommitmentReturn(bytes("0x111111"), deals[dealID].size);
     }
 
     /// @return the client of a deal proposal.
-    function getDealClient(MarketTypes.GetDealClientParams memory params) public view returns (MarketTypes.GetDealClientReturn memory) {
-        require(deals[params.id].id > 0);
+    function getDealClient(uint64 dealID) public view returns (MarketTypes.GetDealClientReturn memory) {
+        require(deals[dealID].id > 0);
 
-        return MarketTypes.GetDealClientReturn(deals[params.id].client);
+        return MarketTypes.GetDealClientReturn(deals[dealID].client);
     }
 
     /// @return the provider of a deal proposal.
-    function getDealProvider(
-        MarketTypes.GetDealProviderParams memory params
-    ) public view returns (MarketTypes.GetDealProviderReturn memory) {
-        require(deals[params.id].id > 0);
+    function getDealProvider(uint64 dealID) public view returns (MarketTypes.GetDealProviderReturn memory) {
+        require(deals[dealID].id > 0);
 
-        return MarketTypes.GetDealProviderReturn(deals[params.id].provider);
+        return MarketTypes.GetDealProviderReturn(deals[dealID].provider);
     }
 
     /// @return the label of a deal proposal.
-    function getDealLabel(MarketTypes.GetDealLabelParams memory params) public view returns (MarketTypes.GetDealLabelReturn memory) {
-        require(deals[params.id].id > 0);
+    function getDealLabel(uint64 dealID) public view returns (MarketTypes.GetDealLabelReturn memory) {
+        require(deals[dealID].id > 0);
 
-        return MarketTypes.GetDealLabelReturn(deals[params.id].label);
+        return MarketTypes.GetDealLabelReturn(deals[dealID].label);
     }
 
     /// @return the start epoch and duration (in epochs) of a deal proposal.
-    function getDealTerm(MarketTypes.GetDealTermParams memory params) public view returns (MarketTypes.GetDealTermReturn memory) {
-        require(deals[params.id].id > 0);
+    function getDealTerm(uint64 dealID) public view returns (MarketTypes.GetDealTermReturn memory) {
+        require(deals[dealID].id > 0);
 
-        return MarketTypes.GetDealTermReturn(deals[params.id].start, deals[params.id].end);
+        return MarketTypes.GetDealTermReturn(deals[dealID].start, deals[dealID].end);
     }
 
     /// @return the per-epoch price of a deal proposal.
-    function getDealTotalPrice(
-        MarketTypes.GetDealEpochPriceParams memory params
-    ) public view returns (MarketTypes.GetDealEpochPriceReturn memory) {
-        require(deals[params.id].id > 0);
+    function getDealTotalPrice(uint64 dealID) public view returns (MarketTypes.GetDealEpochPriceReturn memory) {
+        require(deals[dealID].id > 0);
 
-        BigNumber memory price_per_epoch = BigNumbers.init(deals[params.id].price_per_epoch, false);
+        BigNumber memory price_per_epoch = BigNumbers.init(deals[dealID].price_per_epoch, false);
         return MarketTypes.GetDealEpochPriceReturn(BigInt(price_per_epoch.val, price_per_epoch.neg));
     }
 
     /// @return the client collateral requirement for a deal proposal.
-    function getDealClientCollateral(
-        MarketTypes.GetDealClientCollateralParams memory params
-    ) public view returns (MarketTypes.GetDealClientCollateralReturn memory) {
-        require(deals[params.id].id > 0);
+    function getDealClientCollateral(uint64 dealID) public view returns (MarketTypes.GetDealClientCollateralReturn memory) {
+        require(deals[dealID].id > 0);
 
-        BigNumber memory client_collateral = BigNumbers.init(deals[params.id].client_collateral, false);
+        BigNumber memory client_collateral = BigNumbers.init(deals[dealID].client_collateral, false);
         return MarketTypes.GetDealClientCollateralReturn(BigInt(client_collateral.val, client_collateral.neg));
     }
 
     /// @return the provider collateral requirement for a deal proposal.
-    function getDealProviderCollateral(
-        MarketTypes.GetDealProviderCollateralParams memory params
-    ) public view returns (MarketTypes.GetDealProviderCollateralReturn memory) {
-        require(deals[params.id].id > 0);
+    function getDealProviderCollateral(uint64 dealID) public view returns (MarketTypes.GetDealProviderCollateralReturn memory) {
+        require(deals[dealID].id > 0);
 
-        BigNumber memory provider_collateral = BigNumbers.init(deals[params.id].provider_collateral, false);
+        BigNumber memory provider_collateral = BigNumbers.init(deals[dealID].provider_collateral, false);
         return MarketTypes.GetDealProviderCollateralReturn(BigInt(provider_collateral.val, provider_collateral.neg));
     }
 
     /// @return the verified flag for a deal proposal.
     /// @notice Note that the source of truth for verified allocations and claims is the verified registry actor.
-    function getDealVerified(
-        MarketTypes.GetDealVerifiedParams memory params
-    ) public view returns (MarketTypes.GetDealVerifiedReturn memory) {
-        require(deals[params.id].id > 0);
+    function getDealVerified(uint64 dealID) public view returns (MarketTypes.GetDealVerifiedReturn memory) {
+        require(deals[dealID].id > 0);
 
-        return MarketTypes.GetDealVerifiedReturn(deals[params.id].verified);
+        return MarketTypes.GetDealVerifiedReturn(deals[dealID].verified);
     }
 
     /// @notice Fetches activation state for a deal.
     /// @notice This will be available from when the proposal is published until an undefined period after the deal finishes (either normally or by termination).
     /// @return USR_NOT_FOUND if the deal doesn't exist (yet), or EX_DEAL_EXPIRED if the deal has been removed from state.
-    function getDealActivation(
-        MarketTypes.GetDealActivationParams memory params
-    ) public view returns (MarketTypes.GetDealActivationReturn memory) {
-        require(deals[params.id].id > 0);
+    function getDealActivation(uint64 dealID) public view returns (MarketTypes.GetDealActivationReturn memory) {
+        require(deals[dealID].id > 0);
 
-        return MarketTypes.GetDealActivationReturn(deals[params.id].activated, deals[params.id].terminated);
+        return MarketTypes.GetDealActivationReturn(deals[dealID].activated, deals[dealID].terminated);
     }
 
     /// @notice Publish a new set of storage deals (not yet included in a sector).

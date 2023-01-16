@@ -19,7 +19,7 @@
 // SPDX-License-Identifier: Apache-2.0
 pragma solidity >=0.4.25 <=0.8.17;
 
-import {MarketAPI} from "../MarketAPI.sol";
+import {MarketMockAPI} from "../MarketMockAPI.sol";
 import {CommonTypes} from "../../types/CommonTypes.sol";
 import {MarketTypes} from "../../types/MarketTypes.sol";
 
@@ -33,14 +33,14 @@ contract MarketTestApi {
     function test_add_balance() public payable {
         bytes memory provider_or_client = hex"0066";
 
-        MarketAPI marketApiInstance = MarketAPI(marketApiAddress);
+        MarketMockAPI marketApiInstance = MarketMockAPI(marketApiAddress);
         marketApiInstance.addBalance(provider_or_client);
     }
 
     function test_get_balance() public view {
         bytes memory addr = hex"0066";
 
-        MarketAPI marketApiInstance = MarketAPI(marketApiAddress);
+        MarketMockAPI marketApiInstance = MarketMockAPI(marketApiAddress);
         marketApiInstance.getBalance(addr);
     }
 }

@@ -19,35 +19,20 @@
 // SPDX-License-Identifier: Apache-2.0
 pragma solidity >=0.4.25 <=0.8.17;
 
-/// @title Filecoin init actor types for Solidity.
-/// @author Zondax AG
-library InitTypes {
-    bytes constant ActorID = hex"0001";
-    uint constant ExecMethodNum = 81225168;
-    uint constant Exec4MethodNum = 3;
+import "solidity-cborutils/contracts/CBOR.sol";
 
-    struct ExecParams {
-        bytes code_cid;
-        bytes constructor_params;
-    }
+import "../utils/CborDecode.sol";
 
-    struct ExecReturn {
-        /// ID based address for created actor
-        bytes id_address;
-        /// Reorg safe address for actor
-        bytes robust_address;
-    }
+library Uint64CBOR {
+    using CBOR for CBOR.CBORBuffer;
+    using CBORDecoder for bytes;
 
-    struct Exec4Params {
-        bytes code_cid;
-        bytes constructor_params;
-        bytes subaddress;
-    }
+    function serialize(uint64 id) internal pure returns (bytes memory) {
+        // FIXME what should the max length be on the buffer?
+        CBOR.CBORBuffer memory buf = CBOR.create(64);
 
-    struct Exec4Return {
-        /// ID based address for created actor
-        bytes id_address;
-        /// Reorg safe address for actor
-        bytes robust_address;
+        buf.writeUInt64(id);
+
+        return buf.data();
     }
 }
