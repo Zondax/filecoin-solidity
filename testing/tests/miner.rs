@@ -71,7 +71,7 @@ mod tests {
 
         let actor_state = ActorState {
             // CID of Accounts actor. You get this as output from builtin-actors compiling process
-            code: Cid::from_str("bafk2bzaced4egdjgpdpxgg37rz7zrqegwioeqbeo7gfw3a4il6tkdrssfjsoy")
+            code: Cid::from_str("bafk2bzaceddb65xkjgqgtcsbl2b3istnprim6j3lbf3ywyggxizb6ayzffbqe")
                 .unwrap(),
             //code: Cid::from_str("bafk2bzaceddmas33nnn2izdexi5xjzuahzezl62aa5ah5bqwzzjceusskr6ty").unwrap(),
             state: cid,
@@ -106,7 +106,7 @@ mod tests {
         let exec_params = fil_actor_init::ExecParams {
             // CID of StorageMiner actor. You get this as output from builtin-actors compiling process
             code_cid: Cid::from_str(
-                "bafk2bzaced4egdjgpdpxgg37rz7zrqegwioeqbeo7gfw3a4il6tkdrssfjsoy",
+                "bafk2bzaceaz5hlsatwn7bv2nmdtkvw7klsgydzumdxh6ivmwakcdhdyou2n64",
             )
             .unwrap(),
             //code_cid: Cid::from_str("bafk2bzacea5ua7isdc4nx3huvbgsjdikfkxj2mhwveuyvtxtk5techk5rddl6").unwrap(),

@@ -4,7 +4,7 @@ mod tests {
     use fvm_integration_tests::dummy::DummyExterns;
     use fvm_integration_tests::tester::{Account, Tester};
     use fvm_ipld_encoding::{strict_bytes, tuple::*};
-    use fvm_shared::bigint::{bigint_ser, BigInt};
+    use fvm_shared::bigint::{bigint_ser};
 
     use fil_actor_evm::{Method as EvmMethods};
     use fil_actor_eam::Return;
@@ -46,7 +46,7 @@ mod tests {
             Tester::new(NetworkVersion::V18, StateTreeVersion::V5, bundle_root, bs).unwrap();
 
         let accounts: [Account; 2] = tester.create_accounts().unwrap();
-        let (sender, verified_client) = (accounts[0], accounts[1]);
+        let (sender, _verified_client) = (accounts[0], accounts[1]);
         // register address so we can use senderID 199 which is the governor address of the verifreg
         // actor
         let _accounts: [Account; 200] = tester.create_accounts().unwrap();

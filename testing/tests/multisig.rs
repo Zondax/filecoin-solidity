@@ -14,7 +14,7 @@ mod tests {
     use fvm_ipld_blockstore::MemoryBlockstore;
     use fvm_ipld_encoding::CborStore;
     use fvm_ipld_encoding::RawBytes;
-    use fvm_ipld_encoding::{strict_bytes, tuple::*, BytesDe};
+    use fvm_ipld_encoding::{strict_bytes};
     use fvm_shared::address::Address;
     use fvm_shared::econ::TokenAmount;
     use fvm_shared::message::Message;
@@ -70,7 +70,7 @@ mod tests {
 
         let actor_state = ActorState {
             // CID of Accounts actor. You get this as output from builtin-actors compiling process
-            code: Cid::from_str("bafk2bzaced4egdjgpdpxgg37rz7zrqegwioeqbeo7gfw3a4il6tkdrssfjsoy")
+            code: Cid::from_str("bafk2bzaceddb65xkjgqgtcsbl2b3istnprim6j3lbf3ywyggxizb6ayzffbqe")
                 .unwrap(),
             // code: Cid::from_str("bafk2bzacecj7v5ur5qk4vn3xbvgsizl35e42l3yaankmxu6dcoouv4mkphsjq").unwrap(),
             state: cid,
@@ -140,7 +140,7 @@ mod tests {
         let exec_params = fil_actor_init::ExecParams {
             // CID of MultiSig actor. You get this as output from builtin-actors compiling process
             code_cid: Cid::from_str(
-                "bafk2bzacecwtqcftyz3y2yqdyiuo5vxp2fgvpk72e2cdso2whyblx2jetx774",
+                "bafk2bzacebntzrsozofa4ea35qzttns6zyvldszvr35lg4wuu5usfywztge5c",
             )
             .unwrap(),
             // code_cid: Cid::from_str("bafk2bzacedgixfd465634uihet3u57vugbbp6s5sseb76phti3cexx66ers3i").unwrap(),

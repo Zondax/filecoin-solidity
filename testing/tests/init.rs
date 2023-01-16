@@ -10,7 +10,7 @@ mod tests {
     use fvm_integration_tests::tester::{Account, Tester};
     use fvm_ipld_blockstore::MemoryBlockstore;
     use fvm_ipld_encoding::RawBytes;
-    use fvm_ipld_encoding::{strict_bytes, tuple::*};
+    use fvm_ipld_encoding::{strict_bytes};
     use fvm_shared::address::Address;
     use fvm_shared::message::Message;
     use fvm_shared::state::StateTreeVersion;
@@ -77,7 +77,7 @@ mod tests {
 
         //let multisig_cid = Cid::from_str("bafk2bzaceawblu7i2c2ghriamzkiqixbt6fcvvs2ka3kn5q7xgpd7rijlyauu").unwrap();
         let multisig_cid =
-            Cid::from_str("bafk2bzacecwtqcftyz3y2yqdyiuo5vxp2fgvpk72e2cdso2whyblx2jetx774")
+            Cid::from_str("bafk2bzacebntzrsozofa4ea35qzttns6zyvldszvr35lg4wuu5usfywztge5c")
                 .unwrap();
         dbg!(hex::encode(multisig_cid.to_bytes()));
 

@@ -15,7 +15,7 @@ mod tests {
     use fvm_ipld_encoding::CborStore;
     use fvm_ipld_encoding::RawBytes;
     use fvm_ipld_encoding::{serde_bytes, strict_bytes, tuple::*};
-    use fvm_ipld_encoding::{BytesSer, Cbor};
+    use fvm_ipld_encoding::{BytesSer};
     use fvm_shared::address::Address;
     use fvm_shared::clock::ChainEpoch;
     use fvm_shared::crypto::signature::Signature;
@@ -163,7 +163,7 @@ mod tests {
 
         let actor_state = ActorState {
             // CID of Accounts actor. You get this as output from builtin-actors compiling process
-            code: Cid::from_str("bafk2bzaced4egdjgpdpxgg37rz7zrqegwioeqbeo7gfw3a4il6tkdrssfjsoy")
+            code: Cid::from_str("bafk2bzaceddb65xkjgqgtcsbl2b3istnprim6j3lbf3ywyggxizb6ayzffbqe")
                 .unwrap(),
             //code: Cid::from_str("bafk2bzaceddmas33nnn2izdexi5xjzuahzezl62aa5ah5bqwzzjceusskr6ty").unwrap(),
             state: cid,
@@ -188,7 +188,7 @@ mod tests {
 
         let actor_state = ActorState {
             // CID of Accounts actor. You get this as output from builtin-actors compiling process
-            code: Cid::from_str("bafk2bzaced4egdjgpdpxgg37rz7zrqegwioeqbeo7gfw3a4il6tkdrssfjsoy")
+            code: Cid::from_str("bafk2bzaceddb65xkjgqgtcsbl2b3istnprim6j3lbf3ywyggxizb6ayzffbqe")
                 .unwrap(),
             //code: Cid::from_str("bafk2bzaceanfxc6rtvtyjv2wk3ud4cx7qb6iwgif55sq43htuea2gtgfcbd22").unwrap(),
             state: cid,

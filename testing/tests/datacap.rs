@@ -3,7 +3,7 @@ mod tests {
     use fvm_integration_tests::tester::{Account, Tester};
     use fvm_integration_tests::dummy::DummyExterns;
     use fvm_integration_tests::bundle;
-    use fvm_ipld_encoding::{strict_bytes, tuple::*};
+    use fvm_ipld_encoding::{strict_bytes};
     use fvm_shared::state::StateTreeVersion;
     use fvm_shared::version::NetworkVersion;
     use fvm_ipld_blockstore::MemoryBlockstore;
