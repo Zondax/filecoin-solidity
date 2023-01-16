@@ -71,7 +71,7 @@ mod tests {
 
         let actor_state = ActorState {
             // CID of Accounts actor. You get this as output from builtin-actors compiling process
-            code: Cid::from_str("bafk2bzaced4egdjgpdpxgg37rz7zrqegwioeqbeo7gfw3a4il6tkdrssfjsoy")
+            code: Cid::from_str("bafk2bzacedlleondkzyvnl2zm2p45ndlp364r5or4u5zsc35nnvy3uwuj77p6")
                 .unwrap(),
             //code: Cid::from_str("bafk2bzaceddmas33nnn2izdexi5xjzuahzezl62aa5ah5bqwzzjceusskr6ty").unwrap(),
             state: cid,
@@ -106,7 +106,7 @@ mod tests {
         let exec_params = fil_actor_init::ExecParams {
             // CID of StorageMiner actor. You get this as output from builtin-actors compiling process
             code_cid: Cid::from_str(
-                "bafk2bzacebamubpsj66pspk2idx6bdx4uoephg565rjfvkbiwjibhyoilej4y",
+                "bafk2bzacedi5ksz6xrc6ir6bxhlyzshvzukyd7c32y7ia4luxsdg7cnuayyes",
             )
             .unwrap(),
             //code_cid: Cid::from_str("bafk2bzacea5ua7isdc4nx3huvbgsjdikfkxj2mhwveuyvtxtk5techk5rddl6").unwrap(),
@@ -179,6 +179,8 @@ mod tests {
         let res = executor
             .execute_message(message, ApplyKind::Explicit, 100)
             .unwrap();
+
+        dbg!(&res);
 
         assert_eq!(res.msg_receipt.exit_code.value(), 0);
         assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "40");

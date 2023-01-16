@@ -4,6 +4,7 @@ mod tests {
     use cid::Cid;
     use fil_actor_eam::Return;
     use fil_actors_runtime::EAM_ACTOR_ADDR;
+    use fil_actor_evm::{Method as EvmMethods};
     use fvm::executor::{ApplyKind, Executor};
     use fvm::state_tree::ActorState;
     use fvm_integration_tests::bundle;
@@ -370,7 +371,7 @@ mod tests {
         from: sender[0].1,
         to: Address::new_id(exec_return.actor_id),
         gas_limit: 1000000000,
-        method_num: 2,
+        method_num: EvmMethods::InvokeContract as u64,
         sequence: 2,
         value: TokenAmount::from_atto(1_000),
         params: RawBytes::new(hex::decode("5864467FAFEF000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000020068000000000000000000000000000000000000000000000000000000000000").unwrap()),
@@ -390,7 +391,7 @@ mod tests {
         from: sender[0].1,
         to: Address::new_id(exec_return.actor_id),
         gas_limit: 1000000000,
-        method_num: 2,
+        method_num: EvmMethods::InvokeContract as u64,
         sequence: 3,
         params: RawBytes::new(hex::decode("5901242698552B000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000080000000000000000000000000000000000000000000000000000000000000000200680000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000040000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000016400000000000000000000000000000000000000000000000000000000000000").unwrap()),
         ..Message::default()
@@ -409,7 +410,7 @@ mod tests {
         from: sender[0].1,
         to: Address::new_id(exec_return.actor_id),
         gas_limit: 1000000000,
-        method_num: 2,
+        method_num: EvmMethods::InvokeContract as u64,
         sequence: 4,
         params: RawBytes::new(hex::decode("58643587a9fd000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000020065000000000000000000000000000000000000000000000000000000000000").unwrap()),
         ..Message::default()
@@ -428,7 +429,7 @@ mod tests {
             from: sender[0].1,
             to: Address::new_id(exec_return.actor_id),
             gas_limit: 1000000000,
-            method_num: 2,
+            method_num: EvmMethods::InvokeContract as u64,
             sequence: 5,
             params: RawBytes::new(
                 hex::decode(
@@ -452,7 +453,7 @@ mod tests {
             from: sender[0].1,
             to: Address::new_id(exec_return.actor_id),
             gas_limit: 1000000000,
-            method_num: 2,
+            method_num: EvmMethods::InvokeContract as u64,
             sequence: 6,
             params: RawBytes::new(
                 hex::decode(
@@ -479,7 +480,7 @@ mod tests {
             from: sender[0].1,
             to: Address::new_id(exec_return.actor_id),
             gas_limit: 1000000000,
-            method_num: 2,
+            method_num: EvmMethods::InvokeContract as u64,
             sequence: 7,
             params: RawBytes::new(
                 hex::decode(
@@ -506,7 +507,7 @@ mod tests {
             from: sender[0].1,
             to: Address::new_id(exec_return.actor_id),
             gas_limit: 1000000000,
-            method_num: 2,
+            method_num: EvmMethods::InvokeContract as u64,
             sequence: 8,
             params: RawBytes::new(
                 hex::decode(
@@ -530,7 +531,7 @@ mod tests {
             from: sender[0].1,
             to: Address::new_id(exec_return.actor_id),
             gas_limit: 1000000000,
-            method_num: 2,
+            method_num: EvmMethods::InvokeContract as u64,
             sequence: 9,
             params: RawBytes::new(
                 hex::decode(
@@ -554,7 +555,7 @@ mod tests {
             from: sender[0].1,
             to: Address::new_id(exec_return.actor_id),
             gas_limit: 1000000000,
-            method_num: 2,
+            method_num: EvmMethods::InvokeContract as u64,
             sequence: 10,
             params: RawBytes::new(
                 hex::decode(
@@ -578,7 +579,7 @@ mod tests {
             from: sender[0].1,
             to: Address::new_id(exec_return.actor_id),
             gas_limit: 1000000000,
-            method_num: 2,
+            method_num: EvmMethods::InvokeContract as u64,
             sequence: 11,
             params: RawBytes::new(
                 hex::decode(
@@ -602,7 +603,7 @@ mod tests {
             from: sender[0].1,
             to: Address::new_id(exec_return.actor_id),
             gas_limit: 1000000000,
-            method_num: 2,
+            method_num: EvmMethods::InvokeContract as u64,
             sequence: 12,
             params: RawBytes::new(
                 hex::decode(
@@ -626,7 +627,7 @@ mod tests {
             from: sender[0].1,
             to: Address::new_id(exec_return.actor_id),
             gas_limit: 1000000000,
-            method_num: 2,
+            method_num: EvmMethods::InvokeContract as u64,
             sequence: 13,
             params: RawBytes::new(
                 hex::decode(
@@ -653,7 +654,7 @@ mod tests {
             from: sender[0].1,
             to: Address::new_id(exec_return.actor_id),
             gas_limit: 1000000000,
-            method_num: 2,
+            method_num: EvmMethods::InvokeContract as u64,
             sequence: 14,
             params: RawBytes::new(
                 hex::decode(
@@ -677,7 +678,7 @@ mod tests {
             from: sender[0].1,
             to: Address::new_id(exec_return.actor_id),
             gas_limit: 1000000000,
-            method_num: 2,
+            method_num: EvmMethods::InvokeContract as u64,
             sequence: 15,
             params: RawBytes::new(
                 hex::decode(
