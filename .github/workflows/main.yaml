@@ -126,7 +126,7 @@ jobs:
         with:
           path: |
             ./testing/target
-          key: ${{ runner.os }}-miner-${{ hashFiles('./testing/Cargo.lock') }}
+          key: ${{ runner.os }}-testing-${{ hashFiles('./testing/Cargo.lock') }}
       - name: Restore builtin-actors
         uses: actions/cache@v3
         with:
@@ -181,7 +181,7 @@ jobs:
         with:
           path: |
             ./testing/target
-          key: ${{ runner.os }}-market-${{ hashFiles('./testing/Cargo.lock') }}
+          key: ${{ runner.os }}-testing-${{ hashFiles('./testing/Cargo.lock') }}
       - name: Restore builtin-actors
         uses: actions/cache@v3
         with:
@@ -238,7 +238,7 @@ jobs:
         with:
           path: |
             ./testing/target
-          key: ${{ runner.os }}-power-${{ hashFiles('./testing/Cargo.lock') }}
+          key: ${{ runner.os }}-testing-${{ hashFiles('./testing/Cargo.lock') }}
       - name: Restore builtin-actors
         uses: actions/cache@v3
         with:
@@ -293,7 +293,7 @@ jobs:
         with:
           path: |
             ./testing/target
-          key: ${{ runner.os }}-verifreg-${{ hashFiles('./testing/Cargo.lock') }}
+          key: ${{ runner.os }}-testing-${{ hashFiles('./testing/Cargo.lock') }}
       - name: Restore builtin-actors
         uses: actions/cache@v3
         with:
@@ -348,7 +348,7 @@ jobs:
         with:
           path: |
             ./testing/target
-          key: ${{ runner.os }}-datacap-${{ hashFiles('./testing/Cargo.lock') }}
+          key: ${{ runner.os }}-testing-${{ hashFiles('./testing/Cargo.lock') }}
       - name: Restore builtin-actors
         uses: actions/cache@v3
         with:
@@ -403,7 +403,7 @@ jobs:
         with:
           path: |
             ./testing/target
-          key: ${{ runner.os }}-init-${{ hashFiles('./testing/Cargo.lock') }}
+          key: ${{ runner.os }}-testing-${{ hashFiles('./testing/Cargo.lock') }}
       - name: Restore builtin-actors
         uses: actions/cache@v3
         with:
@@ -458,7 +458,7 @@ jobs:
         with:
           path: |
             ./testing/target
-          key: ${{ runner.os }}-account-${{ hashFiles('./testing/Cargo.lock') }}
+          key: ${{ runner.os }}-testing-${{ hashFiles('./testing/Cargo.lock') }}
       - name: Restore builtin-actors
         uses: actions/cache@v3
         with:
@@ -513,7 +513,7 @@ jobs:
         with:
           path: |
             ./testing/target
-          key: ${{ runner.os }}-multisig-${{ hashFiles('./testing/Cargo.lock') }}
+          key: ${{ runner.os }}-testing-${{ hashFiles('./testing/Cargo.lock') }}
       - name: Restore builtin-actors
         uses: actions/cache@v3
         with:
