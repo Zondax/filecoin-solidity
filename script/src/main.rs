@@ -169,4 +169,7 @@ fn main() {
     println!("ChangeNumApprovalsThresholdExported {}", ChangeNumApprovalsThresholdExported);
     println!("LockBalanceExported {}", LockBalanceExported);
     println!("UniversalReceiverHook {}", UniversalReceiverHook);
+
+    let InvokeEVM = frc42_dispatch::method_hash!("InvokeEVM");
+    println!("InvokeEVM {}", InvokeEVM);
 }
