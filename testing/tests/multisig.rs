@@ -5,6 +5,7 @@ mod tests {
     use fil_actor_eam::Return;
     use fil_actor_init::ExecReturn;
     use fil_actors_runtime::{EAM_ACTOR_ADDR, INIT_ACTOR_ADDR};
+    use fil_actor_evm::{Method as EvmMethods};
     use fvm::executor::{ApplyKind, Executor};
     use fvm::state_tree::ActorState;
     use fvm_integration_tests::bundle;
@@ -13,7 +14,7 @@ mod tests {
     use fvm_ipld_blockstore::MemoryBlockstore;
     use fvm_ipld_encoding::CborStore;
     use fvm_ipld_encoding::RawBytes;
-    use fvm_ipld_encoding::{strict_bytes, tuple::*, BytesDe};
+    use fvm_ipld_encoding::{strict_bytes};
     use fvm_shared::address::Address;
     use fvm_shared::econ::TokenAmount;
     use fvm_shared::message::Message;
@@ -23,16 +24,13 @@ mod tests {
     use rand_core::OsRng;
     use std::env;
     use std::str::FromStr;
+    use serde::{Deserialize as SerdeDeserialize, Serialize as SerdeSerialize};
 
     const WASM_COMPILED_PATH: &str = "../build/v0.8/tests/MultisigApiTest.bin";
 
-    #[derive(Serialize_tuple, Deserialize_tuple)]
-    pub struct Create2Params {
-        #[serde(with = "strict_bytes")]
-        pub initcode: Vec<u8>,
-        #[serde(with = "strict_bytes")]
-        pub salt: [u8; 32],
-    }
+    #[derive(SerdeSerialize, SerdeDeserialize)]
+    #[serde(transparent)]
+    pub struct CreateExternalParams(#[serde(with = "strict_bytes")] pub Vec<u8>);
 
     #[test]
     fn multisig_tests() {
@@ -72,7 +70,7 @@ mod tests {
 
         let actor_state = ActorState {
             // CID of Accounts actor. You get this as output from builtin-actors compiling process
-            code: Cid::from_str("bafk2bzaced4egdjgpdpxgg37rz7zrqegwioeqbeo7gfw3a4il6tkdrssfjsoy")
+            code: Cid::from_str("bafk2bzaceddb65xkjgqgtcsbl2b3istnprim6j3lbf3ywyggxizb6ayzffbqe")
                 .unwrap(),
             // code: Cid::from_str("bafk2bzacecj7v5ur5qk4vn3xbvgsizl35e42l3yaankmxu6dcoouv4mkphsjq").unwrap(),
             state: cid,
@@ -103,16 +101,13 @@ mod tests {
         let evm_hex = std::fs::read(wasm_path).expect("Unable to read file");
         let evm_bin = hex::decode(evm_hex).unwrap();
 
-        let constructor_params = Create2Params {
-            initcode: evm_bin,
-            salt: [0; 32],
-        };
+        let constructor_params = CreateExternalParams(evm_bin);
 
         let message = Message {
             from: sender[0].1,
             to: EAM_ACTOR_ADDR,
             gas_limit: 1000000000,
-            method_num: 3,
+            method_num: 4,
             sequence: 0,
             params: RawBytes::serialize(constructor_params).unwrap(),
             ..Message::default()
@@ -145,7 +140,7 @@ mod tests {
         let exec_params = fil_actor_init::ExecParams {
             // CID of MultiSig actor. You get this as output from builtin-actors compiling process
             code_cid: Cid::from_str(
-                "bafk2bzacecwtqcftyz3y2yqdyiuo5vxp2fgvpk72e2cdso2whyblx2jetx774",
+                "bafk2bzacebntzrsozofa4ea35qzttns6zyvldszvr35lg4wuu5usfywztge5c",
             )
             .unwrap(),
             // code_cid: Cid::from_str("bafk2bzacedgixfd465634uihet3u57vugbbp6s5sseb76phti3cexx66ers3i").unwrap(),
@@ -179,7 +174,7 @@ mod tests {
             from: sender[0].1,
             to: Address::new_id(contract_actor_id),
             gas_limit: 1000000000,
-            method_num: 2,
+            method_num: EvmMethods::InvokeContract as u64,
             sequence: 2,
             params: RawBytes::new(hex::decode("590164C0987260000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000000000002006600000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000000000457000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000C0000000000000000000000000000000000000000000000000000000000000000200640000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000").unwrap()),
             ..Message::default()
@@ -198,7 +193,7 @@ mod tests {
             from: sender[0].1,
             to: Address::new_id(contract_actor_id),
             gas_limit: 1000000000,
-            method_num: 2,
+            method_num: EvmMethods::InvokeContract as u64,
             sequence: 3,
             params: RawBytes::new(hex::decode("5901041339400D00000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000080000000000000000000000000000000000000000000000000000000000000000200670000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000040000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000020064000000000000000000000000000000000000000000000000000000000000").unwrap()),
             ..Message::default()

@@ -120,13 +120,13 @@ jobs:
             ~/.cargo/registry/index/
             ~/.cargo/registry/cache/
             ~/.cargo/git/db/
-          key: ${{ runner.os }}-cargo-${{ hashFiles('./testing/miner/Cargo.lock') }}
+          key: ${{ runner.os }}-cargo-${{ hashFiles('./testing/Cargo.lock') }}
       - name: Restore previous compilation
         uses: actions/cache@v3
         with:
           path: |
-            ./testing/miner/target
-          key: ${{ runner.os }}-miner-${{ hashFiles('./testing/miner/Cargo.lock') }}
+            ./testing/target
+          key: ${{ runner.os }}-testing-${{ hashFiles('./testing/Cargo.lock') }}
       - name: Restore builtin-actors
         uses: actions/cache@v3
         with:
@@ -139,9 +139,9 @@ jobs:
         run: make
       - name: Run tests on miner
         run: |
-          cd testing/miner
+          cd testing
           rustup target add wasm32-unknown-unknown
-          RUST_BACKTRACE=1 cargo r
+          cargo test miner_test
 
   market-integration:
     name: "Market API: integration tests"
@@ -175,13 +175,13 @@ jobs:
             ~/.cargo/registry/index/
             ~/.cargo/registry/cache/
             ~/.cargo/git/db/
-          key: ${{ runner.os }}-cargo-${{ hashFiles('./testing/market/Cargo.lock') }}
+          key: ${{ runner.os }}-cargo-${{ hashFiles('./testing/Cargo.lock') }}
       - name: Restore previous compilation
         uses: actions/cache@v3
         with:
           path: |
-            ./testing/market/target
-          key: ${{ runner.os }}-market-${{ hashFiles('./testing/market/Cargo.lock') }}
+            ./testing/target
+          key: ${{ runner.os }}-testing-${{ hashFiles('./testing/Cargo.lock') }}
       - name: Restore builtin-actors
         uses: actions/cache@v3
         with:
@@ -194,9 +194,9 @@ jobs:
         run: make
       - name: Run tests on market
         run: |
-          cd testing/market
+          cd testing
           rustup target add wasm32-unknown-unknown
-          RUST_BACKTRACE=1 cargo r
+          cargo test market_test
 
 
 
@@ -232,13 +232,13 @@ jobs:
             ~/.cargo/registry/index/
             ~/.cargo/registry/cache/
             ~/.cargo/git/db/
-          key: ${{ runner.os }}-cargo-${{ hashFiles('./testing/power/Cargo.lock') }}
+          key: ${{ runner.os }}-cargo-${{ hashFiles('./testing/Cargo.lock') }}
       - name: Restore previous compilation
         uses: actions/cache@v3
         with:
           path: |
-            ./testing/power/target
-          key: ${{ runner.os }}-power-${{ hashFiles('./testing/power/Cargo.lock') }}
+            ./testing/target
+          key: ${{ runner.os }}-testing-${{ hashFiles('./testing/Cargo.lock') }}
       - name: Restore builtin-actors
         uses: actions/cache@v3
         with:
@@ -251,9 +251,9 @@ jobs:
         run: make
       - name: Run tests on power
         run: |
-          cd testing/power
+          cd testing
           rustup target add wasm32-unknown-unknown
-          RUST_BACKTRACE=1 cargo r
+          cargo test power_test
 
   verifreg-integration:
     name: "VerifReg API: integration tests"
@@ -287,13 +287,13 @@ jobs:
             ~/.cargo/registry/index/
             ~/.cargo/registry/cache/
             ~/.cargo/git/db/
-          key: ${{ runner.os }}-cargo-${{ hashFiles('./testing/verifreg/Cargo.lock') }}
+          key: ${{ runner.os }}-cargo-${{ hashFiles('./testing/Cargo.lock') }}
       - name: Restore previous compilation
         uses: actions/cache@v3
         with:
           path: |
-            ./testing/verifreg/target
-          key: ${{ runner.os }}-verifreg-${{ hashFiles('./testing/verifreg/Cargo.lock') }}
+            ./testing/target
+          key: ${{ runner.os }}-testing-${{ hashFiles('./testing/Cargo.lock') }}
       - name: Restore builtin-actors
         uses: actions/cache@v3
         with:
@@ -306,9 +306,9 @@ jobs:
         run: make
       - name: Run tests on verifreg
         run: |
-          cd testing/verifreg
+          cd testing
           rustup target add wasm32-unknown-unknown
-          RUST_BACKTRACE=1 cargo r
+          cargo test verifreg_test
 
   datacap-integration:
     name: "DataCap API: integration tests"
@@ -342,13 +342,13 @@ jobs:
             ~/.cargo/registry/index/
             ~/.cargo/registry/cache/
             ~/.cargo/git/db/
-          key: ${{ runner.os }}-cargo-${{ hashFiles('./testing/datacap/Cargo.lock') }}
+          key: ${{ runner.os }}-cargo-${{ hashFiles('./testing/Cargo.lock') }}
       - name: Restore previous compilation
         uses: actions/cache@v3
         with:
           path: |
-            ./testing/datacap/target
-          key: ${{ runner.os }}-datacap-${{ hashFiles('./testing/datacap/Cargo.lock') }}
+            ./testing/target
+          key: ${{ runner.os }}-testing-${{ hashFiles('./testing/Cargo.lock') }}
       - name: Restore builtin-actors
         uses: actions/cache@v3
         with:
@@ -361,9 +361,10 @@ jobs:
         run: make
       - name: Run tests on datacap
         run: |
-          cd testing/datacap
+          cd testing
           rustup target add wasm32-unknown-unknown
-          RUST_BACKTRACE=1 cargo r
+          cargo test datacap_test
+
   init-integration:
     name: "Init API: integration tests"
     timeout-minutes: 20
@@ -396,13 +397,13 @@ jobs:
             ~/.cargo/registry/index/
             ~/.cargo/registry/cache/
             ~/.cargo/git/db/
-          key: ${{ runner.os }}-cargo-${{ hashFiles('./testing/init/Cargo.lock') }}
+          key: ${{ runner.os }}-cargo-${{ hashFiles('./testing/Cargo.lock') }}
       - name: Restore previous compilation
         uses: actions/cache@v3
         with:
           path: |
-            ./testing/init/target
-          key: ${{ runner.os }}-init-${{ hashFiles('./testing/init/Cargo.lock') }}
+            ./testing/target
+          key: ${{ runner.os }}-testing-${{ hashFiles('./testing/Cargo.lock') }}
       - name: Restore builtin-actors
         uses: actions/cache@v3
         with:
@@ -415,9 +416,10 @@ jobs:
         run: make
       - name: Run tests on init
         run: |
-          cd testing/init
+          cd testing
           rustup target add wasm32-unknown-unknown
-          RUST_BACKTRACE=1 cargo r
+          cargo test init_test
+
   account-integration:
     name: "Account API: integration tests"
     timeout-minutes: 20
@@ -450,13 +452,13 @@ jobs:
             ~/.cargo/registry/index/
             ~/.cargo/registry/cache/
             ~/.cargo/git/db/
-          key: ${{ runner.os }}-cargo-${{ hashFiles('./testing/account/Cargo.lock') }}
+          key: ${{ runner.os }}-cargo-${{ hashFiles('./testing/Cargo.lock') }}
       - name: Restore previous compilation
         uses: actions/cache@v3
         with:
           path: |
-            ./testing/account/target
-          key: ${{ runner.os }}-account-${{ hashFiles('./testing/account/Cargo.lock') }}
+            ./testing/target
+          key: ${{ runner.os }}-testing-${{ hashFiles('./testing/Cargo.lock') }}
       - name: Restore builtin-actors
         uses: actions/cache@v3
         with:
@@ -469,9 +471,9 @@ jobs:
         run: make
       - name: Run tests on account
         run: |
-          cd testing/account
+          cd testing
           rustup target add wasm32-unknown-unknown
-          RUST_BACKTRACE=1 cargo r
+          cargo test account_test
 
   multisig-integration:
     name: "Multisig API: integration tests"
@@ -505,13 +507,13 @@ jobs:
             ~/.cargo/registry/index/
             ~/.cargo/registry/cache/
             ~/.cargo/git/db/
-          key: ${{ runner.os }}-cargo-${{ hashFiles('./testing/multisig/Cargo.lock') }}
+          key: ${{ runner.os }}-cargo-${{ hashFiles('./testing/Cargo.lock') }}
       - name: Restore previous compilation
         uses: actions/cache@v3
         with:
           path: |
-            ./testing/multisig/target
-          key: ${{ runner.os }}-multisig-${{ hashFiles('./testing/multisig/Cargo.lock') }}
+            ./testing/target
+          key: ${{ runner.os }}-testing-${{ hashFiles('./testing/Cargo.lock') }}
       - name: Restore builtin-actors
         uses: actions/cache@v3
         with:
@@ -524,9 +526,9 @@ jobs:
         run: make
       - name: Run tests on multisig
         run: |
-          cd testing/multisig
+          cd testing
           rustup target add wasm32-unknown-unknown
-          RUST_BACKTRACE=1 cargo r
+          cargo test multisig_test
 
 
 

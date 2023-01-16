@@ -4,8 +4,9 @@ mod tests {
     use fvm_integration_tests::dummy::DummyExterns;
     use fvm_integration_tests::tester::{Account, Tester};
     use fvm_ipld_encoding::{strict_bytes, tuple::*};
-    use fvm_shared::bigint::{bigint_ser, BigInt};
+    use fvm_shared::bigint::{bigint_ser};
 
+    use fil_actor_evm::{Method as EvmMethods};
     use fil_actor_eam::Return;
     use fil_actors_runtime::{EAM_ACTOR_ADDR, VERIFIED_REGISTRY_ACTOR_ADDR};
     use fvm::executor::{ApplyKind, Executor};
@@ -17,16 +18,13 @@ mod tests {
     use fvm_shared::state::StateTreeVersion;
     use fvm_shared::version::NetworkVersion;
     use std::env;
+    use serde::{Deserialize as SerdeDeserialize, Serialize as SerdeSerialize};
 
     const WASM_COMPILED_PATH: &str = "../build/v0.8/tests/VerifRegApiTest.bin";
 
-    #[derive(Serialize_tuple, Deserialize_tuple)]
-    pub struct Create2Params {
-        #[serde(with = "strict_bytes")]
-        pub initcode: Vec<u8>,
-        #[serde(with = "strict_bytes")]
-        pub salt: [u8; 32],
-    }
+    #[derive(SerdeSerialize, SerdeDeserialize)]
+    #[serde(transparent)]
+    pub struct CreateExternalParams(#[serde(with = "strict_bytes")] pub Vec<u8>);
 
     #[derive(Clone, Debug, PartialEq, Eq, Serialize_tuple, Deserialize_tuple)]
     pub struct VerifierParams {
@@ -48,7 +46,7 @@ mod tests {
             Tester::new(NetworkVersion::V18, StateTreeVersion::V5, bundle_root, bs).unwrap();
 
         let accounts: [Account; 2] = tester.create_accounts().unwrap();
-        let (sender, verified_client) = (accounts[0], accounts[1]);
+        let (sender, _verified_client) = (accounts[0], accounts[1]);
         // register address so we can use senderID 199 which is the governor address of the verifreg
         // actor
         let _accounts: [Account; 200] = tester.create_accounts().unwrap();
@@ -68,16 +66,13 @@ mod tests {
         let evm_hex = std::fs::read(wasm_path).expect("Unable to read file");
         let evm_bin = hex::decode(evm_hex).unwrap();
 
-        let constructor_params = Create2Params {
-            initcode: evm_bin,
-            salt: [0; 32],
-        };
+        let constructor_params = CreateExternalParams(evm_bin);
 
         let message = Message {
             from: sender.1,
             to: EAM_ACTOR_ADDR,
             gas_limit: 1000000000,
-            method_num: 3,
+            method_num: 4,
             sequence: 0,
             params: RawBytes::serialize(constructor_params).unwrap(),
             ..Message::default()
@@ -122,7 +117,7 @@ mod tests {
             from: sender.1,
             to: Address::new_id(exec_return.actor_id),
             gas_limit: 1000000000,
-            method_num: 2,
+            method_num: EvmMethods::InvokeContract as u64,
             sequence: 1,
             params: RawBytes::new(hex::decode("58E455707461000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000080000000000000000000000000000000000000000000000000000000000000001501DCE5B7F69E73494891556A350F8CC357614916D5000000000000000000000000000000000000000000000000000000000000000000000000000000000000030008000000000000000000000000000000000000000000000000000000000000").unwrap()),
             ..Message::default()
@@ -140,7 +135,7 @@ mod tests {
             from: sender.1,
             to: Address::new_id(exec_return.actor_id),
             gas_limit: 1000000000,
-            method_num: 2,
+            method_num: EvmMethods::InvokeContract as u64,
             sequence: 2,
             //  get_claims params [201, [0,1]]
             params: RawBytes::new(hex::decode("58C4DBCB98AB000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000C90000000000000000000000000000000000000000000000000000000000000040000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001").unwrap()),
@@ -159,7 +154,7 @@ mod tests {
             from: sender.1,
             to: Address::new_id(exec_return.actor_id),
             gas_limit: 1000000000,
-            method_num: 2,
+            method_num: EvmMethods::InvokeContract as u64,
             sequence: 3,
             params: RawBytes::new(hex::decode("58C4D8308B8C000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000660000000000000000000000000000000000000000000000000000000000000040000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001").unwrap()),
             ..Message::default()
@@ -177,7 +172,7 @@ mod tests {
             from: sender.1,
             to: Address::new_id(exec_return.actor_id),
             gas_limit: 1000000000,
-            method_num: 2,
+            method_num: EvmMethods::InvokeContract as u64,
             sequence: 4,
             //  remove_expired_allocations params [actorId(101), []] empty list which means remove all
             params: RawBytes::new(hex::decode("5884DF5527250000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000006500000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000000").unwrap()),
@@ -195,7 +190,7 @@ mod tests {
             from: sender.1,
             to: Address::new_id(exec_return.actor_id),
             gas_limit: 1000000000,
-            method_num: 2,
+            method_num: EvmMethods::InvokeContract as u64,
             sequence: 5,
             params: RawBytes::new(hex::decode("58C4D8308B8C000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000660000000000000000000000000000000000000000000000000000000000000040000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001").unwrap()),
             ..Message::default()
@@ -217,7 +212,7 @@ mod tests {
             from: sender.1,
             to: Address::new_id(exec_return.actor_id),
             gas_limit: 1000000000,
-            method_num: 2,
+            method_num: EvmMethods::InvokeContract as u64,
             sequence: 6,
             params: RawBytes::new(hex::decode("58A4AA7E0F7B000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000C9000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000031245AB0000000000000000000000000000000000000000000000000000000000").unwrap()),
             ..Message::default()
