@@ -24,16 +24,13 @@ mod tests {
     use rand_core::OsRng;
     use std::env;
     use std::str::FromStr;
+    use serde::{Deserialize as SerdeDeserialize, Serialize as SerdeSerialize};
 
     const WASM_COMPILED_PATH: &str = "../build/v0.8/tests/PowerApiTest.bin";
 
-    #[derive(Serialize_tuple, Deserialize_tuple)]
-    pub struct Create2Params {
-        #[serde(with = "strict_bytes")]
-        pub initcode: Vec<u8>,
-        #[serde(with = "strict_bytes")]
-        pub salt: [u8; 32],
-    }
+    #[derive(SerdeSerialize, SerdeDeserialize)]
+    #[serde(transparent)]
+    pub struct CreateExternalParams(#[serde(with = "strict_bytes")] pub Vec<u8>);
 
     #[derive(Serialize_tuple, Deserialize_tuple, Debug, Clone, Eq, PartialEq)]
     pub struct CreateMinerParams {
@@ -130,16 +127,13 @@ mod tests {
         let evm_hex = std::fs::read(wasm_path).expect("Unable to read file");
         let evm_bin = hex::decode(evm_hex).unwrap();
 
-        let constructor_params = Create2Params {
-            initcode: evm_bin,
-            salt: [0; 32],
-        };
+        let constructor_params = CreateExternalParams(evm_bin);
 
         let message = Message {
             from: sender[0].1,
             to: EAM_ACTOR_ADDR,
             gas_limit: 1000000000,
-            method_num: 3,
+            method_num: 4,
             sequence: 1,
             params: RawBytes::serialize(constructor_params).unwrap(),
             ..Message::default()
