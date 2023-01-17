@@ -42,7 +42,13 @@ library VerifRegAPI {
     function getClaims(VerifRegTypes.GetClaimsParams memory params) internal returns (VerifRegTypes.GetClaimsReturn memory) {
         bytes memory raw_request = params.serialize();
 
-        bytes memory raw_response = Actor.call(VerifRegTypes.GetClaimsMethodNum, VerifRegTypes.ActorID, raw_request, Misc.CBOR_CODEC);
+        bytes memory raw_response = Actor.call(
+            VerifRegTypes.GetClaimsMethodNum,
+            VerifRegTypes.ActorID,
+            raw_request,
+            Misc.CBOR_CODEC,
+            msg.value
+        );
 
         bytes memory result = Actor.readRespData(raw_response);
 
@@ -59,7 +65,8 @@ library VerifRegAPI {
             VerifRegTypes.AddVerifierClientMethodNum,
             VerifRegTypes.ActorID,
             raw_request,
-            Misc.CBOR_CODEC
+            Misc.CBOR_CODEC,
+            msg.value
         );
 
         Actor.readRespData(raw_response);
@@ -76,7 +83,8 @@ library VerifRegAPI {
             VerifRegTypes.RemoveExpiredAllocationsMethodNum,
             VerifRegTypes.ActorID,
             raw_request,
-            Misc.CBOR_CODEC
+            Misc.CBOR_CODEC,
+            msg.value
         );
 
         bytes memory result = Actor.readRespData(raw_response);
@@ -94,7 +102,8 @@ library VerifRegAPI {
             VerifRegTypes.ExtendClaimTermsMethodNum,
             VerifRegTypes.ActorID,
             raw_request,
-            Misc.CBOR_CODEC
+            Misc.CBOR_CODEC,
+            msg.value
         );
 
         bytes memory result = Actor.readRespData(raw_response);
@@ -114,7 +123,8 @@ library VerifRegAPI {
             VerifRegTypes.RemoveExpiredClaimsMethodNum,
             VerifRegTypes.ActorID,
             raw_request,
-            Misc.CBOR_CODEC
+            Misc.CBOR_CODEC,
+            msg.value
         );
 
         bytes memory result = Actor.readRespData(raw_response);
@@ -134,7 +144,8 @@ library VerifRegAPI {
             VerifRegTypes.UniversalReceiverMethodNum,
             VerifRegTypes.ActorID,
             raw_request,
-            Misc.CBOR_CODEC
+            Misc.CBOR_CODEC,
+            msg.value
         );
 
         bytes memory result = Actor.readRespData(raw_response);

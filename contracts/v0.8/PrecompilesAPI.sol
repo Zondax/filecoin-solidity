@@ -27,9 +27,6 @@ library PrecompilesAPI {
     address constant GET_ACTOR_TYPE_PRECOMPILE_ADDR = 0xFe00000000000000000000000000000000000004;
     address constant RIPEMD160_PRECOMPILE_ADDR = 0x0000000000000000000000000000000000000003;
 
-    uint64 constant GAS_LIMIT = 100000000;
-    uint64 constant MAX_RAW_RESPONSE_SIZE = 0x300;
-
     function resolveAddress(bytes memory addr) internal view returns (uint64) {
         (bool success, bytes memory raw_response) = address(RESOLVE_ADDRESS_PRECOMPILE_ADDR).staticcall(addr);
         require(success == true, "resolve address error");

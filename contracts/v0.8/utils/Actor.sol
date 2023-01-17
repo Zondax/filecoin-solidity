@@ -27,16 +27,22 @@ library Actor {
     address constant CALL_ACTOR_ID = 0xfe00000000000000000000000000000000000005;
     string constant CALL_ERROR_MESSAGE = "actor call failed";
 
-    uint64 constant GAS_LIMIT = 100000000;
     uint64 constant CALL_ACTOR_PRECOMPILE_ADDR = 0x0e;
     uint64 constant MAX_RAW_RESPONSE_SIZE = 0x300;
     uint64 constant READ_ONLY_FLAG = 0x00000001; // https://github.com/filecoin-project/ref-fvm/blob/master/shared/src/sys/mod.rs#L60
     uint64 constant DEFAULT_FLAG = 0x00000000;
 
-    function call(uint method_num, bytes memory actor_id, bytes memory raw_request, uint64 codec) internal returns (bytes memory) {
+    function call(
+        uint method_num,
+        bytes memory actor_id,
+        bytes memory raw_request,
+        uint64 codec,
+        uint256 amount
+    ) internal returns (bytes memory) {
         (bool success, bytes memory data) = address(CALL_ACTOR_ADDRESS).delegatecall(
-            abi.encode(uint64(method_num), msg.value, DEFAULT_FLAG, codec, raw_request, actor_id)
+            abi.encode(uint64(method_num), amount, flags, DEFAULT_FLAG, raw_request, actor_id)
         );
+
         require(success == true, CALL_ERROR_MESSAGE);
 
         return data;
