@@ -32,7 +32,7 @@ library AccountAPI {
     using UniversalReceiverHookCBOR for AccountTypes.UniversalReceiverParams;
     using BytesCBOR for bytes;
 
-    /// @notice FIXME
+    /// @notice TODO fill this a proper description
     function authenticateMessage(bytes memory target, AccountTypes.AuthenticateMessageParams memory params) internal {
         bytes memory raw_request = params.serialize();
 
@@ -41,7 +41,7 @@ library AccountAPI {
         Actor.readRespData(raw_response);
     }
 
-    /// @notice FIXME
+    /// @notice TODO fill this a proper description
     function universalReceiverHook(bytes memory target, AccountTypes.UniversalReceiverParams memory params) internal {
         bytes memory raw_request = params.serialize();
 
