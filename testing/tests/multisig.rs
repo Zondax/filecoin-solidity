@@ -25,6 +25,7 @@ mod tests {
     use std::env;
     use std::str::FromStr;
     use serde::{Deserialize as SerdeDeserialize, Serialize as SerdeSerialize};
+    use fvm::machine::Manifest;
 
     const WASM_COMPILED_PATH: &str = "../build/v0.8/tests/MultisigApiTest.bin";
 
@@ -40,6 +41,9 @@ mod tests {
         let actors = std::fs::read("./builtin-actors/output/builtin-actors-devnet-wasm.car")
             .expect("Unable to read actor devnet file file");
         let bundle_root = bundle::import_bundle(&bs, &actors).unwrap();
+
+        let (manifest_version, manifest_data_cid): (u32, Cid) = bs.get_cbor(&bundle_root).unwrap().unwrap();
+        let manifest = Manifest::load(&bs, &manifest_data_cid, manifest_version).unwrap();
 
         let mut tester =
             Tester::new(NetworkVersion::V18, StateTreeVersion::V5, bundle_root, bs).unwrap();

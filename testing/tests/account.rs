@@ -80,7 +80,6 @@ mod tests {
             .unwrap();
 
         let actor_state = ActorState {
-            // CID of Accounts actor. You get this as output from builtin-actors compiling process
             code: *manifest.get_account_code(),
             state: cid,
             sequence: 0,

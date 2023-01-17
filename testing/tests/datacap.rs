@@ -15,9 +15,13 @@ mod tests {
     use fil_actor_evm::{Method as EvmMethods};
     use fvm_ipld_encoding::RawBytes;
     use fil_actors_runtime::{EAM_ACTOR_ADDR, DATACAP_TOKEN_ACTOR_ADDR};
-    use fvm_shared::ActorID;
     use fvm_shared::econ::TokenAmount;
     use serde::{Deserialize as SerdeDeserialize, Serialize as SerdeSerialize};
+    use fvm::machine::Manifest;
+    use cid::Cid;
+    use fvm_ipld_encoding::CborStore;
+
+    use testing::helpers::{set_datacap_actor, DATA_CAP_ACTOR};
 
     const WASM_COMPILED_PATH: &str =
        "../build/v0.8/tests/DataCapApiTest.bin";
@@ -34,12 +38,20 @@ mod tests {
         let actors = std::fs::read("./builtin-actors/output/builtin-actors-devnet-wasm.car").expect("Unable to read actor devnet file");
         let bundle_root = bundle::import_bundle(&bs, &actors).unwrap();
 
+        let (manifest_version, manifest_data_cid): (u32, Cid) = bs.get_cbor(&bundle_root).unwrap().unwrap();
+        let manifest = Manifest::load(&bs, &manifest_data_cid, manifest_version).unwrap();
+
         let mut tester =
             Tester::new(NetworkVersion::V18, StateTreeVersion::V5, bundle_root, bs).unwrap();
 
         // As the governor address for datacap is 200, we create many many address in order to initialize the ID 200 with some tokens
         // and make it a valid address to use.
         let sender: [Account; 300] = tester.create_accounts().unwrap();
+        
+        // Set datacap actor
+        const DATA_CAP_IP: u32 = 12;
+        let state_tree = tester.state_tree.as_mut().unwrap();
+        set_datacap_actor(state_tree, *manifest.code_by_id(DATA_CAP_IP).unwrap()).unwrap();
 
         // Create embryo address to deploy the contract on it (assign some FILs to it)
         let tmp = hex::decode("DAFEA492D9c6733ae3d56b7Ed1ADB60692c98Bc5").unwrap();
@@ -67,6 +79,22 @@ mod tests {
 
         let executor = tester.executor.as_mut().unwrap();
 
+        // Try to call "constructor"
+        println!("Try to call constructor on datacap actor");
+
+        let message = Message {
+            from: Address::new_id(0),
+            to: Address::new_id(DATA_CAP_ACTOR),
+            gas_limit: 1000000000,
+            method_num: 2,
+            ..Message::default()
+        };
+
+        let res = executor
+            .execute_message(message, ApplyKind::Implicit, 100)
+            .unwrap();
+
+        assert_eq!(res.msg_receipt.exit_code.value(), 0);
 
         // First we deploy the contract in order to actually have an actor running on the embryo address
         println!("Calling init actor (EVM)");

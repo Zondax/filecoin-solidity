@@ -19,6 +19,10 @@ mod tests {
     use fvm_shared::version::NetworkVersion;
     use std::env;
     use serde::{Deserialize as SerdeDeserialize, Serialize as SerdeSerialize};
+    use fvm_ipld_encoding::CborStore;
+    use fvm::machine::Manifest;
+    use cid::Cid;
+    use testing::helpers::{set_verifiedregistry_actor, VERIFIED_REGISTRY_ACTOR};
 
     const WASM_COMPILED_PATH: &str = "../build/v0.8/tests/VerifRegApiTest.bin";
 
@@ -42,6 +46,9 @@ mod tests {
             .expect("Unable to read actor devnet file file");
         let bundle_root = bundle::import_bundle(&bs, &actors).unwrap();
 
+        let (manifest_version, manifest_data_cid): (u32, Cid) = bs.get_cbor(&bundle_root).unwrap().unwrap();
+        let manifest = Manifest::load(&bs, &manifest_data_cid, manifest_version).unwrap();
+
         let mut tester =
             Tester::new(NetworkVersion::V18, StateTreeVersion::V5, bundle_root, bs).unwrap();
 
@@ -50,6 +57,11 @@ mod tests {
         // register address so we can use senderID 199 which is the governor address of the verifreg
         // actor
         let _accounts: [Account; 200] = tester.create_accounts().unwrap();
+
+        // Set verifreg actor
+        const VERIFIED_REGISTRY_ID: u32 = 11;
+        let state_tree = tester.state_tree.as_mut().unwrap();
+        set_verifiedregistry_actor(state_tree, *manifest.code_by_id(VERIFIED_REGISTRY_ID).unwrap()).unwrap();
 
         // Instantiate machine
         tester.instantiate_machine(DummyExterns).unwrap();

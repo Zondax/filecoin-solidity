@@ -21,6 +21,7 @@ multihash = { version = "0.16.1", default-features = false }
 libipld-core = { version = "0.13.1", features = ["serde-codec"] }
 cid = "0.8.6"
 rand_core = "0.6.4"
+anyhow = "1.0.47"
 
 fil_actors_runtime = { version = "10.0.0-alpha.1", git = "https://github.com/filecoin-project/builtin-actors", tag = "dev/20230114-pre-rc.3", features = ["m2-native"] }
 fil_actor_eam = { version = "10.0.0-alpha.1", git = "https://github.com/filecoin-project/builtin-actors", tag = "dev/20230114-pre-rc.3" }

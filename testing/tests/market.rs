@@ -31,6 +31,9 @@ mod tests {
     use std::env;
     use std::str::FromStr;
     use serde::{Deserialize as SerdeDeserialize, Serialize as SerdeSerialize};
+    use fvm::machine::Manifest;
+
+    use testing::helpers::{set_storagemarket_actor, STORAGE_MARKET_ACTOR};
 
     const WASM_COMPILED_PATH: &str = "../build/v0.8/tests/MarketApiTest.bin";
 
@@ -138,11 +141,20 @@ mod tests {
             .expect("Unable to read actor devnet file file");
         let bundle_root = bundle::import_bundle(&bs, &actors).unwrap();
 
+        let (manifest_version, manifest_data_cid): (u32, Cid) = bs.get_cbor(&bundle_root).unwrap().unwrap();
+        let manifest = Manifest::load(&bs, &manifest_data_cid, manifest_version).unwrap();
+
         let mut tester =
             Tester::new(NetworkVersion::V18, StateTreeVersion::V5, bundle_root, bs).unwrap();
 
         let sender: [Account; 1] = tester.create_accounts().unwrap();
         //let client: [Account; 1] = tester.create_accounts().unwrap();
+
+        // Set powermarket actor
+        const STORAGE_MARKET_ID: u32 = 7;
+        let state_tree = tester.state_tree.as_mut().unwrap();
+        set_storagemarket_actor(state_tree, *manifest.code_by_id(STORAGE_MARKET_ID).unwrap()).unwrap();
+
 
         /***********************************************
          *
@@ -162,10 +174,7 @@ mod tests {
             .unwrap();
 
         let actor_state = ActorState {
-            // CID of Accounts actor. You get this as output from builtin-actors compiling process
-            code: Cid::from_str("bafk2bzaceddb65xkjgqgtcsbl2b3istnprim6j3lbf3ywyggxizb6ayzffbqe")
-                .unwrap(),
-            //code: Cid::from_str("bafk2bzaceddmas33nnn2izdexi5xjzuahzezl62aa5ah5bqwzzjceusskr6ty").unwrap(),
+            code: *manifest.get_account_code(),
             state: cid,
             sequence: 0,
             balance: TokenAmount::from_whole(1_000_000),
@@ -187,10 +196,7 @@ mod tests {
             .unwrap();
 
         let actor_state = ActorState {
-            // CID of Accounts actor. You get this as output from builtin-actors compiling process
-            code: Cid::from_str("bafk2bzaceddb65xkjgqgtcsbl2b3istnprim6j3lbf3ywyggxizb6ayzffbqe")
-                .unwrap(),
-            //code: Cid::from_str("bafk2bzaceanfxc6rtvtyjv2wk3ud4cx7qb6iwgif55sq43htuea2gtgfcbd22").unwrap(),
+            code: *manifest.get_account_code(),
             state: cid,
             sequence: 0,
             balance: TokenAmount::from_whole(1_000_000),
@@ -203,6 +209,23 @@ mod tests {
         tester.instantiate_machine(DummyExterns).unwrap();
 
         let executor = tester.executor.as_mut().unwrap();
+
+        // Try to call "constructor"
+        println!("Try to call constructor on storage market actor");
+
+        let message = Message {
+            from: Address::new_id(0),
+            to: Address::new_id(STORAGE_MARKET_ACTOR),
+            gas_limit: 1000000000,
+            method_num: 2,
+            ..Message::default()
+        };
+
+        let res = executor
+            .execute_message(message, ApplyKind::Implicit, 100)
+            .unwrap();
+
+        assert_eq!(res.msg_receipt.exit_code.value(), 0);
 
         println!("Create Miner actor to be able to publish deal");
 

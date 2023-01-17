@@ -3271,6 +3271,7 @@ dependencies = [
 name = "testing"
 version = "0.1.0"
 dependencies = [
+ "anyhow",
  "bls-signatures 0.13.0",
  "cid",
  "fil_actor_datacap",

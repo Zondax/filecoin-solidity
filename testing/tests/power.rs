@@ -3,8 +3,8 @@ mod tests {
     use bls_signatures::Serialize;
     use cid::Cid;
     use fil_actor_eam::Return;
+    use fil_actor_evm::Method as EvmMethods;
     use fil_actors_runtime::EAM_ACTOR_ADDR;
-    use fil_actor_evm::{Method as EvmMethods};
     use fvm::executor::{ApplyKind, Executor};
     use fvm::state_tree::ActorState;
     use fvm_integration_tests::bundle;
@@ -23,9 +23,12 @@ mod tests {
     use fvm_shared::version::NetworkVersion;
     use multihash::Code;
     use rand_core::OsRng;
+    use serde::{Deserialize as SerdeDeserialize, Serialize as SerdeSerialize};
     use std::env;
     use std::str::FromStr;
-    use serde::{Deserialize as SerdeDeserialize, Serialize as SerdeSerialize};
+    use fvm::machine::Manifest;
+
+    use testing::helpers::{set_storagepower_actor, STORAGE_POWER_ACTOR};
 
     const WASM_COMPILED_PATH: &str = "../build/v0.8/tests/PowerApiTest.bin";
 
@@ -52,10 +55,19 @@ mod tests {
             .expect("Unable to read actor devnet file file");
         let bundle_root = bundle::import_bundle(&bs, &actors).unwrap();
 
+        let (manifest_version, manifest_data_cid): (u32, Cid) =
+            bs.get_cbor(&bundle_root).unwrap().unwrap();
+        let manifest = Manifest::load(&bs, &manifest_data_cid, manifest_version).unwrap();
+
         let mut tester =
             Tester::new(NetworkVersion::V18, StateTreeVersion::V5, bundle_root, bs).unwrap();
 
         let sender: [Account; 1] = tester.create_accounts().unwrap();
+
+        // Set power actor
+        const STORAGE_POWER_ID: u32 = 5;
+        let state_tree = tester.state_tree.as_mut().unwrap();
+        set_storagepower_actor(state_tree, *manifest.code_by_id(STORAGE_POWER_ID).unwrap()).unwrap();
 
         /***********************************************
          *
@@ -76,10 +88,7 @@ mod tests {
             .unwrap();
 
         let actor_state = ActorState {
-            // CID of Accounts actor. You get this as output from builtin-actors compiling process
-            code: Cid::from_str("bafk2bzaceddb65xkjgqgtcsbl2b3istnprim6j3lbf3ywyggxizb6ayzffbqe")
-                .unwrap(),
-            //code: Cid::from_str("bafk2bzaceddmas33nnn2izdexi5xjzuahzezl62aa5ah5bqwzzjceusskr6ty").unwrap(),
+            code: *manifest.get_account_code(),
             state: cid,
             sequence: 0,
             balance: TokenAmount::from_whole(1_000_000),
@@ -92,6 +101,23 @@ mod tests {
         tester.instantiate_machine(DummyExterns).unwrap();
 
         let executor = tester.executor.as_mut().unwrap();
+
+        // Try to call "constructor"
+        println!("Try to call constructor on storage power actor");
+
+        let message = Message {
+            from: Address::new_id(0),
+            to: Address::new_id(STORAGE_POWER_ACTOR),
+            gas_limit: 1000000000,
+            method_num: 2,
+            ..Message::default()
+        };
+
+        let res = executor
+            .execute_message(message, ApplyKind::Implicit, 100)
+            .unwrap();
+
+        assert_eq!(res.msg_receipt.exit_code.value(), 0);
 
         println!("Create Miner actor to be able to claim power");
 
