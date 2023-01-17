@@ -40,9 +40,8 @@ library Actor {
         uint256 amount
     ) internal returns (bytes memory) {
         (bool success, bytes memory data) = address(CALL_ACTOR_ADDRESS).delegatecall(
-            abi.encode(uint64(method_num), amount, flags, DEFAULT_FLAG, raw_request, actor_id)
+            abi.encode(uint64(method_num), amount, DEFAULT_FLAG, codec, raw_request, actor_id)
         );
-
         require(success == true, CALL_ERROR_MESSAGE);
 
         return data;
