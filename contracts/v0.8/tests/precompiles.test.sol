@@ -34,4 +34,8 @@ contract PrecompilesApiTest {
     function get_actor_type(uint64 actor_id) public view returns (uint256) {
         return PrecompilesAPI.getActorType(actor_id);
     }
+
+    function get_ripemd160_hash(bytes memory input) public view returns (bytes memory) {
+        return PrecompilesAPI.getRipemd160Hash(input);
+    }
 }
