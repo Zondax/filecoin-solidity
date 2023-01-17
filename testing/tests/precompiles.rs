@@ -50,13 +50,13 @@ mod tests {
         let tmp = hex::decode("DAFEA492D9c6733ae3d56b7Ed1ADB60692c98Bc5").unwrap();
         let embryo_eth_address = tmp.as_slice();
         let embryo_delegated_address = Address::new_delegated(10, embryo_eth_address).unwrap();
-        let embryo_actor_id: ActorID = tester.create_placeholder(&embryo_delegated_address,TokenAmount::from_whole(100)).unwrap();
+        tester.create_placeholder(&embryo_delegated_address,TokenAmount::from_whole(100)).unwrap();
 
 
         println!("Embryo address delegated type [{}]", embryo_delegated_address);
         println!("Embryo address delegated type on hex [{}]",hex::encode(embryo_delegated_address.to_bytes()));
-        println!("Embryo address ID type on decimal [{}]",embryo_actor_id);
-        println!("Embryo address ID type on hex [{}]",hex::encode(Address::new_id(embryo_actor_id).to_bytes()));
+        // println!("Embryo address ID type on decimal [{}]",embryo_actor_id);
+        // println!("Embryo address ID type on hex [{}]",hex::encode(Address::new_id(embryo_actor_id).to_bytes()));
 
 
         // Instantiate machine

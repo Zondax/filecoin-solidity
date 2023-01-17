@@ -14,15 +14,17 @@ mod tests {
     use fvm_ipld_encoding::strict_bytes;
     use fvm_ipld_encoding::tuple::*;
     use fvm_ipld_encoding::RawBytes;
-    use fvm_ipld_encoding::{serde_bytes, CborStore};
+    use fvm_ipld_encoding::serde_bytes;
     use fvm_shared::address::Address;
     use fvm_shared::econ::TokenAmount;
     use fvm_shared::message::Message;
     use fvm_shared::state::StateTreeVersion;
     use fvm_shared::version::NetworkVersion;
+    use fvm_ipld_encoding::CborStore;
     use multihash::Code;
     use std::env;
     use std::str::FromStr;
+    use fvm::machine::Manifest;
     use serde::{Deserialize as SerdeDeserialize, Serialize as SerdeSerialize};
 
     const WASM_COMPILED_PATH: &str = "../build/v0.8/tests/AccountApiTest.bin";
@@ -56,6 +58,9 @@ mod tests {
             .expect("Unable to read actor devnet file");
         let bundle_root = bundle::import_bundle(&bs, &actors).unwrap();
 
+        let (manifest_version, manifest_data_cid): (u32, Cid) = bs.get_cbor(&bundle_root).unwrap().unwrap();
+        let manifest = Manifest::load(&bs, &manifest_data_cid, manifest_version).unwrap();
+
         let mut tester =
             Tester::new(NetworkVersion::V18, StateTreeVersion::V5, bundle_root, bs).unwrap();
 
@@ -76,8 +81,7 @@ mod tests {
 
         let actor_state = ActorState {
             // CID of Accounts actor. You get this as output from builtin-actors compiling process
-            code: Cid::from_str("bafk2bzaceddb65xkjgqgtcsbl2b3istnprim6j3lbf3ywyggxizb6ayzffbqe").unwrap(),
-            //code: Cid::from_str("bafk2bzaceanfxc6rtvtyjv2wk3ud4cx7qb6iwgif55sq43htuea2gtgfcbd22").unwrap(),
+            code: *manifest.get_account_code(),
             state: cid,
             sequence: 0,
             balance: TokenAmount::from_whole(1_000_000),
