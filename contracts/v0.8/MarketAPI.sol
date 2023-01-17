@@ -25,9 +25,84 @@ import "./types/CommonTypes.sol";
 import "./utils/Misc.sol";
 import "./utils/Actor.sol";
 
+
+library MarketAPI {
+    using AddressCBOR for bytes;
+    using WithdrawBalanceCBOR for MarketTypes.WithdrawBalanceParams;
+    using WithdrawBalanceCBOR for MarketTypes.WithdrawBalanceReturn;
+    using GetBalanceCBOR for MarketTypes.GetBalanceReturn;
+    using GetDealDataCommitmentCBOR for MarketTypes.GetDealDataCommitmentParams;
+    using GetDealDataCommitmentCBOR for MarketTypes.GetDealDataCommitmentReturn;
+    using GetDealClientCBOR for MarketTypes.GetDealClientParams;
+    using GetDealClientCBOR for MarketTypes.GetDealClientReturn;
+    using GetDealProviderCBOR for MarketTypes.GetDealProviderParams;
+    using GetDealProviderCBOR for MarketTypes.GetDealProviderReturn;
+    using GetDealLabelCBOR for MarketTypes.GetDealLabelParams;
+    using GetDealLabelCBOR for MarketTypes.GetDealLabelReturn;
+    using GetDealTermCBOR for MarketTypes.GetDealTermParams;
+    using GetDealTermCBOR for MarketTypes.GetDealTermReturn;
+    using GetDealEpochPriceCBOR for MarketTypes.GetDealEpochPriceParams;
+    using GetDealEpochPriceCBOR for MarketTypes.GetDealEpochPriceReturn;
+    using GetDealClientCollateralCBOR for MarketTypes.GetDealClientCollateralParams;
+    using GetDealClientCollateralCBOR for MarketTypes.GetDealClientCollateralReturn;
+    using GetDealProviderCollateralCBOR for MarketTypes.GetDealProviderCollateralParams;
+    using GetDealProviderCollateralCBOR for MarketTypes.GetDealProviderCollateralReturn;
+    using GetDealVerifiedCBOR for MarketTypes.GetDealVerifiedParams;
+    using GetDealVerifiedCBOR for MarketTypes.GetDealVerifiedReturn;
+    using GetDealActivationCBOR for MarketTypes.GetDealActivationParams;
+    using GetDealActivationCBOR for MarketTypes.GetDealActivationReturn;
+    using PublishStorageDealsCBOR for MarketTypes.PublishStorageDealsParams;
+    using PublishStorageDealsCBOR for MarketTypes.PublishStorageDealsReturn;
+
+    /// @return the data commitment and size of a deal proposal.
+    /// @notice This will be available after the deal is published (whether or not is is activated) and up until some undefined period after it is terminated.
+    function getDealDataCommitment(
+        MarketTypes.GetDealDataCommitmentParams memory params
+    ) internal returns (MarketTypes.GetDealDataCommitmentReturn memory) {
+        bytes memory raw_request = params.serialize();
+
+        bytes memory result = HyperActor.call(
+            MarketTypes.GetDealDataCommitmentMethodNum,
+            MarketTypes.ActorCode,
+            raw_request,
+            Misc.CBOR_CODEC
+        );
+
+        MarketTypes.GetDealDataCommitmentReturn memory response;
+        response.deserialize(result);
+
+        return response;
+    }
+
+    /// @return the client of a deal proposal.
+    function getDealClient(MarketTypes.GetDealClientParams memory params) internal returns (MarketTypes.GetDealClientReturn memory) {
+        bytes memory raw_request = params.serialize();
+
+        bytes memory result = HyperActor.call(MarketTypes.GetDealClientMethodNum, MarketTypes.ActorCode, raw_request, Misc.CBOR_CODEC);
+
+        MarketTypes.GetDealClientReturn memory response;
+        response.deserialize(result);
+
+        return response;
+    }
+
+    /// @return the provider of a deal proposal.
+    function getDealProvider(MarketTypes.GetDealProviderParams memory params) internal returns (MarketTypes.GetDealProviderReturn memory) {
+        bytes memory raw_request = params.serialize();
+
+        bytes memory result = HyperActor.call(MarketTypes.GetDealProviderMethodNum, MarketTypes.ActorCode, raw_request, Misc.CBOR_CODEC);
+
+        MarketTypes.GetDealProviderReturn memory response;
+        response.deserialize(result);
+
+        return response;
+    }
+    
+}
+
 /// @title This contract is a proxy to the singleton Storage Market actor (address: f05). Calling one of its methods will result in a cross-actor call being performed.
 /// @author Zondax AG
-library MarketAPI {
+library MarketAPIOld {
     using AddressCBOR for bytes;
     using WithdrawBalanceCBOR for MarketTypes.WithdrawBalanceParams;
     using WithdrawBalanceCBOR for MarketTypes.WithdrawBalanceReturn;
