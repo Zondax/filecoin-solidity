@@ -20,7 +20,7 @@ mod tests {
     use serde::{Deserialize as SerdeDeserialize, Serialize as SerdeSerialize};
 
     const WASM_COMPILED_PATH: &str =
-       "../build/v0.8/tests/PrecompilesApiTest.bin";
+       "../build/v0.8/tests/SendApiTest.bin";
 
     #[derive(SerdeSerialize, SerdeDeserialize)]
     #[serde(transparent)]
@@ -94,15 +94,15 @@ mod tests {
 
         let contract_actor_id = exec_return.actor_id;
 
-        println!("Calling `resolve_address`");
 
+        // Send some tokens to the smart contract
         let message = Message {
             from: sender[0].1,
             to: Address::new_id(contract_actor_id),
             gas_limit: 1000000000,
-            method_num: EvmMethods::InvokeContract as u64,
+            method_num: 0,
+            value: TokenAmount::from_atto(100),
             sequence: 1,
-            params: RawBytes::new(hex::decode("586428EEDF4B00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000015011EDA43D05CA6D7D637E7065EF6B8C5DB89E5FB0C0000000000000000000000").unwrap()),
             ..Message::default()
         };
 
@@ -111,11 +111,8 @@ mod tests {
             .unwrap();
 
         assert_eq!(res.msg_receipt.exit_code.value(), 0);
-        assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "58200000000000000000000000000000000000000000000000000000000000000064");
 
-
-
-        println!("Calling `get_actor_type`");
+        println!("Calling `send`");
 
         let message = Message {
             from: sender[0].1,
@@ -123,7 +120,7 @@ mod tests {
             gas_limit: 1000000000,
             method_num: EvmMethods::InvokeContract as u64,
             sequence: 2,
-            params: RawBytes::new(hex::decode("58247CF8C4440000000000000000000000000000000000000000000000000000000000000064").unwrap()),
+            params: RawBytes::new(hex::decode("58849372C4AB0000000000000000000000000000000000000000000000000000000000000040000000000000000000000000000000000000000000000000000000000000000A000000000000000000000000000000000000000000000000000000000000001501DCE5B7F69E73494891556A350F8CC357614916D50000000000000000000000").unwrap()),
             ..Message::default()
         };
 
@@ -132,66 +129,5 @@ mod tests {
             .unwrap();
 
         assert_eq!(res.msg_receipt.exit_code.value(), 0);
-        assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "58200000000000000000000000000000000000000000000000000000000000000003");
-
-        println!("Calling `lookup_delegated_address (empty response)`");
-
-        let message = Message {
-            from: sender[0].1,
-            to: Address::new_id(contract_actor_id),
-            gas_limit: 1000000000,
-            method_num: EvmMethods::InvokeContract as u64,
-            sequence: 3,
-            params: RawBytes::new(hex::decode("58249898B39A0000000000000000000000000000000000000000000000000000000000000064").unwrap()),
-            ..Message::default()
-        };
-
-        let res = executor
-            .execute_message(message, ApplyKind::Explicit, 100)
-            .unwrap();
-
-        assert_eq!(res.msg_receipt.exit_code.value(), 0);
-        assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "584000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000000");
-
-
-        println!("Calling `lookup_delegated_address (address found)`");
-
-        let message = Message {
-            from: sender[0].1,
-            to: Address::new_id(contract_actor_id),
-            gas_limit: 1000000000,
-            method_num: EvmMethods::InvokeContract as u64,
-            sequence: 4,
-            params: RawBytes::new(hex::decode("58249898B39A0000000000000000000000000000000000000000000000000000000000000190").unwrap()),
-            ..Message::default()
-        };
-
-        let res = executor
-            .execute_message(message, ApplyKind::Explicit, 100)
-            .unwrap();
-
-        assert_eq!(res.msg_receipt.exit_code.value(), 0);
-        assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "586000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000016040adafea492d9c6733ae3d56b7ed1adb60692c98bc500000000000000000000");
-
-
-        println!("Calling `get_ripemd160_hash`");
-
-        let message = Message {
-            from: sender[0].1,
-            to: Address::new_id(contract_actor_id),
-            gas_limit: 1000000000,
-            method_num: EvmMethods::InvokeContract as u64,
-            sequence: 5,
-            params: RawBytes::new(hex::decode("586417C9F02D000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000071212121212344400000000000000000000000000000000000000000000000000").unwrap()),
-            ..Message::default()
-        };
-
-        let res = executor
-            .execute_message(message, ApplyKind::Explicit, 100)
-            .unwrap();
-
-        assert_eq!(res.msg_receipt.exit_code.value(), 0);
-        assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "5860000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000200000000000000000000000001b8cf5bc0e542a1620184208f78c0cff516cce96");
-
     }
 }
