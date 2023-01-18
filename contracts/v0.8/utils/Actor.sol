@@ -50,7 +50,7 @@ library Actor {
     function readRespData(bytes memory raw_response) internal pure returns (bytes memory) {
         (int256 exit, uint64 return_codec, bytes memory return_value) = abi.decode(raw_response, (int256, uint64, bytes));
 
-        require(return_codec == Misc.NONE_CODEC || return_codec == Misc.CBOR_CODEC);
+        require(return_codec == Misc.NONE_CODEC || return_codec == Misc.CBOR_CODEC, "response codec not supported");
         require(exit == 0, getErrorCodeMsg(exit));
 
         return return_value;
