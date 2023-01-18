@@ -4,7 +4,7 @@ mod tests {
     use cid::Cid;
     use fil_actor_eam::Return;
     use fil_actor_evm::Method as EvmMethods;
-    use fil_actors_runtime::{EAM_ACTOR_ADDR, STORAGE_MARKET_ACTOR_ADDR, SYSTEM_ACTOR_ADDR, STORAGE_POWER_ACTOR_ADDR, REWARD_ACTOR_ADDR};
+    use fil_actors_runtime::{runtime::builtins, EAM_ACTOR_ADDR, STORAGE_MARKET_ACTOR_ADDR, SYSTEM_ACTOR_ADDR, STORAGE_POWER_ACTOR_ADDR, REWARD_ACTOR_ADDR};
     use fvm::executor::{ApplyKind, Executor};
     use fvm::machine::Manifest;
     use fvm::state_tree::ActorState;
@@ -33,7 +33,7 @@ mod tests {
     use std::env;
     use std::str::FromStr;
 
-    use testing::helpers::{set_storagemarket_actor, set_storagepower_actor, set_reward_actor};
+    use testing::helpers;
 
     const WASM_COMPILED_PATH: &str = "../build/v0.8/tests/MarketApiTest.bin";
 
@@ -152,21 +152,13 @@ mod tests {
         //let client: [Account; 1] = tester.create_accounts().unwrap();
 
         // Set storagemarket actor
-        const STORAGE_MARKET_ID: u32 = 7;
         let state_tree = tester.state_tree.as_mut().unwrap();
-        set_storagemarket_actor(state_tree, *manifest.code_by_id(STORAGE_MARKET_ID).unwrap())
+        helpers::set_storagemarket_actor(state_tree, *manifest.code_by_id(builtins::Type::Market as u32).unwrap())
             .unwrap();
-
         // Set storagepower actor
-        const STORAGE_POWER_ID: u32 = 5;
-        let state_tree = tester.state_tree.as_mut().unwrap();
-        set_storagepower_actor(state_tree, *manifest.code_by_id(STORAGE_POWER_ID).unwrap())
+        helpers::set_storagepower_actor(state_tree, *manifest.code_by_id(builtins::Type::Power as u32).unwrap())
             .unwrap();
-
-        // Set reward actor
-        const REWARD_ID: u32 = 10;
-        let state_tree = tester.state_tree.as_mut().unwrap();
-        set_reward_actor(state_tree, *manifest.code_by_id(REWARD_ID).unwrap())
+        helpers::set_reward_actor(state_tree, *manifest.code_by_id(builtins::Type::Reward as u32).unwrap())
             .unwrap();
 
         /***********************************************

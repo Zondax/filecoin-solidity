@@ -14,14 +14,14 @@ mod tests {
     use fil_actor_eam::Return;
     use fil_actor_evm::{Method as EvmMethods};
     use fvm_ipld_encoding::RawBytes;
-    use fil_actors_runtime::{runtime::builtins, EAM_ACTOR_ADDR, DATACAP_TOKEN_ACTOR_ADDR};
+    use fil_actors_runtime::{runtime::builtins, EAM_ACTOR_ADDR, DATACAP_TOKEN_ACTOR_ADDR, SYSTEM_ACTOR_ADDR};
     use fvm_shared::econ::TokenAmount;
     use serde::{Deserialize as SerdeDeserialize, Serialize as SerdeSerialize};
     use fvm::machine::Manifest;
     use cid::Cid;
     use fvm_ipld_encoding::CborStore;
 
-    use testing::helpers::{set_datacap_actor, DATA_CAP_ACTOR};
+    use testing::helpers;
 
     const WASM_COMPILED_PATH: &str =
        "../build/v0.8/tests/DataCapApiTest.bin";
@@ -50,7 +50,7 @@ mod tests {
         
         // Set datacap actor
         let state_tree = tester.state_tree.as_mut().unwrap();
-        set_datacap_actor(state_tree, *manifest.code_by_id(builtins::Type::DataCap as u32).unwrap()).unwrap();
+        helpers::set_datacap_actor(state_tree, *manifest.code_by_id(builtins::Type::DataCap as u32).unwrap()).unwrap();
 
         // Create embryo address to deploy the contract on it (assign some FILs to it)
         let tmp = hex::decode("DAFEA492D9c6733ae3d56b7Ed1ADB60692c98Bc5").unwrap();
@@ -82,10 +82,10 @@ mod tests {
         println!("Try to call constructor on datacap actor");
 
         let message = Message {
-            from: Address::new_id(0),
-            to: Address::new_id(DATA_CAP_ACTOR),
+            from: SYSTEM_ACTOR_ADDR,
+            to: DATACAP_TOKEN_ACTOR_ADDR,
             gas_limit: 1000000000,
-            method_num: 2,
+            method_num: 1,
             ..Message::default()
         };
 
