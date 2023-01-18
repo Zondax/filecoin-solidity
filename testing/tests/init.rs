@@ -3,7 +3,7 @@ mod tests {
     use cid::Cid;
     use fil_actor_eam::Return;
     use fil_actor_evm::{Method as EvmMethods};
-    use fil_actors_runtime::EAM_ACTOR_ADDR;
+    use fil_actors_runtime::{runtime::builtins, EAM_ACTOR_ADDR};
     use fvm::executor::{ApplyKind, Executor};
     use fvm_integration_tests::bundle;
     use fvm_integration_tests::dummy::DummyExterns;
@@ -18,6 +18,8 @@ mod tests {
     use std::env;
     use std::str::FromStr;
     use serde::{Deserialize as SerdeDeserialize, Serialize as SerdeSerialize};
+    use fvm::machine::Manifest;
+    use fvm_ipld_encoding::CborStore;
 
     const WASM_COMPILED_PATH: &str = "../build/v0.8/tests/InitApiTest.bin";
 
@@ -33,6 +35,9 @@ mod tests {
         let actors = std::fs::read("./builtin-actors/output/builtin-actors-devnet-wasm.car")
             .expect("Unable to read actor devnet file file");
         let bundle_root = bundle::import_bundle(&bs, &actors).unwrap();
+
+        let (manifest_version, manifest_data_cid): (u32, Cid) = bs.get_cbor(&bundle_root).unwrap().unwrap();
+        let manifest = Manifest::load(&bs, &manifest_data_cid, manifest_version).unwrap();
 
         let mut tester =
             Tester::new(NetworkVersion::V18, StateTreeVersion::V5, bundle_root, bs).unwrap();
@@ -76,9 +81,7 @@ mod tests {
         println!("Calling `exec`");
 
         //let multisig_cid = Cid::from_str("bafk2bzaceawblu7i2c2ghriamzkiqixbt6fcvvs2ka3kn5q7xgpd7rijlyauu").unwrap();
-        let multisig_cid =
-            Cid::from_str("bafk2bzacebntzrsozofa4ea35qzttns6zyvldszvr35lg4wuu5usfywztge5c")
-                .unwrap();
+        let multisig_cid = *manifest.code_by_id(builtins::Type::Multisig as u32).unwrap();
         // This value is used as input data for the exec contract call down below
         dbg!(hex::encode(multisig_cid.to_bytes()));
 

@@ -1011,14 +1011,14 @@ version = "10.0.0-alpha.1"
 source = "git+https://github.com/filecoin-project/builtin-actors?tag=dev/20230114-pre-rc.3#cc264f7b7fbe5056d5b2aaae7f778eed7a35583f"
 dependencies = [
  "cid",
- "fil_actors_runtime 10.0.0-alpha.1 (git+https://github.com/filecoin-project/builtin-actors?tag=dev/20230114-pre-rc.3)",
- "frc42_dispatch 3.0.0",
- "frc46_token 3.1.0",
- "fvm_actor_utils 3.0.0",
+ "fil_actors_runtime",
+ "frc42_dispatch",
+ "frc46_token",
+ "fvm_actor_utils",
  "fvm_ipld_blockstore",
- "fvm_ipld_encoding 0.3.2",
- "fvm_ipld_hamt 0.6.1",
- "fvm_shared 3.0.0-alpha.16",
+ "fvm_ipld_encoding",
+ "fvm_ipld_hamt 0.6.1 (registry+https://github.com/rust-lang/crates.io-index)",
+ "fvm_shared",
  "lazy_static",
  "log",
  "num-derive",
@@ -1033,10 +1033,10 @@ source = "git+https://github.com/filecoin-project/builtin-actors?tag=dev/2023011
 dependencies = [
  "anyhow",
  "cid",
- "fil_actors_runtime 10.0.0-alpha.1 (git+https://github.com/filecoin-project/builtin-actors?tag=dev/20230114-pre-rc.3)",
+ "fil_actors_runtime",
  "fvm_ipld_blockstore",
- "fvm_ipld_encoding 0.3.2",
- "fvm_shared 3.0.0-alpha.16",
+ "fvm_ipld_encoding",
+ "fvm_shared",
  "hex-literal",
  "log",
  "multihash",
@@ -1057,13 +1057,13 @@ dependencies = [
  "bytes",
  "cid",
  "derive_more",
- "fil_actors_runtime 10.0.0-alpha.1 (git+https://github.com/filecoin-project/builtin-actors?tag=dev/20230114-pre-rc.3)",
+ "fil_actors_runtime",
  "fixed-hash",
- "frc42_dispatch 3.0.0",
+ "frc42_dispatch",
  "fvm_ipld_blockstore",
- "fvm_ipld_encoding 0.3.2",
+ "fvm_ipld_encoding",
  "fvm_ipld_kamt",
- "fvm_shared 3.0.0-alpha.16",
+ "fvm_shared",
  "hex",
  "hex-literal",
  "impl-serde",
@@ -1090,12 +1090,12 @@ source = "git+https://github.com/filecoin-project/builtin-actors?tag=dev/2023011
 dependencies = [
  "anyhow",
  "cid",
- "fil_actors_runtime 10.0.0-alpha.1 (git+https://github.com/filecoin-project/builtin-actors?tag=dev/20230114-pre-rc.3)",
- "frc42_dispatch 3.0.0",
+ "fil_actors_runtime",
+ "frc42_dispatch",
  "fvm_ipld_blockstore",
- "fvm_ipld_encoding 0.3.2",
- "fvm_ipld_hamt 0.6.1",
- "fvm_shared 3.0.0-alpha.16",
+ "fvm_ipld_encoding",
+ "fvm_ipld_hamt 0.6.1 (registry+https://github.com/rust-lang/crates.io-index)",
+ "fvm_shared",
  "log",
  "num-derive",
  "num-traits",
@@ -1110,14 +1110,14 @@ dependencies = [
  "anyhow",
  "byteorder",
  "cid",
- "fil_actors_runtime 10.0.0-alpha.1 (git+https://github.com/filecoin-project/builtin-actors?tag=dev/20230114-pre-rc.3)",
- "frc42_dispatch 3.0.0",
- "fvm_ipld_amt 0.5.1",
+ "fil_actors_runtime",
+ "frc42_dispatch",
+ "fvm_ipld_amt 0.5.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "fvm_ipld_bitfield",
  "fvm_ipld_blockstore",
- "fvm_ipld_encoding 0.3.2",
- "fvm_ipld_hamt 0.6.1",
- "fvm_shared 3.0.0-alpha.16",
+ "fvm_ipld_encoding",
+ "fvm_ipld_hamt 0.6.1 (registry+https://github.com/rust-lang/crates.io-index)",
+ "fvm_shared",
  "itertools 0.10.5",
  "lazy_static",
  "log",
@@ -1134,13 +1134,13 @@ source = "git+https://github.com/filecoin-project/builtin-actors?tag=dev/2023011
 dependencies = [
  "anyhow",
  "cid",
- "fil_actors_runtime 10.0.0-alpha.1 (git+https://github.com/filecoin-project/builtin-actors?tag=dev/20230114-pre-rc.3)",
- "frc42_dispatch 3.0.0",
- "fvm_actor_utils 3.0.0",
+ "fil_actors_runtime",
+ "frc42_dispatch",
+ "fvm_actor_utils",
  "fvm_ipld_blockstore",
- "fvm_ipld_encoding 0.3.2",
- "fvm_ipld_hamt 0.6.1",
- "fvm_shared 3.0.0-alpha.16",
+ "fvm_ipld_encoding",
+ "fvm_ipld_hamt 0.6.1 (registry+https://github.com/rust-lang/crates.io-index)",
+ "fvm_shared",
  "indexmap",
  "integer-encoding",
  "num-derive",
@@ -1157,44 +1157,13 @@ dependencies = [
  "byteorder",
  "castaway",
  "cid",
- "fvm_ipld_amt 0.5.1",
+ "fvm_ipld_amt 0.5.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "fvm_ipld_bitfield",
  "fvm_ipld_blockstore",
- "fvm_ipld_encoding 0.3.2",
- "fvm_ipld_hamt 0.6.1",
- "fvm_sdk 3.0.0-alpha.22",
- "fvm_shared 3.0.0-alpha.16",
- "itertools 0.10.5",
- "log",
- "multihash",
- "num",
- "num-derive",
- "num-traits",
- "paste",
- "regex",
- "serde",
- "serde_repr",
- "sha2 0.10.6",
- "thiserror",
- "unsigned-varint",
-]
-
-[[package]]
-name = "fil_actors_runtime"
-version = "10.0.0-alpha.1"
-source = "git+https://github.com/filecoin-project/builtin-actors?branch=next#715e1b8ce84131d96debc02718d9e543cc77313a"
-dependencies = [
- "anyhow",
- "byteorder",
- "castaway",
- "cid",
- "fvm_ipld_amt 0.5.1",
- "fvm_ipld_bitfield",
- "fvm_ipld_blockstore",
- "fvm_ipld_encoding 0.3.2",
- "fvm_ipld_hamt 0.6.1",
- "fvm_sdk 3.0.0-alpha.22",
- "fvm_shared 3.0.0-alpha.16",
+ "fvm_ipld_encoding",
+ "fvm_ipld_hamt 0.6.1 (registry+https://github.com/rust-lang/crates.io-index)",
+ "fvm_sdk",
+ "fvm_shared",
  "itertools 0.10.5",
  "log",
  "multihash",
@@ -1340,39 +1309,14 @@ dependencies = [
 
 [[package]]
 name = "frc42_dispatch"
-version = "1.1.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "35603a100f622ebeaa2b6a252071878d52b45c14487c8391f9a2f067b6ca00bb"
-dependencies = [
- "frc42_hasher 1.1.0",
- "frc42_macros 1.0.0 (registry+https://github.com/rust-lang/crates.io-index)",
- "fvm_ipld_encoding 0.2.3",
- "fvm_sdk 2.0.0",
- "fvm_shared 2.0.0",
- "thiserror",
-]
-
-[[package]]
-name = "frc42_dispatch"
 version = "3.0.0"
 source = "git+https://github.com/filecoin-project/filecoin-actor-utils?branch=feat/fvm-m2#d8a2364f9ea23428ac095c0360211a4696f1a21b"
 dependencies = [
- "frc42_hasher 1.3.0",
- "frc42_macros 1.0.0 (git+https://github.com/filecoin-project/filecoin-actor-utils?branch=feat/fvm-m2)",
- "fvm_ipld_encoding 0.3.2",
- "fvm_sdk 3.0.0-alpha.22",
- "fvm_shared 3.0.0-alpha.16",
- "thiserror",
-]
-
-[[package]]
-name = "frc42_hasher"
-version = "1.1.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0cce4462a4b1f36909664f66962dc70b7b6b53c4abb0183ca3d34163a3106c7b"
-dependencies = [
- "fvm_sdk 2.0.0",
- "fvm_shared 2.0.0",
+ "frc42_hasher",
+ "frc42_macros",
+ "fvm_ipld_encoding",
+ "fvm_sdk",
+ "fvm_shared",
  "thiserror",
 ]
 
@@ -1381,22 +1325,9 @@ name = "frc42_hasher"
 version = "1.3.0"
 source = "git+https://github.com/filecoin-project/filecoin-actor-utils?branch=feat/fvm-m2#d8a2364f9ea23428ac095c0360211a4696f1a21b"
 dependencies = [
- "fvm_sdk 3.0.0-alpha.22",
- "fvm_shared 3.0.0-alpha.16",
+ "fvm_sdk",
+ "fvm_shared",
  "thiserror",
-]
-
-[[package]]
-name = "frc42_macros"
-version = "1.0.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c343356c3652593452cc1cfe95535a915261342e2a4c13bb8388ca29b259a400"
-dependencies = [
- "blake2b_simd",
- "frc42_hasher 1.1.0",
- "proc-macro2",
- "quote",
- "syn",
 ]
 
 [[package]]
@@ -1405,33 +1336,10 @@ version = "1.0.0"
 source = "git+https://github.com/filecoin-project/filecoin-actor-utils?branch=feat/fvm-m2#d8a2364f9ea23428ac095c0360211a4696f1a21b"
 dependencies = [
  "blake2b_simd",
- "frc42_hasher 1.3.0",
+ "frc42_hasher",
  "proc-macro2",
  "quote",
  "syn",
-]
-
-[[package]]
-name = "frc46_token"
-version = "1.1.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8958b1fe87ffacf17196cc3c7f2dd5a31293a79611a46771ac603d4cc289a099"
-dependencies = [
- "anyhow",
- "cid",
- "frc42_dispatch 1.1.0",
- "fvm_actor_utils 0.1.0",
- "fvm_ipld_amt 0.4.2",
- "fvm_ipld_blockstore",
- "fvm_ipld_encoding 0.2.3",
- "fvm_ipld_hamt 0.5.1",
- "fvm_sdk 2.0.0",
- "fvm_shared 2.0.0",
- "integer-encoding",
- "num-traits",
- "serde",
- "serde_tuple",
- "thiserror",
 ]
 
 [[package]]
@@ -1441,14 +1349,14 @@ source = "git+https://github.com/filecoin-project/filecoin-actor-utils?branch=fe
 dependencies = [
  "anyhow",
  "cid",
- "frc42_dispatch 3.0.0",
- "fvm_actor_utils 3.0.0",
- "fvm_ipld_amt 0.5.1",
+ "frc42_dispatch",
+ "fvm_actor_utils",
+ "fvm_ipld_amt 0.5.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "fvm_ipld_blockstore",
- "fvm_ipld_encoding 0.3.2",
- "fvm_ipld_hamt 0.6.1",
- "fvm_sdk 3.0.0-alpha.22",
- "fvm_shared 3.0.0-alpha.16",
+ "fvm_ipld_encoding",
+ "fvm_ipld_hamt 0.6.1 (registry+https://github.com/rust-lang/crates.io-index)",
+ "fvm_sdk",
+ "fvm_shared",
  "integer-encoding",
  "num-traits",
  "serde",
@@ -1564,7 +1472,7 @@ dependencies = [
 [[package]]
 name = "fvm"
 version = "3.0.0-alpha.19"
-source = "git+https://github.com/Zondax/ref-fvm?branch=lola/fixes#f9653001d4d460ab44f984fdd8571c5aa975c32b"
+source = "git+https://github.com/filecoin-project/ref-fvm?tag=fvm@v3.0.0-alpha.19#7b208c151ec06ed0daddfc19c7bceb3e221b9a50"
 dependencies = [
  "anyhow",
  "blake2b_simd",
@@ -1575,13 +1483,12 @@ dependencies = [
  "derive_more",
  "filecoin-proofs-api",
  "fvm-wasm-instrument",
- "fvm_ipld_amt 0.5.1",
+ "fvm_ipld_amt 0.5.1 (git+https://github.com/filecoin-project/ref-fvm?tag=fvm@v3.0.0-alpha.19)",
  "fvm_ipld_blockstore",
- "fvm_ipld_encoding 0.3.2",
- "fvm_ipld_hamt 0.6.1",
- "fvm_shared 3.0.0-alpha.16",
+ "fvm_ipld_encoding",
+ "fvm_ipld_hamt 0.6.1 (git+https://github.com/filecoin-project/ref-fvm?tag=fvm@v3.0.0-alpha.19)",
+ "fvm_shared",
  "lazy_static",
- "libipld-core 0.13.1",
  "log",
  "minstant",
  "multihash",
@@ -1616,33 +1523,16 @@ dependencies = [
 
 [[package]]
 name = "fvm_actor_utils"
-version = "0.1.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "15b2605197066de1548fd18d5c367cd425be4dab83d4c0f5f9f730d0eec6124c"
-dependencies = [
- "anyhow",
- "cid",
- "frc42_dispatch 1.1.0",
- "fvm_ipld_blockstore",
- "fvm_ipld_encoding 0.2.3",
- "fvm_sdk 2.0.0",
- "fvm_shared 2.0.0",
- "num-traits",
- "thiserror",
-]
-
-[[package]]
-name = "fvm_actor_utils"
 version = "3.0.0"
 source = "git+https://github.com/filecoin-project/filecoin-actor-utils?branch=feat/fvm-m2#d8a2364f9ea23428ac095c0360211a4696f1a21b"
 dependencies = [
  "anyhow",
  "cid",
- "frc42_dispatch 3.0.0",
+ "frc42_dispatch",
  "fvm_ipld_blockstore",
- "fvm_ipld_encoding 0.3.2",
- "fvm_sdk 3.0.0-alpha.22",
- "fvm_shared 3.0.0-alpha.16",
+ "fvm_ipld_encoding",
+ "fvm_sdk",
+ "fvm_shared",
  "num-traits",
  "serde",
  "serde_tuple",
@@ -1652,20 +1542,18 @@ dependencies = [
 [[package]]
 name = "fvm_integration_tests"
 version = "0.1.1-alpha.1"
-source = "git+https://github.com/Zondax/ref-fvm?branch=lola/fixes#f9653001d4d460ab44f984fdd8571c5aa975c32b"
+source = "git+https://github.com/filecoin-project/ref-fvm?tag=fvm@v3.0.0-alpha.19#7b208c151ec06ed0daddfc19c7bceb3e221b9a50"
 dependencies = [
  "anyhow",
  "cid",
- "fil_actors_runtime 10.0.0-alpha.1 (git+https://github.com/filecoin-project/builtin-actors?branch=next)",
- "frc46_token 1.1.0",
  "futures",
  "fvm",
- "fvm_ipld_amt 0.5.1",
+ "fvm_ipld_amt 0.5.1 (git+https://github.com/filecoin-project/ref-fvm?tag=fvm@v3.0.0-alpha.19)",
  "fvm_ipld_blockstore",
  "fvm_ipld_car",
- "fvm_ipld_encoding 0.3.2",
- "fvm_ipld_hamt 0.6.1",
- "fvm_shared 3.0.0-alpha.16",
+ "fvm_ipld_encoding",
+ "fvm_ipld_hamt 0.6.1 (git+https://github.com/filecoin-project/ref-fvm?tag=fvm@v3.0.0-alpha.19)",
+ "fvm_shared",
  "lazy_static",
  "libsecp256k1",
  "multihash",
@@ -1681,15 +1569,14 @@ dependencies = [
 
 [[package]]
 name = "fvm_ipld_amt"
-version = "0.4.2"
+version = "0.5.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "48d09e5aa7de45452676d18fcb70b750acd65faae7a4fe18fe784b4c85f869fb"
+checksum = "e84f16d6927ce342ef86bd20fcc2d5bd498ed33ae6d7a22fea7a1b453488ec88"
 dependencies = [
- "ahash",
  "anyhow",
  "cid",
  "fvm_ipld_blockstore",
- "fvm_ipld_encoding 0.2.3",
+ "fvm_ipld_encoding",
  "itertools 0.10.5",
  "once_cell",
  "serde",
@@ -1699,12 +1586,12 @@ dependencies = [
 [[package]]
 name = "fvm_ipld_amt"
 version = "0.5.1"
-source = "git+https://github.com/Zondax/ref-fvm?branch=lola/fixes#f9653001d4d460ab44f984fdd8571c5aa975c32b"
+source = "git+https://github.com/filecoin-project/ref-fvm?tag=fvm@v3.0.0-alpha.19#7b208c151ec06ed0daddfc19c7bceb3e221b9a50"
 dependencies = [
  "anyhow",
  "cid",
  "fvm_ipld_blockstore",
- "fvm_ipld_encoding 0.3.2",
+ "fvm_ipld_encoding",
  "itertools 0.10.5",
  "once_cell",
  "serde",
@@ -1717,7 +1604,7 @@ version = "0.5.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d1950291f40d2d1047eb0a4568f7ef6d5b4973452dcef012dffb1957fe483ff7"
 dependencies = [
- "fvm_ipld_encoding 0.3.2",
+ "fvm_ipld_encoding",
  "serde",
  "thiserror",
  "unsigned-varint",
@@ -1726,7 +1613,7 @@ dependencies = [
 [[package]]
 name = "fvm_ipld_blockstore"
 version = "0.1.1"
-source = "git+https://github.com/Zondax/ref-fvm?branch=lola/fixes#f9653001d4d460ab44f984fdd8571c5aa975c32b"
+source = "git+https://github.com/filecoin-project/ref-fvm?tag=fvm@v3.0.0-alpha.19#7b208c151ec06ed0daddfc19c7bceb3e221b9a50"
 dependencies = [
  "anyhow",
  "cid",
@@ -1736,12 +1623,12 @@ dependencies = [
 [[package]]
 name = "fvm_ipld_car"
 version = "0.6.0"
-source = "git+https://github.com/Zondax/ref-fvm?branch=lola/fixes#f9653001d4d460ab44f984fdd8571c5aa975c32b"
+source = "git+https://github.com/filecoin-project/ref-fvm?tag=fvm@v3.0.0-alpha.19#7b208c151ec06ed0daddfc19c7bceb3e221b9a50"
 dependencies = [
  "cid",
  "futures",
  "fvm_ipld_blockstore",
- "fvm_ipld_encoding 0.3.2",
+ "fvm_ipld_encoding",
  "integer-encoding",
  "serde",
  "thiserror",
@@ -1749,26 +1636,8 @@ dependencies = [
 
 [[package]]
 name = "fvm_ipld_encoding"
-version = "0.2.3"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "fa1ff5ba581625ab38cf2829fbd04ac232c6277466fdbe0270b42dcb976902d5"
-dependencies = [
- "anyhow",
- "cid",
- "cs_serde_bytes",
- "fvm_ipld_blockstore",
- "multihash",
- "serde",
- "serde_ipld_dagcbor",
- "serde_repr",
- "serde_tuple",
- "thiserror",
-]
-
-[[package]]
-name = "fvm_ipld_encoding"
 version = "0.3.2"
-source = "git+https://github.com/Zondax/ref-fvm?branch=lola/fixes#f9653001d4d460ab44f984fdd8571c5aa975c32b"
+source = "git+https://github.com/filecoin-project/ref-fvm?tag=fvm@v3.0.0-alpha.19#7b208c151ec06ed0daddfc19c7bceb3e221b9a50"
 dependencies = [
  "anyhow",
  "cid",
@@ -1783,18 +1652,17 @@ dependencies = [
 
 [[package]]
 name = "fvm_ipld_hamt"
-version = "0.5.1"
+version = "0.6.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "65b5c939897aa1bfd63e7cb9c458ba10689371af3278ff20d66c6f8ca152c6c0"
+checksum = "0c942494dde990aeac314311bde34c787be99cab7d0836397a75556cbaa2c3e7"
 dependencies = [
  "anyhow",
  "byteorder",
  "cid",
- "cs_serde_bytes",
  "forest_hash_utils",
  "fvm_ipld_blockstore",
- "fvm_ipld_encoding 0.2.3",
- "libipld-core 0.13.1",
+ "fvm_ipld_encoding",
+ "libipld-core 0.14.0",
  "multihash",
  "once_cell",
  "serde",
@@ -1805,14 +1673,14 @@ dependencies = [
 [[package]]
 name = "fvm_ipld_hamt"
 version = "0.6.1"
-source = "git+https://github.com/Zondax/ref-fvm?branch=lola/fixes#f9653001d4d460ab44f984fdd8571c5aa975c32b"
+source = "git+https://github.com/filecoin-project/ref-fvm?tag=fvm@v3.0.0-alpha.19#7b208c151ec06ed0daddfc19c7bceb3e221b9a50"
 dependencies = [
  "anyhow",
  "byteorder",
  "cid",
  "forest_hash_utils",
  "fvm_ipld_blockstore",
- "fvm_ipld_encoding 0.3.2",
+ "fvm_ipld_encoding",
  "libipld-core 0.14.0",
  "multihash",
  "once_cell",
@@ -1832,7 +1700,7 @@ dependencies = [
  "cid",
  "forest_hash_utils",
  "fvm_ipld_blockstore",
- "fvm_ipld_encoding 0.3.2",
+ "fvm_ipld_encoding",
  "multihash",
  "once_cell",
  "serde",
@@ -1842,66 +1710,23 @@ dependencies = [
 
 [[package]]
 name = "fvm_sdk"
-version = "2.0.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "19d6b29114b9cbdee7ccf7540bdda6657af7fa91666e2489c4d415a7f0706748"
-dependencies = [
- "cid",
- "fvm_ipld_encoding 0.2.3",
- "fvm_shared 2.0.0",
- "lazy_static",
- "log",
- "num-traits",
- "thiserror",
-]
-
-[[package]]
-name = "fvm_sdk"
 version = "3.0.0-alpha.22"
-source = "git+https://github.com/Zondax/ref-fvm?branch=lola/fixes#f9653001d4d460ab44f984fdd8571c5aa975c32b"
-dependencies = [
- "cid",
- "fvm_ipld_encoding 0.3.2",
- "fvm_shared 3.0.0-alpha.16",
- "lazy_static",
- "log",
- "num-traits",
- "thiserror",
-]
-
-[[package]]
-name = "fvm_shared"
-version = "2.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ff7d1de62b7b74909d6e4816de83c4e6b46017bba9a31bb0de82b6b26b11cf74"
+checksum = "d51908aab9e7564fbcb278d78e31c12402b68c70517661780feb29adbb234aaf"
 dependencies = [
- "anyhow",
- "blake2b_simd",
- "byteorder",
  "cid",
- "cs_serde_bytes",
- "data-encoding",
- "data-encoding-macro",
- "fvm_ipld_blockstore",
- "fvm_ipld_encoding 0.2.3",
+ "fvm_ipld_encoding",
+ "fvm_shared",
  "lazy_static",
  "log",
- "multihash",
- "num-bigint",
- "num-derive",
- "num-integer",
  "num-traits",
- "serde",
- "serde_repr",
- "serde_tuple",
  "thiserror",
- "unsigned-varint",
 ]
 
 [[package]]
 name = "fvm_shared"
 version = "3.0.0-alpha.16"
-source = "git+https://github.com/Zondax/ref-fvm?branch=lola/fixes#f9653001d4d460ab44f984fdd8571c5aa975c32b"
+source = "git+https://github.com/filecoin-project/ref-fvm?tag=fvm@v3.0.0-alpha.19#7b208c151ec06ed0daddfc19c7bceb3e221b9a50"
 dependencies = [
  "anyhow",
  "bitflags",
@@ -1913,7 +1738,7 @@ dependencies = [
  "data-encoding-macro",
  "filecoin-proofs-api",
  "fvm_ipld_blockstore",
- "fvm_ipld_encoding 0.3.2",
+ "fvm_ipld_encoding",
  "lazy_static",
  "libsecp256k1",
  "log",
@@ -2783,9 +2608,9 @@ dependencies = [
 
 [[package]]
 name = "proc-macro2"
-version = "1.0.49"
+version = "1.0.50"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "57a8eca9f9c4ffde41714334dee777596264c7825420f521abc92b5b5deb63a5"
+checksum = "6ef7d57beacfaf2d8aee5937dab7b7f28de3cb8b1828479bb5de2a7106f2bae2"
 dependencies = [
  "unicode-ident",
 ]
@@ -3446,6 +3271,7 @@ dependencies = [
 name = "testing"
 version = "0.1.0"
 dependencies = [
+ "anyhow",
  "bls-signatures 0.13.0",
  "cid",
  "fil_actor_datacap",
@@ -3454,12 +3280,12 @@ dependencies = [
  "fil_actor_init",
  "fil_actor_miner",
  "fil_actor_multisig",
- "fil_actors_runtime 10.0.0-alpha.1 (git+https://github.com/filecoin-project/builtin-actors?tag=dev/20230114-pre-rc.3)",
+ "fil_actors_runtime",
  "fvm",
  "fvm_integration_tests",
  "fvm_ipld_blockstore",
- "fvm_ipld_encoding 0.3.2",
- "fvm_shared 3.0.0-alpha.16",
+ "fvm_ipld_encoding",
+ "fvm_shared",
  "hex",
  "libipld-core 0.13.1",
  "multihash",

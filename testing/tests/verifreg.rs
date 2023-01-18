@@ -4,21 +4,28 @@ mod tests {
     use fvm_integration_tests::dummy::DummyExterns;
     use fvm_integration_tests::tester::{Account, Tester};
     use fvm_ipld_encoding::{strict_bytes, tuple::*};
-    use fvm_shared::bigint::{bigint_ser};
+    use fvm_shared::bigint::bigint_ser;
 
-    use fil_actor_evm::{Method as EvmMethods};
+    use cid::Cid;
     use fil_actor_eam::Return;
-    use fil_actors_runtime::{EAM_ACTOR_ADDR, VERIFIED_REGISTRY_ACTOR_ADDR};
+    use fil_actor_evm::Method as EvmMethods;
+    use fil_actors_runtime::{
+        runtime::builtins, DATACAP_TOKEN_ACTOR_ADDR, EAM_ACTOR_ADDR, SYSTEM_ACTOR_ADDR,
+        VERIFIED_REGISTRY_ACTOR_ADDR,
+    };
     use fvm::executor::{ApplyKind, Executor};
+    use fvm::machine::Manifest;
     use fvm_ipld_blockstore::MemoryBlockstore;
+    use fvm_ipld_encoding::CborStore;
     use fvm_ipld_encoding::RawBytes;
     use fvm_shared::address::Address;
     use fvm_shared::message::Message;
     use fvm_shared::sector::StoragePower;
     use fvm_shared::state::StateTreeVersion;
     use fvm_shared::version::NetworkVersion;
-    use std::env;
     use serde::{Deserialize as SerdeDeserialize, Serialize as SerdeSerialize};
+    use std::env;
+    use testing::helpers;
 
     const WASM_COMPILED_PATH: &str = "../build/v0.8/tests/VerifRegApiTest.bin";
 
@@ -42,6 +49,10 @@ mod tests {
             .expect("Unable to read actor devnet file file");
         let bundle_root = bundle::import_bundle(&bs, &actors).unwrap();
 
+        let (manifest_version, manifest_data_cid): (u32, Cid) =
+            bs.get_cbor(&bundle_root).unwrap().unwrap();
+        let manifest = Manifest::load(&bs, &manifest_data_cid, manifest_version).unwrap();
+
         let mut tester =
             Tester::new(NetworkVersion::V18, StateTreeVersion::V5, bundle_root, bs).unwrap();
 
@@ -51,10 +62,65 @@ mod tests {
         // actor
         let _accounts: [Account; 200] = tester.create_accounts().unwrap();
 
+        // Set verifreg actor
+        let state_tree = tester.state_tree.as_mut().unwrap();
+        helpers::set_verifiedregistry_actor(
+            state_tree,
+            *manifest
+                .code_by_id(builtins::Type::VerifiedRegistry as u32)
+                .unwrap(),
+        )
+        .unwrap();
+        helpers::set_datacap_actor(
+            state_tree,
+            *manifest.code_by_id(builtins::Type::DataCap as u32).unwrap(),
+        )
+        .unwrap();
+
         // Instantiate machine
         tester.instantiate_machine(DummyExterns).unwrap();
 
         let executor = tester.executor.as_mut().unwrap();
+
+        // Try to call "constructor"
+        println!("Try to call constructor on storage verifreg actor");
+
+        let root_key = Address::new_id(199);
+
+        let message = Message {
+            from: SYSTEM_ACTOR_ADDR,
+            to: VERIFIED_REGISTRY_ACTOR_ADDR,
+            gas_limit: 1000000000,
+            method_num: 1,
+            params: RawBytes::serialize(root_key).unwrap(),
+            ..Message::default()
+        };
+
+        let res = executor
+            .execute_message(message, ApplyKind::Implicit, 100)
+            .unwrap();
+
+        assert_eq!(res.msg_receipt.exit_code.value(), 0);
+
+        // Try to call "constructor"
+        println!("Try to call constructor on datacap actor");
+
+        let message = Message {
+            from: SYSTEM_ACTOR_ADDR,
+            to: DATACAP_TOKEN_ACTOR_ADDR,
+            gas_limit: 1000000000,
+            method_num: 1,
+            params: RawBytes::serialize(VERIFIED_REGISTRY_ACTOR_ADDR).unwrap(),
+            ..Message::default()
+        };
+
+        let res = executor
+            .execute_message(message, ApplyKind::Implicit, 100)
+            .unwrap();
+
+        dbg!(&res);
+
+        assert_eq!(res.msg_receipt.exit_code.value(), 0);
 
         println!("Calling init actor (EVM)");
 
@@ -109,6 +175,8 @@ mod tests {
         let res = executor
             .execute_message(message, ApplyKind::Explicit, 100)
             .unwrap();
+
+        dbg!(&res);
 
         assert_eq!(res.msg_receipt.exit_code.value(), 0);
 

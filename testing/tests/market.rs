@@ -3,19 +3,20 @@ mod tests {
     use bls_signatures::Serialize;
     use cid::Cid;
     use fil_actor_eam::Return;
-    use fil_actors_runtime::EAM_ACTOR_ADDR;
-    use fil_actor_evm::{Method as EvmMethods};
+    use fil_actor_evm::Method as EvmMethods;
+    use fil_actors_runtime::{runtime::builtins, EAM_ACTOR_ADDR, STORAGE_MARKET_ACTOR_ADDR, SYSTEM_ACTOR_ADDR, STORAGE_POWER_ACTOR_ADDR, REWARD_ACTOR_ADDR};
     use fvm::executor::{ApplyKind, Executor};
+    use fvm::machine::Manifest;
     use fvm::state_tree::ActorState;
     use fvm_integration_tests::bundle;
     use fvm_integration_tests::dummy::DummyExterns;
     use fvm_integration_tests::tester::{Account, Tester};
     use fvm_ipld_blockstore::MemoryBlockstore;
     use fvm_ipld_encoding::BytesDe;
+    use fvm_ipld_encoding::BytesSer;
     use fvm_ipld_encoding::CborStore;
     use fvm_ipld_encoding::RawBytes;
     use fvm_ipld_encoding::{serde_bytes, strict_bytes, tuple::*};
-    use fvm_ipld_encoding::{BytesSer};
     use fvm_shared::address::Address;
     use fvm_shared::clock::ChainEpoch;
     use fvm_shared::crypto::signature::Signature;
@@ -28,9 +29,11 @@ mod tests {
     use libipld_core::ipld::Ipld;
     use multihash::Code;
     use rand_core::OsRng;
+    use serde::{Deserialize as SerdeDeserialize, Serialize as SerdeSerialize};
     use std::env;
     use std::str::FromStr;
-    use serde::{Deserialize as SerdeDeserialize, Serialize as SerdeSerialize};
+
+    use testing::helpers;
 
     const WASM_COMPILED_PATH: &str = "../build/v0.8/tests/MarketApiTest.bin";
 
@@ -138,11 +141,25 @@ mod tests {
             .expect("Unable to read actor devnet file file");
         let bundle_root = bundle::import_bundle(&bs, &actors).unwrap();
 
+        let (manifest_version, manifest_data_cid): (u32, Cid) =
+            bs.get_cbor(&bundle_root).unwrap().unwrap();
+        let manifest = Manifest::load(&bs, &manifest_data_cid, manifest_version).unwrap();
+
         let mut tester =
             Tester::new(NetworkVersion::V18, StateTreeVersion::V5, bundle_root, bs).unwrap();
 
         let sender: [Account; 1] = tester.create_accounts().unwrap();
         //let client: [Account; 1] = tester.create_accounts().unwrap();
+
+        // Set storagemarket actor
+        let state_tree = tester.state_tree.as_mut().unwrap();
+        helpers::set_storagemarket_actor(state_tree, *manifest.code_by_id(builtins::Type::Market as u32).unwrap())
+            .unwrap();
+        // Set storagepower actor
+        helpers::set_storagepower_actor(state_tree, *manifest.code_by_id(builtins::Type::Power as u32).unwrap())
+            .unwrap();
+        helpers::set_reward_actor(state_tree, *manifest.code_by_id(builtins::Type::Reward as u32).unwrap())
+            .unwrap();
 
         /***********************************************
          *
@@ -162,10 +179,7 @@ mod tests {
             .unwrap();
 
         let actor_state = ActorState {
-            // CID of Accounts actor. You get this as output from builtin-actors compiling process
-            code: Cid::from_str("bafk2bzaceddb65xkjgqgtcsbl2b3istnprim6j3lbf3ywyggxizb6ayzffbqe")
-                .unwrap(),
-            //code: Cid::from_str("bafk2bzaceddmas33nnn2izdexi5xjzuahzezl62aa5ah5bqwzzjceusskr6ty").unwrap(),
+            code: *manifest.get_account_code(),
             state: cid,
             sequence: 0,
             balance: TokenAmount::from_whole(1_000_000),
@@ -187,10 +201,7 @@ mod tests {
             .unwrap();
 
         let actor_state = ActorState {
-            // CID of Accounts actor. You get this as output from builtin-actors compiling process
-            code: Cid::from_str("bafk2bzaceddb65xkjgqgtcsbl2b3istnprim6j3lbf3ywyggxizb6ayzffbqe")
-                .unwrap(),
-            //code: Cid::from_str("bafk2bzaceanfxc6rtvtyjv2wk3ud4cx7qb6iwgif55sq43htuea2gtgfcbd22").unwrap(),
+            code: *manifest.get_account_code(),
             state: cid,
             sequence: 0,
             balance: TokenAmount::from_whole(1_000_000),
@@ -203,6 +214,60 @@ mod tests {
         tester.instantiate_machine(DummyExterns).unwrap();
 
         let executor = tester.executor.as_mut().unwrap();
+
+        // Try to call "constructor"
+        println!("Try to call constructor on storage power actor");
+
+        let message = Message {
+            from: SYSTEM_ACTOR_ADDR,
+            to: STORAGE_POWER_ACTOR_ADDR,
+            gas_limit: 1000000000,
+            method_num: 1,
+            ..Message::default()
+        };
+
+        let res = executor
+        .execute_message(message, ApplyKind::Implicit, 100)
+        .unwrap();
+
+        assert_eq!(res.msg_receipt.exit_code.value(), 0);
+
+        // Try to call "constructor"
+        println!("Try to call constructor on storage market actor");
+
+        let message = Message {
+            from: SYSTEM_ACTOR_ADDR,
+            to: STORAGE_MARKET_ACTOR_ADDR,
+            gas_limit: 1000000000,
+            method_num: 1,
+            ..Message::default()
+        };
+
+        let res = executor
+            .execute_message(message, ApplyKind::Implicit, 100)
+            .unwrap();
+
+        assert_eq!(res.msg_receipt.exit_code.value(), 0);
+
+        // Try to call "constructor"
+        println!("Try to call constructor on reward actor");
+
+        let message = Message {
+            from: SYSTEM_ACTOR_ADDR,
+            to: REWARD_ACTOR_ADDR,
+            gas_limit: 1000000000,
+            params: RawBytes::new(vec![0]), // I have to send the power start value (0)
+            method_num: 1,
+            ..Message::default()
+        };
+
+        let res = executor
+            .execute_message(message, ApplyKind::Implicit, 100)
+            .unwrap();
+
+        dbg!(&res);
+
+        assert_eq!(res.msg_receipt.exit_code.value(), 0);
 
         println!("Create Miner actor to be able to publish deal");
 
@@ -362,6 +427,8 @@ mod tests {
         let res = executor
             .execute_message(message, ApplyKind::Explicit, 100)
             .unwrap();
+
+        dbg!(&res);
 
         assert_eq!(res.msg_receipt.exit_code.value(), 0);
 
