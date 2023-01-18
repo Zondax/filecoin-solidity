@@ -4,7 +4,7 @@ mod tests {
     use cid::Cid;
     use fil_actor_eam::Return;
     use fil_actor_evm::Method as EvmMethods;
-    use fil_actors_runtime::EAM_ACTOR_ADDR;
+    use fil_actors_runtime::{EAM_ACTOR_ADDR, SYSTEM_ACTOR_ADDR, STORAGE_POWER_ACTOR_ADDR,};
     use fvm::executor::{ApplyKind, Executor};
     use fvm::state_tree::ActorState;
     use fvm_integration_tests::bundle;
@@ -52,7 +52,7 @@ mod tests {
 
         let bs = MemoryBlockstore::default();
         let actors = std::fs::read("./builtin-actors/output/builtin-actors-devnet-wasm.car")
-            .expect("Unable to read actor devnet file file");
+            .expect("Unable to read actor devnet file");
         let bundle_root = bundle::import_bundle(&bs, &actors).unwrap();
 
         let (manifest_version, manifest_data_cid): (u32, Cid) =
@@ -106,10 +106,10 @@ mod tests {
         println!("Try to call constructor on storage power actor");
 
         let message = Message {
-            from: Address::new_id(0),
-            to: Address::new_id(STORAGE_POWER_ACTOR),
+            from: SYSTEM_ACTOR_ADDR,
+            to: STORAGE_POWER_ACTOR_ADDR,
             gas_limit: 1000000000,
-            method_num: 2,
+            method_num: 1,
             ..Message::default()
         };
 
