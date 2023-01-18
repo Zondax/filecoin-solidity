@@ -14,7 +14,7 @@ mod tests {
     use fil_actor_eam::Return;
     use fil_actor_evm::{Method as EvmMethods};
     use fvm_ipld_encoding::RawBytes;
-    use fil_actors_runtime::{EAM_ACTOR_ADDR, DATACAP_TOKEN_ACTOR_ADDR};
+    use fil_actors_runtime::{runtime::builtins, EAM_ACTOR_ADDR, DATACAP_TOKEN_ACTOR_ADDR};
     use fvm_shared::econ::TokenAmount;
     use serde::{Deserialize as SerdeDeserialize, Serialize as SerdeSerialize};
     use fvm::machine::Manifest;
@@ -49,9 +49,8 @@ mod tests {
         let sender: [Account; 300] = tester.create_accounts().unwrap();
         
         // Set datacap actor
-        const DATA_CAP_IP: u32 = 12;
         let state_tree = tester.state_tree.as_mut().unwrap();
-        set_datacap_actor(state_tree, *manifest.code_by_id(DATA_CAP_IP).unwrap()).unwrap();
+        set_datacap_actor(state_tree, *manifest.code_by_id(builtins::Type::DataCap as u32).unwrap()).unwrap();
 
         // Create embryo address to deploy the contract on it (assign some FILs to it)
         let tmp = hex::decode("DAFEA492D9c6733ae3d56b7Ed1ADB60692c98Bc5").unwrap();
