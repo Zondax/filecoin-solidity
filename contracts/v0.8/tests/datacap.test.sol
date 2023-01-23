@@ -73,8 +73,7 @@ contract DataCapApiTest {
         return DataCapAPI.burnFrom(params);
     }
 
-    function handle_filecoin_method(uint64 method, uint64 codec, bytes calldata params) public pure returns (uint64) {
+    function handle_filecoin_method(uint64 method, uint64 codec, bytes calldata params) public pure {
         require((codec == 0) == (params.length == 0));
-        return method;
     }
 }
