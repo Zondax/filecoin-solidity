@@ -1,30 +1,32 @@
 #[cfg(test)]
 mod tests {
-    use fvm_integration_tests::tester::{Account, Tester};
-    use fvm_integration_tests::dummy::DummyExterns;
+    use cid::Cid;
+    use fil_actor_eam::Return;
+    use fil_actor_evm::Method as EvmMethods;
+    use fil_actors_runtime::{
+        runtime::builtins, DATACAP_TOKEN_ACTOR_ADDR, EAM_ACTOR_ADDR, SYSTEM_ACTOR_ADDR,
+        VERIFIED_REGISTRY_ACTOR_ADDR,
+    };
+    use fvm::executor::{ApplyKind, Executor};
+    use fvm::machine::Manifest;
     use fvm_integration_tests::bundle;
-    use fvm_ipld_encoding::{strict_bytes};
+    use fvm_integration_tests::dummy::DummyExterns;
+    use fvm_integration_tests::tester::{Account, Tester};
+    use fvm_ipld_blockstore::MemoryBlockstore;
+    use fvm_ipld_encoding::strict_bytes;
+    use fvm_ipld_encoding::CborStore;
+    use fvm_ipld_encoding::RawBytes;
+    use fvm_shared::address::Address;
+    use fvm_shared::econ::TokenAmount;
+    use fvm_shared::message::Message;
     use fvm_shared::state::StateTreeVersion;
     use fvm_shared::version::NetworkVersion;
-    use fvm_ipld_blockstore::MemoryBlockstore;
-    use std::env;
-    use fvm_shared::address::Address;
-    use fvm_shared::message::Message;
-    use fvm::executor::{ApplyKind, Executor};
-    use fil_actor_eam::Return;
-    use fil_actor_evm::{Method as EvmMethods};
-    use fvm_ipld_encoding::RawBytes;
-    use fil_actors_runtime::{runtime::builtins, EAM_ACTOR_ADDR, DATACAP_TOKEN_ACTOR_ADDR, SYSTEM_ACTOR_ADDR};
-    use fvm_shared::econ::TokenAmount;
     use serde::{Deserialize as SerdeDeserialize, Serialize as SerdeSerialize};
-    use fvm::machine::Manifest;
-    use cid::Cid;
-    use fvm_ipld_encoding::CborStore;
+    use std::env;
 
     use testing::helpers;
 
-    const WASM_COMPILED_PATH: &str =
-       "../build/v0.8/tests/DataCapApiTest.bin";
+    const WASM_COMPILED_PATH: &str = "../build/v0.8/tests/DataCapApiTest.bin";
 
     #[derive(SerdeSerialize, SerdeDeserialize)]
     #[serde(transparent)]
@@ -35,10 +37,12 @@ mod tests {
         println!("Testing solidity API");
 
         let bs = MemoryBlockstore::default();
-        let actors = std::fs::read("./builtin-actors/output/builtin-actors-devnet-wasm.car").expect("Unable to read actor devnet file");
+        let actors = std::fs::read("./builtin-actors/output/builtin-actors-devnet-wasm.car")
+            .expect("Unable to read actor devnet file");
         let bundle_root = bundle::import_bundle(&bs, &actors).unwrap();
 
-        let (manifest_version, manifest_data_cid): (u32, Cid) = bs.get_cbor(&bundle_root).unwrap().unwrap();
+        let (manifest_version, manifest_data_cid): (u32, Cid) =
+            bs.get_cbor(&bundle_root).unwrap().unwrap();
         let manifest = Manifest::load(&bs, &manifest_data_cid, manifest_version).unwrap();
 
         let mut tester =
@@ -47,36 +51,98 @@ mod tests {
         // As the governor address for datacap is 200, we create many many address in order to initialize the ID 200 with some tokens
         // and make it a valid address to use.
         let sender: [Account; 300] = tester.create_accounts().unwrap();
-        
+
         // Set datacap actor
         let state_tree = tester.state_tree.as_mut().unwrap();
-        helpers::set_datacap_actor(state_tree, *manifest.code_by_id(builtins::Type::DataCap as u32).unwrap()).unwrap();
+        helpers::set_datacap_actor(
+            state_tree,
+            *manifest.code_by_id(builtins::Type::DataCap as u32).unwrap(),
+        )
+        .unwrap();
+        helpers::set_verifiedregistry_actor(
+            state_tree,
+            *manifest
+                .code_by_id(builtins::Type::VerifiedRegistry as u32)
+                .unwrap(),
+        )
+        .unwrap();
 
         // Create embryo address to deploy the contract on it (assign some FILs to it)
         let tmp = hex::decode("DAFEA492D9c6733ae3d56b7Ed1ADB60692c98Bc5").unwrap();
         let embryo_eth_address = tmp.as_slice();
         let embryo_delegated_address = Address::new_delegated(10, embryo_eth_address).unwrap();
-        tester.create_placeholder(&embryo_delegated_address,TokenAmount::from_whole(100)).unwrap();
+        tester
+            .create_placeholder(&embryo_delegated_address, TokenAmount::from_whole(100))
+            .unwrap();
 
-
-        println!("Embryo address delegated type [{}]", embryo_delegated_address);
-        println!("Embryo address delegated type on hex [{}]",hex::encode(embryo_delegated_address.to_bytes()));
+        println!(
+            "Embryo address delegated type [{}]",
+            embryo_delegated_address
+        );
+        println!(
+            "Embryo address delegated type on hex [{}]",
+            hex::encode(embryo_delegated_address.to_bytes())
+        );
         // println!("Embryo address ID type on decimal [{}]",embryo_actor_id);
         // println!("Embryo address ID type on hex [{}]",hex::encode(Address::new_id(embryo_actor_id).to_bytes()));
 
-        println!("{}", format!("Sender address id [{}] and bytes [{}]", &sender[0].0, hex::encode(&sender[0].1.to_bytes())));
-        println!("{}", format!("Sender address id [{}] and bytes [{}]", &sender[1].0, hex::encode(&sender[1].1.to_bytes())));
-        println!("{}", format!("Sender address id [{}] and bytes [{}]", &sender[2].0, hex::encode(&sender[2].1.to_bytes())));
-        println!("{}", format!("Sender address id [{}] and bytes [{}]", &sender[3].0, hex::encode(&sender[3].1.to_bytes())));
-
-        // Governor address
-        // https://github.com/Zondax/ref-fvm/blob/14fdd638fe29beaf4259a02a65a141b736fff17d/testing/integration/src/tester.rs#L84
-        println!("Governor address ID type on hex [{}]",hex::encode(Address::new_id(200).to_bytes()));
+        println!(
+            "{}",
+            format!(
+                "Sender address id [{}] and bytes [{}]",
+                &sender[0].0,
+                hex::encode(&sender[0].1.to_bytes())
+            )
+        );
+        println!(
+            "{}",
+            format!(
+                "Sender address id [{}] and bytes [{}]",
+                &sender[1].0,
+                hex::encode(&sender[1].1.to_bytes())
+            )
+        );
+        println!(
+            "{}",
+            format!(
+                "Sender address id [{}] and bytes [{}]",
+                &sender[2].0,
+                hex::encode(&sender[2].1.to_bytes())
+            )
+        );
+        println!(
+            "{}",
+            format!(
+                "Sender address id [{}] and bytes [{}]",
+                &sender[3].0,
+                hex::encode(&sender[3].1.to_bytes())
+            )
+        );
 
         // Instantiate machine
         tester.instantiate_machine(DummyExterns).unwrap();
 
         let executor = tester.executor.as_mut().unwrap();
+
+        // Try to call "constructor"
+        println!("Try to call constructor on verifreg actor");
+
+        let root_key = Address::new_id(199);
+
+        let message = Message {
+            from: SYSTEM_ACTOR_ADDR,
+            to: VERIFIED_REGISTRY_ACTOR_ADDR,
+            gas_limit: 1000000000,
+            method_num: 1,
+            params: RawBytes::serialize(root_key).unwrap(),
+            ..Message::default()
+        };
+
+        let res = executor
+            .execute_message(message, ApplyKind::Implicit, 100)
+            .unwrap();
+
+        assert_eq!(res.msg_receipt.exit_code.value(), 0);
 
         // Try to call "constructor"
         println!("Try to call constructor on datacap actor");
@@ -86,6 +152,7 @@ mod tests {
             to: DATACAP_TOKEN_ACTOR_ADDR,
             gas_limit: 1000000000,
             method_num: 1,
+            params: RawBytes::serialize(Address::new_id(200)).unwrap(),
             ..Message::default()
         };
 
@@ -124,16 +191,25 @@ mod tests {
 
         assert_eq!(res.msg_receipt.exit_code.value(), 0);
 
-        let exec_return : Return = RawBytes::deserialize(&res.msg_receipt.return_data).unwrap();
+        let exec_return: Return = RawBytes::deserialize(&res.msg_receipt.return_data).unwrap();
 
-        println!("Contract address ID type on decimal [{}]",exec_return.actor_id);
-        println!("Contract address ID type on hex [{}]", hex::encode(Address::new_id(exec_return.actor_id).to_bytes()));
+        println!(
+            "Contract address ID type on decimal [{}]",
+            exec_return.actor_id
+        );
+        println!(
+            "Contract address ID type on hex [{}]",
+            hex::encode(Address::new_id(exec_return.actor_id).to_bytes())
+        );
         match exec_return.robust_address {
-            Some(addr) => println!("Contract address robust type [{}]",addr),
-            None => ()
+            Some(addr) => println!("Contract address robust type [{}]", addr),
+            None => (),
         }
 
-        println!("Contract address eth address type [{}]",hex::encode(exec_return.eth_address.0));
+        println!(
+            "Contract address eth address type [{}]",
+            hex::encode(exec_return.eth_address.0)
+        );
 
         let contract_actor_id = exec_return.actor_id;
 
@@ -142,10 +218,10 @@ mod tests {
         // NOTICE: We firt deploy the contract because the embryo address by its own cannot receive minted tokens.
         println!("Minting some tokens on datacap actor");
 
-        let mint_params_1 = fil_actor_datacap::MintParams{
+        let mint_params_1 = fil_actor_datacap::MintParams {
             to: Address::new_id(contract_actor_id),
             amount: TokenAmount::from_whole(1000),
-            operators: vec![Address::new_id(sender[0].0),Address::new_id(sender[1].0)]
+            operators: vec![Address::new_id(sender[0].0), Address::new_id(sender[1].0)],
         };
 
         let message = Message {
@@ -164,13 +240,12 @@ mod tests {
 
         assert_eq!(res.msg_receipt.exit_code.value(), 0);
 
-
         println!("Minting more tokens on datacap actor");
 
-        let mint_params_2 = fil_actor_datacap::MintParams{
+        let mint_params_2 = fil_actor_datacap::MintParams {
             to: Address::new_id(sender[0].0),
             amount: TokenAmount::from_whole(1000),
-            operators: vec![Address::new_id(contract_actor_id)]
+            operators: vec![Address::new_id(contract_actor_id)],
         };
 
         let message = Message {
@@ -208,7 +283,6 @@ mod tests {
         assert_eq!(res.msg_receipt.exit_code.value(), 0);
         assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "5860000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000074461746143617000000000000000000000000000000000000000000000000000");
 
-
         println!("Calling `symbol`");
 
         let message = Message {
@@ -227,7 +301,6 @@ mod tests {
 
         assert_eq!(res.msg_receipt.exit_code.value(), 0);
         assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "5860000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000044443415000000000000000000000000000000000000000000000000000000000");
-
 
         println!("Calling `total_supply`");
 
@@ -248,7 +321,6 @@ mod tests {
         assert_eq!(res.msg_receipt.exit_code.value(), 0);
         assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "58a000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000040000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000096c6b935b8bbd4000000000000000000000000000000000000000000000000000");
 
-
         println!("Calling `balance`");
 
         let message = Message {
@@ -267,7 +339,6 @@ mod tests {
 
         assert_eq!(res.msg_receipt.exit_code.value(), 0);
         assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "58800000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000");
-
 
         println!("Calling `allowance`");
 
@@ -304,6 +375,8 @@ mod tests {
             .execute_message(message, ApplyKind::Explicit, 100)
             .unwrap();
 
+        dbg!(&res);
+
         assert_eq!(res.msg_receipt.exit_code.value(), 0);
         assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "5901a00000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000006000000000000000000000000000000000000000000000000000000000000000e00000000000000000000000000000000000000000000000000000000000000160000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000009361a08405e8fd8000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000040000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000081bc16d674ec800000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000");
 
@@ -326,7 +399,6 @@ mod tests {
         assert_eq!(res.msg_receipt.exit_code.value(), 0);
         assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "5902400000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000008000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000000180000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000935fe46d2f741100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000853444835ec58000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001102f050fe938943acc427e27bb1627000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000");
 
-
         println!("Calling `burn`");
 
         let message = Message {
@@ -345,7 +417,6 @@ mod tests {
 
         assert_eq!(res.msg_receipt.exit_code.value(), 0);
         assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "58c000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000009360c2789aae87400000000000000000000000000000000000000000000000000");
-
 
         println!("Calling `burn_from`");
 
@@ -385,7 +456,6 @@ mod tests {
         assert_eq!(res.msg_receipt.exit_code.value(), 0);
         assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "58a0000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001102f050fe938943acc41a01c4fdbb0c0000000000000000000000000000000000");
 
-
         println!("Calling `increase_allowance`");
 
         let message = Message {
@@ -404,8 +474,6 @@ mod tests {
 
         assert_eq!(res.msg_receipt.exit_code.value(), 0);
         assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "58a0000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001102f050fe938943acfa952f0445dea00000000000000000000000000000000000");
-
-
 
         println!("Calling `decrease_allowance`");
 
