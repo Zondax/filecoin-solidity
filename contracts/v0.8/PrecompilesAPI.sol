@@ -37,10 +37,10 @@ library PrecompilesAPI {
     }
 
     function resolveEthAddress(bytes memory addr) internal view returns (uint64) {
-        bytes memory deletagedAddr = abi.encodePacked(hex"040a", addr);
+        bytes memory delegatedAddr = abi.encodePacked(hex"040a", addr);
 
-        (bool success, bytes memory raw_response) = address(RESOLVE_ADDRESS_PRECOMPILE_ADDR).staticcall(deletagedAddr);
-        require(success == true, "resolve address error");
+        (bool success, bytes memory raw_response) = address(RESOLVE_ADDRESS_PRECOMPILE_ADDR).staticcall(delegatedAddr);
+        require(success == true, "resolve eth address error");
 
         uint256 actor_id = abi.decode(raw_response, (uint256));
 
