@@ -27,6 +27,10 @@ contract PrecompilesApiTest {
         return PrecompilesAPI.resolveAddress(addr);
     }
 
+    function resolve_eth_address(bytes memory addr) public view returns (uint64) {
+        return PrecompilesAPI.resolveEthAddress(addr);
+    }
+
     function lookup_delegated_address(uint64 actor_id) public view returns (bytes memory) {
         return PrecompilesAPI.lookupDelegatedAddress(actor_id);
     }
