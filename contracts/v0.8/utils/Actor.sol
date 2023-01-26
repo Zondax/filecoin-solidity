@@ -73,8 +73,8 @@ library Actor {
 
     function getErrorCodeMsg(int256 exit_code) internal pure returns (string memory) {
         return
-            exit_code < 0
-                ? string.concat("actor error code -", Strings.toString(uint256(-exit_code)))
-                : string.concat("actor error code ", Strings.toString(uint256(exit_code)));
+            exit_code >= 0
+                ? string.concat("actor error code ", Strings.toString(uint256(exit_code)))
+                : string.concat("actor error code -", Strings.toString(Misc.abs(exit_code)));
     }
 }
