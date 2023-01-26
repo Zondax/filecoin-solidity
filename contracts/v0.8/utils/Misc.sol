@@ -22,6 +22,8 @@ library Misc {
     uint64 constant CBOR_CODEC = 0x71;
     uint64 constant NONE_CODEC = 0x00;
 
+    // Code taken from Openzeppelin repo
+    // Link: https://github.com/OpenZeppelin/openzeppelin-contracts/blob/0320a718e8e07b1d932f5acb8ad9cec9d9eed99b/contracts/utils/math/SignedMath.sol#L37-L42
     function abs(int256 n) internal pure returns (uint256) {
         unchecked {
             // must be unchecked in order to support `n = type(int256).min`
