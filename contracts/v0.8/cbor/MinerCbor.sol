@@ -29,12 +29,13 @@ import "./BigIntCbor.sol";
 
 /// @title FIXME
 /// @author Zondax AG
-library ChangeBeneficiaryCBOR {
+library MinerCBOR {
     using CBOR for CBOR.CBORBuffer;
     using CBORDecoder for bytes;
     using BigIntCBOR for BigInt;
+    using BigIntCBOR for bytes;
 
-    function serialize(MinerTypes.ChangeBeneficiaryParams memory params) internal pure returns (bytes memory) {
+    function serializeChangeBeneficiaryParams(MinerTypes.ChangeBeneficiaryParams memory params) internal pure returns (bytes memory) {
         // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
@@ -45,13 +46,8 @@ library ChangeBeneficiaryCBOR {
 
         return buf.data();
     }
-}
 
-library GetOwnerCBOR {
-    using CBOR for CBOR.CBORBuffer;
-    using CBORDecoder for bytes;
-
-    function deserialize(MinerTypes.GetOwnerReturn memory ret, bytes memory rawResp) internal pure {
+    function deserializeGetOwnerReturn(bytes memory rawResp) internal pure returns (MinerTypes.GetOwnerReturn memory ret) {
         uint byteIdx = 0;
         uint len;
 
@@ -62,38 +58,32 @@ library GetOwnerCBOR {
 
         if (!rawResp.isNullNext(byteIdx)) {
             (ret.proposed, byteIdx) = rawResp.readBytes(byteIdx);
+        } else {
+            ret.proposed = new bytes(0);
         }
+
+        return ret;
     }
-}
 
-library IsControllingAddressCBOR {
-    using CBOR for CBOR.CBORBuffer;
-    using CBORDecoder for bytes;
-
-    function deserialize(MinerTypes.IsControllingAddressReturn memory ret, bytes memory rawResp) internal pure {
+    function deserializeIsControllingAddressReturn(
+        bytes memory rawResp
+    ) internal pure returns (MinerTypes.IsControllingAddressReturn memory ret) {
         uint byteIdx = 0;
 
         (ret.is_controlling, byteIdx) = rawResp.readBool(byteIdx);
+        return ret;
     }
-}
 
-library GetSectorSizeCBOR {
-    using CBOR for CBOR.CBORBuffer;
-    using CBORDecoder for bytes;
-
-    function deserialize(MinerTypes.GetSectorSizeReturn memory ret, bytes memory rawResp) internal pure {
+    function deserializeGetSectorSizeReturn(bytes memory rawResp) internal pure returns (MinerTypes.GetSectorSizeReturn memory ret) {
         uint byteIdx = 0;
 
         (ret.sector_size, byteIdx) = rawResp.readUInt64(byteIdx);
+        return ret;
     }
-}
 
-library GetAvailableBalanceCBOR {
-    using CBOR for CBOR.CBORBuffer;
-    using CBORDecoder for bytes;
-    using BigIntCBOR for bytes;
-
-    function deserialize(MinerTypes.GetAvailableBalanceReturn memory ret, bytes memory rawResp) internal pure {
+    function deserializeGetAvailableBalanceReturn(
+        bytes memory rawResp
+    ) internal pure returns (MinerTypes.GetAvailableBalanceReturn memory ret) {
         uint byteIdx = 0;
 
         bytes memory tmp;
@@ -103,15 +93,11 @@ library GetAvailableBalanceCBOR {
         } else {
             ret.available_balance = BigInt(new bytes(0), false);
         }
+
+        return ret;
     }
-}
 
-library GetBeneficiaryCBOR {
-    using CBOR for CBOR.CBORBuffer;
-    using CBORDecoder for bytes;
-    using BigIntCBOR for bytes;
-
-    function deserialize(MinerTypes.GetBeneficiaryReturn memory ret, bytes memory rawResp) internal pure {
+    function deserializeGetBeneficiaryReturn(bytes memory rawResp) internal pure returns (MinerTypes.GetBeneficiaryReturn memory ret) {
         bytes memory tmp;
         uint byteIdx = 0;
         uint len;
@@ -160,15 +146,11 @@ library GetBeneficiaryCBOR {
             (ret.proposed.approved_by_beneficiary, byteIdx) = rawResp.readBool(byteIdx);
             (ret.proposed.approved_by_nominee, byteIdx) = rawResp.readBool(byteIdx);
         }
+
+        return ret;
     }
-}
 
-library GetVestingFundsCBOR {
-    using CBOR for CBOR.CBORBuffer;
-    using CBORDecoder for bytes;
-    using BigIntCBOR for bytes;
-
-    function deserialize(MinerTypes.GetVestingFundsReturn memory ret, bytes memory rawResp) internal pure {
+    function deserializeGetVestingFundsReturn(bytes memory rawResp) internal pure returns (MinerTypes.GetVestingFundsReturn memory ret) {
         int64 epoch;
         BigInt memory amount;
         bytes memory tmp;
@@ -189,14 +171,11 @@ library GetVestingFundsCBOR {
             amount = tmp.deserializeBigInt();
             ret.vesting_funds[i] = CommonTypes.VestingFunds(epoch, amount);
         }
+
+        return ret;
     }
-}
 
-library ChangeWorkerAddressCBOR {
-    using CBOR for CBOR.CBORBuffer;
-    using CBORDecoder for bytes;
-
-    function serialize(MinerTypes.ChangeWorkerAddressParams memory params) internal pure returns (bytes memory) {
+    function serializeChangeWorkerAddressParams(MinerTypes.ChangeWorkerAddressParams memory params) internal pure returns (bytes memory) {
         // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
@@ -210,13 +189,8 @@ library ChangeWorkerAddressCBOR {
 
         return buf.data();
     }
-}
 
-library ChangePeerIDCBOR {
-    using CBOR for CBOR.CBORBuffer;
-    using CBORDecoder for bytes;
-
-    function serialize(MinerTypes.ChangePeerIDParams memory params) internal pure returns (bytes memory) {
+    function serializeChangePeerIDParams(MinerTypes.ChangePeerIDParams memory params) internal pure returns (bytes memory) {
         // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
@@ -225,13 +199,8 @@ library ChangePeerIDCBOR {
 
         return buf.data();
     }
-}
 
-library ChangeMultiaddrsCBOR {
-    using CBOR for CBOR.CBORBuffer;
-    using CBORDecoder for bytes;
-
-    function serialize(MinerTypes.ChangeMultiaddrsParams memory params) internal pure returns (bytes memory) {
+    function serializeChangeMultiaddrsParams(MinerTypes.ChangeMultiaddrsParams memory params) internal pure returns (bytes memory) {
         // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
@@ -244,26 +213,18 @@ library ChangeMultiaddrsCBOR {
 
         return buf.data();
     }
-}
 
-library GetPeerIDCBOR {
-    using CBOR for CBOR.CBORBuffer;
-    using CBORDecoder for bytes;
-
-    function deserialize(MinerTypes.GetPeerIDReturn memory ret, bytes memory rawResp) internal pure {
+    function deserializeGetPeerIDReturn(bytes memory rawResp) internal pure returns (MinerTypes.GetPeerIDReturn memory ret) {
         uint byteIdx = 0;
         uint len;
 
         (len, byteIdx) = rawResp.readFixedArray(byteIdx);
         (ret.peer_id, byteIdx) = rawResp.readBytes(byteIdx);
+
+        return ret;
     }
-}
 
-library GetMultiaddrsCBOR {
-    using CBOR for CBOR.CBORBuffer;
-    using CBORDecoder for bytes;
-
-    function deserialize(MinerTypes.GetMultiaddrsReturn memory ret, bytes memory rawResp) internal pure {
+    function deserializeGetMultiaddrsReturn(bytes memory rawResp) internal pure returns (MinerTypes.GetMultiaddrsReturn memory ret) {
         uint byteIdx = 0;
         uint len;
 
@@ -276,14 +237,11 @@ library GetMultiaddrsCBOR {
         for (uint i = 0; i < len; i++) {
             (ret.multi_addrs[i], byteIdx) = rawResp.readBytes(byteIdx);
         }
+
+        return ret;
     }
-}
 
-library WithdrawBalanceCBOR {
-    using CBOR for CBOR.CBORBuffer;
-    using CBORDecoder for bytes;
-
-    function serialize(MinerTypes.WithdrawBalanceParams memory params) internal pure returns (bytes memory) {
+    function serializeWithdrawBalanceParams(MinerTypes.WithdrawBalanceParams memory params) internal pure returns (bytes memory) {
         // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
@@ -293,9 +251,10 @@ library WithdrawBalanceCBOR {
         return buf.data();
     }
 
-    function deserialize(MinerTypes.WithdrawBalanceReturn memory ret, bytes memory rawResp) internal pure {
+    function deserializeWithdrawBalanceReturn(bytes memory rawResp) internal pure returns (MinerTypes.WithdrawBalanceReturn memory ret) {
         uint byteIdx = 0;
 
         (ret.amount_withdrawn, byteIdx) = rawResp.readBytes(byteIdx);
+        return ret;
     }
 }
