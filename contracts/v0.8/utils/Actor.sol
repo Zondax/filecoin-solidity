@@ -70,7 +70,7 @@ library Actor {
         } else if (return_codec == Misc.CBOR_CODEC) {
             require(return_value.length > 0, "response length should greater than 0");
         } else {
-            require(false, "invalid codec");
+            require(false, "invalid resposne codec");
         }
 
         require(exit == 0, getErrorCodeMsg(exit));
