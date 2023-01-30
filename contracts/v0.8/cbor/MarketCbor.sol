@@ -25,6 +25,7 @@ import {MarketTypes} from "../types/MarketTypes.sol";
 import "./BigIntCbor.sol";
 import "../utils/CborDecode.sol";
 import "../utils/Misc.sol";
+import "./FilecoinCbor.sol";
 
 /// @title FIXME
 /// @author Zondax AG
@@ -252,6 +253,7 @@ library PublishStorageDealsCBOR {
     using CBOR for CBOR.CBORBuffer;
     using CBORDecoder for bytes;
     using BigIntCBOR for BigInt;
+    using FilecoinCbor for CBOR.CBORBuffer;
 
     function serialize(MarketTypes.PublishStorageDealsParams memory params) internal pure returns (bytes memory) {
         // FIXME what should the max length be on the buffer?
@@ -261,9 +263,11 @@ library PublishStorageDealsCBOR {
         buf.startFixedArray(uint64(params.deals.length));
 
         for (uint64 i = 0; i < params.deals.length; i++) {
+            buf.startFixedArray(2);
+
             buf.startFixedArray(11);
 
-            buf.writeBytes(params.deals[i].proposal.piece_cid);
+            buf.writeCid(params.deals[i].proposal.piece_cid);
             buf.writeUInt64(params.deals[i].proposal.piece_size);
             buf.writeBool(params.deals[i].proposal.verified_deal);
             buf.writeBytes(params.deals[i].proposal.client);
