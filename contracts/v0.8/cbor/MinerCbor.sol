@@ -17,7 +17,7 @@
 // DRAFT!! THIS CODE HAS NOT BEEN AUDITED - USE ONLY FOR PROTOTYPING
 
 // SPDX-License-Identifier: Apache-2.0
-pragma solidity >=0.4.25 <=0.8.17;
+pragma solidity ^0.8.17;
 
 import "solidity-cborutils/contracts/CBOR.sol";
 
@@ -40,7 +40,7 @@ library ChangeBeneficiaryCBOR {
 
         buf.startFixedArray(3);
         buf.writeBytes(params.new_beneficiary);
-        buf.writeBytes(params.new_quota.serializeBigNum());
+        buf.writeBytes(params.new_quota.serializeBigInt());
         buf.writeUInt64(params.new_expiration);
 
         return buf.data();
@@ -103,29 +103,6 @@ library GetAvailableBalanceCBOR {
         } else {
             ret.available_balance = BigInt(new bytes(0), false);
         }
-    }
-}
-
-library AddressCBOR {
-    using CBOR for CBOR.CBORBuffer;
-    using CBORDecoder for bytes;
-
-    function serializeAddress(bytes memory addr) internal pure returns (bytes memory) {
-        // FIXME what should the max length be on the buffer?
-        CBOR.CBORBuffer memory buf = CBOR.create(64);
-
-        buf.writeBytes(addr);
-
-        return buf.data();
-    }
-
-    function deserializeAddress(bytes memory ret) internal pure returns (bytes memory) {
-        bytes memory addr;
-        uint byteIdx = 0;
-
-        (addr, byteIdx) = ret.readBytes(byteIdx);
-
-        return addr;
     }
 }
 

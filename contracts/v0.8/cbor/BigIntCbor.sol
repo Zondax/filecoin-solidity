@@ -17,7 +17,7 @@
 // DRAFT!! THIS CODE HAS NOT BEEN AUDITED - USE ONLY FOR PROTOTYPING
 
 // SPDX-License-Identifier: Apache-2.0
-pragma solidity >=0.4.25 <=0.8.17;
+pragma solidity ^0.8.17;
 
 struct BigInt {
     bytes val;
@@ -25,7 +25,7 @@ struct BigInt {
 }
 
 library BigIntCBOR {
-    function serializeBigNum(BigInt memory num) internal pure returns (bytes memory) {
+    function serializeBigInt(BigInt memory num) internal pure returns (bytes memory) {
         // TODO improve gas efficiency by using assembly code
         bytes memory raw = new bytes(num.val.length + 1);
 

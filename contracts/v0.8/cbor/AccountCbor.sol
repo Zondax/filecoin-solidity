@@ -17,7 +17,7 @@
 // DRAFT!! THIS CODE HAS NOT BEEN AUDITED - USE ONLY FOR PROTOTYPING
 
 // SPDX-License-Identifier: Apache-2.0
-pragma solidity >=0.4.25 <=0.8.17;
+pragma solidity ^0.8.17;
 
 import "solidity-cborutils/contracts/CBOR.sol";
 
@@ -67,20 +67,6 @@ library UniversalReceiverHookCBOR {
         buf.startFixedArray(2);
         buf.writeUInt64(params.type_);
         buf.writeBytes(params.payload);
-
-        return buf.data();
-    }
-}
-
-library BytesCBOR {
-    using CBOR for CBOR.CBORBuffer;
-    using CBORDecoder for bytes;
-
-    function serializeBytes(bytes memory data) internal pure returns (bytes memory) {
-        // FIXME what should the max length be on the buffer?
-        CBOR.CBORBuffer memory buf = CBOR.create(64);
-
-        buf.writeBytes(data);
 
         return buf.data();
     }

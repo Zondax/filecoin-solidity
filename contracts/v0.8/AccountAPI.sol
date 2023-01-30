@@ -17,10 +17,11 @@
 // DRAFT!! THIS CODE HAS NOT BEEN AUDITED - USE ONLY FOR PROTOTYPING
 
 // SPDX-License-Identifier: Apache-2.0
-pragma solidity >=0.4.25 <=0.8.17;
+pragma solidity ^0.8.17;
 
 import "./types/AccountTypes.sol";
 import "./cbor/AccountCbor.sol";
+import "./cbor/BytesCbor.sol";
 import "./types/CommonTypes.sol";
 import "./utils/Misc.sol";
 import "./utils/Actor.sol";
@@ -33,15 +34,18 @@ library AccountAPI {
     using BytesCBOR for bytes;
 
     /// @notice TODO fill this a proper description
+    /// @param target The account address (filecoin bytes format) you want to interact with
     function authenticateMessage(bytes memory target, AccountTypes.AuthenticateMessageParams memory params) internal {
         bytes memory raw_request = params.serialize();
 
         bytes memory raw_response = Actor.call(AccountTypes.AuthenticateMessageMethodNum, target, raw_request, Misc.CBOR_CODEC, msg.value);
 
-        Actor.readRespData(raw_response);
+        bytes memory result = Actor.readRespData(raw_response);
+        require(result.length == 0, "unexpected response received");
     }
 
     /// @notice TODO fill this a proper description
+    /// @param target The account address (filecoin bytes format) you want to interact with
     function universalReceiverHook(bytes memory target, AccountTypes.UniversalReceiverParams memory params) internal {
         bytes memory raw_request = params.serialize();
 
@@ -53,6 +57,7 @@ library AccountAPI {
             msg.value
         );
 
-        Actor.readRespData(raw_response);
+        bytes memory result = Actor.readRespData(raw_response);
+        require(result.length == 0, "unexpected response received");
     }
 }

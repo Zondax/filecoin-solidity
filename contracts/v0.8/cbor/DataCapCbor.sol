@@ -17,7 +17,7 @@
 // DRAFT!! THIS CODE HAS NOT BEEN AUDITED - USE ONLY FOR PROTOTYPING
 
 // SPDX-License-Identifier: Apache-2.0
-pragma solidity >=0.4.25 <=0.8.17;
+pragma solidity ^0.8.17;
 
 import "solidity-cborutils/contracts/CBOR.sol";
 
@@ -59,7 +59,7 @@ library TransferCBOR {
 
         buf.startFixedArray(3);
         buf.writeBytes(params.to);
-        buf.writeBytes(params.amount.serializeBigNum());
+        buf.writeBytes(params.amount.serializeBigInt());
         buf.writeBytes(params.operator_data);
 
         return buf.data();
@@ -98,7 +98,7 @@ library TransferFromCBOR {
         buf.startFixedArray(4);
         buf.writeBytes(params.from);
         buf.writeBytes(params.to);
-        buf.writeBytes(params.amount.serializeBigNum());
+        buf.writeBytes(params.amount.serializeBigInt());
         buf.writeBytes(params.operator_data);
 
         return buf.data();
@@ -138,7 +138,7 @@ library IncreaseAllowanceCBOR {
 
         buf.startFixedArray(2);
         buf.writeBytes(params.operator);
-        buf.writeBytes(params.increase.serializeBigNum());
+        buf.writeBytes(params.increase.serializeBigInt());
 
         return buf.data();
     }
@@ -157,7 +157,7 @@ library DecreaseAllowanceCBOR {
 
         buf.startFixedArray(2);
         buf.writeBytes(params.operator);
-        buf.writeBytes(params.decrease.serializeBigNum());
+        buf.writeBytes(params.decrease.serializeBigInt());
 
         return buf.data();
     }
@@ -193,7 +193,7 @@ library BurnCBOR {
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
         buf.startFixedArray(1);
-        buf.writeBytes(params.amount.serializeBigNum());
+        buf.writeBytes(params.amount.serializeBigInt());
 
         return buf.data();
     }
@@ -225,7 +225,7 @@ library BurnFromCBOR {
 
         buf.startFixedArray(2);
         buf.writeBytes(params.owner);
-        buf.writeBytes(params.amount.serializeBigNum());
+        buf.writeBytes(params.amount.serializeBigInt());
 
         return buf.data();
     }
