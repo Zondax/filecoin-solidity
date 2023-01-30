@@ -19,9 +19,10 @@
 // SPDX-License-Identifier: Apache-2.0
 pragma solidity ^0.8.0;
 
+import "./cbor/AccountCbor.sol";
+import "./cbor/BytesCbor.sol";
 import "./types/AccountTypes.sol";
 import "./types/DataCapTypes.sol";
-import "./cbor/AccountCbor.sol";
 
 /// @title This library compiles a bunch of help function.
 /// @author Zondax AG

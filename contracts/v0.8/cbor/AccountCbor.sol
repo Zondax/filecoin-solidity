@@ -71,17 +71,3 @@ library UniversalReceiverHookCBOR {
         return buf.data();
     }
 }
-
-library BytesCBOR {
-    using CBOR for CBOR.CBORBuffer;
-    using CBORDecoder for bytes;
-
-    function serializeBytes(bytes memory data) internal pure returns (bytes memory) {
-        // FIXME what should the max length be on the buffer?
-        CBOR.CBORBuffer memory buf = CBOR.create(64);
-
-        buf.writeBytes(data);
-
-        return buf.data();
-    }
-}

@@ -93,7 +93,7 @@ library PowerAPI {
 
         bytes memory result = Actor.readRespData(raw_response);
 
-        return result.deserializeBigInt();
+        return result.deserializeBytesBigInt();
     }
 
     function minerRawPower(uint64 minerID) internal returns (PowerTypes.MinerRawPowerReturn memory) {

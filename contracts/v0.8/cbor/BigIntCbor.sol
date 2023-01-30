@@ -25,7 +25,7 @@ struct BigInt {
 }
 
 library BigIntCBOR {
-    function serializeBigNum(BigInt memory num) internal pure returns (bytes memory) {
+    function serializeBigInt(BigInt memory num) internal pure returns (bytes memory) {
         // TODO improve gas efficiency by using assembly code
         bytes memory raw = new bytes(num.val.length + 1);
 
