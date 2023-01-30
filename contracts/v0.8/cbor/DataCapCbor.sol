@@ -29,11 +29,13 @@ import "./BigIntCbor.sol";
 
 /// @title FIXME
 /// @author Zondax AG
-library GetAllowanceCBOR {
+library DataCapCBOR {
     using CBOR for CBOR.CBORBuffer;
     using CBORDecoder for bytes;
+    using BigIntCBOR for BigInt;
+    using BigIntCBOR for bytes;
 
-    function serialize(DataCapTypes.GetAllowanceParams memory params) internal pure returns (bytes memory) {
+    function serializeGetAllowanceParams(DataCapTypes.GetAllowanceParams memory params) internal pure returns (bytes memory) {
         // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
@@ -43,17 +45,8 @@ library GetAllowanceCBOR {
 
         return buf.data();
     }
-}
 
-/// @title FIXME
-/// @author Zondax AG
-library TransferCBOR {
-    using CBOR for CBOR.CBORBuffer;
-    using CBORDecoder for bytes;
-    using BigIntCBOR for BigInt;
-    using BigIntCBOR for bytes;
-
-    function serialize(DataCapTypes.TransferParams memory params) internal pure returns (bytes memory) {
+    function serializeTransferParams(DataCapTypes.TransferParams memory params) internal pure returns (bytes memory) {
         // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
@@ -65,7 +58,7 @@ library TransferCBOR {
         return buf.data();
     }
 
-    function deserialize(DataCapTypes.TransferReturn memory ret, bytes memory rawResp) internal pure {
+    function deserializeTransferReturn(bytes memory rawResp) internal pure returns (DataCapTypes.TransferReturn memory ret) {
         uint byteIdx = 0;
         uint len;
         bytes memory tmp;
@@ -80,18 +73,11 @@ library TransferCBOR {
         ret.to_balance = tmp.deserializeBigInt();
 
         (ret.recipient_data, byteIdx) = rawResp.readBytes(byteIdx);
+
+        return ret;
     }
-}
 
-/// @title FIXME
-/// @author Zondax AG
-library TransferFromCBOR {
-    using CBOR for CBOR.CBORBuffer;
-    using CBORDecoder for bytes;
-    using BigIntCBOR for BigInt;
-    using BigIntCBOR for bytes;
-
-    function serialize(DataCapTypes.TransferFromParams memory params) internal pure returns (bytes memory) {
+    function serializeTransferFromParams(DataCapTypes.TransferFromParams memory params) internal pure returns (bytes memory) {
         // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
@@ -104,7 +90,7 @@ library TransferFromCBOR {
         return buf.data();
     }
 
-    function deserialize(DataCapTypes.TransferFromReturn memory ret, bytes memory rawResp) internal pure {
+    function deserializeTransferFromReturn(bytes memory rawResp) internal pure returns (DataCapTypes.TransferFromReturn memory ret) {
         uint byteIdx = 0;
         uint len;
         bytes memory tmp;
@@ -122,17 +108,11 @@ library TransferFromCBOR {
         ret.allowance = tmp.deserializeBigInt();
 
         (ret.recipient_data, byteIdx) = rawResp.readBytes(byteIdx);
+
+        return ret;
     }
-}
 
-/// @title FIXME
-/// @author Zondax AG
-library IncreaseAllowanceCBOR {
-    using CBOR for CBOR.CBORBuffer;
-    using CBORDecoder for bytes;
-    using BigIntCBOR for BigInt;
-
-    function serialize(DataCapTypes.IncreaseAllowanceParams memory params) internal pure returns (bytes memory) {
+    function serializeIncreaseAllowanceParams(DataCapTypes.IncreaseAllowanceParams memory params) internal pure returns (bytes memory) {
         // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
@@ -142,16 +122,8 @@ library IncreaseAllowanceCBOR {
 
         return buf.data();
     }
-}
 
-/// @title FIXME
-/// @author Zondax AG
-library DecreaseAllowanceCBOR {
-    using CBOR for CBOR.CBORBuffer;
-    using CBORDecoder for bytes;
-    using BigIntCBOR for BigInt;
-
-    function serialize(DataCapTypes.DecreaseAllowanceParams memory params) internal pure returns (bytes memory) {
+    function serializeDecreaseAllowanceParams(DataCapTypes.DecreaseAllowanceParams memory params) internal pure returns (bytes memory) {
         // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
@@ -161,15 +133,8 @@ library DecreaseAllowanceCBOR {
 
         return buf.data();
     }
-}
 
-/// @title FIXME
-/// @author Zondax AG
-library RevokeAllowanceCBOR {
-    using CBOR for CBOR.CBORBuffer;
-    using CBORDecoder for bytes;
-
-    function serialize(DataCapTypes.RevokeAllowanceParams memory params) internal pure returns (bytes memory) {
+    function serializeRevokeAllowanceParams(DataCapTypes.RevokeAllowanceParams memory params) internal pure returns (bytes memory) {
         // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
@@ -178,17 +143,8 @@ library RevokeAllowanceCBOR {
 
         return buf.data();
     }
-}
 
-/// @title FIXME
-/// @author Zondax AG
-library BurnCBOR {
-    using CBOR for CBOR.CBORBuffer;
-    using CBORDecoder for bytes;
-    using BigIntCBOR for BigInt;
-    using BigIntCBOR for bytes;
-
-    function serialize(DataCapTypes.BurnParams memory params) internal pure returns (bytes memory) {
+    function serializeBurnParams(DataCapTypes.BurnParams memory params) internal pure returns (bytes memory) {
         // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
@@ -198,7 +154,7 @@ library BurnCBOR {
         return buf.data();
     }
 
-    function deserialize(DataCapTypes.BurnReturn memory ret, bytes memory rawResp) internal pure {
+    function deserializeBurnReturn(bytes memory rawResp) internal pure returns (DataCapTypes.BurnReturn memory ret) {
         uint byteIdx = 0;
         uint len;
         bytes memory tmp;
@@ -208,18 +164,11 @@ library BurnCBOR {
 
         (tmp, byteIdx) = rawResp.readBytes(byteIdx);
         ret.balance = tmp.deserializeBigInt();
+
+        return ret;
     }
-}
 
-/// @title FIXME
-/// @author Zondax AG
-library BurnFromCBOR {
-    using CBOR for CBOR.CBORBuffer;
-    using CBORDecoder for bytes;
-    using BigIntCBOR for BigInt;
-    using BigIntCBOR for bytes;
-
-    function serialize(DataCapTypes.BurnFromParams memory params) internal pure returns (bytes memory) {
+    function serializeBurnFromParams(DataCapTypes.BurnFromParams memory params) internal pure returns (bytes memory) {
         // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
@@ -230,7 +179,7 @@ library BurnFromCBOR {
         return buf.data();
     }
 
-    function deserialize(DataCapTypes.BurnFromReturn memory ret, bytes memory rawResp) internal pure {
+    function deserializeBurnFromReturn(bytes memory rawResp) internal pure returns (DataCapTypes.BurnFromReturn memory ret) {
         uint byteIdx = 0;
         uint len;
         bytes memory tmp;
@@ -243,5 +192,7 @@ library BurnFromCBOR {
 
         (tmp, byteIdx) = rawResp.readBytes(byteIdx);
         ret.allowance = tmp.deserializeBigInt();
+
+        return ret;
     }
 }

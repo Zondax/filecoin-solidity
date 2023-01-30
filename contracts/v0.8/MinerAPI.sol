@@ -30,21 +30,8 @@ import "./utils/Actor.sol";
 /// @dev For more info about the miner actor, please refer to https://lotus.filecoin.io/storage-providers/operate/addresses/
 /// @author Zondax AG
 library MinerAPI {
-    using ChangeBeneficiaryCBOR for MinerTypes.ChangeBeneficiaryParams;
-    using GetOwnerCBOR for MinerTypes.GetOwnerReturn;
+    using MinerCBOR for *;
     using BytesCBOR for bytes;
-    using IsControllingAddressCBOR for MinerTypes.IsControllingAddressReturn;
-    using GetSectorSizeCBOR for MinerTypes.GetSectorSizeReturn;
-    using GetAvailableBalanceCBOR for MinerTypes.GetAvailableBalanceReturn;
-    using GetVestingFundsCBOR for MinerTypes.GetVestingFundsReturn;
-    using GetBeneficiaryCBOR for MinerTypes.GetBeneficiaryReturn;
-    using ChangeWorkerAddressCBOR for MinerTypes.ChangeWorkerAddressParams;
-    using ChangePeerIDCBOR for MinerTypes.ChangePeerIDParams;
-    using ChangeMultiaddrsCBOR for MinerTypes.ChangeMultiaddrsParams;
-    using GetPeerIDCBOR for MinerTypes.GetPeerIDReturn;
-    using GetMultiaddrsCBOR for MinerTypes.GetMultiaddrsReturn;
-    using WithdrawBalanceCBOR for MinerTypes.WithdrawBalanceParams;
-    using WithdrawBalanceCBOR for MinerTypes.WithdrawBalanceReturn;
 
     /// @notice Income and returned collateral are paid to this address
     /// @notice This address is also allowed to change the worker address for the miner
@@ -57,10 +44,7 @@ library MinerAPI {
 
         bytes memory result = Actor.readRespData(raw_response);
 
-        MinerTypes.GetOwnerReturn memory response;
-        response.deserialize(result);
-
-        return response;
+        return result.deserializeGetOwnerReturn();
     }
 
     /// @param target The miner address (filecoin bytes format) you want to interact with
@@ -86,10 +70,7 @@ library MinerAPI {
 
         bytes memory result = Actor.readRespData(raw_response);
 
-        MinerTypes.IsControllingAddressReturn memory response;
-        response.deserialize(result);
-
-        return response;
+        return result.deserializeIsControllingAddressReturn();
     }
 
     /// @return the miner's sector size.
@@ -102,10 +83,7 @@ library MinerAPI {
 
         bytes memory result = Actor.readRespData(raw_response);
 
-        MinerTypes.GetSectorSizeReturn memory response;
-        response.deserialize(result);
-
-        return response;
+        return result.deserializeGetSectorSizeReturn();
     }
 
     /// @param target The miner address (filecoin bytes format) you want to interact with
@@ -119,10 +97,7 @@ library MinerAPI {
 
         bytes memory result = Actor.readRespData(raw_response);
 
-        MinerTypes.GetAvailableBalanceReturn memory response;
-        response.deserialize(result);
-
-        return response;
+        return result.deserializeGetAvailableBalanceReturn();
     }
 
     /// @param target The miner address (filecoin bytes format) you want to interact with
@@ -134,10 +109,7 @@ library MinerAPI {
 
         bytes memory result = Actor.readRespData(raw_response);
 
-        MinerTypes.GetVestingFundsReturn memory response;
-        response.deserialize(result);
-
-        return response;
+        return result.deserializeGetVestingFundsReturn();
     }
 
     /// @param target The miner address (filecoin bytes format) you want to interact with
@@ -145,7 +117,7 @@ library MinerAPI {
     /// @notice A proposal must be submitted by the owner, and takes effect after approval of both the proposed beneficiary and current beneficiary, if applicable, any current beneficiary that has time and quota remaining.
     /// @notice See FIP-0029, https://github.com/filecoin-project/FIPs/blob/master/FIPS/fip-0029.md
     function changeBeneficiary(bytes memory target, MinerTypes.ChangeBeneficiaryParams memory params) internal {
-        bytes memory raw_request = params.serialize();
+        bytes memory raw_request = params.serializeChangeBeneficiaryParams();
 
         bytes memory raw_response = Actor.call(MinerTypes.ChangeBeneficiaryMethodNum, target, raw_request, Misc.CBOR_CODEC, msg.value);
 
@@ -163,16 +135,13 @@ library MinerAPI {
 
         bytes memory result = Actor.readRespData(raw_response);
 
-        MinerTypes.GetBeneficiaryReturn memory response;
-        response.deserialize(result);
-
-        return response;
+        return result.deserializeGetBeneficiaryReturn();
     }
 
     /// @notice TODO fill me up
     /// @param target The miner address (filecoin bytes format) you want to interact with
     function changeWorkerAddress(bytes memory target, MinerTypes.ChangeWorkerAddressParams memory params) internal {
-        bytes memory raw_request = params.serialize();
+        bytes memory raw_request = params.serializeChangeWorkerAddressParams();
 
         bytes memory raw_response = Actor.call(MinerTypes.ChangeWorkerAddressMethodNum, target, raw_request, Misc.CBOR_CODEC, msg.value);
 
@@ -183,19 +152,18 @@ library MinerAPI {
     /// @notice TODO fill me up
     /// @param target The miner address (filecoin bytes format) you want to interact with
     function changePeerId(bytes memory target, MinerTypes.ChangePeerIDParams memory params) internal {
-        bytes memory raw_request = params.serialize();
+        bytes memory raw_request = params.serializeChangePeerIDParams();
 
         bytes memory raw_response = Actor.call(MinerTypes.ChangePeerIDMethodNum, target, raw_request, Misc.CBOR_CODEC, msg.value);
 
-        Actor.readRespData(raw_response);
-
-        return;
+        bytes memory result = Actor.readRespData(raw_response);
+        require(result.length == 0, "unexpected response received");
     }
 
     /// @notice TODO fill me up
     /// @param target The miner address (filecoin bytes format) you want to interact with
     function changeMultiaddresses(bytes memory target, MinerTypes.ChangeMultiaddrsParams memory params) internal {
-        bytes memory raw_request = params.serialize();
+        bytes memory raw_request = params.serializeChangeMultiaddrsParams();
 
         bytes memory raw_response = Actor.call(MinerTypes.ChangeMultiaddrsMethodNum, target, raw_request, Misc.CBOR_CODEC, msg.value);
 
@@ -240,10 +208,7 @@ library MinerAPI {
 
         bytes memory result = Actor.readRespData(raw_response);
 
-        MinerTypes.GetPeerIDReturn memory response;
-        response.deserialize(result);
-
-        return response;
+        return result.deserializeGetPeerIDReturn();
     }
 
     /// @notice TODO fill me up
@@ -255,10 +220,7 @@ library MinerAPI {
 
         bytes memory result = Actor.readRespData(raw_response);
 
-        MinerTypes.GetMultiaddrsReturn memory response;
-        response.deserialize(result);
-
-        return response;
+        return result.deserializeGetMultiaddrsReturn();
     }
 
     /// @notice TODO fill me up
@@ -268,15 +230,12 @@ library MinerAPI {
         bytes memory target,
         MinerTypes.WithdrawBalanceParams memory params
     ) internal returns (MinerTypes.WithdrawBalanceReturn memory) {
-        bytes memory raw_request = params.serialize();
+        bytes memory raw_request = params.serializeWithdrawBalanceParams();
 
         bytes memory raw_response = Actor.call(MinerTypes.WithdrawBalanceMethodNum, target, raw_request, Misc.CBOR_CODEC, msg.value);
 
         bytes memory result = Actor.readRespData(raw_response);
 
-        MinerTypes.WithdrawBalanceReturn memory response;
-        response.deserialize(result);
-
-        return response;
+        return result.deserializeWithdrawBalanceReturn();
     }
 }

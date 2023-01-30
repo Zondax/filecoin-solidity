@@ -21,19 +21,20 @@ pragma solidity ^0.8.17;
 
 import "solidity-cborutils/contracts/CBOR.sol";
 
-import {CommonTypes} from "../types/CommonTypes.sol";
-import {PowerTypes} from "../types/PowerTypes.sol";
+import "../types/PowerTypes.sol";
 import "../utils/CborDecode.sol";
 import "../utils/Misc.sol";
 import "./BigIntCbor.sol";
 
 /// @title FIXME
 /// @author Zondax AG
-library CreateMinerCBOR {
+library PowerCBOR {
     using CBOR for CBOR.CBORBuffer;
     using CBORDecoder for bytes;
+    using BigIntCBOR for BigInt;
+    using BigIntCBOR for bytes;
 
-    function serialize(PowerTypes.CreateMinerParams memory params) internal pure returns (bytes memory) {
+    function serializeCreateMinerParams(PowerTypes.CreateMinerParams memory params) internal pure returns (bytes memory) {
         // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
@@ -52,7 +53,7 @@ library CreateMinerCBOR {
         return buf.data();
     }
 
-    function deserialize(PowerTypes.CreateMinerReturn memory ret, bytes memory rawResp) internal pure {
+    function deserializeCreateMinerReturn(bytes memory rawResp) internal pure returns (PowerTypes.CreateMinerReturn memory ret) {
         uint byteIdx = 0;
         uint len;
 
@@ -61,17 +62,11 @@ library CreateMinerCBOR {
 
         (ret.id_address, byteIdx) = rawResp.readBytes(byteIdx);
         (ret.robust_address, byteIdx) = rawResp.readBytes(byteIdx);
+
+        return ret;
     }
-}
 
-/// @title FIXME
-/// @author Zondax AG
-library MinerRawPowerCBOR {
-    using CBOR for CBOR.CBORBuffer;
-    using CBORDecoder for bytes;
-    using BigIntCBOR for bytes;
-
-    function deserialize(PowerTypes.MinerRawPowerReturn memory ret, bytes memory rawResp) internal pure {
+    function deserializeMinerRawPowerReturn(bytes memory rawResp) internal pure returns (PowerTypes.MinerRawPowerReturn memory ret) {
         uint byteIdx = 0;
         uint len;
 
@@ -87,5 +82,7 @@ library MinerRawPowerCBOR {
         }
 
         (ret.meets_consensus_minimum, byteIdx) = rawResp.readBool(byteIdx);
+
+        return ret;
     }
 }

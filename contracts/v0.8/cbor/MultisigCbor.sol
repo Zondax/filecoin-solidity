@@ -21,33 +21,19 @@ pragma solidity ^0.8.17;
 
 import "solidity-cborutils/contracts/CBOR.sol";
 
-import {MultisigTypes} from "../types/MultisigTypes.sol";
+import "../types/MultisigTypes.sol";
 import "../utils/CborDecode.sol";
 import "../utils/Misc.sol";
 import "./BigIntCbor.sol";
 
-library BytesCBOR {
-    using CBOR for CBOR.CBORBuffer;
-    using CBORDecoder for bytes;
-
-    function serializeBytes(bytes memory data) internal pure returns (bytes memory) {
-        // FIXME what should the max length be on the buffer?
-        CBOR.CBORBuffer memory buf = CBOR.create(64);
-
-        buf.writeBytes(data);
-
-        return buf.data();
-    }
-}
-
 /// @title FIXME
 /// @author Zondax AG
-library ProposeCBOR {
+library MultisigCBOR {
     using CBOR for CBOR.CBORBuffer;
     using CBORDecoder for bytes;
     using BigIntCBOR for BigInt;
 
-    function serialize(MultisigTypes.ProposeParams memory params) internal pure returns (bytes memory) {
+    function serializeProposeParams(MultisigTypes.ProposeParams memory params) internal pure returns (bytes memory) {
         // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
@@ -60,7 +46,7 @@ library ProposeCBOR {
         return buf.data();
     }
 
-    function deserialize(MultisigTypes.ProposeReturn memory ret, bytes memory rawResp) internal pure {
+    function deserializeProposeReturn(bytes memory rawResp) internal pure returns (MultisigTypes.ProposeReturn memory ret) {
         uint byteIdx = 0;
         uint len;
 
@@ -71,16 +57,11 @@ library ProposeCBOR {
         (ret.applied, byteIdx) = rawResp.readBool(byteIdx);
         (ret.code, byteIdx) = rawResp.readUInt32(byteIdx);
         (ret.ret, byteIdx) = rawResp.readBytes(byteIdx);
+
+        return ret;
     }
-}
 
-/// @title FIXME
-/// @author Zondax AG
-library TxnIDCBOR {
-    using CBOR for CBOR.CBORBuffer;
-    using CBORDecoder for bytes;
-
-    function serialize(MultisigTypes.TxnIDParams memory params) internal pure returns (bytes memory) {
+    function serializeTxnIDParams(MultisigTypes.TxnIDParams memory params) internal pure returns (bytes memory) {
         // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
@@ -90,15 +71,8 @@ library TxnIDCBOR {
 
         return buf.data();
     }
-}
 
-/// @title FIXME
-/// @author Zondax AG
-library ApproveCBOR {
-    using CBOR for CBOR.CBORBuffer;
-    using CBORDecoder for bytes;
-
-    function deserialize(MultisigTypes.ApproveReturn memory ret, bytes memory rawResp) internal pure {
+    function deserializeApproveReturn(bytes memory rawResp) internal pure returns (MultisigTypes.ApproveReturn memory ret) {
         uint byteIdx = 0;
         uint len;
 
@@ -108,16 +82,11 @@ library ApproveCBOR {
         (ret.applied, byteIdx) = rawResp.readBool(byteIdx);
         (ret.code, byteIdx) = rawResp.readUInt32(byteIdx);
         (ret.ret, byteIdx) = rawResp.readBytes(byteIdx);
+
+        return ret;
     }
-}
 
-/// @title FIXME
-/// @author Zondax AG
-library AddSignerCBOR {
-    using CBOR for CBOR.CBORBuffer;
-    using CBORDecoder for bytes;
-
-    function serialize(MultisigTypes.AddSignerParams memory params) internal pure returns (bytes memory) {
+    function serializeAddSignerParams(MultisigTypes.AddSignerParams memory params) internal pure returns (bytes memory) {
         // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
@@ -127,15 +96,8 @@ library AddSignerCBOR {
 
         return buf.data();
     }
-}
 
-/// @title FIXME
-/// @author Zondax AG
-library RemoveSignerCBOR {
-    using CBOR for CBOR.CBORBuffer;
-    using CBORDecoder for bytes;
-
-    function serialize(MultisigTypes.RemoveSignerParams memory params) internal pure returns (bytes memory) {
+    function serializeRemoveSignerParams(MultisigTypes.RemoveSignerParams memory params) internal pure returns (bytes memory) {
         // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
@@ -145,15 +107,8 @@ library RemoveSignerCBOR {
 
         return buf.data();
     }
-}
 
-/// @title FIXME
-/// @author Zondax AG
-library SwapSignerCBOR {
-    using CBOR for CBOR.CBORBuffer;
-    using CBORDecoder for bytes;
-
-    function serialize(MultisigTypes.SwapSignerParams memory params) internal pure returns (bytes memory) {
+    function serializeSwapSignerParams(MultisigTypes.SwapSignerParams memory params) internal pure returns (bytes memory) {
         // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
@@ -163,15 +118,10 @@ library SwapSignerCBOR {
 
         return buf.data();
     }
-}
 
-/// @title FIXME
-/// @author Zondax AG
-library ChangeNumApprovalsThresholdCBOR {
-    using CBOR for CBOR.CBORBuffer;
-    using CBORDecoder for bytes;
-
-    function serialize(MultisigTypes.ChangeNumApprovalsThresholdParams memory params) internal pure returns (bytes memory) {
+    function serializeChangeNumApprovalsThresholdParams(
+        MultisigTypes.ChangeNumApprovalsThresholdParams memory params
+    ) internal pure returns (bytes memory) {
         // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
@@ -180,16 +130,8 @@ library ChangeNumApprovalsThresholdCBOR {
 
         return buf.data();
     }
-}
 
-/// @title FIXME
-/// @author Zondax AG
-library LockBalanceCBOR {
-    using CBOR for CBOR.CBORBuffer;
-    using CBORDecoder for bytes;
-    using BigIntCBOR for BigInt;
-
-    function serialize(MultisigTypes.LockBalanceParams memory params) internal pure returns (bytes memory) {
+    function serializeLockBalanceParams(MultisigTypes.LockBalanceParams memory params) internal pure returns (bytes memory) {
         // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
