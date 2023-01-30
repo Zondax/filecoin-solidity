@@ -21,43 +21,33 @@ pragma solidity ^0.8.17;
 
 import "./types/InitTypes.sol";
 import "./cbor/InitCbor.sol";
-import "./types/CommonTypes.sol";
 import "./utils/Misc.sol";
 import "./utils/Actor.sol";
 
 /// @title This contract is a proxy to the singleton Init actor (address: f01). Calling one of its methods will result in a cross-actor call being performed.
 /// @author Zondax AG
 library InitAPI {
-    using ExecCBOR for InitTypes.ExecParams;
-    using ExecCBOR for InitTypes.ExecReturn;
-    using Exec4CBOR for InitTypes.Exec4Params;
-    using Exec4CBOR for InitTypes.Exec4Return;
+    using InitCBOR for *;
 
     /// @notice TODO fill this a proper description
     function exec(InitTypes.ExecParams memory params) internal returns (InitTypes.ExecReturn memory) {
-        bytes memory raw_request = params.serialize();
+        bytes memory raw_request = params.serializeExecParams();
 
         bytes memory raw_response = Actor.call(InitTypes.ExecMethodNum, InitTypes.ActorID, raw_request, Misc.CBOR_CODEC, msg.value);
 
         bytes memory result = Actor.readRespData(raw_response);
 
-        InitTypes.ExecReturn memory response;
-        response.deserialize(result);
-
-        return response;
+        return result.deserializeExecReturn();
     }
 
     /// @notice TODO fill this a proper description
     function exec4(InitTypes.Exec4Params memory params) internal returns (InitTypes.Exec4Return memory) {
-        bytes memory raw_request = params.serialize();
+        bytes memory raw_request = params.serializeExec4Params();
 
         bytes memory raw_response = Actor.call(InitTypes.Exec4MethodNum, InitTypes.ActorID, raw_request, Misc.CBOR_CODEC, msg.value);
 
         bytes memory result = Actor.readRespData(raw_response);
 
-        InitTypes.Exec4Return memory response;
-        response.deserialize(result);
-
-        return response;
+        return result.deserializeExec4Return();
     }
 }
