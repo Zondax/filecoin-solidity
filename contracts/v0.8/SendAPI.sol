@@ -29,6 +29,7 @@ library SendAPI {
     function send(bytes memory toAddress, uint256 amount) internal {
         bytes memory rawResponse = Actor.call(0, toAddress, new bytes(0), Misc.NONE_CODEC, amount);
 
-        Actor.readRespData(rawResponse);
+        bytes memory result = Actor.readRespData(rawResponse);
+        require(result.length == 0, "unexpected response received");
     }
 }

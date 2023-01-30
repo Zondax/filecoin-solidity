@@ -72,9 +72,8 @@ library MinerAPI {
 
         bytes memory raw_response = Actor.call(MinerTypes.ChangeOwnerAddressMethodNum, target, raw_request, Misc.CBOR_CODEC, msg.value);
 
-        Actor.readRespData(raw_response);
-
-        return;
+        bytes memory result = Actor.readRespData(raw_response);
+        require(result.length == 0, "unexpected response received");
     }
 
     /// @param target The miner address (type ID) you want to interact with
@@ -150,9 +149,8 @@ library MinerAPI {
 
         bytes memory raw_response = Actor.call(MinerTypes.ChangeBeneficiaryMethodNum, target, raw_request, Misc.CBOR_CODEC, msg.value);
 
-        Actor.readRespData(raw_response);
-
-        return;
+        bytes memory result = Actor.readRespData(raw_response);
+        require(result.length == 0, "unexpected response received");
     }
 
     /// @param target The miner address (type ID) you want to interact with
@@ -178,9 +176,8 @@ library MinerAPI {
 
         bytes memory raw_response = Actor.call(MinerTypes.ChangeWorkerAddressMethodNum, target, raw_request, Misc.CBOR_CODEC, msg.value);
 
-        Actor.readRespData(raw_response);
-
-        return;
+        bytes memory result = Actor.readRespData(raw_response);
+        require(result.length == 0, "unexpected response received");
     }
 
     /// @notice TODO fill me up
@@ -202,9 +199,8 @@ library MinerAPI {
 
         bytes memory raw_response = Actor.call(MinerTypes.ChangeMultiaddrsMethodNum, target, raw_request, Misc.CBOR_CODEC, msg.value);
 
-        Actor.readRespData(raw_response);
-
-        return;
+        bytes memory result = Actor.readRespData(raw_response);
+        require(result.length == 0, "unexpected response received");
     }
 
     /// @notice TODO fill me up
@@ -214,9 +210,8 @@ library MinerAPI {
 
         bytes memory raw_response = Actor.call(MinerTypes.RepayDebtMethodNum, target, raw_request, Misc.NONE_CODEC, msg.value);
 
-        Actor.readRespData(raw_response);
-
-        return;
+        bytes memory result = Actor.readRespData(raw_response);
+        require(result.length == 0, "unexpected response received");
     }
 
     /// @notice TODO fill me up
@@ -232,9 +227,8 @@ library MinerAPI {
             msg.value
         );
 
-        Actor.readRespData(raw_response);
-
-        return;
+        bytes memory result = Actor.readRespData(raw_response);
+        require(result.length == 0, "unexpected response received");
     }
 
     /// @notice TODO fill me up

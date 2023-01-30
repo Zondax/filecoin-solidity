@@ -39,7 +39,8 @@ library AccountAPI {
 
         bytes memory raw_response = Actor.call(AccountTypes.AuthenticateMessageMethodNum, target, raw_request, Misc.CBOR_CODEC, msg.value);
 
-        Actor.readRespData(raw_response);
+        bytes memory result = Actor.readRespData(raw_response);
+        require(result.length == 0, "unexpected response received");
     }
 
     /// @notice TODO fill this a proper description
@@ -54,6 +55,7 @@ library AccountAPI {
             msg.value
         );
 
-        Actor.readRespData(raw_response);
+        bytes memory result = Actor.readRespData(raw_response);
+        require(result.length == 0, "unexpected response received");
     }
 }
