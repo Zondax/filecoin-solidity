@@ -69,9 +69,8 @@ library VerifRegAPI {
             msg.value
         );
 
-        Actor.readRespData(raw_response);
-
-        return;
+        bytes memory result = Actor.readRespData(raw_response);
+        require(result.length == 0, "unexpected response received");
     }
 
     function removeExpiredAllocations(
