@@ -40,7 +40,7 @@ library WithdrawBalanceCBOR {
 
         buf.startFixedArray(2);
         buf.writeBytes(params.provider_or_client);
-        buf.writeBytes(params.tokenAmount.serializeBigNum());
+        buf.writeBytes(params.tokenAmount.serializeBigInt());
 
         return buf.data();
     }
@@ -51,29 +51,6 @@ library WithdrawBalanceCBOR {
 
         (tmp, byteIdx) = rawResp.readBytes(byteIdx);
         ret.amount_withdrawn = tmp.deserializeBigInt();
-    }
-}
-
-library AddressCBOR {
-    using CBOR for CBOR.CBORBuffer;
-    using CBORDecoder for bytes;
-
-    function serializeAddress(bytes memory addr) internal pure returns (bytes memory) {
-        // FIXME what should the max length be on the buffer?
-        CBOR.CBORBuffer memory buf = CBOR.create(64);
-
-        buf.writeBytes(addr);
-
-        return buf.data();
-    }
-
-    function deserializeAddress(bytes memory ret) internal pure returns (bytes memory) {
-        bytes memory addr;
-        uint byteIdx = 0;
-
-        (addr, byteIdx) = ret.readBytes(byteIdx);
-
-        return addr;
     }
 }
 
@@ -271,9 +248,9 @@ library PublishStorageDealsCBOR {
             buf.writeString(params.deals[i].proposal.label);
             buf.writeInt64(params.deals[i].proposal.start_epoch);
             buf.writeInt64(params.deals[i].proposal.end_epoch);
-            buf.writeBytes(params.deals[i].proposal.storage_price_per_epoch.serializeBigNum());
-            buf.writeBytes(params.deals[i].proposal.provider_collateral.serializeBigNum());
-            buf.writeBytes(params.deals[i].proposal.client_collateral.serializeBigNum());
+            buf.writeBytes(params.deals[i].proposal.storage_price_per_epoch.serializeBigInt());
+            buf.writeBytes(params.deals[i].proposal.provider_collateral.serializeBigInt());
+            buf.writeBytes(params.deals[i].proposal.client_collateral.serializeBigInt());
 
             buf.writeBytes(params.deals[i].client_signature);
         }

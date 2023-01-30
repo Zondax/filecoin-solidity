@@ -21,6 +21,7 @@ pragma solidity ^0.8.17;
 
 import "./types/MarketTypes.sol";
 import "./cbor/MarketCbor.sol";
+import "./cbor/BytesCbor.sol";
 import "./types/CommonTypes.sol";
 import "./utils/Misc.sol";
 import "./utils/Actor.sol";
@@ -28,7 +29,7 @@ import "./utils/Actor.sol";
 /// @title This contract is a proxy to the singleton Storage Market actor (address: f05). Calling one of its methods will result in a cross-actor call being performed.
 /// @author Zondax AG
 library MarketAPI {
-    using AddressCBOR for bytes;
+    using BytesCBOR for bytes;
     using DealIDCBOR for uint64;
     using WithdrawBalanceCBOR for MarketTypes.WithdrawBalanceParams;
     using WithdrawBalanceCBOR for MarketTypes.WithdrawBalanceReturn;

@@ -21,6 +21,7 @@ pragma solidity ^0.8.17;
 
 import "./types/AccountTypes.sol";
 import "./cbor/AccountCbor.sol";
+import "./cbor/BytesCbor.sol";
 import "./types/CommonTypes.sol";
 import "./utils/Misc.sol";
 import "./utils/Actor.sol";

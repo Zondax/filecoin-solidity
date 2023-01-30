@@ -21,6 +21,7 @@ pragma solidity ^0.8.17;
 
 import "./types/MinerTypes.sol";
 import "./cbor/MinerCbor.sol";
+import "./cbor/BytesCbor.sol";
 import "./utils/Misc.sol";
 import "./utils/Actor.sol";
 
@@ -31,7 +32,7 @@ import "./utils/Actor.sol";
 library MinerAPI {
     using ChangeBeneficiaryCBOR for MinerTypes.ChangeBeneficiaryParams;
     using GetOwnerCBOR for MinerTypes.GetOwnerReturn;
-    using AddressCBOR for bytes;
+    using BytesCBOR for bytes;
     using IsControllingAddressCBOR for MinerTypes.IsControllingAddressReturn;
     using GetSectorSizeCBOR for MinerTypes.GetSectorSizeReturn;
     using GetAvailableBalanceCBOR for MinerTypes.GetAvailableBalanceReturn;

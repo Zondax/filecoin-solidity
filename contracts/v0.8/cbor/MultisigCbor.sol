@@ -53,7 +53,7 @@ library ProposeCBOR {
 
         buf.startFixedArray(4);
         buf.writeBytes(params.to);
-        buf.writeBytes(params.value.serializeBigNum());
+        buf.writeBytes(params.value.serializeBigInt());
         buf.writeUInt64(params.method);
         buf.writeBytes(params.params);
 
@@ -196,7 +196,7 @@ library LockBalanceCBOR {
         buf.startFixedArray(3);
         buf.writeInt64(params.start_epoch);
         buf.writeInt64(params.unlock_duration);
-        buf.writeBytes(params.amount.serializeBigNum());
+        buf.writeBytes(params.amount.serializeBigInt());
 
         return buf.data();
     }

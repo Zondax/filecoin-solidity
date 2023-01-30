@@ -29,6 +29,15 @@ library BytesCBOR {
     using CBORDecoder for bytes;
     using BigIntCBOR for bytes;
 
+    function serializeBytes(bytes memory data) internal pure returns (bytes memory) {
+        // FIXME what should the max length be on the buffer?
+        CBOR.CBORBuffer memory buf = CBOR.create(64);
+
+        buf.writeBytes(data);
+
+        return buf.data();
+    }
+
     function serializeAddress(bytes memory addr) internal pure returns (bytes memory) {
         // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
@@ -65,7 +74,7 @@ library BytesCBOR {
         return response;
     }
 
-    function deserializeBigInt(bytes memory ret) internal pure returns (BigInt memory) {
+    function deserializeBytesBigInt(bytes memory ret) internal pure returns (BigInt memory) {
         bytes memory tmp;
         uint byteIdx = 0;
 

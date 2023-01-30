@@ -76,7 +76,7 @@ library DataCapAPI {
 
         bytes memory result = Actor.readRespData(raw_response);
 
-        return result.deserializeBigInt();
+        return result.deserializeBytesBigInt();
     }
 
     function balance(bytes memory addr) internal returns (BigInt memory) {
@@ -92,7 +92,7 @@ library DataCapAPI {
 
         bytes memory result = Actor.readRespData(raw_response);
 
-        return result.deserializeBigInt();
+        return result.deserializeBytesBigInt();
     }
 
     function allowance(DataCapTypes.GetAllowanceParams memory params) internal returns (BigInt memory) {
@@ -108,7 +108,7 @@ library DataCapAPI {
 
         bytes memory result = Actor.readRespData(raw_response);
 
-        return result.deserializeBigInt();
+        return result.deserializeBytesBigInt();
     }
 
     function transfer(DataCapTypes.TransferParams memory params) internal returns (DataCapTypes.TransferReturn memory) {
@@ -162,7 +162,7 @@ library DataCapAPI {
 
         bytes memory result = Actor.readRespData(raw_response);
 
-        return result.deserializeBigInt();
+        return result.deserializeBytesBigInt();
     }
 
     function decreaseAllowance(DataCapTypes.DecreaseAllowanceParams memory params) internal returns (BigInt memory) {
@@ -178,7 +178,7 @@ library DataCapAPI {
 
         bytes memory result = Actor.readRespData(raw_response);
 
-        return result.deserializeBigInt();
+        return result.deserializeBytesBigInt();
     }
 
     function revokeAllowance(DataCapTypes.RevokeAllowanceParams memory params) internal returns (BigInt memory) {
@@ -194,7 +194,7 @@ library DataCapAPI {
 
         bytes memory result = Actor.readRespData(raw_response);
 
-        return result.deserializeBigInt();
+        return result.deserializeBytesBigInt();
     }
 
     function burn(DataCapTypes.BurnParams memory params) internal returns (DataCapTypes.BurnReturn memory) {
