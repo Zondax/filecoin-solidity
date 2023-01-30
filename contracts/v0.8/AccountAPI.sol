@@ -34,6 +34,7 @@ library AccountAPI {
     using BytesCBOR for bytes;
 
     /// @notice TODO fill this a proper description
+    /// @param target The account address (filecoin bytes format) you want to interact with
     function authenticateMessage(bytes memory target, AccountTypes.AuthenticateMessageParams memory params) internal {
         bytes memory raw_request = params.serialize();
 
@@ -44,6 +45,7 @@ library AccountAPI {
     }
 
     /// @notice TODO fill this a proper description
+    /// @param target The account address (filecoin bytes format) you want to interact with
     function universalReceiverHook(bytes memory target, AccountTypes.UniversalReceiverParams memory params) internal {
         bytes memory raw_request = params.serialize();
 

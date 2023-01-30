@@ -48,7 +48,7 @@ library MinerAPI {
 
     /// @notice Income and returned collateral are paid to this address
     /// @notice This address is also allowed to change the worker address for the miner
-    /// @param target The miner address (type ID) you want to interact with
+    /// @param target The miner address (filecoin bytes format) you want to interact with
     /// @return the owner address of a Miner
     function getOwner(bytes memory target) internal returns (MinerTypes.GetOwnerReturn memory) {
         bytes memory raw_request = new bytes(0);
@@ -63,7 +63,7 @@ library MinerAPI {
         return response;
     }
 
-    /// @param target The miner address (type ID) you want to interact with
+    /// @param target The miner address (filecoin bytes format) you want to interact with
     /// @param addr New owner address
     /// @notice Proposes or confirms a change of owner address.
     /// @notice If invoked by the current owner, proposes a new owner address for confirmation. If the proposed address is the current owner address, revokes any existing proposal that proposed address.
@@ -76,7 +76,7 @@ library MinerAPI {
         require(result.length == 0, "unexpected response received");
     }
 
-    /// @param target The miner address (type ID) you want to interact with
+    /// @param target The miner address (filecoin bytes format) you want to interact with
     /// @param addr The "controlling" addresses are the Owner, the Worker, and all Control Addresses.
     /// @return Whether the provided address is "controlling".
     function isControllingAddress(bytes memory target, bytes memory addr) internal returns (MinerTypes.IsControllingAddressReturn memory) {
@@ -93,7 +93,7 @@ library MinerAPI {
     }
 
     /// @return the miner's sector size.
-    /// @param target The miner address (type ID) you want to interact with
+    /// @param target The miner address (filecoin bytes format) you want to interact with
     /// @dev For more information about sector sizes, please refer to https://spec.filecoin.io/systems/filecoin_mining/sector/#section-systems.filecoin_mining.sector
     function getSectorSize(bytes memory target) internal returns (MinerTypes.GetSectorSizeReturn memory) {
         bytes memory raw_request = new bytes(0);
@@ -108,7 +108,7 @@ library MinerAPI {
         return response;
     }
 
-    /// @param target The miner address (type ID) you want to interact with
+    /// @param target The miner address (filecoin bytes format) you want to interact with
     /// @notice This is calculated as actor balance - (vesting funds + pre-commit deposit + initial pledge requirement + fee debt)
     /// @notice Can go negative if the miner is in IP debt.
     /// @return the available balance of this miner.
@@ -125,7 +125,7 @@ library MinerAPI {
         return response;
     }
 
-    /// @param target The miner address (type ID) you want to interact with
+    /// @param target The miner address (filecoin bytes format) you want to interact with
     /// @return the funds vesting in this miner as a list of (vesting_epoch, vesting_amount) tuples.
     function getVestingFunds(bytes memory target) internal returns (MinerTypes.GetVestingFundsReturn memory) {
         bytes memory raw_request = new bytes(0);
@@ -140,7 +140,7 @@ library MinerAPI {
         return response;
     }
 
-    /// @param target The miner address (type ID) you want to interact with
+    /// @param target The miner address (filecoin bytes format) you want to interact with
     /// @notice Proposes or confirms a change of beneficiary address.
     /// @notice A proposal must be submitted by the owner, and takes effect after approval of both the proposed beneficiary and current beneficiary, if applicable, any current beneficiary that has time and quota remaining.
     /// @notice See FIP-0029, https://github.com/filecoin-project/FIPs/blob/master/FIPS/fip-0029.md
@@ -153,7 +153,7 @@ library MinerAPI {
         require(result.length == 0, "unexpected response received");
     }
 
-    /// @param target The miner address (type ID) you want to interact with
+    /// @param target The miner address (filecoin bytes format) you want to interact with
     /// @notice This method is for use by other actors (such as those acting as beneficiaries), and to abstract the state representation for clients.
     /// @notice Retrieves the currently active and proposed beneficiary information.
     function getBeneficiary(bytes memory target) internal returns (MinerTypes.GetBeneficiaryReturn memory) {
@@ -170,7 +170,7 @@ library MinerAPI {
     }
 
     /// @notice TODO fill me up
-    /// @param target The miner address (type ID) you want to interact with
+    /// @param target The miner address (filecoin bytes format) you want to interact with
     function changeWorkerAddress(bytes memory target, MinerTypes.ChangeWorkerAddressParams memory params) internal {
         bytes memory raw_request = params.serialize();
 
@@ -181,7 +181,7 @@ library MinerAPI {
     }
 
     /// @notice TODO fill me up
-    /// @param target The miner address (type ID) you want to interact with
+    /// @param target The miner address (filecoin bytes format) you want to interact with
     function changePeerId(bytes memory target, MinerTypes.ChangePeerIDParams memory params) internal {
         bytes memory raw_request = params.serialize();
 
@@ -193,7 +193,7 @@ library MinerAPI {
     }
 
     /// @notice TODO fill me up
-    /// @param target The miner address (type ID) you want to interact with
+    /// @param target The miner address (filecoin bytes format) you want to interact with
     function changeMultiaddresses(bytes memory target, MinerTypes.ChangeMultiaddrsParams memory params) internal {
         bytes memory raw_request = params.serialize();
 
@@ -204,7 +204,7 @@ library MinerAPI {
     }
 
     /// @notice TODO fill me up
-    /// @param target The miner address (type ID) you want to interact with
+    /// @param target The miner address (filecoin bytes format) you want to interact with
     function repayDebt(bytes memory target) internal {
         bytes memory raw_request = new bytes(0);
 
@@ -215,7 +215,7 @@ library MinerAPI {
     }
 
     /// @notice TODO fill me up
-    /// @param target The miner address (type ID) you want to interact with
+    /// @param target The miner address (filecoin bytes format) you want to interact with
     function confirmChangeWorkerAddress(bytes memory target) internal {
         bytes memory raw_request = new bytes(0);
 
@@ -232,7 +232,7 @@ library MinerAPI {
     }
 
     /// @notice TODO fill me up
-    /// @param target The miner address (type ID) you want to interact with
+    /// @param target The miner address (filecoin bytes format) you want to interact with
     function getPeerId(bytes memory target) internal returns (MinerTypes.GetPeerIDReturn memory) {
         bytes memory raw_request = new bytes(0);
 
@@ -247,7 +247,7 @@ library MinerAPI {
     }
 
     /// @notice TODO fill me up
-    /// @param target The miner address (type ID) you want to interact with
+    /// @param target The miner address (filecoin bytes format) you want to interact with
     function getMultiaddresses(bytes memory target) internal returns (MinerTypes.GetMultiaddrsReturn memory) {
         bytes memory raw_request = new bytes(0);
 
@@ -262,7 +262,7 @@ library MinerAPI {
     }
 
     /// @notice TODO fill me up
-    /// @param target The miner address (type ID) you want to interact with
+    /// @param target The miner address (filecoin bytes format) you want to interact with
     /// @param params the amount you want to withdraw
     function withdrawBalance(
         bytes memory target,

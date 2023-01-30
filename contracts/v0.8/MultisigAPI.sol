@@ -40,6 +40,7 @@ library MultisigAPI {
     using LockBalanceCBOR for MultisigTypes.LockBalanceParams;
 
     /// @notice TODO fill me up
+    /// @param target The multisig address (filecoin bytes format) you want to interact with
     function propose(bytes memory target, MultisigTypes.ProposeParams memory params) internal returns (MultisigTypes.ProposeReturn memory) {
         bytes memory raw_request = params.serialize();
 
@@ -54,6 +55,7 @@ library MultisigAPI {
     }
 
     /// @notice TODO fill me up
+    /// @param target The multisig address (filecoin bytes format) you want to interact with
     function approve(bytes memory target, MultisigTypes.TxnIDParams memory params) internal returns (MultisigTypes.ApproveReturn memory) {
         bytes memory raw_request = params.serialize();
 
@@ -68,6 +70,7 @@ library MultisigAPI {
     }
 
     /// @notice TODO fill me up
+    /// @param target The multisig address (filecoin bytes format) you want to interact with
     function cancel(bytes memory target, MultisigTypes.TxnIDParams memory params) internal {
         bytes memory raw_request = params.serialize();
 
@@ -78,6 +81,7 @@ library MultisigAPI {
     }
 
     /// @notice TODO fill me up
+    /// @param target The multisig address (filecoin bytes format) you want to interact with
     function addSigner(bytes memory target, MultisigTypes.AddSignerParams memory params) internal {
         bytes memory raw_request = params.serialize();
 
@@ -87,6 +91,7 @@ library MultisigAPI {
     }
 
     /// @notice TODO fill me up
+    /// @param target The multisig address (filecoin bytes format) you want to interact with
     function removeSigner(bytes memory target, MultisigTypes.RemoveSignerParams memory params) internal {
         bytes memory raw_request = params.serialize();
 
@@ -97,6 +102,7 @@ library MultisigAPI {
     }
 
     /// @notice TODO fill me up
+    /// @param target The multisig address (filecoin bytes format) you want to interact with
     function swapSigner(bytes memory target, MultisigTypes.SwapSignerParams memory params) internal {
         bytes memory raw_request = params.serialize();
 
@@ -107,6 +113,7 @@ library MultisigAPI {
     }
 
     /// @notice TODO fill me up
+    /// @param target The multisig address (filecoin bytes format) you want to interact with
     function changeNumApprovalsThreshold(bytes memory target, MultisigTypes.ChangeNumApprovalsThresholdParams memory params) internal {
         bytes memory raw_request = params.serialize();
 
@@ -123,6 +130,7 @@ library MultisigAPI {
     }
 
     /// @notice TODO fill me up
+    /// @param target The multisig address (filecoin bytes format) you want to interact with
     function lockBalance(bytes memory target, MultisigTypes.LockBalanceParams memory params) internal {
         bytes memory raw_request = params.serialize();
 
@@ -133,6 +141,7 @@ library MultisigAPI {
     }
 
     /// @notice TODO fill me up
+    /// @param target The multisig address (filecoin bytes format) you want to interact with
     function universalReceiverHook(bytes memory target, bytes memory params) internal {
         bytes memory raw_request = params.serializeBytes();
 
