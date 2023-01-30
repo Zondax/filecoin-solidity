@@ -26,6 +26,7 @@ import "./utils/Actor.sol";
 /// @author Zondax AG
 library SendAPI {
     /// @notice TODO fill this a proper description
+    /// @param target The address (filecoin bytes format) you want to send funds to
     function send(bytes memory toAddress, uint256 amount) internal {
         bytes memory rawResponse = Actor.call(0, toAddress, new bytes(0), Misc.NONE_CODEC, amount);
 
