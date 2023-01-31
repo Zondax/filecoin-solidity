@@ -38,7 +38,7 @@ library VerifRegAPI {
             raw_request,
             Misc.CBOR_CODEC,
             msg.value,
-            true
+            false
         );
 
         bytes memory result = Actor.readRespData(raw_response);
