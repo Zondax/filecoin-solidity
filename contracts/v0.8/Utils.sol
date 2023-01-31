@@ -19,14 +19,15 @@
 // SPDX-License-Identifier: Apache-2.0
 pragma solidity ^0.8.0;
 
+import "./cbor/AccountCbor.sol";
+import "./cbor/BytesCbor.sol";
 import "./types/AccountTypes.sol";
 import "./types/DataCapTypes.sol";
-import "./cbor/AccountCbor.sol";
 
 /// @title This library compiles a bunch of help function.
 /// @author Zondax AG
 library Utils {
-    using AuthenticateMessageCBOR for AccountTypes.AuthenticateMessageParams;
+    using AccountCBOR for *;
     using BytesCBOR for bytes;
 
     event ReceivedDataCap(string received);
@@ -36,17 +37,14 @@ library Utils {
         uint64,
         bytes calldata params
     ) internal returns (AccountTypes.AuthenticateMessageParams memory) {
-        AccountTypes.AuthenticateMessageParams memory response;
         // dispatch methods
         if (method == AccountTypes.AuthenticateMessageMethodNum) {
             // deserialize params here
-            response.deserialize(params);
-
-            return response;
+            return params.deserializeAuthenticateMessageParams();
         } else if (method == DataCapTypes.ReceiverHookMethodNum) {
             emit ReceivedDataCap("DataCap Received!");
 
-            return response;
+            return AccountTypes.AuthenticateMessageParams(new bytes(0), new bytes(0));
         } else {
             revert("the filecoin method that was called is not handled");
         }

@@ -17,7 +17,7 @@
 // DRAFT!! THIS CODE HAS NOT BEEN AUDITED - USE ONLY FOR PROTOTYPING
 
 // SPDX-License-Identifier: Apache-2.0
-pragma solidity >=0.4.25 <=0.8.17;
+pragma solidity ^0.8.17;
 
 import "solidity-cborutils/contracts/CBOR.sol";
 
@@ -28,12 +28,12 @@ import "../utils/Misc.sol";
 
 /// @title FIXME
 /// @author Zondax AG
-library ExecCBOR {
+library InitCBOR {
     using CBOR for CBOR.CBORBuffer;
     using FilecoinCbor for CBOR.CBORBuffer;
     using CBORDecoder for bytes;
 
-    function serialize(InitTypes.ExecParams memory params) internal pure returns (bytes memory) {
+    function serializeExecParams(InitTypes.ExecParams memory params) internal pure returns (bytes memory) {
         // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
@@ -44,7 +44,7 @@ library ExecCBOR {
         return buf.data();
     }
 
-    function deserialize(InitTypes.ExecReturn memory ret, bytes memory rawResp) internal pure {
+    function deserializeExecReturn(bytes memory rawResp) internal pure returns (InitTypes.ExecReturn memory ret) {
         uint byteIdx = 0;
         uint len;
 
@@ -53,17 +53,11 @@ library ExecCBOR {
 
         (ret.id_address, byteIdx) = rawResp.readBytes(byteIdx);
         (ret.robust_address, byteIdx) = rawResp.readBytes(byteIdx);
+
+        return ret;
     }
-}
 
-/// @title FIXME
-/// @author Zondax AG
-library Exec4CBOR {
-    using CBOR for CBOR.CBORBuffer;
-    using FilecoinCbor for CBOR.CBORBuffer;
-    using CBORDecoder for bytes;
-
-    function serialize(InitTypes.Exec4Params memory params) internal pure returns (bytes memory) {
+    function serializeExec4Params(InitTypes.Exec4Params memory params) internal pure returns (bytes memory) {
         // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
@@ -75,7 +69,7 @@ library Exec4CBOR {
         return buf.data();
     }
 
-    function deserialize(InitTypes.Exec4Return memory ret, bytes memory rawResp) internal pure {
+    function deserializeExec4Return(bytes memory rawResp) internal pure returns (InitTypes.Exec4Return memory ret) {
         uint byteIdx = 0;
         uint len;
 
@@ -84,5 +78,7 @@ library Exec4CBOR {
 
         (ret.id_address, byteIdx) = rawResp.readBytes(byteIdx);
         (ret.robust_address, byteIdx) = rawResp.readBytes(byteIdx);
+
+        return ret;
     }
 }

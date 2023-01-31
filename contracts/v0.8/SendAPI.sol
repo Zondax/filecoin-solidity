@@ -17,7 +17,7 @@
 // DRAFT!! THIS CODE HAS NOT BEEN AUDITED - USE ONLY FOR PROTOTYPING
 
 // SPDX-License-Identifier: Apache-2.0
-pragma solidity >=0.4.25 <=0.8.17;
+pragma solidity ^0.8.17;
 
 import "./utils/Misc.sol";
 import "./utils/Actor.sol";
@@ -26,9 +26,11 @@ import "./utils/Actor.sol";
 /// @author Zondax AG
 library SendAPI {
     /// @notice TODO fill this a proper description
+    /// @param toAddress The address (filecoin bytes format) you want to send funds to
     function send(bytes memory toAddress, uint256 amount) internal {
-        bytes memory rawResponse = Actor.call(0, toAddress, new bytes(0), Misc.NONE_CODEC, amount);
+        bytes memory rawResponse = Actor.call(0, toAddress, new bytes(0), Misc.NONE_CODEC, amount, false);
 
-        Actor.readRespData(rawResponse);
+        bytes memory result = Actor.readRespData(rawResponse);
+        require(result.length == 0, "unexpected response received");
     }
 }
