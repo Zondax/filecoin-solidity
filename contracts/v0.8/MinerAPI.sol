@@ -40,7 +40,7 @@ library MinerAPI {
     function getOwner(bytes memory target) internal returns (MinerTypes.GetOwnerReturn memory) {
         bytes memory raw_request = new bytes(0);
 
-        bytes memory raw_response = Actor.call(MinerTypes.GetOwnerMethodNum, target, raw_request, Misc.NONE_CODEC, msg.value);
+        bytes memory raw_response = Actor.call(MinerTypes.GetOwnerMethodNum, target, raw_request, Misc.NONE_CODEC, msg.value, true);
 
         bytes memory result = Actor.readRespData(raw_response);
 
@@ -54,7 +54,14 @@ library MinerAPI {
     function changeOwnerAddress(bytes memory target, bytes memory addr) internal {
         bytes memory raw_request = addr.serializeAddress();
 
-        bytes memory raw_response = Actor.call(MinerTypes.ChangeOwnerAddressMethodNum, target, raw_request, Misc.CBOR_CODEC, msg.value);
+        bytes memory raw_response = Actor.call(
+            MinerTypes.ChangeOwnerAddressMethodNum,
+            target,
+            raw_request,
+            Misc.CBOR_CODEC,
+            msg.value,
+            false
+        );
 
         bytes memory result = Actor.readRespData(raw_response);
         require(result.length == 0, "unexpected response received");
@@ -66,7 +73,14 @@ library MinerAPI {
     function isControllingAddress(bytes memory target, bytes memory addr) internal returns (MinerTypes.IsControllingAddressReturn memory) {
         bytes memory raw_request = addr.serializeAddress();
 
-        bytes memory raw_response = Actor.call(MinerTypes.IsControllingAddressMethodNum, target, raw_request, Misc.CBOR_CODEC, msg.value);
+        bytes memory raw_response = Actor.call(
+            MinerTypes.IsControllingAddressMethodNum,
+            target,
+            raw_request,
+            Misc.CBOR_CODEC,
+            msg.value,
+            true
+        );
 
         bytes memory result = Actor.readRespData(raw_response);
 
@@ -79,7 +93,7 @@ library MinerAPI {
     function getSectorSize(bytes memory target) internal returns (MinerTypes.GetSectorSizeReturn memory) {
         bytes memory raw_request = new bytes(0);
 
-        bytes memory raw_response = Actor.call(MinerTypes.GetSectorSizeMethodNum, target, raw_request, Misc.NONE_CODEC, msg.value);
+        bytes memory raw_response = Actor.call(MinerTypes.GetSectorSizeMethodNum, target, raw_request, Misc.NONE_CODEC, msg.value, true);
 
         bytes memory result = Actor.readRespData(raw_response);
 
@@ -93,7 +107,14 @@ library MinerAPI {
     function getAvailableBalance(bytes memory target) internal returns (MinerTypes.GetAvailableBalanceReturn memory) {
         bytes memory raw_request = new bytes(0);
 
-        bytes memory raw_response = Actor.call(MinerTypes.GetAvailableBalanceMethodNum, target, raw_request, Misc.NONE_CODEC, msg.value);
+        bytes memory raw_response = Actor.call(
+            MinerTypes.GetAvailableBalanceMethodNum,
+            target,
+            raw_request,
+            Misc.NONE_CODEC,
+            msg.value,
+            true
+        );
 
         bytes memory result = Actor.readRespData(raw_response);
 
@@ -105,7 +126,7 @@ library MinerAPI {
     function getVestingFunds(bytes memory target) internal returns (MinerTypes.GetVestingFundsReturn memory) {
         bytes memory raw_request = new bytes(0);
 
-        bytes memory raw_response = Actor.call(MinerTypes.GetVestingFundsMethodNum, target, raw_request, Misc.NONE_CODEC, msg.value);
+        bytes memory raw_response = Actor.call(MinerTypes.GetVestingFundsMethodNum, target, raw_request, Misc.NONE_CODEC, msg.value, true);
 
         bytes memory result = Actor.readRespData(raw_response);
 
@@ -119,7 +140,14 @@ library MinerAPI {
     function changeBeneficiary(bytes memory target, MinerTypes.ChangeBeneficiaryParams memory params) internal {
         bytes memory raw_request = params.serializeChangeBeneficiaryParams();
 
-        bytes memory raw_response = Actor.call(MinerTypes.ChangeBeneficiaryMethodNum, target, raw_request, Misc.CBOR_CODEC, msg.value);
+        bytes memory raw_response = Actor.call(
+            MinerTypes.ChangeBeneficiaryMethodNum,
+            target,
+            raw_request,
+            Misc.CBOR_CODEC,
+            msg.value,
+            false
+        );
 
         bytes memory result = Actor.readRespData(raw_response);
         require(result.length == 0, "unexpected response received");
@@ -131,7 +159,7 @@ library MinerAPI {
     function getBeneficiary(bytes memory target) internal returns (MinerTypes.GetBeneficiaryReturn memory) {
         bytes memory raw_request = new bytes(0);
 
-        bytes memory raw_response = Actor.call(MinerTypes.GetBeneficiaryMethodNum, target, raw_request, Misc.NONE_CODEC, msg.value);
+        bytes memory raw_response = Actor.call(MinerTypes.GetBeneficiaryMethodNum, target, raw_request, Misc.NONE_CODEC, msg.value, true);
 
         bytes memory result = Actor.readRespData(raw_response);
 
@@ -143,7 +171,14 @@ library MinerAPI {
     function changeWorkerAddress(bytes memory target, MinerTypes.ChangeWorkerAddressParams memory params) internal {
         bytes memory raw_request = params.serializeChangeWorkerAddressParams();
 
-        bytes memory raw_response = Actor.call(MinerTypes.ChangeWorkerAddressMethodNum, target, raw_request, Misc.CBOR_CODEC, msg.value);
+        bytes memory raw_response = Actor.call(
+            MinerTypes.ChangeWorkerAddressMethodNum,
+            target,
+            raw_request,
+            Misc.CBOR_CODEC,
+            msg.value,
+            false
+        );
 
         bytes memory result = Actor.readRespData(raw_response);
         require(result.length == 0, "unexpected response received");
@@ -154,7 +189,7 @@ library MinerAPI {
     function changePeerId(bytes memory target, MinerTypes.ChangePeerIDParams memory params) internal {
         bytes memory raw_request = params.serializeChangePeerIDParams();
 
-        bytes memory raw_response = Actor.call(MinerTypes.ChangePeerIDMethodNum, target, raw_request, Misc.CBOR_CODEC, msg.value);
+        bytes memory raw_response = Actor.call(MinerTypes.ChangePeerIDMethodNum, target, raw_request, Misc.CBOR_CODEC, msg.value, false);
 
         bytes memory result = Actor.readRespData(raw_response);
         require(result.length == 0, "unexpected response received");
@@ -165,7 +200,14 @@ library MinerAPI {
     function changeMultiaddresses(bytes memory target, MinerTypes.ChangeMultiaddrsParams memory params) internal {
         bytes memory raw_request = params.serializeChangeMultiaddrsParams();
 
-        bytes memory raw_response = Actor.call(MinerTypes.ChangeMultiaddrsMethodNum, target, raw_request, Misc.CBOR_CODEC, msg.value);
+        bytes memory raw_response = Actor.call(
+            MinerTypes.ChangeMultiaddrsMethodNum,
+            target,
+            raw_request,
+            Misc.CBOR_CODEC,
+            msg.value,
+            false
+        );
 
         bytes memory result = Actor.readRespData(raw_response);
         require(result.length == 0, "unexpected response received");
@@ -176,7 +218,7 @@ library MinerAPI {
     function repayDebt(bytes memory target) internal {
         bytes memory raw_request = new bytes(0);
 
-        bytes memory raw_response = Actor.call(MinerTypes.RepayDebtMethodNum, target, raw_request, Misc.NONE_CODEC, msg.value);
+        bytes memory raw_response = Actor.call(MinerTypes.RepayDebtMethodNum, target, raw_request, Misc.NONE_CODEC, msg.value, false);
 
         bytes memory result = Actor.readRespData(raw_response);
         require(result.length == 0, "unexpected response received");
@@ -192,7 +234,8 @@ library MinerAPI {
             target,
             raw_request,
             Misc.NONE_CODEC,
-            msg.value
+            msg.value,
+            false
         );
 
         bytes memory result = Actor.readRespData(raw_response);
@@ -204,7 +247,7 @@ library MinerAPI {
     function getPeerId(bytes memory target) internal returns (MinerTypes.GetPeerIDReturn memory) {
         bytes memory raw_request = new bytes(0);
 
-        bytes memory raw_response = Actor.call(MinerTypes.GetPeerIDMethodNum, target, raw_request, Misc.NONE_CODEC, msg.value);
+        bytes memory raw_response = Actor.call(MinerTypes.GetPeerIDMethodNum, target, raw_request, Misc.NONE_CODEC, msg.value, true);
 
         bytes memory result = Actor.readRespData(raw_response);
 
@@ -216,7 +259,7 @@ library MinerAPI {
     function getMultiaddresses(bytes memory target) internal returns (MinerTypes.GetMultiaddrsReturn memory) {
         bytes memory raw_request = new bytes(0);
 
-        bytes memory raw_response = Actor.call(MinerTypes.GetMultiaddrsMethodNum, target, raw_request, Misc.NONE_CODEC, msg.value);
+        bytes memory raw_response = Actor.call(MinerTypes.GetMultiaddrsMethodNum, target, raw_request, Misc.NONE_CODEC, msg.value, true);
 
         bytes memory result = Actor.readRespData(raw_response);
 
@@ -232,7 +275,7 @@ library MinerAPI {
     ) internal returns (MinerTypes.WithdrawBalanceReturn memory) {
         bytes memory raw_request = params.serializeWithdrawBalanceParams();
 
-        bytes memory raw_response = Actor.call(MinerTypes.WithdrawBalanceMethodNum, target, raw_request, Misc.CBOR_CODEC, msg.value);
+        bytes memory raw_response = Actor.call(MinerTypes.WithdrawBalanceMethodNum, target, raw_request, Misc.CBOR_CODEC, msg.value, false);
 
         bytes memory result = Actor.readRespData(raw_response);
 

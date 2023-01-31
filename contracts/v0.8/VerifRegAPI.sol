@@ -37,7 +37,8 @@ library VerifRegAPI {
             VerifRegTypes.ActorID,
             raw_request,
             Misc.CBOR_CODEC,
-            msg.value
+            msg.value,
+            true
         );
 
         bytes memory result = Actor.readRespData(raw_response);
@@ -53,7 +54,8 @@ library VerifRegAPI {
             VerifRegTypes.ActorID,
             raw_request,
             Misc.CBOR_CODEC,
-            msg.value
+            msg.value,
+            false
         );
 
         bytes memory result = Actor.readRespData(raw_response);
@@ -70,7 +72,8 @@ library VerifRegAPI {
             VerifRegTypes.ActorID,
             raw_request,
             Misc.CBOR_CODEC,
-            msg.value
+            msg.value,
+            false
         );
 
         bytes memory result = Actor.readRespData(raw_response);
@@ -86,7 +89,8 @@ library VerifRegAPI {
             VerifRegTypes.ActorID,
             raw_request,
             Misc.CBOR_CODEC,
-            msg.value
+            msg.value,
+            false
         );
 
         bytes memory result = Actor.readRespData(raw_response);
@@ -104,7 +108,8 @@ library VerifRegAPI {
             VerifRegTypes.ActorID,
             raw_request,
             Misc.CBOR_CODEC,
-            msg.value
+            msg.value,
+            false
         );
 
         bytes memory result = Actor.readRespData(raw_response);
@@ -122,7 +127,8 @@ library VerifRegAPI {
             VerifRegTypes.ActorID,
             raw_request,
             Misc.CBOR_CODEC,
-            msg.value
+            msg.value,
+            false
         );
 
         bytes memory result = Actor.readRespData(raw_response);
