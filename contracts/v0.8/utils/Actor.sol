@@ -33,7 +33,7 @@ library Actor {
     uint64 constant DEFAULT_FLAG = 0x00000000;
 
     function call(
-        uint method_num,
+        uint256 method_num,
         bytes memory actor_address,
         bytes memory raw_request,
         uint64 codec,
@@ -49,7 +49,7 @@ library Actor {
 
     function callByID(
         uint64 actor_id,
-        uint method_num,
+        uint256 method_num,
         uint64 codec,
         bytes memory raw_request,
         uint256 amount
@@ -81,7 +81,7 @@ library Actor {
     function getErrorCodeMsg(int256 exit_code) internal pure returns (string memory) {
         return
             exit_code >= 0
-                ? string.concat("actor error code ", Strings.toString(uint256(exit_code)))
-                : string.concat("actor error code -", Strings.toString(Misc.abs(exit_code)));
+                ? string(abi.encodePacked("actor error code ", Strings.toString(uint256(exit_code))))
+                : string(abi.encodePacked("actor error code -", Strings.toString(Misc.abs(exit_code))));
     }
 }
