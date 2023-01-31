@@ -206,5 +206,24 @@ mod tests {
         assert_eq!(res.msg_receipt.exit_code.value(), 0);
         assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "5860000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000200000000000000000000000001b8cf5bc0e542a1620184208f78c0cff516cce96");
 
+        println!("Calling `resolve_eth_address`");
+
+        let message = Message {
+            from: sender[0].1,
+            to: Address::new_id(contract_actor_id),
+            gas_limit: 1000000000,
+            method_num: EvmMethods::InvokeContract as u64,
+            sequence: 6,
+            params: RawBytes::new(hex::decode("58640D6B2CE40000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000001476C499BE8821B5B9860144D292FFF728611BFD1A000000000000000000000000").unwrap()),
+            ..Message::default()
+        };
+
+        let res = executor
+            .execute_message(message, ApplyKind::Explicit, 100)
+            .unwrap();
+
+        assert_eq!(res.msg_receipt.exit_code.value(), 0);
+        assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "58200000000000000000000000000000000000000000000000000000000000000191");
+
     }
 }

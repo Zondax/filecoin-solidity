@@ -17,7 +17,7 @@
 // DRAFT!! THIS CODE HAS NOT BEEN AUDITED - USE ONLY FOR PROTOTYPING
 
 // SPDX-License-Identifier: Apache-2.0
-pragma solidity >=0.4.25 <=0.8.17;
+pragma solidity ^0.8.17;
 
 import "../PrecompilesAPI.sol";
 
@@ -25,6 +25,10 @@ import "../PrecompilesAPI.sol";
 contract PrecompilesApiTest {
     function resolve_address(bytes memory addr) public view returns (uint64) {
         return PrecompilesAPI.resolveAddress(addr);
+    }
+
+    function resolve_eth_address(bytes memory addr) public view returns (uint64) {
+        return PrecompilesAPI.resolveEthAddress(addr);
     }
 
     function lookup_delegated_address(uint64 actor_id) public view returns (bytes memory) {
