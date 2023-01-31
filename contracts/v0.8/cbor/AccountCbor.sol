@@ -21,17 +21,17 @@ pragma solidity ^0.8.17;
 
 import "solidity-cborutils/contracts/CBOR.sol";
 
-import {AccountTypes} from "../types/AccountTypes.sol";
+import "../types/AccountTypes.sol";
 import "../utils/CborDecode.sol";
 import "../utils/Misc.sol";
 
 /// @title FIXME
 /// @author Zondax AG
-library AuthenticateMessageCBOR {
+library AccountCBOR {
     using CBOR for CBOR.CBORBuffer;
     using CBORDecoder for bytes;
 
-    function serialize(AccountTypes.AuthenticateMessageParams memory params) internal pure returns (bytes memory) {
+    function serializeAuthenticateMessageParams(AccountTypes.AuthenticateMessageParams memory params) internal pure returns (bytes memory) {
         // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
@@ -42,7 +42,9 @@ library AuthenticateMessageCBOR {
         return buf.data();
     }
 
-    function deserialize(AccountTypes.AuthenticateMessageParams memory ret, bytes memory rawResp) internal pure {
+    function deserializeAuthenticateMessageParams(
+        bytes memory rawResp
+    ) internal pure returns (AccountTypes.AuthenticateMessageParams memory ret) {
         uint byteIdx = 0;
         uint len;
 
@@ -51,16 +53,11 @@ library AuthenticateMessageCBOR {
 
         (ret.signature, byteIdx) = rawResp.readBytes(byteIdx);
         (ret.message, byteIdx) = rawResp.readBytes(byteIdx);
+
+        return ret;
     }
-}
 
-/// @title FIXME
-/// @author Zondax AG
-library UniversalReceiverHookCBOR {
-    using CBOR for CBOR.CBORBuffer;
-    using CBORDecoder for bytes;
-
-    function serialize(AccountTypes.UniversalReceiverParams memory params) internal pure returns (bytes memory) {
+    function serializeUniversalReceiverParams(AccountTypes.UniversalReceiverParams memory params) internal pure returns (bytes memory) {
         // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 

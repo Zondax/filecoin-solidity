@@ -21,8 +21,8 @@ pragma solidity ^0.8.17;
 
 import "./types/PowerTypes.sol";
 import "./cbor/PowerCbor.sol";
-import {BytesCBOR} from "./cbor/BytesCbor.sol";
-import {Uint64CBOR} from "./cbor/IntCbor.sol";
+import "./cbor/BytesCbor.sol";
+import "./cbor/IntCbor.sol";
 
 import "./utils/Actor.sol";
 
@@ -31,12 +31,10 @@ import "./utils/Actor.sol";
 library PowerAPI {
     using Uint64CBOR for uint64;
     using BytesCBOR for bytes;
-    using CreateMinerCBOR for PowerTypes.CreateMinerParams;
-    using CreateMinerCBOR for PowerTypes.CreateMinerReturn;
-    using MinerRawPowerCBOR for PowerTypes.MinerRawPowerReturn;
+    using PowerCBOR for *;
 
     function createMiner(PowerTypes.CreateMinerParams memory params) internal returns (PowerTypes.CreateMinerReturn memory) {
-        bytes memory raw_request = params.serialize();
+        bytes memory raw_request = params.serializeCreateMinerParams();
 
         bytes memory raw_response = Actor.call(
             PowerTypes.CreateMinerMethodNum,
@@ -48,10 +46,7 @@ library PowerAPI {
 
         bytes memory result = Actor.readRespData(raw_response);
 
-        PowerTypes.CreateMinerReturn memory response;
-        response.deserialize(result);
-
-        return response;
+        return result.deserializeCreateMinerReturn();
     }
 
     function minerCount() internal returns (uint64) {
@@ -109,9 +104,6 @@ library PowerAPI {
 
         bytes memory result = Actor.readRespData(raw_response);
 
-        PowerTypes.MinerRawPowerReturn memory response;
-        response.deserialize(result);
-
-        return response;
+        return result.deserializeMinerRawPowerReturn();
     }
 }
