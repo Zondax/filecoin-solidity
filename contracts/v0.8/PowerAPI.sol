@@ -41,7 +41,8 @@ library PowerAPI {
             PowerTypes.ActorID,
             raw_request,
             Misc.CBOR_CODEC,
-            msg.value
+            msg.value,
+            false
         );
 
         bytes memory result = Actor.readRespData(raw_response);
@@ -52,7 +53,14 @@ library PowerAPI {
     function minerCount() internal returns (uint64) {
         bytes memory raw_request = new bytes(0);
 
-        bytes memory raw_response = Actor.call(PowerTypes.MinerCountMethodNum, PowerTypes.ActorID, raw_request, Misc.NONE_CODEC, msg.value);
+        bytes memory raw_response = Actor.call(
+            PowerTypes.MinerCountMethodNum,
+            PowerTypes.ActorID,
+            raw_request,
+            Misc.NONE_CODEC,
+            msg.value,
+            true
+        );
 
         bytes memory result = Actor.readRespData(raw_response);
 
@@ -67,7 +75,8 @@ library PowerAPI {
             PowerTypes.ActorID,
             raw_request,
             Misc.NONE_CODEC,
-            msg.value
+            msg.value,
+            true
         );
 
         bytes memory result = Actor.readRespData(raw_response);
@@ -83,7 +92,8 @@ library PowerAPI {
             PowerTypes.ActorID,
             raw_request,
             Misc.NONE_CODEC,
-            msg.value
+            msg.value,
+            true
         );
 
         bytes memory result = Actor.readRespData(raw_response);
@@ -99,7 +109,8 @@ library PowerAPI {
             PowerTypes.ActorID,
             raw_request,
             Misc.CBOR_CODEC,
-            msg.value
+            msg.value,
+            true
         );
 
         bytes memory result = Actor.readRespData(raw_response);

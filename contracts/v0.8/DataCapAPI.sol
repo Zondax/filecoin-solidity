@@ -33,7 +33,14 @@ library DataCapAPI {
     function name() internal returns (string memory) {
         bytes memory raw_request = new bytes(0);
 
-        bytes memory raw_response = Actor.call(DataCapTypes.NameMethodNum, DataCapTypes.ActorID, raw_request, Misc.NONE_CODEC, msg.value);
+        bytes memory raw_response = Actor.call(
+            DataCapTypes.NameMethodNum,
+            DataCapTypes.ActorID,
+            raw_request,
+            Misc.NONE_CODEC,
+            msg.value,
+            true
+        );
 
         bytes memory result = Actor.readRespData(raw_response);
 
@@ -43,7 +50,14 @@ library DataCapAPI {
     function symbol() internal returns (string memory) {
         bytes memory raw_request = new bytes(0);
 
-        bytes memory raw_response = Actor.call(DataCapTypes.SymbolMethodNum, DataCapTypes.ActorID, raw_request, Misc.NONE_CODEC, msg.value);
+        bytes memory raw_response = Actor.call(
+            DataCapTypes.SymbolMethodNum,
+            DataCapTypes.ActorID,
+            raw_request,
+            Misc.NONE_CODEC,
+            msg.value,
+            true
+        );
 
         bytes memory result = Actor.readRespData(raw_response);
 
@@ -58,7 +72,8 @@ library DataCapAPI {
             DataCapTypes.ActorID,
             raw_request,
             Misc.NONE_CODEC,
-            msg.value
+            msg.value,
+            true
         );
 
         bytes memory result = Actor.readRespData(raw_response);
@@ -74,7 +89,8 @@ library DataCapAPI {
             DataCapTypes.ActorID,
             raw_request,
             Misc.CBOR_CODEC,
-            msg.value
+            msg.value,
+            true
         );
 
         bytes memory result = Actor.readRespData(raw_response);
@@ -90,7 +106,8 @@ library DataCapAPI {
             DataCapTypes.ActorID,
             raw_request,
             Misc.CBOR_CODEC,
-            msg.value
+            msg.value,
+            true
         );
 
         bytes memory result = Actor.readRespData(raw_response);
@@ -106,7 +123,8 @@ library DataCapAPI {
             DataCapTypes.ActorID,
             raw_request,
             Misc.CBOR_CODEC,
-            msg.value
+            msg.value,
+            false
         );
 
         bytes memory result = Actor.readRespData(raw_response);
@@ -122,7 +140,8 @@ library DataCapAPI {
             DataCapTypes.ActorID,
             raw_request,
             Misc.CBOR_CODEC,
-            msg.value
+            msg.value,
+            false
         );
 
         bytes memory result = Actor.readRespData(raw_response);
@@ -138,7 +157,8 @@ library DataCapAPI {
             DataCapTypes.ActorID,
             raw_request,
             Misc.CBOR_CODEC,
-            msg.value
+            msg.value,
+            false
         );
 
         bytes memory result = Actor.readRespData(raw_response);
@@ -154,7 +174,8 @@ library DataCapAPI {
             DataCapTypes.ActorID,
             raw_request,
             Misc.CBOR_CODEC,
-            msg.value
+            msg.value,
+            false
         );
 
         bytes memory result = Actor.readRespData(raw_response);
@@ -170,7 +191,8 @@ library DataCapAPI {
             DataCapTypes.ActorID,
             raw_request,
             Misc.CBOR_CODEC,
-            msg.value
+            msg.value,
+            false
         );
 
         bytes memory result = Actor.readRespData(raw_response);
@@ -181,7 +203,14 @@ library DataCapAPI {
     function burn(DataCapTypes.BurnParams memory params) internal returns (DataCapTypes.BurnReturn memory) {
         bytes memory raw_request = params.serializeBurnParams();
 
-        bytes memory raw_response = Actor.call(DataCapTypes.BurnMethodNum, DataCapTypes.ActorID, raw_request, Misc.CBOR_CODEC, msg.value);
+        bytes memory raw_response = Actor.call(
+            DataCapTypes.BurnMethodNum,
+            DataCapTypes.ActorID,
+            raw_request,
+            Misc.CBOR_CODEC,
+            msg.value,
+            false
+        );
 
         bytes memory result = Actor.readRespData(raw_response);
 
@@ -196,7 +225,8 @@ library DataCapAPI {
             DataCapTypes.ActorID,
             raw_request,
             Misc.CBOR_CODEC,
-            msg.value
+            msg.value,
+            false
         );
 
         bytes memory result = Actor.readRespData(raw_response);
