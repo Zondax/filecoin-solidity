@@ -16,7 +16,7 @@
 // DRAFT!! THIS CODE HAS NOT BEEN AUDITED - USE ONLY FOR PROTOTYPING
 
 // SPDX-License-Identifier: Apache-2.0
-pragma solidity >=0.4.25 <=0.8.17;
+pragma solidity ^0.8.17;
 
 import "@openzeppelin/contracts/utils/Strings.sol";
 
@@ -33,7 +33,7 @@ library Actor {
     uint64 constant DEFAULT_FLAG = 0x00000000;
 
     function call(
-        uint method_num,
+        uint256 method_num,
         bytes memory actor_address,
         bytes memory raw_request,
         uint64 codec,
@@ -49,7 +49,7 @@ library Actor {
 
     function callByID(
         uint64 actor_id,
-        uint method_num,
+        uint256 method_num,
         uint64 codec,
         bytes memory raw_request,
         uint256 amount
@@ -65,16 +65,23 @@ library Actor {
     function readRespData(bytes memory raw_response) internal pure returns (bytes memory) {
         (int256 exit, uint64 return_codec, bytes memory return_value) = abi.decode(raw_response, (int256, uint64, bytes));
 
-        require(return_codec == Misc.NONE_CODEC || return_codec == Misc.CBOR_CODEC, "response codec not supported");
+        if (return_codec == Misc.NONE_CODEC) {
+            require(return_value.length == 0, "response length should be 0");
+        } else if (return_codec == Misc.CBOR_CODEC) {
+            require(return_value.length > 0, "response length should greater than 0");
+        } else {
+            require(false, "invalid resposne codec");
+        }
+
         require(exit == 0, getErrorCodeMsg(exit));
 
         return return_value;
     }
 
     function getErrorCodeMsg(int256 exit_code) internal pure returns (string memory) {
-        if (exit_code < 0) {
-            return string.concat("actor error code -", Strings.toString(uint256(exit_code)));
-        }
-        return string.concat("actor error code -", Strings.toString(uint256(exit_code)));
+        return
+            exit_code >= 0
+                ? string(abi.encodePacked("actor error code ", Strings.toString(uint256(exit_code))))
+                : string(abi.encodePacked("actor error code -", Strings.toString(Misc.abs(exit_code))));
     }
 }
