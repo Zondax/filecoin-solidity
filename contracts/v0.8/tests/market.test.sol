@@ -81,4 +81,9 @@ contract MarketApiTest {
     ) public returns (MarketTypes.PublishStorageDealsReturn memory) {
         return MarketAPI.publishStorageDeals(params);
     }
+
+    function handle_filecoin_method(uint64 method, uint64 codec, bytes calldata params) public pure returns (uint64) {
+        require((codec == 0) == (params.length == 0));
+        return method;
+    }
 }
