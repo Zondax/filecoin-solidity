@@ -259,18 +259,14 @@ library CBORDecoder {
 
     function sliceUInt8(bytes memory bs, uint start) internal pure returns (uint8) {
         require(bs.length >= start + 1, "slicing out of range");
-        uint8 x;
-        assembly {
-            x := mload(add(bs, add(0x01, start)))
-        }
-        return x;
+        return uint8(bs[start]);
     }
 
     function sliceUInt16(bytes memory bs, uint start) internal pure returns (uint16) {
         require(bs.length >= start + 2, "slicing out of range");
         uint16 x;
         assembly {
-            x := mload(add(bs, add(0x02, start)))
+            x := mload(add(bs, add(0x01, start)))
         }
         return x;
     }
@@ -279,7 +275,7 @@ library CBORDecoder {
         require(bs.length >= start + 4, "slicing out of range");
         uint32 x;
         assembly {
-            x := mload(add(bs, add(0x04, start)))
+            x := mload(add(bs, add(0x01, start)))
         }
         return x;
     }
@@ -288,7 +284,7 @@ library CBORDecoder {
         require(bs.length >= start + 8, "slicing out of range");
         uint64 x;
         assembly {
-            x := mload(add(bs, add(0x08, start)))
+            x := mload(add(bs, add(0x01, start)))
         }
         return x;
     }
