@@ -37,10 +37,11 @@ library Actor {
         bytes memory actor_address,
         bytes memory raw_request,
         uint64 codec,
-        uint256 amount
+        uint256 amount,
+        bool read_only
     ) internal returns (bytes memory) {
         (bool success, bytes memory data) = address(CALL_ACTOR_ADDRESS).delegatecall(
-            abi.encode(uint64(method_num), amount, DEFAULT_FLAG, codec, raw_request, actor_address)
+            abi.encode(uint64(method_num), amount, read_only ? READ_ONLY_FLAG : DEFAULT_FLAG, codec, raw_request, actor_address)
         );
         require(success == true, CALL_ERROR_MESSAGE);
 
@@ -52,10 +53,11 @@ library Actor {
         uint256 method_num,
         uint64 codec,
         bytes memory raw_request,
-        uint256 amount
+        uint256 amount,
+        bool read_only
     ) internal returns (bytes memory) {
         (bool success, bytes memory data) = address(CALL_ACTOR_ID).delegatecall(
-            abi.encode(uint64(method_num), amount, DEFAULT_FLAG, codec, raw_request, actor_id)
+            abi.encode(uint64(method_num), amount, read_only ? READ_ONLY_FLAG : DEFAULT_FLAG, codec, raw_request, actor_id)
         );
         require(success == true, CALL_ERROR_MESSAGE);
 
