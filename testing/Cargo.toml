@@ -10,7 +10,8 @@ fvm_ipld_blockstore = { version = "0.1.1", git = "https://github.com/filecoin-pr
 fvm_shared = { version = "3.0.0-alpha.17", git = "https://github.com/filecoin-project/ref-fvm", tag = "fvm@v3.0.0-alpha.21" }
 fvm = { version = "3.0.0-alpha.21", git = "https://github.com/filecoin-project/ref-fvm", tag = "fvm@v3.0.0-alpha.21", default-features = false, features = ["m2-native", "hyperspace"] }
 fvm_ipld_encoding = { version = "0.3.3", git = "https://github.com/filecoin-project/ref-fvm", tag = "fvm@v3.0.0-alpha.21" }
-fvm_integration_tests = { version = "0.1.1-alpha.1", git = "https://github.com/filecoin-project/ref-fvm", tag = "fvm@v3.0.0-alpha.21" }
+#fvm_integration_tests = { version = "0.1.1-alpha.1", git = "https://github.com/filecoin-project/ref-fvm", tag = "fvm@v3.0.0-alpha.21" }
+fvm_integration_tests = { version = "0.1.1-alpha.1", path = "../../ref-fvm/testing/integration" }
 
 serde = { version = "1.0", features = ["derive"] }
 serde_tuple = "0.5"
