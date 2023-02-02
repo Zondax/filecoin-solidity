@@ -5,7 +5,7 @@ mod tests {
     use fil_actor_eam::Return;
     use fil_actor_init::ExecReturn;
     use fil_actor_evm::{Method as EvmMethods};
-    use fil_actors_runtime::{EAM_ACTOR_ADDR, INIT_ACTOR_ADDR};
+    use fil_actors_runtime::{runtime::builtins, EAM_ACTOR_ADDR, INIT_ACTOR_ADDR};
     use fvm::executor::{ApplyKind, Executor};
     use fvm::state_tree::ActorState;
     use fvm_integration_tests::bundle;
@@ -23,7 +23,6 @@ mod tests {
     use multihash::Code;
     use rand_core::OsRng;
     use std::env;
-    use std::str::FromStr;
     use serde::{Deserialize as SerdeDeserialize, Serialize as SerdeSerialize};
     use fvm::machine::Manifest;
 
@@ -106,11 +105,7 @@ mod tests {
 
         let exec_params = fil_actor_init::ExecParams {
             // CID of StorageMiner actor. You get this as output from builtin-actors compiling process
-            code_cid: Cid::from_str(
-                "bafk2bzaceaz5hlsatwn7bv2nmdtkvw7klsgydzumdxh6ivmwakcdhdyou2n64",
-            )
-            .unwrap(),
-            //code_cid: Cid::from_str("bafk2bzacea5ua7isdc4nx3huvbgsjdikfkxj2mhwveuyvtxtk5techk5rddl6").unwrap(),
+            code_cid: *manifest.code_by_id(builtins::Type::Miner as u32).unwrap(),
             constructor_params: RawBytes::serialize(constructor_params).unwrap(),
         };
 

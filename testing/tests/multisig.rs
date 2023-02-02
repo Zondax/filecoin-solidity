@@ -4,7 +4,7 @@ mod tests {
     use cid::Cid;
     use fil_actor_eam::Return;
     use fil_actor_init::ExecReturn;
-    use fil_actors_runtime::{EAM_ACTOR_ADDR, INIT_ACTOR_ADDR};
+    use fil_actors_runtime::{runtime::builtins, EAM_ACTOR_ADDR, INIT_ACTOR_ADDR};
     use fil_actor_evm::{Method as EvmMethods};
     use fvm::executor::{ApplyKind, Executor};
     use fvm::state_tree::ActorState;
@@ -23,7 +23,6 @@ mod tests {
     use multihash::Code;
     use rand_core::OsRng;
     use std::env;
-    use std::str::FromStr;
     use serde::{Deserialize as SerdeDeserialize, Serialize as SerdeSerialize};
     use fvm::machine::Manifest;
 
@@ -74,9 +73,7 @@ mod tests {
 
         let actor_state = ActorState {
             // CID of Accounts actor. You get this as output from builtin-actors compiling process
-            code: Cid::from_str("bafk2bzaceddb65xkjgqgtcsbl2b3istnprim6j3lbf3ywyggxizb6ayzffbqe")
-                .unwrap(),
-            // code: Cid::from_str("bafk2bzacecj7v5ur5qk4vn3xbvgsizl35e42l3yaankmxu6dcoouv4mkphsjq").unwrap(),
+            code: *manifest.code_by_id(builtins::Type::Multisig as u32).unwrap(),
             state: cid,
             sequence: 0,
             balance: TokenAmount::from_atto(10000),
@@ -143,11 +140,7 @@ mod tests {
 
         let exec_params = fil_actor_init::ExecParams {
             // CID of MultiSig actor. You get this as output from builtin-actors compiling process
-            code_cid: Cid::from_str(
-                "bafk2bzacebntzrsozofa4ea35qzttns6zyvldszvr35lg4wuu5usfywztge5c",
-            )
-            .unwrap(),
-            // code_cid: Cid::from_str("bafk2bzacedgixfd465634uihet3u57vugbbp6s5sseb76phti3cexx66ers3i").unwrap(),
+            code_cid: *manifest.code_by_id(builtins::Type::Multisig as u32).unwrap(),
             constructor_params: RawBytes::serialize(constructor_params).unwrap(),
         };
 

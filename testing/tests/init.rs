@@ -16,7 +16,6 @@ mod tests {
     use fvm_shared::state::StateTreeVersion;
     use fvm_shared::version::NetworkVersion;
     use std::env;
-    use std::str::FromStr;
     use serde::{Deserialize as SerdeDeserialize, Serialize as SerdeSerialize};
     use fvm::machine::Manifest;
     use fvm_ipld_encoding::CborStore;

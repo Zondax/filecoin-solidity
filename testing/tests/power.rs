@@ -25,7 +25,6 @@ mod tests {
     use rand_core::OsRng;
     use serde::{Deserialize as SerdeDeserialize, Serialize as SerdeSerialize};
     use std::env;
-    use std::str::FromStr;
     use fvm::machine::Manifest;
 
     use testing::helpers::set_storagepower_actor;
