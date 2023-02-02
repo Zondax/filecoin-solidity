@@ -7,3 +7,5 @@
 **/target/
 **/build
 node_modules/
+foundry-cache
+out/
