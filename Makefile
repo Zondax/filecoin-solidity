@@ -67,7 +67,7 @@ test_miner_cbor_serialization:
 test_market_cbor_serialization:
 	cd hardhat && yarn hardhat withdraw_balance --providerorclient 0xaaaa12 --tokenamount 12222 --contractaddress $(CONTRACT_ADDRESS)
 
-test_integration:
+test_integration: build build_builtin_actors
 	cd testing && cargo test
 
 test_miner_integration: build build_builtin_actors
