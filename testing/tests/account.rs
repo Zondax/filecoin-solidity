@@ -23,7 +23,6 @@ mod tests {
     use fvm_ipld_encoding::CborStore;
     use multihash::Code;
     use std::env;
-    use std::str::FromStr;
     use fvm::machine::Manifest;
     use serde::{Deserialize as SerdeDeserialize, Serialize as SerdeSerialize};
 
