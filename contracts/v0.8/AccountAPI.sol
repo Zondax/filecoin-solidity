@@ -36,14 +36,18 @@ library AccountAPI {
     function authenticateMessage(bytes memory target, AccountTypes.AuthenticateMessageParams memory params) internal {
         bytes memory raw_request = params.serializeAuthenticateMessageParams();
 
-        bytes memory raw_response = Actor.call(
-            AccountTypes.AuthenticateMessageMethodNum,
-            target,
-            raw_request,
-            Misc.CBOR_CODEC,
-            msg.value,
-            false
-        );
+        bytes memory raw_response = Actor.call(AccountTypes.AuthenticateMessageMethodNum, target, raw_request, Misc.CBOR_CODEC, msg.value, false);
+
+        bytes memory result = Actor.readRespData(raw_response);
+        require(result.length == 0, "unexpected response received");
+    }
+
+    /// @notice TODO fill this a proper description
+    /// @param target The account actor id you want to interact with
+    function authenticateMessage(uint64 target, AccountTypes.AuthenticateMessageParams memory params) internal {
+        bytes memory raw_request = params.serializeAuthenticateMessageParams();
+
+        bytes memory raw_response = Actor.callByID(target, AccountTypes.AuthenticateMessageMethodNum, Misc.CBOR_CODEC, raw_request, msg.value, false);
 
         bytes memory result = Actor.readRespData(raw_response);
         require(result.length == 0, "unexpected response received");
@@ -54,14 +58,18 @@ library AccountAPI {
     function universalReceiverHook(bytes memory target, AccountTypes.UniversalReceiverParams memory params) internal {
         bytes memory raw_request = params.serializeUniversalReceiverParams();
 
-        bytes memory raw_response = Actor.call(
-            AccountTypes.UniversalReceiverHookMethodNum,
-            target,
-            raw_request,
-            Misc.CBOR_CODEC,
-            msg.value,
-            false
-        );
+        bytes memory raw_response = Actor.call(AccountTypes.UniversalReceiverHookMethodNum, target, raw_request, Misc.CBOR_CODEC, msg.value, false);
+
+        bytes memory result = Actor.readRespData(raw_response);
+        require(result.length == 0, "unexpected response received");
+    }
+
+    /// @notice TODO fill this a proper description
+    /// @param target The account actor id you want to interact with
+    function universalReceiverHook(uint64 target, AccountTypes.UniversalReceiverParams memory params) internal {
+        bytes memory raw_request = params.serializeUniversalReceiverParams();
+
+        bytes memory raw_response = Actor.callByID(target, AccountTypes.UniversalReceiverHookMethodNum, Misc.CBOR_CODEC, raw_request, msg.value, false);
 
         bytes memory result = Actor.readRespData(raw_response);
         require(result.length == 0, "unexpected response received");

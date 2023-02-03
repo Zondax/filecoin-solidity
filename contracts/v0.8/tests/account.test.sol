@@ -28,7 +28,15 @@ contract AccountApiTest {
         AccountAPI.authenticateMessage(target, params);
     }
 
+    function authenticate_message(uint64 target, AccountTypes.AuthenticateMessageParams memory params) public {
+        AccountAPI.authenticateMessage(target, params);
+    }
+
     function universal_receiver_hook(bytes memory target, AccountTypes.UniversalReceiverParams memory params) public {
+        AccountAPI.universalReceiverHook(target, params);
+    }
+
+    function universal_receiver_hook(uint64 target, AccountTypes.UniversalReceiverParams memory params) public {
         AccountAPI.universalReceiverHook(target, params);
     }
 }

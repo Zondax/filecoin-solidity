@@ -28,7 +28,15 @@ contract MultisigApiTest {
         return MultisigAPI.propose(target, params);
     }
 
+    function propose(uint64 target, MultisigTypes.ProposeParams memory params) public returns (MultisigTypes.ProposeReturn memory) {
+        return MultisigAPI.propose(target, params);
+    }
+
     function approve(bytes memory target, MultisigTypes.TxnIDParams memory params) public returns (MultisigTypes.ApproveReturn memory) {
+        return MultisigAPI.approve(target, params);
+    }
+
+    function approve(uint64 target, MultisigTypes.TxnIDParams memory params) public returns (MultisigTypes.ApproveReturn memory) {
         return MultisigAPI.approve(target, params);
     }
 
@@ -36,7 +44,15 @@ contract MultisigApiTest {
         return MultisigAPI.cancel(target, params);
     }
 
+    function cancel(uint64 target, MultisigTypes.TxnIDParams memory params) public {
+        return MultisigAPI.cancel(target, params);
+    }
+
     function add_signer(bytes memory target, MultisigTypes.AddSignerParams memory params) public {
+        return MultisigAPI.addSigner(target, params);
+    }
+
+    function add_signer(uint64 target, MultisigTypes.AddSignerParams memory params) public {
         return MultisigAPI.addSigner(target, params);
     }
 
@@ -44,7 +60,15 @@ contract MultisigApiTest {
         return MultisigAPI.removeSigner(target, params);
     }
 
+    function remove_signer(uint64 target, MultisigTypes.RemoveSignerParams memory params) public {
+        return MultisigAPI.removeSigner(target, params);
+    }
+
     function swap_signer(bytes memory target, MultisigTypes.SwapSignerParams memory params) public {
+        return MultisigAPI.swapSigner(target, params);
+    }
+
+    function swap_signer(uint64 target, MultisigTypes.SwapSignerParams memory params) public {
         return MultisigAPI.swapSigner(target, params);
     }
 
@@ -52,11 +76,23 @@ contract MultisigApiTest {
         return MultisigAPI.changeNumApprovalsThreshold(target, params);
     }
 
+    function change_num_approvals_threshold(uint64 target, MultisigTypes.ChangeNumApprovalsThresholdParams memory params) public {
+        return MultisigAPI.changeNumApprovalsThreshold(target, params);
+    }
+
     function lock_balance(bytes memory target, MultisigTypes.LockBalanceParams memory params) public {
         return MultisigAPI.lockBalance(target, params);
     }
 
+    function lock_balance(uint64 target, MultisigTypes.LockBalanceParams memory params) public {
+        return MultisigAPI.lockBalance(target, params);
+    }
+
     function universal_receiver_hook(bytes memory target, bytes memory params) public {
+        return MultisigAPI.universalReceiverHook(target, params);
+    }
+
+    function universal_receiver_hook(uint64 target, bytes memory params) public {
         return MultisigAPI.universalReceiverHook(target, params);
     }
 }
