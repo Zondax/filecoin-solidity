@@ -45,10 +45,34 @@ library MultisigAPI {
 
     /// @notice TODO fill me up
     /// @param target The multisig address (filecoin bytes format) you want to interact with
+    function propose(uint64 target, MultisigTypes.ProposeParams memory params) internal returns (MultisigTypes.ProposeReturn memory) {
+        bytes memory raw_request = params.serializeProposeParams();
+
+        bytes memory raw_response = Actor.callByID(target, MultisigTypes.ProposeMethodNum, Misc.CBOR_CODEC, raw_request, msg.value, false);
+
+        bytes memory result = Actor.readRespData(raw_response);
+
+        return result.deserializeProposeReturn();
+    }
+
+    /// @notice TODO fill me up
+    /// @param target The multisig address (filecoin bytes format) you want to interact with
     function approve(bytes memory target, MultisigTypes.TxnIDParams memory params) internal returns (MultisigTypes.ApproveReturn memory) {
         bytes memory raw_request = params.serializeTxnIDParams();
 
         bytes memory raw_response = Actor.call(MultisigTypes.ApproveMethodNum, target, raw_request, Misc.CBOR_CODEC, msg.value, false);
+
+        bytes memory result = Actor.readRespData(raw_response);
+
+        return result.deserializeApproveReturn();
+    }
+
+    /// @notice TODO fill me up
+    /// @param target The multisig address (filecoin bytes format) you want to interact with
+    function approve(uint64 target, MultisigTypes.TxnIDParams memory params) internal returns (MultisigTypes.ApproveReturn memory) {
+        bytes memory raw_request = params.serializeTxnIDParams();
+
+        bytes memory raw_response = Actor.callByID(target, MultisigTypes.ApproveMethodNum, Misc.CBOR_CODEC, raw_request, msg.value, false);
 
         bytes memory result = Actor.readRespData(raw_response);
 
@@ -68,10 +92,32 @@ library MultisigAPI {
 
     /// @notice TODO fill me up
     /// @param target The multisig address (filecoin bytes format) you want to interact with
+    function cancel(uint64 target, MultisigTypes.TxnIDParams memory params) internal {
+        bytes memory raw_request = params.serializeTxnIDParams();
+
+        bytes memory raw_response = Actor.callByID(target, MultisigTypes.CancelMethodNum, Misc.CBOR_CODEC, raw_request, msg.value, false);
+
+        bytes memory result = Actor.readRespData(raw_response);
+        require(result.length == 0, "unexpected response received");
+    }
+
+    /// @notice TODO fill me up
+    /// @param target The multisig address (filecoin bytes format) you want to interact with
     function addSigner(bytes memory target, MultisigTypes.AddSignerParams memory params) internal {
         bytes memory raw_request = params.serializeAddSignerParams();
 
         bytes memory raw_response = Actor.call(MultisigTypes.AddSignerMethodNum, target, raw_request, Misc.CBOR_CODEC, msg.value, false);
+
+        bytes memory result = Actor.readRespData(raw_response);
+        require(result.length == 0, "unexpected response received");
+    }
+
+    /// @notice TODO fill me up
+    /// @param target The multisig address (filecoin bytes format) you want to interact with
+    function addSigner(uint64 target, MultisigTypes.AddSignerParams memory params) internal {
+        bytes memory raw_request = params.serializeAddSignerParams();
+
+        bytes memory raw_response = Actor.callByID(target, MultisigTypes.AddSignerMethodNum, Misc.CBOR_CODEC, raw_request, msg.value, false);
 
         bytes memory result = Actor.readRespData(raw_response);
         require(result.length == 0, "unexpected response received");
@@ -90,6 +136,17 @@ library MultisigAPI {
 
     /// @notice TODO fill me up
     /// @param target The multisig address (filecoin bytes format) you want to interact with
+    function removeSigner(uint64 target, MultisigTypes.RemoveSignerParams memory params) internal {
+        bytes memory raw_request = params.serializeRemoveSignerParams();
+
+        bytes memory raw_response = Actor.callByID(target, MultisigTypes.RemoveSignerMethodNum, Misc.CBOR_CODEC, raw_request, msg.value, false);
+
+        bytes memory result = Actor.readRespData(raw_response);
+        require(result.length == 0, "unexpected response received");
+    }
+
+    /// @notice TODO fill me up
+    /// @param target The multisig address (filecoin bytes format) you want to interact with
     function swapSigner(bytes memory target, MultisigTypes.SwapSignerParams memory params) internal {
         bytes memory raw_request = params.serializeSwapSignerParams();
 
@@ -101,17 +158,32 @@ library MultisigAPI {
 
     /// @notice TODO fill me up
     /// @param target The multisig address (filecoin bytes format) you want to interact with
+    function swapSigner(uint64 target, MultisigTypes.SwapSignerParams memory params) internal {
+        bytes memory raw_request = params.serializeSwapSignerParams();
+
+        bytes memory raw_response = Actor.callByID(target, MultisigTypes.SwapSignerMethodNum, Misc.CBOR_CODEC, raw_request, msg.value, false);
+
+        bytes memory result = Actor.readRespData(raw_response);
+        require(result.length == 0, "unexpected response received");
+    }
+
+    /// @notice TODO fill me up
+    /// @param target The multisig address (filecoin bytes format) you want to interact with
     function changeNumApprovalsThreshold(bytes memory target, MultisigTypes.ChangeNumApprovalsThresholdParams memory params) internal {
         bytes memory raw_request = params.serializeChangeNumApprovalsThresholdParams();
 
-        bytes memory raw_response = Actor.call(
-            MultisigTypes.ChangeNumApprovalsThresholdMethodNum,
-            target,
-            raw_request,
-            Misc.CBOR_CODEC,
-            msg.value,
-            false
-        );
+        bytes memory raw_response = Actor.call(MultisigTypes.ChangeNumApprovalsThresholdMethodNum, target, raw_request, Misc.CBOR_CODEC, msg.value, false);
+
+        bytes memory result = Actor.readRespData(raw_response);
+        require(result.length == 0, "unexpected response received");
+    }
+
+    /// @notice TODO fill me up
+    /// @param target The multisig address (filecoin bytes format) you want to interact with
+    function changeNumApprovalsThreshold(uint64 target, MultisigTypes.ChangeNumApprovalsThresholdParams memory params) internal {
+        bytes memory raw_request = params.serializeChangeNumApprovalsThresholdParams();
+
+        bytes memory raw_response = Actor.callByID(target, MultisigTypes.ChangeNumApprovalsThresholdMethodNum, Misc.CBOR_CODEC, raw_request, msg.value, false);
 
         bytes memory result = Actor.readRespData(raw_response);
         require(result.length == 0, "unexpected response received");
@@ -130,17 +202,32 @@ library MultisigAPI {
 
     /// @notice TODO fill me up
     /// @param target The multisig address (filecoin bytes format) you want to interact with
+    function lockBalance(uint64 target, MultisigTypes.LockBalanceParams memory params) internal {
+        bytes memory raw_request = params.serializeLockBalanceParams();
+
+        bytes memory raw_response = Actor.callByID(target, MultisigTypes.LockBalanceMethodNum, Misc.CBOR_CODEC, raw_request, msg.value, false);
+
+        bytes memory result = Actor.readRespData(raw_response);
+        require(result.length == 0, "unexpected response received");
+    }
+
+    /// @notice TODO fill me up
+    /// @param target The multisig address (filecoin bytes format) you want to interact with
     function universalReceiverHook(bytes memory target, bytes memory params) internal {
         bytes memory raw_request = params.serializeBytes();
 
-        bytes memory raw_response = Actor.call(
-            MultisigTypes.UniversalReceiverHookMethodNum,
-            target,
-            raw_request,
-            Misc.CBOR_CODEC,
-            msg.value,
-            false
-        );
+        bytes memory raw_response = Actor.call(MultisigTypes.UniversalReceiverHookMethodNum, target, raw_request, Misc.CBOR_CODEC, msg.value, false);
+
+        bytes memory result = Actor.readRespData(raw_response);
+        require(result.length == 0, "unexpected response received");
+    }
+
+    /// @notice TODO fill me up
+    /// @param target The multisig address (filecoin bytes format) you want to interact with
+    function universalReceiverHook(uint64 target, bytes memory params) internal {
+        bytes memory raw_request = params.serializeBytes();
+
+        bytes memory raw_response = Actor.callByID(target, MultisigTypes.UniversalReceiverHookMethodNum, Misc.CBOR_CODEC, raw_request, msg.value, false);
 
         bytes memory result = Actor.readRespData(raw_response);
         require(result.length == 0, "unexpected response received");
