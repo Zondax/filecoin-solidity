@@ -15,7 +15,6 @@ mod tests {
     use fil_actor_evm::{Method as EvmMethods};
     use fvm_ipld_encoding::RawBytes;
     use fil_actors_runtime::{EAM_ACTOR_ADDR};
-    use fvm_shared::ActorID;
     use fvm_shared::econ::TokenAmount;
     use serde::{Deserialize as SerdeDeserialize, Serialize as SerdeSerialize};
 
