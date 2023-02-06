@@ -1561,6 +1561,7 @@ dependencies = [
 [[package]]
 name = "fvm_integration_tests"
 version = "0.1.1-alpha.1"
+source = "git+https://github.com/filecoin-project/ref-fvm?tag=fvm@v3.0.0-alpha.21#f22f8d2c60d6f2f6442a442af1507f4b8acc2dcf"
 dependencies = [
  "anyhow",
  "cid",
