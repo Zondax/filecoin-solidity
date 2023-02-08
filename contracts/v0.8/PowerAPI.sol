@@ -34,6 +34,8 @@ library PowerAPI {
     using PowerCBOR for *;
 
     function createMiner(PowerTypes.CreateMinerParams memory params, uint256 value) internal returns (PowerTypes.CreateMinerReturn memory) {
+        require(address(this).balance >= value, "not enough balance");
+
         bytes memory raw_request = params.serializeCreateMinerParams();
 
         bytes memory raw_response = Actor.call(PowerTypes.CreateMinerMethodNum, PowerTypes.ActorID, raw_request, Misc.CBOR_CODEC, value, false);
