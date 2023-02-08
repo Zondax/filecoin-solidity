@@ -1,168 +1,163 @@
-#[cfg(test)]
-mod tests {
-    use bls_signatures::Serialize;
-    use cid::Cid;
-    use fil_actor_eam::Return;
-    use fil_actor_init::ExecReturn;
-    use fil_actor_evm::{Method as EvmMethods};
-    use fil_actors_runtime::{runtime::builtins, EAM_ACTOR_ADDR, INIT_ACTOR_ADDR};
-    use fvm::executor::{ApplyKind, Executor};
-    use fvm::state_tree::ActorState;
-    use fvm_integration_tests::bundle;
-    use fvm_integration_tests::dummy::DummyExterns;
-    use fvm_integration_tests::tester::{Account, Tester};
-    use fvm_ipld_blockstore::MemoryBlockstore;
-    use fvm_ipld_encoding::CborStore;
-    use fvm_ipld_encoding::RawBytes;
-    use fvm_ipld_encoding::{strict_bytes, tuple::*, BytesDe};
-    use fvm_shared::address::Address;
-    use fvm_shared::econ::TokenAmount;
-    use fvm_shared::message::Message;
-    use fvm_shared::state::StateTreeVersion;
-    use fvm_shared::version::NetworkVersion;
-    use multihash::Code;
-    use rand_core::OsRng;
-    use std::env;
-    use serde::{Deserialize as SerdeDeserialize, Serialize as SerdeSerialize};
-    use fvm::machine::Manifest;
 
-    const WASM_COMPILED_PATH: &str = "../build/v0.8/tests/MinerApiTest.bin";
+use bls_signatures::Serialize;
+use cid::Cid;
+use fil_actor_eam::Return;
+use fil_actor_evm::Method as EvmMethods;
+use fil_actor_init::ExecReturn;
+use fil_actors_runtime::{runtime::builtins, EAM_ACTOR_ADDR, INIT_ACTOR_ADDR};
+use fvm::executor::{ApplyKind, Executor};
+use fvm::machine::Manifest;
+use fvm::state_tree::ActorState;
+use fvm_integration_tests::bundle;
+use fvm_integration_tests::dummy::DummyExterns;
+use fvm_integration_tests::tester::{Account, Tester};
+use fvm_ipld_blockstore::MemoryBlockstore;
+use fvm_ipld_encoding::CborStore;
+use fvm_ipld_encoding::RawBytes;
+use fvm_ipld_encoding::{strict_bytes, tuple::*, BytesDe};
+use fvm_shared::address::Address;
+use fvm_shared::econ::TokenAmount;
+use fvm_shared::message::Message;
+use fvm_shared::state::StateTreeVersion;
+use fvm_shared::version::NetworkVersion;
+use multihash::Code;
+use rand_core::OsRng;
+use serde::{Deserialize as SerdeDeserialize, Serialize as SerdeSerialize};
 
-    #[derive(Serialize_tuple, Deserialize_tuple, Clone, Debug)]
-    struct State {
-        empty: bool,
-    }
+use testing::setup;
 
-    #[derive(SerdeSerialize, SerdeDeserialize)]
-    #[serde(transparent)]
-    pub struct CreateExternalParams(#[serde(with = "strict_bytes")] pub Vec<u8>);
+const WASM_COMPILED_PATH: &str = "../build/v0.8/tests/MinerApiTest.bin";
 
-    #[test]
-    fn miner_tests() {
-        println!("Testing solidity API");
+#[derive(Serialize_tuple, Deserialize_tuple, Clone, Debug)]
+struct State {
+    empty: bool,
+}
 
-        let bs = MemoryBlockstore::default();
-        let actors = std::fs::read("./builtin-actors/output/builtin-actors-devnet-wasm.car")
-            .expect("Unable to read actor devnet file file");
-        let bundle_root = bundle::import_bundle(&bs, &actors).unwrap();
+#[derive(SerdeSerialize, SerdeDeserialize)]
+#[serde(transparent)]
+pub struct CreateExternalParams(#[serde(with = "strict_bytes")] pub Vec<u8>);
 
-        let (manifest_version, manifest_data_cid): (u32, Cid) = bs.get_cbor(&bundle_root).unwrap().unwrap();
-        let manifest = Manifest::load(&bs, &manifest_data_cid, manifest_version).unwrap();
+#[test]
+fn miner_tests() {
+    println!("Testing solidity API");
 
-        let mut tester =
-            Tester::new(NetworkVersion::V18, StateTreeVersion::V5, bundle_root, bs).unwrap();
+    let bs = MemoryBlockstore::default();
+    let actors = std::fs::read("./builtin-actors/output/builtin-actors-devnet-wasm.car")
+        .expect("Unable to read actor devnet file file");
+    let bundle_root = bundle::import_bundle(&bs, &actors).unwrap();
 
-        let sender: [Account; 1] = tester.create_accounts().unwrap();
+    let (manifest_version, manifest_data_cid): (u32, Cid) =
+        bs.get_cbor(&bundle_root).unwrap().unwrap();
+    let manifest = Manifest::load(&bs, &manifest_data_cid, manifest_version).unwrap();
 
-        /***********************************************
-         *
-         * Instantiate Account Actor with a BLS address
-         *
-         ***********************************************/
+    let mut tester =
+        Tester::new(NetworkVersion::V18, StateTreeVersion::V5, bundle_root, bs).unwrap();
 
-        let bls_private_key = bls_signatures::PrivateKey::generate(&mut OsRng);
-        let worker = Address::new_bls(&bls_private_key.public_key().as_bytes()).unwrap();
+    let sender: [Account; 1] = tester.create_accounts().unwrap();
 
-        let state_tree = tester.state_tree.as_mut().unwrap();
-        let assigned_addr = state_tree.register_new_address(&worker).unwrap();
-        let state = fvm::account_actor::State { address: worker };
+    /***********************************************
+     *
+     * Instantiate Account Actor with a BLS address
+     *
+     ***********************************************/
 
-        let cid = state_tree
-            .store()
-            .put_cbor(&state, Code::Blake2b256)
-            .unwrap();
+    let bls_private_key = bls_signatures::PrivateKey::generate(&mut OsRng);
+    let worker = Address::new_bls(&bls_private_key.public_key().as_bytes()).unwrap();
 
-        let actor_state = ActorState {
-            code: *manifest.get_account_code(),
-            state: cid,
-            sequence: 0,
-            balance: TokenAmount::from_atto(10000),
-            delegated_address: Some(worker),
-        };
+    let state_tree = tester.state_tree.as_mut().unwrap();
+    let assigned_addr = state_tree.register_new_address(&worker).unwrap();
+    let state = fvm::account_actor::State { address: worker };
 
-        state_tree.set_actor(assigned_addr, actor_state).unwrap();
-        // Instantiate machine
-        tester.instantiate_machine(DummyExterns).unwrap();
+    let cid = state_tree
+        .store()
+        .put_cbor(&state, Code::Blake2b256)
+        .unwrap();
 
-        let executor = tester.executor.as_mut().unwrap();
+    let actor_state = ActorState {
+        code: *manifest.get_account_code(),
+        state: cid,
+        sequence: 0,
+        balance: TokenAmount::from_atto(10000),
+        delegated_address: Some(worker),
+    };
 
-        /**************************
-         *
-         * Machine instantiated
-         *
-         **************************/
+    state_tree.set_actor(assigned_addr, actor_state).unwrap();
+    // Instantiate machine
+    tester.instantiate_machine(DummyExterns).unwrap();
 
-        println!("Create Miner actor for solidity contract to interact with");
+    let executor = tester.executor.as_mut().unwrap();
 
-        let constructor_params = fil_actor_miner::MinerConstructorParams {
-            owner: Address::new_id(103),
-            worker,
-            control_addresses: vec![],
-            window_post_proof_type: fvm_shared::sector::RegisteredPoStProof::StackedDRGWindow2KiBV1,
-            peer_id: vec![1, 2, 3],
-            multi_addresses: vec![BytesDe(vec![1, 2, 3])],
-        };
+    /**************************
+     *
+     * Machine instantiated
+     *
+     **************************/
 
-        let exec_params = fil_actor_init::ExecParams {
-            // CID of StorageMiner actor. You get this as output from builtin-actors compiling process
-            code_cid: *manifest.code_by_id(builtins::Type::Miner as u32).unwrap(),
-            constructor_params: RawBytes::serialize(constructor_params).unwrap(),
-        };
+    println!("Create Miner actor for solidity contract to interact with");
 
-        let message = Message {
-            from: sender[0].1,
-            to: INIT_ACTOR_ADDR,
-            gas_limit: 1000000000,
-            method_num: 2,
-            params: RawBytes::serialize(exec_params).unwrap(),
-            ..Message::default()
-        };
+    let constructor_params = fil_actor_miner::MinerConstructorParams {
+        owner: Address::new_id(103),
+        worker,
+        control_addresses: vec![],
+        window_post_proof_type: fvm_shared::sector::RegisteredPoStProof::StackedDRGWindow2KiBV1,
+        peer_id: vec![1, 2, 3],
+        multi_addresses: vec![BytesDe(vec![1, 2, 3])],
+    };
 
-        let res = executor
-            .execute_message(message, ApplyKind::Explicit, 100)
-            .unwrap();
+    let exec_params = fil_actor_init::ExecParams {
+        // CID of StorageMiner actor. You get this as output from builtin-actors compiling process
+        code_cid: *manifest.code_by_id(builtins::Type::Miner as u32).unwrap(),
+        constructor_params: RawBytes::serialize(constructor_params).unwrap(),
+    };
 
-        let exec_return: ExecReturn = RawBytes::deserialize(&res.msg_receipt.return_data).unwrap();
+    let message = Message {
+        from: sender[0].1,
+        to: INIT_ACTOR_ADDR,
+        gas_limit: 1000000000,
+        method_num: 2,
+        params: RawBytes::serialize(exec_params).unwrap(),
+        ..Message::default()
+    };
 
-        dbg!(hex::encode(&exec_return.id_address.to_bytes()));
+    let res = executor
+        .execute_message(message, ApplyKind::Explicit, 100)
+        .unwrap();
 
-        assert_eq!(res.msg_receipt.exit_code.value(), 0);
+    let exec_return: ExecReturn = RawBytes::deserialize(&res.msg_receipt.return_data).unwrap();
 
-        println!("Calling init actor (EVM)");
+    dbg!(hex::encode(&exec_return.id_address.to_bytes()));
 
-        let wasm_path = env::current_dir()
-            .unwrap()
-            .join(WASM_COMPILED_PATH)
-            .canonicalize()
-            .unwrap();
-        let evm_hex = std::fs::read(wasm_path).expect("Unable to read file");
-        let evm_bin = hex::decode(evm_hex).unwrap();
+    assert_eq!(res.msg_receipt.exit_code.value(), 0);
 
-        let constructor_params = CreateExternalParams(evm_bin);
+    println!("Calling init actor (EVM)");
 
-        let message = Message {
-            from: sender[0].1,
-            to: EAM_ACTOR_ADDR,
-            gas_limit: 1000000000,
-            method_num: 4,
-            sequence: 1,
-            params: RawBytes::serialize(constructor_params).unwrap(),
-            ..Message::default()
-        };
+    let evm_bin = setup::load_evm(WASM_COMPILED_PATH);
 
-        let res = executor
-            .execute_message(message, ApplyKind::Explicit, 100)
-            .unwrap();
+    let constructor_params = CreateExternalParams(evm_bin);
 
-        assert_eq!(res.msg_receipt.exit_code.value(), 0);
+    let message = Message {
+        from: sender[0].1,
+        to: EAM_ACTOR_ADDR,
+        gas_limit: 1000000000,
+        method_num: 4,
+        sequence: 1,
+        params: RawBytes::serialize(constructor_params).unwrap(),
+        ..Message::default()
+    };
 
-        let exec_return: Return = RawBytes::deserialize(&res.msg_receipt.return_data).unwrap();
+    let res = executor
+        .execute_message(message, ApplyKind::Explicit, 100)
+        .unwrap();
 
-        println!("Calling `change_owner_address`");
+    assert_eq!(res.msg_receipt.exit_code.value(), 0);
 
-        dbg!(&sender[0]);
+    let exec_return: Return = RawBytes::deserialize(&res.msg_receipt.return_data).unwrap();
 
-        let message = Message {
+    println!("Calling `change_owner_address`");
+
+    dbg!(&sender[0]);
+
+    let message = Message {
         from: sender[0].1,
         to: Address::new_id(exec_return.actor_id),
         gas_limit: 1000000000,
@@ -172,18 +167,18 @@ mod tests {
         ..Message::default()
     };
 
-        let res = executor
-            .execute_message(message, ApplyKind::Explicit, 100)
-            .unwrap();
+    let res = executor
+        .execute_message(message, ApplyKind::Explicit, 100)
+        .unwrap();
 
-        dbg!(&res);
+    dbg!(&res);
 
-        assert_eq!(res.msg_receipt.exit_code.value(), 0);
-        assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "40");
+    assert_eq!(res.msg_receipt.exit_code.value(), 0);
+    assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "40");
 
-        println!("Calling `get_beneficiary`");
+    println!("Calling `get_beneficiary`");
 
-        let message = Message {
+    let message = Message {
         from: sender[0].1,
         to: Address::new_id(exec_return.actor_id),
         gas_limit: 1000000000,
@@ -193,16 +188,16 @@ mod tests {
         ..Message::default()
     };
 
-        let res = executor
-            .execute_message(message, ApplyKind::Explicit, 100)
-            .unwrap();
+    let res = executor
+        .execute_message(message, ApplyKind::Explicit, 100)
+        .unwrap();
 
-        assert_eq!(res.msg_receipt.exit_code.value(), 0);
-        assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "5903200000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000001e00000000000000000000000000000000000000000000000000000000000000040000000000000000000000000000000000000000000000000000000000000008000000000000000000000000000000000000000000000000000000000000000020067000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000006000000000000000000000000000000000000000000000000000000000000000c0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000a000000000000000000000000000000000000000000000000000000000000000c00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000");
+    assert_eq!(res.msg_receipt.exit_code.value(), 0);
+    assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "5903200000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000001e00000000000000000000000000000000000000000000000000000000000000040000000000000000000000000000000000000000000000000000000000000008000000000000000000000000000000000000000000000000000000000000000020067000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000006000000000000000000000000000000000000000000000000000000000000000c0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000a000000000000000000000000000000000000000000000000000000000000000c00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000");
 
-        println!("Calling `change_beneficiary`");
+    println!("Calling `change_beneficiary`");
 
-        let message = Message {
+    let message = Message {
         from: sender[0].1,
         to: Address::new_id(exec_return.actor_id),
         gas_limit: 1000000000,
@@ -212,16 +207,16 @@ mod tests {
         ..Message::default()
     };
 
-        let res = executor
-            .execute_message(message, ApplyKind::Explicit, 100)
-            .unwrap();
+    let res = executor
+        .execute_message(message, ApplyKind::Explicit, 100)
+        .unwrap();
 
-        assert_eq!(res.msg_receipt.exit_code.value(), 0);
-        assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "40");
+    assert_eq!(res.msg_receipt.exit_code.value(), 0);
+    assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "40");
 
-        println!("Calling `get_owner`");
+    println!("Calling `get_owner`");
 
-        let message = Message {
+    let message = Message {
         from: sender[0].1,
         to: Address::new_id(exec_return.actor_id),
         gas_limit: 1000000000,
@@ -231,16 +226,16 @@ mod tests {
         ..Message::default()
     };
 
-        let res = executor
-            .execute_message(message, ApplyKind::Explicit, 100)
-            .unwrap();
+    let res = executor
+        .execute_message(message, ApplyKind::Explicit, 100)
+        .unwrap();
 
-        assert_eq!(res.msg_receipt.exit_code.value(), 0);
-        assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "58e00000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000000000002006700000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000020066000000000000000000000000000000000000000000000000000000000000");
+    assert_eq!(res.msg_receipt.exit_code.value(), 0);
+    assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "58e00000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000000000002006700000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000020066000000000000000000000000000000000000000000000000000000000000");
 
-        println!("Calling `get_available_balance`");
+    println!("Calling `get_available_balance`");
 
-        let message = Message {
+    let message = Message {
         from: sender[0].1,
         to: Address::new_id(exec_return.actor_id),
         gas_limit: 1000000000,
@@ -250,16 +245,16 @@ mod tests {
         ..Message::default()
     };
 
-        let res = executor
-            .execute_message(message, ApplyKind::Explicit, 100)
-            .unwrap();
+    let res = executor
+        .execute_message(message, ApplyKind::Explicit, 100)
+        .unwrap();
 
-        assert_eq!(res.msg_receipt.exit_code.value(), 0);
-        assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "58a000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000");
+    assert_eq!(res.msg_receipt.exit_code.value(), 0);
+    assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "58a000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000");
 
-        println!("Calling `get_vesting_funds`");
+    println!("Calling `get_vesting_funds`");
 
-        let message = Message {
+    let message = Message {
         from: sender[0].1,
         to: Address::new_id(exec_return.actor_id),
         gas_limit: 1000000000,
@@ -269,16 +264,16 @@ mod tests {
         ..Message::default()
     };
 
-        let res = executor
-            .execute_message(message, ApplyKind::Explicit, 100)
-            .unwrap();
+    let res = executor
+        .execute_message(message, ApplyKind::Explicit, 100)
+        .unwrap();
 
-        assert_eq!(res.msg_receipt.exit_code.value(), 0);
-        assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "5860000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000000");
+    assert_eq!(res.msg_receipt.exit_code.value(), 0);
+    assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "5860000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000000");
 
-        println!("Calling `repay_debt`");
+    println!("Calling `repay_debt`");
 
-        let message = Message {
+    let message = Message {
         from: sender[0].1,
         to: Address::new_id(exec_return.actor_id),
         gas_limit: 1000000000,
@@ -288,16 +283,16 @@ mod tests {
         ..Message::default()
     };
 
-        let res = executor
-            .execute_message(message, ApplyKind::Explicit, 100)
-            .unwrap();
+    let res = executor
+        .execute_message(message, ApplyKind::Explicit, 100)
+        .unwrap();
 
-        assert_eq!(res.msg_receipt.exit_code.value(), 0);
-        assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "40");
+    assert_eq!(res.msg_receipt.exit_code.value(), 0);
+    assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "40");
 
-        println!("Calling `confirm_change_worker_address`");
+    println!("Calling `confirm_change_worker_address`");
 
-        let message = Message {
+    let message = Message {
         from: sender[0].1,
         to: Address::new_id(exec_return.actor_id),
         gas_limit: 1000000000,
@@ -307,16 +302,16 @@ mod tests {
         ..Message::default()
     };
 
-        let res = executor
-            .execute_message(message, ApplyKind::Explicit, 100)
-            .unwrap();
+    let res = executor
+        .execute_message(message, ApplyKind::Explicit, 100)
+        .unwrap();
 
-        assert_eq!(res.msg_receipt.exit_code.value(), 0);
-        assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "40");
+    assert_eq!(res.msg_receipt.exit_code.value(), 0);
+    assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "40");
 
-        println!("Calling `get_peer_id`");
+    println!("Calling `get_peer_id`");
 
-        let message = Message {
+    let message = Message {
         from: sender[0].1,
         to: Address::new_id(exec_return.actor_id),
         gas_limit: 1000000000,
@@ -326,16 +321,16 @@ mod tests {
         ..Message::default()
     };
 
-        let res = executor
-            .execute_message(message, ApplyKind::Explicit, 100)
-            .unwrap();
+    let res = executor
+        .execute_message(message, ApplyKind::Explicit, 100)
+        .unwrap();
 
-        assert_eq!(res.msg_receipt.exit_code.value(), 0);
-        assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "58800000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000030102030000000000000000000000000000000000000000000000000000000000");
+    assert_eq!(res.msg_receipt.exit_code.value(), 0);
+    assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "58800000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000030102030000000000000000000000000000000000000000000000000000000000");
 
-        println!("Calling `get_multiaddresses`");
+    println!("Calling `get_multiaddresses`");
 
-        let message = Message {
+    let message = Message {
         from: sender[0].1,
         to: Address::new_id(exec_return.actor_id),
         gas_limit: 1000000000,
@@ -345,16 +340,16 @@ mod tests {
         ..Message::default()
     };
 
-        let res = executor
-            .execute_message(message, ApplyKind::Explicit, 100)
-            .unwrap();
+    let res = executor
+        .execute_message(message, ApplyKind::Explicit, 100)
+        .unwrap();
 
-        assert_eq!(res.msg_receipt.exit_code.value(), 0);
-        assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "58c0000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000030102030000000000000000000000000000000000000000000000000000000000");
+    assert_eq!(res.msg_receipt.exit_code.value(), 0);
+    assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "58c0000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000030102030000000000000000000000000000000000000000000000000000000000");
 
-        println!("Calling `change_worker_address`");
+    println!("Calling `change_worker_address`");
 
-        let message = Message {
+    let message = Message {
         from: sender[0].1,
         to: Address::new_id(exec_return.actor_id),
         gas_limit: 1000000000,
@@ -364,16 +359,16 @@ mod tests {
         ..Message::default()
     };
 
-        let res = executor
-            .execute_message(message, ApplyKind::Explicit, 100)
-            .unwrap();
+    let res = executor
+        .execute_message(message, ApplyKind::Explicit, 100)
+        .unwrap();
 
-        assert_eq!(res.msg_receipt.exit_code.value(), 0);
-        assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "40");
+    assert_eq!(res.msg_receipt.exit_code.value(), 0);
+    assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "40");
 
-        println!("Calling `is_controlling_address`");
+    println!("Calling `is_controlling_address`");
 
-        let message = Message {
+    let message = Message {
        from: sender[0].1,
        to: Address::new_id(exec_return.actor_id),
        gas_limit: 1000000000,
@@ -383,19 +378,19 @@ mod tests {
        ..Message::default()
     };
 
-        let res = executor
-            .execute_message(message, ApplyKind::Explicit, 100)
-            .unwrap();
+    let res = executor
+        .execute_message(message, ApplyKind::Explicit, 100)
+        .unwrap();
 
-        assert_eq!(res.msg_receipt.exit_code.value(), 0);
-        assert_eq!(
-            hex::encode(res.msg_receipt.return_data.bytes()),
-            "58200000000000000000000000000000000000000000000000000000000000000000"
-        );
+    assert_eq!(res.msg_receipt.exit_code.value(), 0);
+    assert_eq!(
+        hex::encode(res.msg_receipt.return_data.bytes()),
+        "58200000000000000000000000000000000000000000000000000000000000000000"
+    );
 
-        println!("Calling `get_sector_size`");
+    println!("Calling `get_sector_size`");
 
-        let message = Message {
+    let message = Message {
         from: sender[0].1,
         to: Address::new_id(exec_return.actor_id),
         gas_limit: 1000000000,
@@ -405,19 +400,19 @@ mod tests {
         ..Message::default()
     };
 
-        let res = executor
-            .execute_message(message, ApplyKind::Explicit, 100)
-            .unwrap();
+    let res = executor
+        .execute_message(message, ApplyKind::Explicit, 100)
+        .unwrap();
 
-        assert_eq!(res.msg_receipt.exit_code.value(), 0);
-        assert_eq!(
-            hex::encode(res.msg_receipt.return_data.bytes()),
-            "58200000000000000000000000000000000000000000000000000000000000000800"
-        );
+    assert_eq!(res.msg_receipt.exit_code.value(), 0);
+    assert_eq!(
+        hex::encode(res.msg_receipt.return_data.bytes()),
+        "58200000000000000000000000000000000000000000000000000000000000000800"
+    );
 
-        println!("Calling `change_multiaddresses`");
+    println!("Calling `change_multiaddresses`");
 
-        let message = Message {
+    let message = Message {
         from: sender[0].1,
         to: Address::new_id(exec_return.actor_id),
         gas_limit: 1000000000,
@@ -427,16 +422,16 @@ mod tests {
         ..Message::default()
     };
 
-        let res = executor
-            .execute_message(message, ApplyKind::Explicit, 100)
-            .unwrap();
+    let res = executor
+        .execute_message(message, ApplyKind::Explicit, 100)
+        .unwrap();
 
-        assert_eq!(res.msg_receipt.exit_code.value(), 0);
-        assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "40");
+    assert_eq!(res.msg_receipt.exit_code.value(), 0);
+    assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "40");
 
-        println!("Calling `change_peer_id`");
+    println!("Calling `change_peer_id`");
 
-        let message = Message {
+    let message = Message {
         from: sender[0].1,
         to: Address::new_id(exec_return.actor_id),
         gas_limit: 1000000000,
@@ -446,16 +441,16 @@ mod tests {
         ..Message::default()
     };
 
-        let res = executor
-            .execute_message(message, ApplyKind::Explicit, 100)
-            .unwrap();
+    let res = executor
+        .execute_message(message, ApplyKind::Explicit, 100)
+        .unwrap();
 
-        assert_eq!(res.msg_receipt.exit_code.value(), 0);
-        assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "40");
+    assert_eq!(res.msg_receipt.exit_code.value(), 0);
+    assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "40");
 
-        println!("Calling `withdraw_balance`");
+    println!("Calling `withdraw_balance`");
 
-        let message = Message {
+    let message = Message {
         from: sender[0].1,
         to: Address::new_id(exec_return.actor_id),
         gas_limit: 1000000000,
@@ -465,11 +460,10 @@ mod tests {
         ..Message::default()
     };
 
-        let res = executor
-            .execute_message(message, ApplyKind::Explicit, 100)
-            .unwrap();
+    let res = executor
+        .execute_message(message, ApplyKind::Explicit, 100)
+        .unwrap();
 
-        assert_eq!(res.msg_receipt.exit_code.value(), 0);
-        assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "5860000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000000");
-    }
+    assert_eq!(res.msg_receipt.exit_code.value(), 0);
+    assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "5860000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000000");
 }
