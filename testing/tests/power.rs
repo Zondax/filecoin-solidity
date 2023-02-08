@@ -1,18 +1,13 @@
-
 use bls_signatures::Serialize;
-use cid::Cid;
 use fil_actor_eam::Return;
 use fil_actor_evm::Method as EvmMethods;
 use fil_actors_runtime::{
     runtime::builtins, EAM_ACTOR_ADDR, STORAGE_POWER_ACTOR_ADDR, SYSTEM_ACTOR_ADDR,
 };
 use fvm::executor::{ApplyKind, Executor};
-use fvm::machine::Manifest;
 use fvm::state_tree::ActorState;
-use fvm_integration_tests::bundle;
 use fvm_integration_tests::dummy::DummyExterns;
-use fvm_integration_tests::tester::{Account, Tester};
-use fvm_ipld_blockstore::MemoryBlockstore;
+use fvm_integration_tests::tester::Account;
 use fvm_ipld_encoding::BytesDe;
 use fvm_ipld_encoding::CborStore;
 use fvm_ipld_encoding::RawBytes;
@@ -21,14 +16,13 @@ use fvm_shared::address::Address;
 use fvm_shared::econ::TokenAmount;
 use fvm_shared::message::Message;
 use fvm_shared::sector::RegisteredPoStProof;
-use fvm_shared::state::StateTreeVersion;
-use fvm_shared::version::NetworkVersion;
 use multihash::Code;
 use rand_core::OsRng;
 use serde::{Deserialize as SerdeDeserialize, Serialize as SerdeSerialize};
 
 use testing::helpers::set_storagepower_actor;
 use testing::setup;
+use testing::GasResult;
 
 const WASM_COMPILED_PATH: &str = "../build/v0.8/tests/PowerApiTest.bin";
 
@@ -50,17 +44,8 @@ pub struct CreateMinerParams {
 fn power_tests() {
     println!("Testing solidity API");
 
-    let bs = MemoryBlockstore::default();
-    let actors = std::fs::read("./builtin-actors/output/builtin-actors-devnet-wasm.car")
-        .expect("Unable to read actor devnet file");
-    let bundle_root = bundle::import_bundle(&bs, &actors).unwrap();
-
-    let (manifest_version, manifest_data_cid): (u32, Cid) =
-        bs.get_cbor(&bundle_root).unwrap().unwrap();
-    let manifest = Manifest::load(&bs, &manifest_data_cid, manifest_version).unwrap();
-
-    let mut tester =
-        Tester::new(NetworkVersion::V18, StateTreeVersion::V5, bundle_root, bs).unwrap();
+    let mut gas_result: GasResult = vec![];
+    let (mut tester, manifest) = setup::setup_tester();
 
     let sender: [Account; 1] = tester.create_accounts().unwrap();
 
@@ -187,6 +172,7 @@ fn power_tests() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
+    gas_result.push(("miner_count".into(), res.msg_receipt.gas_used));
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
     assert_eq!(
         hex::encode(res.msg_receipt.return_data.bytes()),
@@ -209,6 +195,7 @@ fn power_tests() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
+    gas_result.push(("network_raw_power".into(), res.msg_receipt.gas_used));
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
     assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "58800000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000");
 
@@ -233,6 +220,7 @@ fn power_tests() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
+    gas_result.push(("miner_raw_power".into(), res.msg_receipt.gas_used));
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
     assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "58c0000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000");
 
@@ -252,9 +240,13 @@ fn power_tests() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
+    gas_result.push(("miner_consensus_count".into(), res.msg_receipt.gas_used));
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
     assert_eq!(
         hex::encode(res.msg_receipt.return_data.bytes()),
         "58200000000000000000000000000000000000000000000000000000000000000000"
     );
+
+    let table = testing::create_gas_table(gas_result);
+    table.printstd();
 }

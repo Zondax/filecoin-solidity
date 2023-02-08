@@ -1,4 +1,3 @@
-
 use bls_signatures::Serialize;
 use cid::Cid;
 use fil_actor_eam::Return;
@@ -8,12 +7,9 @@ use fil_actors_runtime::{
     STORAGE_POWER_ACTOR_ADDR, SYSTEM_ACTOR_ADDR,
 };
 use fvm::executor::{ApplyKind, Executor};
-use fvm::machine::Manifest;
 use fvm::state_tree::ActorState;
-use fvm_integration_tests::bundle;
 use fvm_integration_tests::dummy::DummyExterns;
-use fvm_integration_tests::tester::{Account, Tester};
-use fvm_ipld_blockstore::MemoryBlockstore;
+use fvm_integration_tests::tester::Account;
 use fvm_ipld_encoding::BytesDe;
 use fvm_ipld_encoding::BytesSer;
 use fvm_ipld_encoding::CborStore;
@@ -26,17 +22,15 @@ use fvm_shared::econ::TokenAmount;
 use fvm_shared::message::Message;
 use fvm_shared::piece::PaddedPieceSize;
 use fvm_shared::sector::RegisteredPoStProof;
-use fvm_shared::state::StateTreeVersion;
-use fvm_shared::version::NetworkVersion;
 use libipld_core::ipld::Ipld;
 use multihash::Code;
 use rand_core::OsRng;
 use serde::{Deserialize as SerdeDeserialize, Serialize as SerdeSerialize};
-use std::env;
 use std::str::FromStr;
 
 use testing::helpers;
 use testing::setup;
+use testing::GasResult;
 
 const WASM_COMPILED_PATH: &str = "../build/v0.8/tests/MarketApiTest.bin";
 
@@ -139,17 +133,8 @@ pub struct AuthenticateMessageParams {
 fn market_tests() {
     println!("Testing solidity API");
 
-    let bs = MemoryBlockstore::default();
-    let actors = std::fs::read("./builtin-actors/output/builtin-actors-devnet-wasm.car")
-        .expect("Unable to read actor devnet file file");
-    let bundle_root = bundle::import_bundle(&bs, &actors).unwrap();
-
-    let (manifest_version, manifest_data_cid): (u32, Cid) =
-        bs.get_cbor(&bundle_root).unwrap().unwrap();
-    let manifest = Manifest::load(&bs, &manifest_data_cid, manifest_version).unwrap();
-
-    let mut tester =
-        Tester::new(NetworkVersion::V18, StateTreeVersion::V5, bundle_root, bs).unwrap();
+    let mut gas_result: GasResult = vec![];
+    let (mut tester, manifest) = setup::setup_tester();
 
     let sender: [Account; 1] = tester.create_accounts().unwrap();
     //let client: [Account; 1] = tester.create_accounts().unwrap();
@@ -453,6 +438,7 @@ fn market_tests() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
+    gas_result.push(("add_balance".into(), res.msg_receipt.gas_used));
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
     assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "40");
 
@@ -472,6 +458,7 @@ fn market_tests() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
+    gas_result.push(("withdraw_balance".into(), res.msg_receipt.gas_used));
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
     assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "58c0000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000040000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000016400000000000000000000000000000000000000000000000000000000000000");
 
@@ -491,6 +478,7 @@ fn market_tests() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
+    gas_result.push(("get_balance".into(), res.msg_receipt.gas_used));
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
     assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "5901600000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000c0000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000009056bc75e2d63100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000807f3556c02eb7800000000000000000000000000000000000000000000000000");
 
@@ -515,6 +503,7 @@ fn market_tests() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
+    gas_result.push(("get_deal_data_commitment".into(), res.msg_receipt.gas_used));
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
     assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "58c00000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000008000000000000000000000000000000000000000000000000000000000000000000028000181e203922020b51bcc94bb0977c984c093770289dea4e83ef08c355145d412c6673e06152a09000000000000000000000000000000000000000000000000");
 
@@ -539,6 +528,7 @@ fn market_tests() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
+    gas_result.push(("get_deal_client".into(), res.msg_receipt.gas_used));
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
     assert_eq!(
         hex::encode(res.msg_receipt.return_data.bytes()),
@@ -566,6 +556,7 @@ fn market_tests() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
+    gas_result.push(("get_deal_provider".into(), res.msg_receipt.gas_used));
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
     assert_eq!(
         hex::encode(res.msg_receipt.return_data.bytes()),
@@ -593,6 +584,7 @@ fn market_tests() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
+    gas_result.push(("get_deal_label".into(), res.msg_receipt.gas_used));
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
     assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "58a00000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000346d41584367354149673859425862466a7464427931695a6a704459417752537430656c474c463547765471756c4569693156634d000000000000000000000000");
 
@@ -617,6 +609,7 @@ fn market_tests() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
+    gas_result.push(("get_deal_term".into(), res.msg_receipt.gas_used));
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
     assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "5840000000000000000000000000000000000000000000000000000000000000629d000000000000000000000000000000000000000000000000000000000007eee1");
 
@@ -641,6 +634,7 @@ fn market_tests() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
+    gas_result.push(("get_deal_total_price".into(), res.msg_receipt.gas_used));
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
     assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "58c00000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000807efc7ed5e24f800000000000000000000000000000000000000000000000000");
 
@@ -665,6 +659,10 @@ fn market_tests() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
+    gas_result.push((
+        "get_deal_client_collateral".into(),
+        res.msg_receipt.gas_used,
+    ));
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
     assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "58c000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000007038d7ea4c6800000000000000000000000000000000000000000000000000000");
 
@@ -689,6 +687,10 @@ fn market_tests() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
+    gas_result.push((
+        "get_deal_provider_collateral".into(),
+        res.msg_receipt.gas_used,
+    ));
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
     assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "58c000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000007038d7ea4c6800000000000000000000000000000000000000000000000000000");
 
@@ -713,6 +715,7 @@ fn market_tests() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
+    gas_result.push(("get_deal_verified".into(), res.msg_receipt.gas_used));
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
     assert_eq!(
         hex::encode(res.msg_receipt.return_data.bytes()),
@@ -740,6 +743,7 @@ fn market_tests() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
+    gas_result.push(("get_deal_activation".into(), res.msg_receipt.gas_used));
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
     assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "584000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000");
 
@@ -764,6 +768,10 @@ fn market_tests() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
+    gas_result.push(("publish_storage_deals".into(), res.msg_receipt.gas_used));
     // FIXME
     assert_eq!(res.msg_receipt.exit_code.value(), 33);
+
+    let table = testing::create_gas_table(gas_result);
+    table.printstd();
 }

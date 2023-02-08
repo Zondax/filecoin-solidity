@@ -18,12 +18,7 @@ use multihash::Code;
 use serde::{Deserialize as SerdeDeserialize, Serialize as SerdeSerialize};
 
 use testing::setup;
-
-#[macro_use]
-extern crate prettytable;
-use prettytable::Table;
-
-type GasResult = Vec<(String, i64)>;
+use testing::GasResult;
 
 const WASM_COMPILED_PATH: &str = "../build/v0.8/tests/AccountApiTest.bin";
 
@@ -201,12 +196,6 @@ fn account_tests() {
     gas_result.push(("universal_receiver_hook (actor ID)".into(),  res.msg_receipt.gas_used));
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
 
-
-    let mut table = Table::new();
-    table.add_row(row!["Function", "Gas"]);
-    gas_result.iter().for_each(|(description, gas)| {
-        table.add_row(row![description, gas]);
-    });
-
+    let table = testing::create_gas_table(gas_result);
     table.printstd();
 }

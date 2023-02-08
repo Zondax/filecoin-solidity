@@ -1,25 +1,17 @@
-
-use cid::Cid;
 use fil_actor_eam::Return;
 use fil_actor_evm::Method as EvmMethods;
 use fil_actors_runtime::{runtime::builtins, EAM_ACTOR_ADDR};
 use fvm::executor::{ApplyKind, Executor};
-use fvm::machine::Manifest;
-use fvm_integration_tests::bundle;
 use fvm_integration_tests::dummy::DummyExterns;
-use fvm_integration_tests::tester::{Account, Tester};
-use fvm_ipld_blockstore::MemoryBlockstore;
+use fvm_integration_tests::tester::Account;
 use fvm_ipld_encoding::strict_bytes;
-use fvm_ipld_encoding::CborStore;
 use fvm_ipld_encoding::RawBytes;
 use fvm_shared::address::Address;
 use fvm_shared::message::Message;
-use fvm_shared::state::StateTreeVersion;
-use fvm_shared::version::NetworkVersion;
 use serde::{Deserialize as SerdeDeserialize, Serialize as SerdeSerialize};
-use std::env;
 
 use testing::setup;
+use testing::GasResult;
 
 const WASM_COMPILED_PATH: &str = "../build/v0.8/tests/InitApiTest.bin";
 
@@ -31,17 +23,9 @@ pub struct CreateExternalParams(#[serde(with = "strict_bytes")] pub Vec<u8>);
 fn init_tests() {
     println!("Testing solidity API");
 
-    let bs = MemoryBlockstore::default();
-    let actors = std::fs::read("./builtin-actors/output/builtin-actors-devnet-wasm.car")
-        .expect("Unable to read actor devnet file file");
-    let bundle_root = bundle::import_bundle(&bs, &actors).unwrap();
+    let mut gas_result: GasResult = vec![];
 
-    let (manifest_version, manifest_data_cid): (u32, Cid) =
-        bs.get_cbor(&bundle_root).unwrap().unwrap();
-    let manifest = Manifest::load(&bs, &manifest_data_cid, manifest_version).unwrap();
-
-    let mut tester =
-        Tester::new(NetworkVersion::V18, StateTreeVersion::V5, bundle_root, bs).unwrap();
+    let (mut tester, manifest) = setup::setup_tester();
 
     let sender: [Account; 1] = tester.create_accounts().unwrap();
 
@@ -103,7 +87,7 @@ fn init_tests() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
-    dbg!(&res);
+    gas_result.push(("exec".into(), res.msg_receipt.gas_used));
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
     assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "58e000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000040000000000000000000000000000000000000000000000000000000000000008000000000000000000000000000000000000000000000000000000000000000020066000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001502a526fc35cb62e5b1810ab92c02e0b37c8e7f47dd0000000000000000000000");
 
@@ -129,7 +113,12 @@ fn init_tests() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
+    gas_result.push(("exec4".into(), res.msg_receipt.gas_used));
+
     // FIXME: "caller f0101 of method 3 must be built-in"
     // However there is no exported method for EXEC4 yet. Tests cant pass until the builtin-actors export the exec4 method.
     assert_eq!(res.msg_receipt.exit_code.value(), 33);
+
+    let table = testing::create_gas_table(gas_result);
+    table.printstd();
 }

@@ -1,30 +1,24 @@
-
 use bls_signatures::Serialize;
-use cid::Cid;
 use fil_actor_eam::Return;
 use fil_actor_evm::Method as EvmMethods;
 use fil_actor_init::ExecReturn;
 use fil_actors_runtime::{runtime::builtins, EAM_ACTOR_ADDR, INIT_ACTOR_ADDR};
 use fvm::executor::{ApplyKind, Executor};
-use fvm::machine::Manifest;
 use fvm::state_tree::ActorState;
-use fvm_integration_tests::bundle;
 use fvm_integration_tests::dummy::DummyExterns;
-use fvm_integration_tests::tester::{Account, Tester};
-use fvm_ipld_blockstore::MemoryBlockstore;
+use fvm_integration_tests::tester::Account;
 use fvm_ipld_encoding::CborStore;
 use fvm_ipld_encoding::RawBytes;
 use fvm_ipld_encoding::{strict_bytes, tuple::*, BytesDe};
 use fvm_shared::address::Address;
 use fvm_shared::econ::TokenAmount;
 use fvm_shared::message::Message;
-use fvm_shared::state::StateTreeVersion;
-use fvm_shared::version::NetworkVersion;
 use multihash::Code;
 use rand_core::OsRng;
 use serde::{Deserialize as SerdeDeserialize, Serialize as SerdeSerialize};
 
 use testing::setup;
+use testing::GasResult;
 
 const WASM_COMPILED_PATH: &str = "../build/v0.8/tests/MinerApiTest.bin";
 
@@ -41,17 +35,8 @@ pub struct CreateExternalParams(#[serde(with = "strict_bytes")] pub Vec<u8>);
 fn miner_tests() {
     println!("Testing solidity API");
 
-    let bs = MemoryBlockstore::default();
-    let actors = std::fs::read("./builtin-actors/output/builtin-actors-devnet-wasm.car")
-        .expect("Unable to read actor devnet file file");
-    let bundle_root = bundle::import_bundle(&bs, &actors).unwrap();
-
-    let (manifest_version, manifest_data_cid): (u32, Cid) =
-        bs.get_cbor(&bundle_root).unwrap().unwrap();
-    let manifest = Manifest::load(&bs, &manifest_data_cid, manifest_version).unwrap();
-
-    let mut tester =
-        Tester::new(NetworkVersion::V18, StateTreeVersion::V5, bundle_root, bs).unwrap();
+    let mut gas_result: GasResult = vec![];
+    let (mut tester, manifest) = setup::setup_tester();
 
     let sender: [Account; 1] = tester.create_accounts().unwrap();
 
@@ -171,8 +156,7 @@ fn miner_tests() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
-    dbg!(&res);
-
+    gas_result.push(("change_owner_address".into(), res.msg_receipt.gas_used));
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
     assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "40");
 
@@ -192,6 +176,7 @@ fn miner_tests() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
+    gas_result.push(("get_beneficiary".into(), res.msg_receipt.gas_used));
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
     assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "5903200000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000001e00000000000000000000000000000000000000000000000000000000000000040000000000000000000000000000000000000000000000000000000000000008000000000000000000000000000000000000000000000000000000000000000020067000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000006000000000000000000000000000000000000000000000000000000000000000c0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000a000000000000000000000000000000000000000000000000000000000000000c00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000");
 
@@ -211,6 +196,7 @@ fn miner_tests() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
+    gas_result.push(("change_beneficiary".into(), res.msg_receipt.gas_used));
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
     assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "40");
 
@@ -230,6 +216,7 @@ fn miner_tests() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
+    gas_result.push(("get_owner".into(), res.msg_receipt.gas_used));
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
     assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "58e00000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000000000002006700000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000020066000000000000000000000000000000000000000000000000000000000000");
 
@@ -249,6 +236,7 @@ fn miner_tests() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
+    gas_result.push(("get_available_balance".into(), res.msg_receipt.gas_used));
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
     assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "58a000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000");
 
@@ -268,6 +256,7 @@ fn miner_tests() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
+    gas_result.push(("get_vesting_funds".into(), res.msg_receipt.gas_used));
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
     assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "5860000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000000");
 
@@ -287,6 +276,7 @@ fn miner_tests() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
+    gas_result.push(("repay_debt".into(), res.msg_receipt.gas_used));
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
     assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "40");
 
@@ -306,6 +296,10 @@ fn miner_tests() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
+    gas_result.push((
+        "confirm_change_worker_address".into(),
+        res.msg_receipt.gas_used,
+    ));
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
     assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "40");
 
@@ -325,6 +319,7 @@ fn miner_tests() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
+    gas_result.push(("get_peer_id".into(), res.msg_receipt.gas_used));
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
     assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "58800000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000030102030000000000000000000000000000000000000000000000000000000000");
 
@@ -344,6 +339,7 @@ fn miner_tests() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
+    gas_result.push(("get_multiaddresses".into(), res.msg_receipt.gas_used));
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
     assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "58c0000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000030102030000000000000000000000000000000000000000000000000000000000");
 
@@ -363,6 +359,7 @@ fn miner_tests() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
+    gas_result.push(("change_worker_address".into(), res.msg_receipt.gas_used));
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
     assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "40");
 
@@ -382,6 +379,7 @@ fn miner_tests() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
+    gas_result.push(("is_controlling_address".into(), res.msg_receipt.gas_used));
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
     assert_eq!(
         hex::encode(res.msg_receipt.return_data.bytes()),
@@ -404,6 +402,7 @@ fn miner_tests() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
+    gas_result.push(("get_sector_size".into(), res.msg_receipt.gas_used));
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
     assert_eq!(
         hex::encode(res.msg_receipt.return_data.bytes()),
@@ -426,6 +425,7 @@ fn miner_tests() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
+    gas_result.push(("change_multiaddresses".into(), res.msg_receipt.gas_used));
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
     assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "40");
 
@@ -445,6 +445,7 @@ fn miner_tests() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
+    gas_result.push(("change_peer_id".into(), res.msg_receipt.gas_used));
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
     assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "40");
 
@@ -464,6 +465,10 @@ fn miner_tests() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
+    gas_result.push(("withdraw_balance".into(), res.msg_receipt.gas_used));
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
     assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "5860000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000000");
+
+    let table = testing::create_gas_table(gas_result);
+    table.printstd();
 }

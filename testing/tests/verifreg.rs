@@ -1,11 +1,3 @@
-
-use fvm_integration_tests::bundle;
-use fvm_integration_tests::dummy::DummyExterns;
-use fvm_integration_tests::tester::{Account, Tester};
-use fvm_ipld_encoding::{strict_bytes, tuple::*};
-use fvm_shared::bigint::bigint_ser;
-
-use cid::Cid;
 use fil_actor_eam::Return;
 use fil_actor_evm::Method as EvmMethods;
 use fil_actors_runtime::{
@@ -13,19 +5,19 @@ use fil_actors_runtime::{
     VERIFIED_REGISTRY_ACTOR_ADDR,
 };
 use fvm::executor::{ApplyKind, Executor};
-use fvm::machine::Manifest;
-use fvm_ipld_blockstore::MemoryBlockstore;
-use fvm_ipld_encoding::CborStore;
+use fvm_integration_tests::dummy::DummyExterns;
+use fvm_integration_tests::tester::Account;
 use fvm_ipld_encoding::RawBytes;
+use fvm_ipld_encoding::{strict_bytes, tuple::*};
 use fvm_shared::address::Address;
+use fvm_shared::bigint::bigint_ser;
 use fvm_shared::message::Message;
 use fvm_shared::sector::StoragePower;
-use fvm_shared::state::StateTreeVersion;
-use fvm_shared::version::NetworkVersion;
 use serde::{Deserialize as SerdeDeserialize, Serialize as SerdeSerialize};
 
 use testing::helpers;
 use testing::setup;
+use testing::GasResult;
 
 const WASM_COMPILED_PATH: &str = "../build/v0.8/tests/VerifRegApiTest.bin";
 
@@ -44,17 +36,8 @@ pub struct VerifierParams {
 fn verifreg_tests() {
     println!("Testing solidity API");
 
-    let bs = MemoryBlockstore::default();
-    let actors = std::fs::read("./builtin-actors/output/builtin-actors-devnet-wasm.car")
-        .expect("Unable to read actor devnet file file");
-    let bundle_root = bundle::import_bundle(&bs, &actors).unwrap();
-
-    let (manifest_version, manifest_data_cid): (u32, Cid) =
-        bs.get_cbor(&bundle_root).unwrap().unwrap();
-    let manifest = Manifest::load(&bs, &manifest_data_cid, manifest_version).unwrap();
-
-    let mut tester =
-        Tester::new(NetworkVersion::V18, StateTreeVersion::V5, bundle_root, bs).unwrap();
+    let mut gas_result: GasResult = vec![];
+    let (mut tester, manifest) = setup::setup_tester();
 
     let accounts: [Account; 2] = tester.create_accounts().unwrap();
     let (sender, _verified_client) = (accounts[0], accounts[1]);
@@ -170,8 +153,6 @@ fn verifreg_tests() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
-    dbg!(&res);
-
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
 
     println!("Calling `add_verified_client`");
@@ -189,6 +170,7 @@ fn verifreg_tests() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
+    gas_result.push(("add_verified_client".into(), res.msg_receipt.gas_used));
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
 
     println!("Calling `get_claims`");
@@ -208,6 +190,7 @@ fn verifreg_tests() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
+    gas_result.push(("get_claims".into(), res.msg_receipt.gas_used));
     // Should not fail as actor would return an empty list of claims
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
 
@@ -226,6 +209,7 @@ fn verifreg_tests() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
+    gas_result.push(("extend_claim_term".into(), res.msg_receipt.gas_used));
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
 
     println!("Calling `remove_expired_allocations`");
@@ -245,6 +229,10 @@ fn verifreg_tests() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
+    gas_result.push((
+        "remove_expired_allocations".into(),
+        res.msg_receipt.gas_used,
+    ));
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
 
     println!("Calling `remove_expired_claims`");
@@ -262,6 +250,7 @@ fn verifreg_tests() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
+    gas_result.push(("remove_expired_claims".into(), res.msg_receipt.gas_used));
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
 
     /*
@@ -285,4 +274,7 @@ fn verifreg_tests() {
         .unwrap();
 
     assert_eq!(res.msg_receipt.exit_code.value(), 0);*/
+
+    let table = testing::create_gas_table(gas_result);
+    table.printstd();
 }

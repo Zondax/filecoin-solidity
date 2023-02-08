@@ -1,22 +1,18 @@
-
 use fil_actor_eam::Return;
 use fil_actor_evm::Method as EvmMethods;
 use fil_actors_runtime::EAM_ACTOR_ADDR;
 use fvm::executor::{ApplyKind, Executor};
-use fvm_integration_tests::bundle;
 use fvm_integration_tests::dummy::DummyExterns;
-use fvm_integration_tests::tester::{Account, Tester};
-use fvm_ipld_blockstore::MemoryBlockstore;
+use fvm_integration_tests::tester::Account;
 use fvm_ipld_encoding::strict_bytes;
 use fvm_ipld_encoding::RawBytes;
 use fvm_shared::address::Address;
 use fvm_shared::econ::TokenAmount;
 use fvm_shared::message::Message;
-use fvm_shared::state::StateTreeVersion;
-use fvm_shared::version::NetworkVersion;
 use serde::{Deserialize as SerdeDeserialize, Serialize as SerdeSerialize};
 
 use testing::setup;
+use testing::GasResult;
 
 const WASM_COMPILED_PATH: &str = "../build/v0.8/tests/SendApiTest.bin";
 
@@ -28,13 +24,8 @@ pub struct CreateExternalParams(#[serde(with = "strict_bytes")] pub Vec<u8>);
 fn send_tests() {
     println!("Testing solidity API");
 
-    let bs = MemoryBlockstore::default();
-    let actors = std::fs::read("./builtin-actors/output/builtin-actors-devnet-wasm.car")
-        .expect("Unable to read actor devnet file");
-    let bundle_root = bundle::import_bundle(&bs, &actors).unwrap();
-
-    let mut tester =
-        Tester::new(NetworkVersion::V18, StateTreeVersion::V5, bundle_root, bs).unwrap();
+    let mut gas_result: GasResult = vec![];
+    let (mut tester, _manifest) = setup::setup_tester();
 
     // As the governor address for datacap is 200, we create many many address in order to initialize the ID 200 with some tokens
     // and make it a valid address to use.
@@ -156,5 +147,9 @@ fn send_tests() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
+    gas_result.push(("send".into(), res.msg_receipt.gas_used));
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
+
+    let table = testing::create_gas_table(gas_result);
+    table.printstd();
 }
