@@ -38,8 +38,8 @@ contract MarketMockAPI {
 
     /// @notice Deposits the received value into the balance held in escrow.
     /// @dev Because this is a mock method, no real balance is being deducted from the caller, nor incremented in the Storage Market actor (f05).
-    function addBalance(bytes memory provider_or_client) public payable {
-        BigNumber memory newValue = BigNumbers.init(msg.value, false);
+    function addBalance(bytes memory provider_or_client, uint256 value) public payable {
+        BigNumber memory newValue = BigNumbers.init(value, false);
         balances[string(provider_or_client)] = BigNumbers.add(balances[string(provider_or_client)], newValue);
     }
 
@@ -150,9 +150,7 @@ contract MarketMockAPI {
     /// @notice Publish a new set of storage deals (not yet included in a sector).
     function publishStorageDeals(bytes memory raw_auth_params, address callee) public {
         // calls standard filecoin receiver on message authentication api method number
-        (bool success, ) = callee.call(
-            abi.encodeWithSignature("handle_filecoin_method(uint64,uint64,bytes)", 0, 2643134072, raw_auth_params)
-        );
+        (bool success, ) = callee.call(abi.encodeWithSignature("handle_filecoin_method(uint64,uint64,bytes)", 0, 2643134072, raw_auth_params));
         require(success, "client contract failed to authorize deal publish");
     }
 
