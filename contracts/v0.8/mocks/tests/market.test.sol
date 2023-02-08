@@ -34,7 +34,7 @@ contract MarketTestApi {
         bytes memory provider_or_client = hex"0066";
 
         MarketMockAPI marketApiInstance = MarketMockAPI(marketApiAddress);
-        marketApiInstance.addBalance(provider_or_client);
+        marketApiInstance.addBalance(provider_or_client, 100);
     }
 
     function test_get_balance() public view {
