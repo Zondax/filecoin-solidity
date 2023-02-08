@@ -71,34 +71,34 @@ test_integration: build build_builtin_actors
 	cd testing && cargo test
 
 test_miner_integration: build build_builtin_actors
-	cd testing && cargo test miner_test
+	cd testing && cargo test miner_test -- --nocapture
 
 test_market_integration: build build_builtin_actors
-	cd testing && cargo test market_test
+	cd testing && cargo test market_test -- --nocapture
 
 test_power_integration: build build_builtin_actors
-	cd testing && cargo test power_test
+	cd testing && cargo test power_test -- --nocapture
 
 test_verifreg_integration: build build_builtin_actors
-	cd testing && cargo test verifreg_test
+	cd testing && cargo test verifreg_test -- --nocapture
 
 test_datacap_integration: build build_builtin_actors
-	cd testing && cargo test datacap_test
+	cd testing && cargo test datacap_test -- --nocapture
 
 test_init_integration: build build_builtin_actors
-	cd testing && cargo test init_test
+	cd testing && cargo test init_test -- --nocapture
 
 test_account_integration: build build_builtin_actors
-	cd testing && cargo test account_test
+	cd testing && cargo test account_test -- --nocapture
 
 test_multisig_integration: build build_builtin_actors
-	cd testing && cargo test multisig_test
+	cd testing && cargo test multisig_test -- --nocapture
 
 test_precompiles_integration: build build_builtin_actors
-	cd testing && cargo test precompiles_test
+	cd testing && cargo test precompiles_test -- --nocapture
 
 test_send_integration: build build_builtin_actors
-	cd testing && cargo test send_test
+	cd testing && cargo test send_test -- --nocapture
 
 ################ DEPS ################
 
