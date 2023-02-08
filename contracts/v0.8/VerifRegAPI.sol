@@ -32,14 +32,7 @@ library VerifRegAPI {
     function getClaims(VerifRegTypes.GetClaimsParams memory params) internal returns (VerifRegTypes.GetClaimsReturn memory) {
         bytes memory raw_request = params.serializeGetClaimsParams();
 
-        bytes memory raw_response = Actor.call(
-            VerifRegTypes.GetClaimsMethodNum,
-            VerifRegTypes.ActorID,
-            raw_request,
-            Misc.CBOR_CODEC,
-            msg.value,
-            false
-        );
+        bytes memory raw_response = Actor.call(VerifRegTypes.GetClaimsMethodNum, VerifRegTypes.ActorID, raw_request, Misc.CBOR_CODEC, 0, false);
 
         bytes memory result = Actor.readRespData(raw_response);
 
@@ -49,14 +42,7 @@ library VerifRegAPI {
     function addVerifiedClient(VerifRegTypes.AddVerifierClientParams memory params) internal {
         bytes memory raw_request = params.serializeAddVerifierClientParams();
 
-        bytes memory raw_response = Actor.call(
-            VerifRegTypes.AddVerifierClientMethodNum,
-            VerifRegTypes.ActorID,
-            raw_request,
-            Misc.CBOR_CODEC,
-            msg.value,
-            false
-        );
+        bytes memory raw_response = Actor.call(VerifRegTypes.AddVerifierClientMethodNum, VerifRegTypes.ActorID, raw_request, Misc.CBOR_CODEC, 0, false);
 
         bytes memory result = Actor.readRespData(raw_response);
         require(result.length == 0, "unexpected response received");
@@ -67,14 +53,7 @@ library VerifRegAPI {
     ) internal returns (VerifRegTypes.RemoveExpiredAllocationsReturn memory) {
         bytes memory raw_request = params.serializeRemoveExpiredAllocationsParams();
 
-        bytes memory raw_response = Actor.call(
-            VerifRegTypes.RemoveExpiredAllocationsMethodNum,
-            VerifRegTypes.ActorID,
-            raw_request,
-            Misc.CBOR_CODEC,
-            msg.value,
-            false
-        );
+        bytes memory raw_response = Actor.call(VerifRegTypes.RemoveExpiredAllocationsMethodNum, VerifRegTypes.ActorID, raw_request, Misc.CBOR_CODEC, 0, false);
 
         bytes memory result = Actor.readRespData(raw_response);
 
@@ -84,52 +63,27 @@ library VerifRegAPI {
     function extendClaimTerms(VerifRegTypes.ExtendClaimTermsParams memory params) internal returns (CommonTypes.BatchReturn memory) {
         bytes memory raw_request = params.serializeExtendClaimTermsParams();
 
-        bytes memory raw_response = Actor.call(
-            VerifRegTypes.ExtendClaimTermsMethodNum,
-            VerifRegTypes.ActorID,
-            raw_request,
-            Misc.CBOR_CODEC,
-            msg.value,
-            false
-        );
+        bytes memory raw_response = Actor.call(VerifRegTypes.ExtendClaimTermsMethodNum, VerifRegTypes.ActorID, raw_request, Misc.CBOR_CODEC, 0, false);
 
         bytes memory result = Actor.readRespData(raw_response);
 
         return result.deserializeBatchReturn();
     }
 
-    function removeExpiredClaims(
-        VerifRegTypes.RemoveExpiredClaimsParams memory params
-    ) internal returns (VerifRegTypes.RemoveExpiredClaimsReturn memory) {
+    function removeExpiredClaims(VerifRegTypes.RemoveExpiredClaimsParams memory params) internal returns (VerifRegTypes.RemoveExpiredClaimsReturn memory) {
         bytes memory raw_request = params.serializeRemoveExpiredClaimsParams();
 
-        bytes memory raw_response = Actor.call(
-            VerifRegTypes.RemoveExpiredClaimsMethodNum,
-            VerifRegTypes.ActorID,
-            raw_request,
-            Misc.CBOR_CODEC,
-            msg.value,
-            false
-        );
+        bytes memory raw_response = Actor.call(VerifRegTypes.RemoveExpiredClaimsMethodNum, VerifRegTypes.ActorID, raw_request, Misc.CBOR_CODEC, 0, false);
 
         bytes memory result = Actor.readRespData(raw_response);
 
         return result.deserializeRemoveExpiredClaimsReturn();
     }
 
-    function universalReceiverHook(
-        VerifRegTypes.UniversalReceiverParams memory params
-    ) internal returns (VerifRegTypes.AllocationsResponse memory) {
+    function universalReceiverHook(VerifRegTypes.UniversalReceiverParams memory params) internal returns (VerifRegTypes.AllocationsResponse memory) {
         bytes memory raw_request = params.serializeUniversalReceiverParams();
 
-        bytes memory raw_response = Actor.call(
-            VerifRegTypes.UniversalReceiverMethodNum,
-            VerifRegTypes.ActorID,
-            raw_request,
-            Misc.CBOR_CODEC,
-            msg.value,
-            false
-        );
+        bytes memory raw_response = Actor.call(VerifRegTypes.UniversalReceiverMethodNum, VerifRegTypes.ActorID, raw_request, Misc.CBOR_CODEC, 0, false);
 
         bytes memory result = Actor.readRespData(raw_response);
 
