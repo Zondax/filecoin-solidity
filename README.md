@@ -23,7 +23,7 @@ The libraries have been developed under the following set of assumptions. Take a
 Filecoin today lacks general programmability. As a result, it is not possible to deploy user-defined behaviour, or "smart contracts", to the blockchain. The goal of the FVM project is to add general programmability to the Filecoin blockchain.
 They predict this will unleash a proliferation of new services and tools that can be built and deployed to the Filecoin network, without requiring network upgrades, involvement from core implementation maintainers, changes in the embedded actors, or spec alterations.
 
-## Project
+## Filecoin Solidity
 It is a set of Solidity libraries that allow Solidity smart contracts to seamlessly call methods of Filecoin built-in actors. They do cross-platform calls to the real Filecoin built-in actors. A set of mock libraries are located too. They respond to specific scenarios based on the received parameters instead of doing real calls.
 
 ### Features
