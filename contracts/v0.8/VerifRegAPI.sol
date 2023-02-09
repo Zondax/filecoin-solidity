@@ -37,7 +37,7 @@ library VerifRegAPI {
             VerifRegTypes.ActorID,
             raw_request,
             Misc.DAG_CBOR_CODEC,
-            msg.value,
+            0,
             false
         );
 
@@ -54,9 +54,10 @@ library VerifRegAPI {
             VerifRegTypes.ActorID,
             raw_request,
             Misc.DAG_CBOR_CODEC,
-            msg.value,
+            0,
             false
         );
+
 
         bytes memory result = Actor.readRespData(raw_response);
         require(result.length == 0, "unexpected response received");
@@ -72,9 +73,10 @@ library VerifRegAPI {
             VerifRegTypes.ActorID,
             raw_request,
             Misc.DAG_CBOR_CODEC,
-            msg.value,
+            0,
             false
         );
+
 
         bytes memory result = Actor.readRespData(raw_response);
 
@@ -89,18 +91,17 @@ library VerifRegAPI {
             VerifRegTypes.ActorID,
             raw_request,
             Misc.DAG_CBOR_CODEC,
-            msg.value,
+            0,
             false
         );
+
 
         bytes memory result = Actor.readRespData(raw_response);
 
         return result.deserializeBatchReturn();
     }
 
-    function removeExpiredClaims(
-        VerifRegTypes.RemoveExpiredClaimsParams memory params
-    ) internal returns (VerifRegTypes.RemoveExpiredClaimsReturn memory) {
+    function removeExpiredClaims(VerifRegTypes.RemoveExpiredClaimsParams memory params) internal returns (VerifRegTypes.RemoveExpiredClaimsReturn memory) {
         bytes memory raw_request = params.serializeRemoveExpiredClaimsParams();
 
         bytes memory raw_response = Actor.call(
@@ -108,18 +109,17 @@ library VerifRegAPI {
             VerifRegTypes.ActorID,
             raw_request,
             Misc.DAG_CBOR_CODEC,
-            msg.value,
+            0,
             false
         );
+
 
         bytes memory result = Actor.readRespData(raw_response);
 
         return result.deserializeRemoveExpiredClaimsReturn();
     }
 
-    function universalReceiverHook(
-        VerifRegTypes.UniversalReceiverParams memory params
-    ) internal returns (VerifRegTypes.AllocationsResponse memory) {
+    function universalReceiverHook(VerifRegTypes.UniversalReceiverParams memory params) internal returns (VerifRegTypes.AllocationsResponse memory) {
         bytes memory raw_request = params.serializeUniversalReceiverParams();
 
         bytes memory raw_response = Actor.call(
@@ -127,9 +127,10 @@ library VerifRegAPI {
             VerifRegTypes.ActorID,
             raw_request,
             Misc.DAG_CBOR_CODEC,
-            msg.value,
+            0,
             false
         );
+
 
         bytes memory result = Actor.readRespData(raw_response);
 

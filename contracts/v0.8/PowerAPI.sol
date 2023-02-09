@@ -33,7 +33,9 @@ library PowerAPI {
     using BytesCBOR for bytes;
     using PowerCBOR for *;
 
-    function createMiner(PowerTypes.CreateMinerParams memory params) internal returns (PowerTypes.CreateMinerReturn memory) {
+    function createMiner(PowerTypes.CreateMinerParams memory params, uint256 value) internal returns (PowerTypes.CreateMinerReturn memory) {
+        require(address(this).balance >= value, "not enough balance");
+
         bytes memory raw_request = params.serializeCreateMinerParams();
 
         bytes memory raw_response = Actor.call(
@@ -41,7 +43,7 @@ library PowerAPI {
             PowerTypes.ActorID,
             raw_request,
             Misc.DAG_CBOR_CODEC,
-            msg.value,
+            0,
             false
         );
 
@@ -53,14 +55,7 @@ library PowerAPI {
     function minerCount() internal returns (uint64) {
         bytes memory raw_request = new bytes(0);
 
-        bytes memory raw_response = Actor.call(
-            PowerTypes.MinerCountMethodNum,
-            PowerTypes.ActorID,
-            raw_request,
-            Misc.NONE_CODEC,
-            msg.value,
-            true
-        );
+        bytes memory raw_response = Actor.call(PowerTypes.MinerCountMethodNum, PowerTypes.ActorID, raw_request, Misc.NONE_CODEC, 0, true);
 
         bytes memory result = Actor.readRespData(raw_response);
 
@@ -70,14 +65,7 @@ library PowerAPI {
     function minerConsensusCount() internal returns (int64) {
         bytes memory raw_request = new bytes(0);
 
-        bytes memory raw_response = Actor.call(
-            PowerTypes.MinerConsensusCountMethodNum,
-            PowerTypes.ActorID,
-            raw_request,
-            Misc.NONE_CODEC,
-            msg.value,
-            true
-        );
+        bytes memory raw_response = Actor.call(PowerTypes.MinerConsensusCountMethodNum, PowerTypes.ActorID, raw_request, Misc.NONE_CODEC, 0, true);
 
         bytes memory result = Actor.readRespData(raw_response);
 
@@ -87,14 +75,7 @@ library PowerAPI {
     function networkRawPower() internal returns (BigInt memory) {
         bytes memory raw_request = new bytes(0);
 
-        bytes memory raw_response = Actor.call(
-            PowerTypes.NetworkRawPowerMethodNum,
-            PowerTypes.ActorID,
-            raw_request,
-            Misc.NONE_CODEC,
-            msg.value,
-            true
-        );
+        bytes memory raw_response = Actor.call(PowerTypes.NetworkRawPowerMethodNum, PowerTypes.ActorID, raw_request, Misc.NONE_CODEC, 0, true);
 
         bytes memory result = Actor.readRespData(raw_response);
 
@@ -109,7 +90,7 @@ library PowerAPI {
             PowerTypes.ActorID,
             raw_request,
             Misc.DAG_CBOR_CODEC,
-            msg.value,
+            0,
             true
         );
 

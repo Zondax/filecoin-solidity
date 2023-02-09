@@ -33,7 +33,9 @@ library MarketAPI {
     using MarketCBOR for *;
 
     /// @notice Deposits the received value into the balance held in escrow.
-    function addBalance(bytes memory provider_or_client) internal {
+    function addBalance(bytes memory provider_or_client, uint256 value) internal {
+        require(address(this).balance >= value, "not enough balance");
+
         bytes memory raw_request = provider_or_client.serializeAddress();
 
         bytes memory raw_response = Actor.call(
@@ -41,7 +43,7 @@ library MarketAPI {
             MarketTypes.ActorID,
             raw_request,
             Misc.DAG_CBOR_CODEC,
-            msg.value,
+            0,
             false
         );
 
@@ -59,7 +61,7 @@ library MarketAPI {
             MarketTypes.ActorID,
             raw_request,
             Misc.DAG_CBOR_CODEC,
-            msg.value,
+            0,
             false
         );
 
@@ -77,7 +79,7 @@ library MarketAPI {
             MarketTypes.ActorID,
             raw_request,
             Misc.DAG_CBOR_CODEC,
-            msg.value,
+            0,
             true
         );
 
@@ -96,9 +98,10 @@ library MarketAPI {
             MarketTypes.ActorID,
             raw_request,
             Misc.DAG_CBOR_CODEC,
-            msg.value,
+            0,
             true
         );
+
 
         bytes memory result = Actor.readRespData(raw_response);
 
@@ -114,9 +117,10 @@ library MarketAPI {
             MarketTypes.ActorID,
             raw_request,
             Misc.DAG_CBOR_CODEC,
-            msg.value,
+            0,
             true
         );
+
 
         bytes memory result = Actor.readRespData(raw_response);
 
@@ -132,9 +136,10 @@ library MarketAPI {
             MarketTypes.ActorID,
             raw_request,
             Misc.DAG_CBOR_CODEC,
-            msg.value,
+            0,
             true
         );
+
 
         bytes memory result = Actor.readRespData(raw_response);
 
@@ -150,9 +155,10 @@ library MarketAPI {
             MarketTypes.ActorID,
             raw_request,
             Misc.DAG_CBOR_CODEC,
-            msg.value,
+            0,
             true
         );
+
 
         bytes memory result = Actor.readRespData(raw_response);
 
@@ -168,9 +174,10 @@ library MarketAPI {
             MarketTypes.ActorID,
             raw_request,
             Misc.DAG_CBOR_CODEC,
-            msg.value,
+            0,
             true
         );
+
 
         bytes memory result = Actor.readRespData(raw_response);
 
@@ -186,9 +193,10 @@ library MarketAPI {
             MarketTypes.ActorID,
             raw_request,
             Misc.DAG_CBOR_CODEC,
-            msg.value,
+            0,
             true
         );
+
 
         bytes memory result = Actor.readRespData(raw_response);
 
@@ -204,9 +212,10 @@ library MarketAPI {
             MarketTypes.ActorID,
             raw_request,
             Misc.DAG_CBOR_CODEC,
-            msg.value,
+            0,
             true
         );
+
 
         bytes memory result = Actor.readRespData(raw_response);
 
@@ -222,9 +231,10 @@ library MarketAPI {
             MarketTypes.ActorID,
             raw_request,
             Misc.DAG_CBOR_CODEC,
-            msg.value,
+            0,
             true
         );
+
 
         bytes memory result = Actor.readRespData(raw_response);
 
@@ -241,9 +251,10 @@ library MarketAPI {
             MarketTypes.ActorID,
             raw_request,
             Misc.DAG_CBOR_CODEC,
-            msg.value,
+            0,
             true
         );
+
 
         bytes memory result = Actor.readRespData(raw_response);
 
@@ -261,9 +272,10 @@ library MarketAPI {
             MarketTypes.ActorID,
             raw_request,
             Misc.DAG_CBOR_CODEC,
-            msg.value,
+            0,
             true
         );
+
 
         bytes memory result = Actor.readRespData(raw_response);
 
@@ -271,9 +283,7 @@ library MarketAPI {
     }
 
     /// @notice Publish a new set of storage deals (not yet included in a sector).
-    function publishStorageDeals(
-        MarketTypes.PublishStorageDealsParams memory params
-    ) internal returns (MarketTypes.PublishStorageDealsReturn memory) {
+    function publishStorageDeals(MarketTypes.PublishStorageDealsParams memory params) internal returns (MarketTypes.PublishStorageDealsReturn memory) {
         bytes memory raw_request = params.serializePublishStorageDealsParams();
 
         bytes memory raw_response = Actor.call(
@@ -281,9 +291,10 @@ library MarketAPI {
             MarketTypes.ActorID,
             raw_request,
             Misc.DAG_CBOR_CODEC,
-            msg.value,
+            0,
             false
         );
+
 
         bytes memory result = Actor.readRespData(raw_response);
 

@@ -33,14 +33,7 @@ library DataCapAPI {
     function name() internal returns (string memory) {
         bytes memory raw_request = new bytes(0);
 
-        bytes memory raw_response = Actor.call(
-            DataCapTypes.NameMethodNum,
-            DataCapTypes.ActorID,
-            raw_request,
-            Misc.NONE_CODEC,
-            msg.value,
-            true
-        );
+        bytes memory raw_response = Actor.call(DataCapTypes.NameMethodNum, DataCapTypes.ActorID, raw_request, Misc.NONE_CODEC, 0, true);
 
         bytes memory result = Actor.readRespData(raw_response);
 
@@ -50,14 +43,7 @@ library DataCapAPI {
     function symbol() internal returns (string memory) {
         bytes memory raw_request = new bytes(0);
 
-        bytes memory raw_response = Actor.call(
-            DataCapTypes.SymbolMethodNum,
-            DataCapTypes.ActorID,
-            raw_request,
-            Misc.NONE_CODEC,
-            msg.value,
-            true
-        );
+        bytes memory raw_response = Actor.call(DataCapTypes.SymbolMethodNum, DataCapTypes.ActorID, raw_request, Misc.NONE_CODEC, 0, true);
 
         bytes memory result = Actor.readRespData(raw_response);
 
@@ -67,14 +53,7 @@ library DataCapAPI {
     function totalSupply() internal returns (BigInt memory) {
         bytes memory raw_request = new bytes(0);
 
-        bytes memory raw_response = Actor.call(
-            DataCapTypes.TotalSupplyMethodNum,
-            DataCapTypes.ActorID,
-            raw_request,
-            Misc.NONE_CODEC,
-            msg.value,
-            true
-        );
+        bytes memory raw_response = Actor.call(DataCapTypes.TotalSupplyMethodNum, DataCapTypes.ActorID, raw_request, Misc.NONE_CODEC, 0, true);
 
         bytes memory result = Actor.readRespData(raw_response);
 
@@ -89,9 +68,10 @@ library DataCapAPI {
             DataCapTypes.ActorID,
             raw_request,
             Misc.DAG_CBOR_CODEC,
-            msg.value,
+            0,
             true
         );
+
 
         bytes memory result = Actor.readRespData(raw_response);
 
@@ -106,7 +86,7 @@ library DataCapAPI {
             DataCapTypes.ActorID,
             raw_request,
             Misc.DAG_CBOR_CODEC,
-            msg.value,
+            0,
             true
         );
 
@@ -123,7 +103,7 @@ library DataCapAPI {
             DataCapTypes.ActorID,
             raw_request,
             Misc.DAG_CBOR_CODEC,
-            msg.value,
+            0,
             false
         );
 
@@ -140,7 +120,7 @@ library DataCapAPI {
             DataCapTypes.ActorID,
             raw_request,
             Misc.DAG_CBOR_CODEC,
-            msg.value,
+            0,
             false
         );
 
@@ -157,7 +137,7 @@ library DataCapAPI {
             DataCapTypes.ActorID,
             raw_request,
             Misc.DAG_CBOR_CODEC,
-            msg.value,
+            0,
             false
         );
 
@@ -174,7 +154,7 @@ library DataCapAPI {
             DataCapTypes.ActorID,
             raw_request,
             Misc.DAG_CBOR_CODEC,
-            msg.value,
+            0,
             false
         );
 
@@ -191,7 +171,7 @@ library DataCapAPI {
             DataCapTypes.ActorID,
             raw_request,
             Misc.DAG_CBOR_CODEC,
-            msg.value,
+            0,
             false
         );
 
@@ -208,7 +188,7 @@ library DataCapAPI {
             DataCapTypes.ActorID,
             raw_request,
             Misc.DAG_CBOR_CODEC,
-            msg.value,
+            0,
             false
         );
 
@@ -225,7 +205,7 @@ library DataCapAPI {
             DataCapTypes.ActorID,
             raw_request,
             Misc.DAG_CBOR_CODEC,
-            msg.value,
+            0,
             false
         );
 
