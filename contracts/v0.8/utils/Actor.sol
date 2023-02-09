@@ -72,10 +72,10 @@ library Actor {
 
         if (return_codec == Misc.NONE_CODEC) {
             require(return_value.length == 0, "response length should be 0");
-        } else if (return_codec == Misc.CBOR_CODEC) {
+        } else if (return_codec == Misc.DAG_CBOR_CODEC || return_codec == Misc.CBOR_CODEC) {
             require(return_value.length > 0, "response length should greater than 0");
         } else {
-            require(false, "invalid resposne codec");
+            require(false, "invalid response codec");
         }
 
         require(exit == 0, getErrorCodeMsg(exit));

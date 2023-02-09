@@ -40,7 +40,7 @@ library PowerAPI {
             PowerTypes.CreateMinerMethodNum,
             PowerTypes.ActorID,
             raw_request,
-            Misc.CBOR_CODEC,
+            Misc.DAG_CBOR_CODEC,
             msg.value,
             false
         );
@@ -108,7 +108,7 @@ library PowerAPI {
             PowerTypes.MinerRawPowerMethodNum,
             PowerTypes.ActorID,
             raw_request,
-            Misc.CBOR_CODEC,
+            Misc.DAG_CBOR_CODEC,
             msg.value,
             true
         );

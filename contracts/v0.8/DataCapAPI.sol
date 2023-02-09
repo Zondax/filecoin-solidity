@@ -88,7 +88,7 @@ library DataCapAPI {
             DataCapTypes.BalanceOfMethodNum,
             DataCapTypes.ActorID,
             raw_request,
-            Misc.CBOR_CODEC,
+            Misc.DAG_CBOR_CODEC,
             msg.value,
             true
         );
@@ -105,7 +105,7 @@ library DataCapAPI {
             DataCapTypes.AllowanceMethodNum,
             DataCapTypes.ActorID,
             raw_request,
-            Misc.CBOR_CODEC,
+            Misc.DAG_CBOR_CODEC,
             msg.value,
             true
         );
@@ -122,7 +122,7 @@ library DataCapAPI {
             DataCapTypes.TransferMethodNum,
             DataCapTypes.ActorID,
             raw_request,
-            Misc.CBOR_CODEC,
+            Misc.DAG_CBOR_CODEC,
             msg.value,
             false
         );
@@ -139,7 +139,7 @@ library DataCapAPI {
             DataCapTypes.TransferFromMethodNum,
             DataCapTypes.ActorID,
             raw_request,
-            Misc.CBOR_CODEC,
+            Misc.DAG_CBOR_CODEC,
             msg.value,
             false
         );
@@ -156,7 +156,7 @@ library DataCapAPI {
             DataCapTypes.IncreaseAllowanceMethodNum,
             DataCapTypes.ActorID,
             raw_request,
-            Misc.CBOR_CODEC,
+            Misc.DAG_CBOR_CODEC,
             msg.value,
             false
         );
@@ -173,7 +173,7 @@ library DataCapAPI {
             DataCapTypes.DecreaseAllowanceMethodNum,
             DataCapTypes.ActorID,
             raw_request,
-            Misc.CBOR_CODEC,
+            Misc.DAG_CBOR_CODEC,
             msg.value,
             false
         );
@@ -190,7 +190,7 @@ library DataCapAPI {
             DataCapTypes.RevokeAllowanceMethodNum,
             DataCapTypes.ActorID,
             raw_request,
-            Misc.CBOR_CODEC,
+            Misc.DAG_CBOR_CODEC,
             msg.value,
             false
         );
@@ -207,7 +207,7 @@ library DataCapAPI {
             DataCapTypes.BurnMethodNum,
             DataCapTypes.ActorID,
             raw_request,
-            Misc.CBOR_CODEC,
+            Misc.DAG_CBOR_CODEC,
             msg.value,
             false
         );
@@ -224,7 +224,7 @@ library DataCapAPI {
             DataCapTypes.BurnFromMethodNum,
             DataCapTypes.ActorID,
             raw_request,
-            Misc.CBOR_CODEC,
+            Misc.DAG_CBOR_CODEC,
             msg.value,
             false
         );

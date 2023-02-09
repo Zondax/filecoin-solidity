@@ -36,7 +36,7 @@ library VerifRegAPI {
             VerifRegTypes.GetClaimsMethodNum,
             VerifRegTypes.ActorID,
             raw_request,
-            Misc.CBOR_CODEC,
+            Misc.DAG_CBOR_CODEC,
             msg.value,
             false
         );
@@ -53,7 +53,7 @@ library VerifRegAPI {
             VerifRegTypes.AddVerifierClientMethodNum,
             VerifRegTypes.ActorID,
             raw_request,
-            Misc.CBOR_CODEC,
+            Misc.DAG_CBOR_CODEC,
             msg.value,
             false
         );
@@ -71,7 +71,7 @@ library VerifRegAPI {
             VerifRegTypes.RemoveExpiredAllocationsMethodNum,
             VerifRegTypes.ActorID,
             raw_request,
-            Misc.CBOR_CODEC,
+            Misc.DAG_CBOR_CODEC,
             msg.value,
             false
         );
@@ -88,7 +88,7 @@ library VerifRegAPI {
             VerifRegTypes.ExtendClaimTermsMethodNum,
             VerifRegTypes.ActorID,
             raw_request,
-            Misc.CBOR_CODEC,
+            Misc.DAG_CBOR_CODEC,
             msg.value,
             false
         );
@@ -107,7 +107,7 @@ library VerifRegAPI {
             VerifRegTypes.RemoveExpiredClaimsMethodNum,
             VerifRegTypes.ActorID,
             raw_request,
-            Misc.CBOR_CODEC,
+            Misc.DAG_CBOR_CODEC,
             msg.value,
             false
         );
@@ -126,7 +126,7 @@ library VerifRegAPI {
             VerifRegTypes.UniversalReceiverMethodNum,
             VerifRegTypes.ActorID,
             raw_request,
-            Misc.CBOR_CODEC,
+            Misc.DAG_CBOR_CODEC,
             msg.value,
             false
         );

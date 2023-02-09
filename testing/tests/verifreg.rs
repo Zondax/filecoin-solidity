@@ -153,7 +153,7 @@ mod tests {
         let exec_return: Return = RawBytes::deserialize(&res.msg_receipt.return_data).unwrap();
         let contract_actor = exec_return.actor_id;
 
-        let verifier_allowance = fvm_shared::sector::StoragePower::from(2 * 1024u64);
+        let verifier_allowance = fvm_shared::sector::StoragePower::from(1_048_576u64);
         let params = VerifierParams {
             address: Address::new_id(contract_actor),
             allowance: verifier_allowance,
@@ -176,8 +176,6 @@ mod tests {
             .execute_message(message, ApplyKind::Explicit, 100)
             .unwrap();
 
-        dbg!(&res);
-
         assert_eq!(res.msg_receipt.exit_code.value(), 0);
 
         println!("Calling `add_verified_client`");
@@ -187,13 +185,15 @@ mod tests {
             gas_limit: 1000000000,
             method_num: EvmMethods::InvokeContract as u64,
             sequence: 1,
-            params: RawBytes::new(hex::decode("58E455707461000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000080000000000000000000000000000000000000000000000000000000000000001501DCE5B7F69E73494891556A350F8CC357614916D5000000000000000000000000000000000000000000000000000000000000000000000000000000000000030008000000000000000000000000000000000000000000000000000000000000").unwrap()),
+            params: RawBytes::new(hex::decode("58E455707461000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000080000000000000000000000000000000000000000000000000000000000000001501DCE5B7F69E73494891556A350F8CC357614916D5000000000000000000000000000000000000000000000000000000000000000000000000000000000000040010000000000000000000000000000000000000000000000000000000000000").unwrap()),
             ..Message::default()
         };
 
         let res = executor
             .execute_message(message, ApplyKind::Explicit, 100)
             .unwrap();
+
+        dbg!(&res);
 
         assert_eq!(res.msg_receipt.exit_code.value(), 0);
 

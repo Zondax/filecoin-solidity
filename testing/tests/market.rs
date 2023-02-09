@@ -272,7 +272,7 @@ mod tests {
         let constructor_params = CreateMinerParams {
             owner: sender[0].1,
             worker,
-            window_post_proof_type: fvm_shared::sector::RegisteredPoStProof::StackedDRGWindow2KiBV1,
+            window_post_proof_type: fvm_shared::sector::RegisteredPoStProof::StackedDRGWindow512MiBV1,
             peer: vec![1, 2, 3],
             multiaddrs: vec![BytesDe(vec![1, 2, 3])],
         };
@@ -289,6 +289,8 @@ mod tests {
         let res = executor
             .execute_message(message, ApplyKind::Explicit, 100)
             .unwrap();
+
+        dbg!(&res);
 
         assert_eq!(res.msg_receipt.exit_code.value(), 0);
 

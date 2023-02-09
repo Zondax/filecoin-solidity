@@ -40,7 +40,7 @@ library MarketAPI {
             MarketTypes.AddBalanceMethodNum,
             MarketTypes.ActorID,
             raw_request,
-            Misc.CBOR_CODEC,
+            Misc.DAG_CBOR_CODEC,
             msg.value,
             false
         );
@@ -58,7 +58,7 @@ library MarketAPI {
             MarketTypes.WithdrawBalanceMethodNum,
             MarketTypes.ActorID,
             raw_request,
-            Misc.CBOR_CODEC,
+            Misc.DAG_CBOR_CODEC,
             msg.value,
             false
         );
@@ -76,7 +76,7 @@ library MarketAPI {
             MarketTypes.GetBalanceMethodNum,
             MarketTypes.ActorID,
             raw_request,
-            Misc.CBOR_CODEC,
+            Misc.DAG_CBOR_CODEC,
             msg.value,
             true
         );
@@ -95,7 +95,7 @@ library MarketAPI {
             MarketTypes.GetDealDataCommitmentMethodNum,
             MarketTypes.ActorID,
             raw_request,
-            Misc.CBOR_CODEC,
+            Misc.DAG_CBOR_CODEC,
             msg.value,
             true
         );
@@ -113,7 +113,7 @@ library MarketAPI {
             MarketTypes.GetDealClientMethodNum,
             MarketTypes.ActorID,
             raw_request,
-            Misc.CBOR_CODEC,
+            Misc.DAG_CBOR_CODEC,
             msg.value,
             true
         );
@@ -131,7 +131,7 @@ library MarketAPI {
             MarketTypes.GetDealProviderMethodNum,
             MarketTypes.ActorID,
             raw_request,
-            Misc.CBOR_CODEC,
+            Misc.DAG_CBOR_CODEC,
             msg.value,
             true
         );
@@ -149,7 +149,7 @@ library MarketAPI {
             MarketTypes.GetDealLabelMethodNum,
             MarketTypes.ActorID,
             raw_request,
-            Misc.CBOR_CODEC,
+            Misc.DAG_CBOR_CODEC,
             msg.value,
             true
         );
@@ -167,7 +167,7 @@ library MarketAPI {
             MarketTypes.GetDealTermMethodNum,
             MarketTypes.ActorID,
             raw_request,
-            Misc.CBOR_CODEC,
+            Misc.DAG_CBOR_CODEC,
             msg.value,
             true
         );
@@ -185,7 +185,7 @@ library MarketAPI {
             MarketTypes.GetDealEpochPriceMethodNum,
             MarketTypes.ActorID,
             raw_request,
-            Misc.CBOR_CODEC,
+            Misc.DAG_CBOR_CODEC,
             msg.value,
             true
         );
@@ -203,7 +203,7 @@ library MarketAPI {
             MarketTypes.GetDealClientCollateralMethodNum,
             MarketTypes.ActorID,
             raw_request,
-            Misc.CBOR_CODEC,
+            Misc.DAG_CBOR_CODEC,
             msg.value,
             true
         );
@@ -221,7 +221,7 @@ library MarketAPI {
             MarketTypes.GetDealProviderCollateralMethodNum,
             MarketTypes.ActorID,
             raw_request,
-            Misc.CBOR_CODEC,
+            Misc.DAG_CBOR_CODEC,
             msg.value,
             true
         );
@@ -240,7 +240,7 @@ library MarketAPI {
             MarketTypes.GetDealVerifiedMethodNum,
             MarketTypes.ActorID,
             raw_request,
-            Misc.CBOR_CODEC,
+            Misc.DAG_CBOR_CODEC,
             msg.value,
             true
         );
@@ -260,7 +260,7 @@ library MarketAPI {
             MarketTypes.GetDealActivationMethodNum,
             MarketTypes.ActorID,
             raw_request,
-            Misc.CBOR_CODEC,
+            Misc.DAG_CBOR_CODEC,
             msg.value,
             true
         );
@@ -280,7 +280,7 @@ library MarketAPI {
             MarketTypes.PublishStorageDealsMethodNum,
             MarketTypes.ActorID,
             raw_request,
-            Misc.CBOR_CODEC,
+            Misc.DAG_CBOR_CODEC,
             msg.value,
             false
         );
