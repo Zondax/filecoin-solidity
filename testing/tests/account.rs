@@ -101,8 +101,6 @@ fn account_tests() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
-    dbg!(&res);
-
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
 
     let exec_return: Return = RawBytes::deserialize(&res.msg_receipt.return_data).unwrap();
@@ -129,8 +127,6 @@ fn account_tests() {
     let res = executor
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
-
-    dbg!(&res);
 
     gas_result.push(("authenticate_message".into(),  res.msg_receipt.gas_used));
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
