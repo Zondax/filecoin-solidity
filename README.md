@@ -80,6 +80,8 @@ If you’re starting totally new, we got you! Here’s a 101 conceptual read on 
 
 #### FVM Space Warp ETHGlobal Cheat Sheet [:link:](https://github.com/filecoin-project/community/discussions/585)
 
+### Community Discussions  [:link:](https://github.com/filecoin-project/community/discussions)
+Find nice articles with rich and valuable content about different topics related to Filecoin network.
 
 ## Looking for the complete documentation? :books::books:
 We have built this beautiful website for you!
