@@ -35,7 +35,7 @@ build_mock_api:
 	./bin/solc @zondax/solidity-bignumber=${PWD}/node_modules/@zondax/solidity-bignumber/ solidity-cborutils=${PWD}/node_modules/solidity-cborutils/ @openzeppelin=${PWD}/node_modules/@openzeppelin/ @ensdomains=${PWD}/node_modules/@ensdomains/ contracts/v0.8/mocks/MinerMockAPI.sol --output-dir ./build/v0.8/mocks --overwrite --bin --hashes --opcodes --abi
 
 build_builtin_actors:
-	cd testing/builtin-actors && make bundle-devnet-wasm
+	cd testing/builtin-actors && make bundle-hyperspace
 
 get_method_nums:
 	cd script && cargo r
