@@ -23,9 +23,6 @@ The libraries have been developed under the following set of assumptions. Take a
 Filecoin today lacks general programmability. As a result, it is not possible to deploy user-defined behaviour, or "smart contracts", to the blockchain. The goal of the FVM project is to add general programmability to the Filecoin blockchain.
 They predict this will unleash a proliferation of new services and tools that can be built and deployed to the Filecoin network, without requiring network upgrades, involvement from core implementation maintainers, changes in the embedded actors, or spec alterations.
 
-For more information, please refer to the FVM Specs [context-and-goals web page](https://github.com/filecoin-project/fvm-specs#context-and-goals).
-
-
 ## Project
 It is a set of Solidity libraries that allow Solidity smart contracts to seamlessly call methods of Filecoin built-in actors. They do cross-platform calls to the real Filecoin built-in actors. A set of mock libraries are located too. They respond to specific scenarios based on the received parameters instead of doing real calls.
 
@@ -79,7 +76,10 @@ Important explainers & concepts on Filecoin storage and retrieval markets, FVM a
 ### Filecoin 101: conceptual read  [:link:](https://hackernoon.com/the-filecoin-virtual-machine-everything-you-need-to-know)
 If you’re starting totally new, we got you! Here’s a 101 conceptual read on understanding FVM from scratch.
 
-### FVM Space Warp ETHGlobal Hackathon Cheat Sheet [:link:](https://github.com/filecoin-project/community/discussions/585)
+### Past Hackathons 
+
+#### FVM Space Warp ETHGlobal Cheat Sheet [:link:](https://github.com/filecoin-project/community/discussions/585)
+
 
 ## Looking for the complete documentation? :books::books:
 We have built this beautiful website for you!
