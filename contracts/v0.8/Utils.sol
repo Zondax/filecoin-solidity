@@ -32,11 +32,7 @@ library Utils {
 
     event ReceivedDataCap(string received);
 
-    function handleFilecoinMethod(
-        uint64 method,
-        uint64,
-        bytes calldata params
-    ) internal returns (AccountTypes.AuthenticateMessageParams memory) {
+    function handleFilecoinMethod(uint64 method, uint64, bytes calldata params) internal returns (AccountTypes.AuthenticateMessageParams memory) {
         // dispatch methods
         if (method == AccountTypes.AuthenticateMessageMethodNum) {
             // deserialize params here

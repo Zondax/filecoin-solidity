@@ -24,8 +24,8 @@ import "../PowerAPI.sol";
 
 /// @author Zondax AG
 contract PowerApiTest {
-    function create_miner(PowerTypes.CreateMinerParams memory params) public returns (PowerTypes.CreateMinerReturn memory) {
-        return PowerAPI.createMiner(params);
+    function create_miner(PowerTypes.CreateMinerParams memory params, uint256 value) public payable returns (PowerTypes.CreateMinerReturn memory) {
+        return PowerAPI.createMiner(params, value);
     }
 
     function miner_count() public returns (uint64) {

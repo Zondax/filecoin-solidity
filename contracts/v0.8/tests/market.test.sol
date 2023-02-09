@@ -24,8 +24,8 @@ import "../types/MarketTypes.sol";
 
 /// @author Zondax AG
 contract MarketApiTest {
-    function add_balance(bytes memory provider_or_client) public payable {
-        MarketAPI.addBalance(provider_or_client);
+    function add_balance(bytes memory provider_or_client, uint256 value) public payable {
+        MarketAPI.addBalance(provider_or_client, value);
     }
 
     function withdraw_balance(MarketTypes.WithdrawBalanceParams memory params) public returns (MarketTypes.WithdrawBalanceReturn memory) {
@@ -76,9 +76,7 @@ contract MarketApiTest {
         return MarketAPI.getDealActivation(dealID);
     }
 
-    function publish_storage_deals(
-        MarketTypes.PublishStorageDealsParams memory params
-    ) public returns (MarketTypes.PublishStorageDealsReturn memory) {
+    function publish_storage_deals(MarketTypes.PublishStorageDealsParams memory params) public returns (MarketTypes.PublishStorageDealsReturn memory) {
         return MarketAPI.publishStorageDeals(params);
     }
 }
