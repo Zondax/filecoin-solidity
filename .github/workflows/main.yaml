@@ -1,6 +1,7 @@
 name: "Build contracts"
 on:
   - push
+  - pull_request
 
 jobs:
   build-mock:
