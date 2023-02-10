@@ -15,8 +15,9 @@ At this stage we will focus on functionality, and gas-consumption and optimizati
 This mock libraries includes the following features - [Let's go to the project](https://github.com/Zondax/filecoin-solidity/tree/master/contracts/v0.8/mocks) :arrow_upper_right:
 
 ### Technical
+
 | Type                            | Category | Link                                                                                                        |
-|---------------------------------|----------|-------------------------------------------------------------------------------------------------------------|
+| ------------------------------- | -------- | ----------------------------------------------------------------------------------------------------------- |
 | StorageMarket                   | Code     | [:link:](https://github.com/Zondax/filecoin-solidity/blob/master/contracts/v0.8/mocks/MarketAPI.sol)        |
 | StorageMiner                    | Code     | [:link:](https://github.com/Zondax/filecoin-solidity/blob/master/contracts/v0.8/mocks/MinerAPI.sol)         |
 | StorageMarket                   | Test     | [:link:](https://github.com/Zondax/filecoin-solidity/blob/master/contracts/v0.8/mocks/test/market.test.sol) |
@@ -29,7 +30,7 @@ This mock libraries includes the following features - [Let's go to the project](
 ### Documentation
 
 | Category     | Description                      | Link                                                                                                                                |
-|--------------|----------------------------------|-------------------------------------------------------------------------------------------------------------------------------------|
+| ------------ | -------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
 | Introduction | What is the Filecoin blockchain? | [:link:](https://github.com/Zondax/filecoin-solidity/blob/master/docs/introduction/introduction.md#what-is-the-filecoin-blockchain) |
 | Introduction | What is the FVM?                 | [:link:](https://github.com/Zondax/filecoin-solidity/blob/master/docs/introduction/introduction.md#what-is-the-fvm)                 |
 | Introduction | What is the FEVM?                | [:link:](https://github.com/Zondax/filecoin-solidity/blob/master/docs/introduction/introduction.md#what-is-the-fevm)                |
