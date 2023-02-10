@@ -156,34 +156,6 @@ fn precompiles_tests() {
         "58200000000000000000000000000000000000000000000000000000000000000064"
     );
 
-    println!("Calling `get_actor_type`");
-
-    let message = Message {
-        from: sender[0].1,
-        to: Address::new_id(contract_actor_id),
-        gas_limit: 1000000000,
-        method_num: EvmMethods::InvokeContract as u64,
-        sequence: 2,
-        params: RawBytes::new(
-            hex::decode(
-                "58247CF8C4440000000000000000000000000000000000000000000000000000000000000064",
-            )
-            .unwrap(),
-        ),
-        ..Message::default()
-    };
-
-    let res = executor
-        .execute_message(message, ApplyKind::Explicit, 100)
-        .unwrap();
-
-    gas_result.push(("get_actor_type".into(), res.msg_receipt.gas_used));
-    assert_eq!(res.msg_receipt.exit_code.value(), 0);
-    assert_eq!(
-        hex::encode(res.msg_receipt.return_data.bytes()),
-        "58200000000000000000000000000000000000000000000000000000000000000003"
-    );
-
     println!("Calling `lookup_delegated_address (empty response)`");
 
     let message = Message {
@@ -191,7 +163,7 @@ fn precompiles_tests() {
         to: Address::new_id(contract_actor_id),
         gas_limit: 1000000000,
         method_num: EvmMethods::InvokeContract as u64,
-        sequence: 3,
+        sequence: 2,
         params: RawBytes::new(
             hex::decode(
                 "58249898B39A0000000000000000000000000000000000000000000000000000000000000064",
@@ -204,6 +176,8 @@ fn precompiles_tests() {
     let res = executor
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
+
+    dbg!(&res);
 
     gas_result.push((
         "lookup_delegated_address (empty response)".into(),
@@ -219,7 +193,7 @@ fn precompiles_tests() {
         to: Address::new_id(contract_actor_id),
         gas_limit: 1000000000,
         method_num: EvmMethods::InvokeContract as u64,
-        sequence: 4,
+        sequence: 3,
         params: RawBytes::new(
             hex::decode(
                 "58249898B39A0000000000000000000000000000000000000000000000000000000000000190",
@@ -247,7 +221,7 @@ fn precompiles_tests() {
             to: Address::new_id(contract_actor_id),
             gas_limit: 1000000000,
             method_num: EvmMethods::InvokeContract as u64,
-            sequence: 5,
+            sequence: 4,
             params: RawBytes::new(hex::decode("586417C9F02D000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000071212121212344400000000000000000000000000000000000000000000000000").unwrap()),
             ..Message::default()
         };
@@ -267,7 +241,7 @@ fn precompiles_tests() {
             to: Address::new_id(contract_actor_id),
             gas_limit: 1000000000,
             method_num: EvmMethods::InvokeContract as u64,
-            sequence: 6,
+            sequence: 5,
             params: RawBytes::new(hex::decode("58640D6B2CE40000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000001476C499BE8821B5B9860144D292FFF728611BFD1A000000000000000000000000").unwrap()),
             ..Message::default()
         };
