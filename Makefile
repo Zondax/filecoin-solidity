@@ -35,7 +35,7 @@ build_mock_api:
 	./bin/solc @zondax/solidity-bignumber=${PWD}/node_modules/@zondax/solidity-bignumber/ solidity-cborutils=${PWD}/node_modules/solidity-cborutils/ @openzeppelin=${PWD}/node_modules/@openzeppelin/ @ensdomains=${PWD}/node_modules/@ensdomains/ contracts/v0.8/mocks/MinerMockAPI.sol --output-dir ./build/v0.8/mocks --overwrite --bin --hashes --opcodes --abi
 
 build_builtin_actors:
-	cd testing/builtin-actors && make bundle-devnet-wasm
+	cd testing/builtin-actors && make bundle-hyperspace
 
 get_method_nums:
 	cd script && cargo r
@@ -119,4 +119,8 @@ install-llvm-ci:
 	echo 'deb http://apt.llvm.org/focal/ llvm-toolchain-focal-13 main' | sudo tee /etc/apt/sources.list.d/llvm.list
 	wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
 	sudo apt-get update
-	sudo apt-get install clang-13 llvm-13-dev lld-13 libclang-13-dev
+	sudo apt-get install clang-13 llvm-13-dev lld-13 libclang-13-dev ocl-icd-opencl-dev
+
+install-opencl:
+	sudo apt-get update
+	sudo apt-get install ocl-icd-opencl-dev
