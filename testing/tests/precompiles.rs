@@ -163,7 +163,7 @@ fn precompiles_tests() {
         to: Address::new_id(contract_actor_id),
         gas_limit: 1000000000,
         method_num: EvmMethods::InvokeContract as u64,
-        sequence: 3,
+        sequence: 2,
         params: RawBytes::new(
             hex::decode(
                 "58249898B39A0000000000000000000000000000000000000000000000000000000000000064",
@@ -176,6 +176,8 @@ fn precompiles_tests() {
     let res = executor
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
+
+    dbg!(&res);
 
     gas_result.push((
         "lookup_delegated_address (empty response)".into(),
@@ -191,7 +193,7 @@ fn precompiles_tests() {
         to: Address::new_id(contract_actor_id),
         gas_limit: 1000000000,
         method_num: EvmMethods::InvokeContract as u64,
-        sequence: 4,
+        sequence: 3,
         params: RawBytes::new(
             hex::decode(
                 "58249898B39A0000000000000000000000000000000000000000000000000000000000000190",
@@ -219,7 +221,7 @@ fn precompiles_tests() {
             to: Address::new_id(contract_actor_id),
             gas_limit: 1000000000,
             method_num: EvmMethods::InvokeContract as u64,
-            sequence: 5,
+            sequence: 4,
             params: RawBytes::new(hex::decode("586417C9F02D000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000071212121212344400000000000000000000000000000000000000000000000000").unwrap()),
             ..Message::default()
         };
@@ -239,7 +241,7 @@ fn precompiles_tests() {
             to: Address::new_id(contract_actor_id),
             gas_limit: 1000000000,
             method_num: EvmMethods::InvokeContract as u64,
-            sequence: 6,
+            sequence: 5,
             params: RawBytes::new(hex::decode("58640D6B2CE40000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000001476C499BE8821B5B9860144D292FFF728611BFD1A000000000000000000000000").unwrap()),
             ..Message::default()
         };
