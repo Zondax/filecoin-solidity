@@ -19,7 +19,8 @@
 pragma solidity ^0.8.17;
 
 library Misc {
-    uint64 constant CBOR_CODEC = 0x71;
+    uint64 constant DAG_CBOR_CODEC = 0x71;
+    uint64 constant CBOR_CODEC = 0x51;
     uint64 constant NONE_CODEC = 0x00;
 
     // Code taken from Openzeppelin repo
