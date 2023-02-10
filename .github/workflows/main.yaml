@@ -103,7 +103,7 @@ jobs:
         with:
           submodules: 'true'
       - name: Instal deps
-        run: make install-llvm-ci
+        run: make install-opencl
       - name: Install node
         uses: actions/setup-node@v2
         with:
@@ -159,6 +159,8 @@ jobs:
         uses: actions/checkout@v2
         with:
           submodules: 'true'
+      - name: Instal deps
+        run: make install-opencl
       - name: Install node
         uses: actions/setup-node@v2
         with:
@@ -216,6 +218,8 @@ jobs:
         uses: actions/checkout@v2
         with:
           submodules: 'true'
+      - name: Instal deps
+        run: make install-opencl
       - name: Install node
         uses: actions/setup-node@v2
         with:
@@ -271,6 +275,8 @@ jobs:
         uses: actions/checkout@v2
         with:
           submodules: 'true'
+      - name: Instal deps
+        run: make install-opencl
       - name: Install node
         uses: actions/setup-node@v2
         with:
@@ -326,6 +332,8 @@ jobs:
         uses: actions/checkout@v2
         with:
           submodules: 'true'
+      - name: Instal deps
+        run: make install-opencl
       - name: Install node
         uses: actions/setup-node@v2
         with:
@@ -381,6 +389,8 @@ jobs:
         uses: actions/checkout@v2
         with:
           submodules: 'true'
+      - name: Instal deps
+        run: make install-opencl
       - name: Install node
         uses: actions/setup-node@v2
         with:
@@ -436,6 +446,8 @@ jobs:
         uses: actions/checkout@v2
         with:
           submodules: 'true'
+      - name: Instal deps
+        run: make install-opencl
       - name: Install node
         uses: actions/setup-node@v2
         with:
@@ -491,6 +503,8 @@ jobs:
         uses: actions/checkout@v2
         with:
           submodules: 'true'
+      - name: Instal deps
+        run: make install-opencl
       - name: Install node
         uses: actions/setup-node@v2
         with:
@@ -546,6 +560,8 @@ jobs:
         uses: actions/checkout@v2
         with:
           submodules: 'true'
+      - name: Instal deps
+        run: make install-opencl
       - name: Install node
         uses: actions/setup-node@v2
         with:
@@ -601,6 +617,8 @@ jobs:
         uses: actions/checkout@v2
         with:
           submodules: 'true'
+      - name: Instal deps
+        run: make install-opencl
       - name: Install node
         uses: actions/setup-node@v2
         with:

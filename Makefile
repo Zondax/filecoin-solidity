@@ -120,3 +120,7 @@ install-llvm-ci:
 	wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
 	sudo apt-get update
 	sudo apt-get install clang-13 llvm-13-dev lld-13 libclang-13-dev ocl-icd-opencl-dev
+
+install-opencl:
+	sudo apt-get update
+		sudo apt-get install ocl-icd-opencl-dev
