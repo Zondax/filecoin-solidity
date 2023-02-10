@@ -1340,7 +1340,6 @@ dependencies = [
  "fvm_ipld_blockstore",
  "fvm_ipld_encoding 0.3.3",
  "fvm_ipld_hamt",
- "fvm_sdk 3.0.0-alpha.22",
  "fvm_shared 3.0.0-alpha.17",
  "itertools 0.10.5",
  "log",
