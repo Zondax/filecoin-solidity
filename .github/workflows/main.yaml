@@ -641,7 +641,7 @@ jobs:
           cargo test precompiles_test
       - uses: actions/upload-artifact@v3
         with:
-          name: gas_results_multisig.csv
+          name: gas_results_precompiles.csv
           path: testing/gas_results_precompiles.csv
 
   send-integration:
