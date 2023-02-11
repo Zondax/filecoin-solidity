@@ -669,17 +669,18 @@ jobs:
     name: "Comment the result on PR"
     runs-on: ubuntu-22.04
     needs: [account-integration, datacap-integration, init-integration, market-integration, miner-integration, multisig-integration, power-integration, precompiles-integration, send-integration, verifreg-integration]
-    - name: "Comment results"
-      env:
-        URL: ${{ github.event.pull_request.comments_url }}
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: |
-        pip install csv2md
-        BODY=$(jq --null-input --arg body "Gas results 🚀📝: 
-        test" '{"body": $body}')
-        curl \
-          -X POST \
-          $URL \
-          -H "Content-Type: application/json" \
-          -H "Authorization: token $GITHUB_TOKEN" \
-          --data "$BODY"
+    steps:
+      - name: "Comment results"
+        env:
+          URL: ${{ github.event.pull_request.comments_url }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          pip install csv2md
+          BODY=$(jq --null-input --arg body "Gas results 🚀📝: 
+          test" '{"body": $body}')
+          curl \
+            -X POST \
+            $URL \
+            -H "Content-Type: application/json" \
+            -H "Authorization: token $GITHUB_TOKEN" \
+            --data "$BODY"
