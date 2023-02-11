@@ -258,5 +258,7 @@ fn precompiles_tests() {
     );
 
     let table = testing::create_gas_table(gas_result);
+    testing::save_gas_table(&table, "precompiles");
+
     table.printstd();
 }

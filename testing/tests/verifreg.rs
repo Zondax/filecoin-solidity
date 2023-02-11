@@ -274,5 +274,7 @@ fn verifreg_tests() {
     assert_eq!(res.msg_receipt.exit_code.value(), 0);*/
 
     let table = testing::create_gas_table(gas_result);
+    testing::save_gas_table(&table, "verifreg");
+
     table.printstd();
 }

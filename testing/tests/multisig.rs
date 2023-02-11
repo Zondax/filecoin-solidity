@@ -192,5 +192,7 @@ fn multisig_tests() {
     // FIXME: As propose is failing, we cannot execute the rest of the methods...
     
     let table = testing::create_gas_table(gas_result);
+    testing::save_gas_table(&table, "multisig");
+
     table.printstd();
 }
