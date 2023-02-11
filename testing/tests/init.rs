@@ -120,5 +120,7 @@ fn init_tests() {
     assert_eq!(res.msg_receipt.exit_code.value(), 33);
 
     let table = testing::create_gas_table(gas_result);
+    testing::save_gas_table(&table, "init");
+
     table.printstd();
 }
