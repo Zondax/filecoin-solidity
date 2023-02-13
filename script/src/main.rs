@@ -104,7 +104,7 @@ fn main() {
     let DestroyExported = frc42_dispatch::method_hash!("Destroy");
     let NameExported = frc42_dispatch::method_hash!("Name");
     let SymbolExported = frc42_dispatch::method_hash!("Symbol");
-    let GranularityExported = frc42_dispatch::method_hash!("GranularityExported");
+    let GranularityExported = frc42_dispatch::method_hash!("Granularity");
     let TotalSupplyExported = frc42_dispatch::method_hash!("TotalSupply");
     let BalanceExported = frc42_dispatch::method_hash!("Balance");
     let TransferExported = frc42_dispatch::method_hash!("Transfer");
