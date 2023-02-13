@@ -31,8 +31,8 @@ In your smart contract, copy and paste these lines.
 ```solidity
 import { MarketAPI } from "@zondax/filecoin-solidity/contracts/v0.8/MarketAPI.sol";
 import { CommonTypes } from "@zondax/filecoin-solidity/contracts/v0.8/types/CommonTypes.sol";
-import { MarketTypes } from "@zondax/filecoin-solidity/contracts/v0.8/types/MarketAPI.sol";
-import { BigInt } from "@zondax/filecoin-solidity/contracts/v0.8/cbor/BigNumberCbor.sol";
+import { MarketTypes } from "@zondax/filecoin-solidity/contracts/v0.8/types/MarketTypes.sol";
+import { BigInt } from "@zondax/filecoin-solidity/contracts/v0.8/cbor/BigIntCbor.sol";
 ```
 
 ### Do a call to a particular method
@@ -73,7 +73,7 @@ Finally, if you need to use it to interact with the APIs, you can convert it to 
 
 ```solidity
 import { BigNumbers, BigNumber } from "@zondax/solidity-bignumber/src/BigNumbers.sol";
-import { BigInt } from "@zondax/filecoin-solidity/contracts/v0.8/cbor/BigNumberCbor.sol";
+import { BigInt } from "@zondax/filecoin-solidity/contracts/v0.8/cbor/BigIntCbor.sol";
 
 BigNumber memory numA = BigNumbers.init(10000, false);
 BigNumber memory numB = BigNumbers.init(2000, false);
