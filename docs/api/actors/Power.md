@@ -1,3 +1,8 @@
+---
+title: "Storage Power Actor"
+sidebar_position: 6
+---
+
 # Storage Power Actor
 
 Strorage power actor is responsible for keeping track of the storage power allocated at each storage miner.
@@ -7,7 +12,7 @@ The ActorCode for storage power built-in actor is `hex"0004"` which will be used
 ### CreateMiner
 
 ```go
-func CreateMiner(params CreateMinerParams) CreateMinerReturn {}
+func CreateMiner(params CreateMinerParams, uint256 value) CreateMinerReturn {}
 ```
 
 Create a new miner for the owner address and worker address.
@@ -22,6 +27,7 @@ Create a new miner for the owner address and worker address.
   + `RegisteredPoStProof` WindowPoStProofType - the type of RegisteredPoStProof.
   + `bytes` Peer - peerID.
   + `bytes[]` Multiaddrs - the multi-address which is used to control new created miner.
++ `uint256` value - the amount of token the new miner will receive
 
 **Results**:
 

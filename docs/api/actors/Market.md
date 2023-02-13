@@ -1,3 +1,8 @@
+---
+title: "Storage Market Actor"
+sidebar_position: 3
+---
+
 # Storage Market Actor
 
 Storage market actor is responsible for managing storage and retrieval deals. 
@@ -7,7 +12,7 @@ The ActorCode for storage market actor is `hex"0005"` which will be used to call
 ### AddBalance
 
 ```go
-func AddBalance(address Address) EmptyValue {}
+func AddBalance(address Address, uint256 value) EmptyValue {}
 ```
 
 Deposit the received FIL token, which is received along with this message,  into the balance held in escrow address of the provider or client address.
@@ -17,6 +22,7 @@ Deposit the received FIL token, which is received along with this message,  into
 **Params**:
 
 + `bytes` Address - the address of provider or client.
++ `uint256` value - the amount of FIL token you want to deposit into the balance 
 
 **Results**:
 
