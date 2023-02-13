@@ -20,58 +20,58 @@ MetaMask is a software cryptocurrency wallet used to interact with the Ethereum 
 Install metamask extension on your browser. Metamask is available for Chrome and Firefox. You will need to follow a series of steps in order to create your store, set a password, and so on.
 Once you are ready, you will see the following screen.
 
-![image](assets/wallaby/1.png)
+![image](assets/hyperspace/1.png)
 
 ### Adding new network
 
-In order to interact with the wallaby network, you will need to add it to the list of them. Please, click on the dropdown box where "Ethereum Mainnet" is displayed, and hit "Add network".
+In order to interact with the hyperspace network, you will need to add it to the list of them. Please, click on the dropdown box where "Ethereum Mainnet" is displayed, and hit "Add network".
 
-![image](assets/wallaby/2.png)
+![image](assets/hyperspace/2.png)
 
 ### Adding network manually
 
 After a few seconds, you will end up on the following page. Please, click on "Add a network manually"
 
-![image](assets/wallaby/3.png)
+![image](assets/hyperspace/3.png)
 
 ### Setting up the parameters
 
 Now it is time to fill each text box with the corresponding value. Once you finish typing in the values, hit "Save".
 
--   Name: Filecoin Wallaby
--   RPC URL: https://api.zondax.ch/fil/node/wallaby/rpc/v0
--   ChainID: 31415 (Wallaby's ID)
+-   Name: Filecoin Hypersapce
+-   RPC URL: https://api.zondax.ch/fil/node/hyperspace/rpc/v0
+-   ChainID: 3141 (Hyperspace's ID)
 -   Currency symbol: TFIL (Test FIL).
 
-![image](assets/wallaby/4.png)
+![image](assets/hyperspace/4.png)
 
-### Choosing Wallaby network
+### Choosing Hyperspace network
 
-Click again on the network selector, and choose the new "Filecoin Wallaby" network.
+Click again on the network selector, and choose the new "Filecoin Hyperspace" network.
 
-![image](assets/wallaby/5.png)
+![image](assets/hyperspace/5.png)
 
 ### Your address
 
-Now that you have chosen the wallaby network, your address is ready to use. But you need some tokens in order to spend gas on smart contracts. Copy the address, as you will need it in the next step.
+Now that you have chosen the hyperspace network, your address is ready to use. But you need some tokens in order to spend gas on smart contracts. Copy the address, as you will need it in the next step.
 
-![image](assets/wallaby/6.png)
+![image](assets/hyperspace/6.png)
 
 ### Time to get some tokens
 
-Go to the [faucet website :link:](https://wallaby.network/#faucet), paste the address you copied on the previous step, complete the captcha challenge, and ask for the tokens. Some minutes will pass until the transactions is finished.
+Go to the [faucet website :link:](https://beryx.zondax.ch/faucet), paste the address you copied on the previous step, complete the captcha challenge, and ask for the tokens. Some minutes will pass until the transactions is finished.
 
-![image](assets/wallaby/7.png)
+![image](assets/hyperspace/7.png)
 
 ### Ready to go!
 
 Some minutes after requesting tokens on the faucet, you will be your new balance reflected on your wallet. Congratulations! You are ready to deploy your smart contracts using Remix and Metamask.
 
-![image](assets/wallaby/8.png)
+![image](assets/hyperspace/8.png)
 
 ## Deploying your smart contract
 
-The remix IDE is a powerful editor you can use to write your smart contracts. You will be able to write, compile and deploy them directly from it. In order to deploy them on the wallaby network, we will use MetaMask as the current environment.
+The remix IDE is a powerful editor you can use to write your smart contracts. You will be able to write, compile and deploy them directly from it. In order to deploy them on the hyperspace network, we will use MetaMask as the current environment.
 
 From the main menu, go to "Deploy & Run Transactions". It is the latest icon on the left-side menu.
 
