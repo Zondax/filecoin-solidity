@@ -1,6 +1,6 @@
 ---
 title: How to use it on my project?
-sidebar_position: 2
+sidebar_position: 3
 ---
 
 In order to use these APIs in your project, you will need to import them on your own contract. 

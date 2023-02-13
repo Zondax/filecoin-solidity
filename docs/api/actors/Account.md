@@ -1,3 +1,8 @@
+---
+title: "Account Actor"
+sidebar_position: 1
+---
+
 # Account Actor
 
 The account actor is responsible for user account. If you want to call these methods in your smart  contracts, you need to specify method number of that method you want to invoke. Please refer the each method for its method number.

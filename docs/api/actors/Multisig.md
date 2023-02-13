@@ -1,3 +1,8 @@
+---
+title: "Multisig Actor"
+sidebar_position: 5
+---
+
 # Multisig Actor
 
 Multisig built-in actor is responsible for dealing with operations involving the Filecoin wallet.

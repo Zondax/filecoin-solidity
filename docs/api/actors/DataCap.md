@@ -1,3 +1,8 @@
+---
+title: "DataCap Actor"
+sidebar_position: 2
+---
+
 # DataCap Actor
 
 DataCap Actor is responsible for DataCap token management.  

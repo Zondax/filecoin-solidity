@@ -1,3 +1,8 @@
+---
+title: "Verified Registry Actor"
+sidebar_position: 7
+---
+
 # Verified Registry Actor
 
 Verified registry actor is responsible for managing verified clients. 

@@ -1,4 +1,9 @@
-# Miner built-in actor
+---
+title: "Miner Actor"
+sidebar_position: 4
+---
+
+# Miner Actor
 
 The miner built-in actor responsible to deal with storage mining operations and collect proof. 
 
