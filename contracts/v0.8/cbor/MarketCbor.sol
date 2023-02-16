@@ -26,6 +26,8 @@ import "./BigIntCbor.sol";
 import "../utils/CborDecode.sol";
 import "../utils/Misc.sol";
 import "./FilecoinCbor.sol";
+import "../types/CommonTypes.sol";
+
 
 /// @title FIXME
 /// @author Zondax AG
@@ -243,5 +245,48 @@ library MarketCBOR {
         buf.writeUInt64(id);
 
         return buf.data();
+    }
+
+    function deserializeMarketDealNotifyParams(bytes memory rawResp) internal pure returns (MarketTypes.MarketDealNotifyParams memory ret) {
+        uint byteIdx = 0;
+        uint len;
+
+        (len, byteIdx) = rawResp.readFixedArray(byteIdx);
+        assert(len == 2);
+
+        (ret.dealProposal, byteIdx) = rawResp.readBytes(byteIdx);
+        (ret.dealId, byteIdx) = rawResp.readUInt64(byteIdx);
+
+    }
+
+    function deserializeDealProposal(bytes memory rawResp) internal pure returns (CommonTypes.DealProposal memory ret) {
+        uint byteIdx = 0;
+        uint len;
+
+        (len, byteIdx) = rawResp.readFixedArray(byteIdx);
+        assert(len == 11);
+
+        (ret.piece_cid, byteIdx) = rawResp.readBytes(byteIdx);
+        (ret.piece_size, byteIdx) = rawResp.readUInt64(byteIdx);
+        (ret.verified_deal, byteIdx) = rawResp.readBool(byteIdx);
+        (ret.client, byteIdx) = rawResp.readBytes(byteIdx);
+        (ret.provider, byteIdx) = rawResp.readBytes(byteIdx);
+
+        (ret.label, byteIdx) = rawResp.readString(byteIdx);
+        (ret.start_epoch, byteIdx) = rawResp.readInt64(byteIdx);
+        (ret.end_epoch, byteIdx) = rawResp.readInt64(byteIdx);
+
+        bytes memory storage_price_per_epoch_bytes;
+        (storage_price_per_epoch_bytes, byteIdx) = rawResp.readBytes(byteIdx);
+        ret.storage_price_per_epoch = storage_price_per_epoch_bytes.deserializeBigInt();
+
+        bytes memory provider_collateral_bytes;
+        (provider_collateral_bytes, byteIdx) = rawResp.readBytes(byteIdx);
+        ret.provider_collateral = provider_collateral_bytes.deserializeBigInt();
+
+        bytes memory client_collateral_bytes;
+        (client_collateral_bytes, byteIdx) = rawResp.readBytes(byteIdx);
+        ret.client_collateral = client_collateral_bytes.deserializeBigInt();
+
     }
 }

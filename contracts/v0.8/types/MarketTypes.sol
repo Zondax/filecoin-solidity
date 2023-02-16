@@ -106,4 +106,9 @@ library MarketTypes {
         uint64[] ids;
         bytes valid_deals;
     }
+
+    struct MarketDealNotifyParams {
+        bytes dealProposal;
+        uint64 dealId;
+    }
 }
