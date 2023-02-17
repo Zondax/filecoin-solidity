@@ -37,7 +37,7 @@ task("send-coin", "Sends SimpleCoin")
         async function callRpc(method, params) {
             var options = {
                 method: "POST",
-                url: "https://api.zondax.ch/fil/node/hyperspace/rpc/v0",
+                url: "https://api.zondax.ch/fil/node/hyperspace/rpc/v1",
                 // url: "http://localhost:1234/rpc/v0",
                 headers: {
                     "Content-Type": "application/json",
