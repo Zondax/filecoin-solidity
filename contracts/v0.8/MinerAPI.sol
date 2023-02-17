@@ -223,7 +223,7 @@ library MinerAPI {
     function getBeneficiary(bytes memory target) internal returns (MinerTypes.GetBeneficiaryReturn memory) {
         bytes memory raw_request = new bytes(0);
 
-        bytes memory raw_response = Actor.call(MinerTypes.GetBeneficiaryMethodNum, target, raw_request, Misc.NONE_CODEC, 0, false);
+        bytes memory raw_response = Actor.call(MinerTypes.GetBeneficiaryMethodNum, target, raw_request, Misc.NONE_CODEC, 0, true);
 
         bytes memory result = Actor.readRespData(raw_response);
 
@@ -236,7 +236,7 @@ library MinerAPI {
     function getBeneficiary(uint64 target) internal returns (MinerTypes.GetBeneficiaryReturn memory) {
         bytes memory raw_request = new bytes(0);
 
-        bytes memory raw_response = Actor.callByID(target, MinerTypes.GetBeneficiaryMethodNum, Misc.NONE_CODEC, raw_request, 0, false);
+        bytes memory raw_response = Actor.callByID(target, MinerTypes.GetBeneficiaryMethodNum, Misc.NONE_CODEC, raw_request, 0, true);
 
         bytes memory result = Actor.readRespData(raw_response);
 

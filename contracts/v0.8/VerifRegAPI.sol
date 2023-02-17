@@ -32,7 +32,7 @@ library VerifRegAPI {
     function getClaims(VerifRegTypes.GetClaimsParams memory params) internal returns (VerifRegTypes.GetClaimsReturn memory) {
         bytes memory raw_request = params.serializeGetClaimsParams();
 
-        bytes memory raw_response = Actor.call(VerifRegTypes.GetClaimsMethodNum, VerifRegTypes.ActorID, raw_request, Misc.DAG_CBOR_CODEC, 0, false);
+        bytes memory raw_response = Actor.call(VerifRegTypes.GetClaimsMethodNum, VerifRegTypes.ActorID, raw_request, Misc.DAG_CBOR_CODEC, 0, true);
 
         bytes memory result = Actor.readRespData(raw_response);
 
@@ -53,7 +53,14 @@ library VerifRegAPI {
     ) internal returns (VerifRegTypes.RemoveExpiredAllocationsReturn memory) {
         bytes memory raw_request = params.serializeRemoveExpiredAllocationsParams();
 
-        bytes memory raw_response = Actor.call(VerifRegTypes.RemoveExpiredAllocationsMethodNum, VerifRegTypes.ActorID, raw_request, Misc.DAG_CBOR_CODEC, 0, false);
+        bytes memory raw_response = Actor.call(
+            VerifRegTypes.RemoveExpiredAllocationsMethodNum,
+            VerifRegTypes.ActorID,
+            raw_request,
+            Misc.DAG_CBOR_CODEC,
+            0,
+            false
+        );
 
         bytes memory result = Actor.readRespData(raw_response);
 
