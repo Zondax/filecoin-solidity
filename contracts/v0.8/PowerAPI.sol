@@ -38,7 +38,7 @@ library PowerAPI {
 
         bytes memory raw_request = params.serializeCreateMinerParams();
 
-        bytes memory raw_response = Actor.call(PowerTypes.CreateMinerMethodNum, PowerTypes.ActorID, raw_request, Misc.DAG_CBOR_CODEC, value, false);
+        bytes memory raw_response = Actor.call(PowerTypes.CreateMinerMethodNum, PowerTypes.ActorID, raw_request, Misc.CBOR_CODEC, value, false);
 
         bytes memory result = Actor.readRespData(raw_response);
 
@@ -78,7 +78,7 @@ library PowerAPI {
     function minerRawPower(uint64 minerID) internal returns (PowerTypes.MinerRawPowerReturn memory) {
         bytes memory raw_request = minerID.serialize();
 
-        bytes memory raw_response = Actor.call(PowerTypes.MinerRawPowerMethodNum, PowerTypes.ActorID, raw_request, Misc.DAG_CBOR_CODEC, 0, true);
+        bytes memory raw_response = Actor.call(PowerTypes.MinerRawPowerMethodNum, PowerTypes.ActorID, raw_request, Misc.CBOR_CODEC, 0, true);
 
         bytes memory result = Actor.readRespData(raw_response);
 

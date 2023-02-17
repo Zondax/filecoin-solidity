@@ -36,7 +36,7 @@ library MultisigAPI {
     function propose(bytes memory target, MultisigTypes.ProposeParams memory params) internal returns (MultisigTypes.ProposeReturn memory) {
         bytes memory raw_request = params.serializeProposeParams();
 
-        bytes memory raw_response = Actor.call(MultisigTypes.ProposeMethodNum, target, raw_request, Misc.DAG_CBOR_CODEC, 0, false);
+        bytes memory raw_response = Actor.call(MultisigTypes.ProposeMethodNum, target, raw_request, Misc.CBOR_CODEC, 0, false);
 
         bytes memory result = Actor.readRespData(raw_response);
 
@@ -48,7 +48,7 @@ library MultisigAPI {
     function propose(uint64 target, MultisigTypes.ProposeParams memory params) internal returns (MultisigTypes.ProposeReturn memory) {
         bytes memory raw_request = params.serializeProposeParams();
 
-        bytes memory raw_response = Actor.callByID(target, MultisigTypes.ProposeMethodNum, Misc.DAG_CBOR_CODEC, raw_request, 0, false);
+        bytes memory raw_response = Actor.callByID(target, MultisigTypes.ProposeMethodNum, Misc.CBOR_CODEC, raw_request, 0, false);
 
         bytes memory result = Actor.readRespData(raw_response);
 
@@ -60,7 +60,7 @@ library MultisigAPI {
     function approve(bytes memory target, MultisigTypes.TxnIDParams memory params) internal returns (MultisigTypes.ApproveReturn memory) {
         bytes memory raw_request = params.serializeTxnIDParams();
 
-        bytes memory raw_response = Actor.call(MultisigTypes.ApproveMethodNum, target, raw_request, Misc.DAG_CBOR_CODEC, 0, false);
+        bytes memory raw_response = Actor.call(MultisigTypes.ApproveMethodNum, target, raw_request, Misc.CBOR_CODEC, 0, false);
 
         bytes memory result = Actor.readRespData(raw_response);
 
@@ -72,7 +72,7 @@ library MultisigAPI {
     function approve(uint64 target, MultisigTypes.TxnIDParams memory params) internal returns (MultisigTypes.ApproveReturn memory) {
         bytes memory raw_request = params.serializeTxnIDParams();
 
-        bytes memory raw_response = Actor.callByID(target, MultisigTypes.ApproveMethodNum, Misc.DAG_CBOR_CODEC, raw_request, 0, false);
+        bytes memory raw_response = Actor.callByID(target, MultisigTypes.ApproveMethodNum, Misc.CBOR_CODEC, raw_request, 0, false);
 
         bytes memory result = Actor.readRespData(raw_response);
 
@@ -84,7 +84,7 @@ library MultisigAPI {
     function cancel(bytes memory target, MultisigTypes.TxnIDParams memory params) internal {
         bytes memory raw_request = params.serializeTxnIDParams();
 
-        bytes memory raw_response = Actor.call(MultisigTypes.CancelMethodNum, target, raw_request, Misc.DAG_CBOR_CODEC, 0, false);
+        bytes memory raw_response = Actor.call(MultisigTypes.CancelMethodNum, target, raw_request, Misc.CBOR_CODEC, 0, false);
 
         bytes memory result = Actor.readRespData(raw_response);
         require(result.length == 0, "unexpected response received");
@@ -95,7 +95,7 @@ library MultisigAPI {
     function cancel(uint64 target, MultisigTypes.TxnIDParams memory params) internal {
         bytes memory raw_request = params.serializeTxnIDParams();
 
-        bytes memory raw_response = Actor.callByID(target, MultisigTypes.CancelMethodNum, Misc.DAG_CBOR_CODEC, raw_request, 0, false);
+        bytes memory raw_response = Actor.callByID(target, MultisigTypes.CancelMethodNum, Misc.CBOR_CODEC, raw_request, 0, false);
 
         bytes memory result = Actor.readRespData(raw_response);
         require(result.length == 0, "unexpected response received");
@@ -106,7 +106,7 @@ library MultisigAPI {
     function addSigner(bytes memory target, MultisigTypes.AddSignerParams memory params) internal {
         bytes memory raw_request = params.serializeAddSignerParams();
 
-        bytes memory raw_response = Actor.call(MultisigTypes.AddSignerMethodNum, target, raw_request, Misc.DAG_CBOR_CODEC, 0, false);
+        bytes memory raw_response = Actor.call(MultisigTypes.AddSignerMethodNum, target, raw_request, Misc.CBOR_CODEC, 0, false);
 
         bytes memory result = Actor.readRespData(raw_response);
         require(result.length == 0, "unexpected response received");
@@ -117,7 +117,7 @@ library MultisigAPI {
     function addSigner(uint64 target, MultisigTypes.AddSignerParams memory params) internal {
         bytes memory raw_request = params.serializeAddSignerParams();
 
-        bytes memory raw_response = Actor.callByID(target, MultisigTypes.AddSignerMethodNum, Misc.DAG_CBOR_CODEC, raw_request, 0, false);
+        bytes memory raw_response = Actor.callByID(target, MultisigTypes.AddSignerMethodNum, Misc.CBOR_CODEC, raw_request, 0, false);
 
         bytes memory result = Actor.readRespData(raw_response);
         require(result.length == 0, "unexpected response received");
@@ -128,7 +128,7 @@ library MultisigAPI {
     function removeSigner(bytes memory target, MultisigTypes.RemoveSignerParams memory params) internal {
         bytes memory raw_request = params.serializeRemoveSignerParams();
 
-        bytes memory raw_response = Actor.call(MultisigTypes.RemoveSignerMethodNum, target, raw_request, Misc.DAG_CBOR_CODEC, 0, false);
+        bytes memory raw_response = Actor.call(MultisigTypes.RemoveSignerMethodNum, target, raw_request, Misc.CBOR_CODEC, 0, false);
 
         bytes memory result = Actor.readRespData(raw_response);
         require(result.length == 0, "unexpected response received");
@@ -139,7 +139,7 @@ library MultisigAPI {
     function removeSigner(uint64 target, MultisigTypes.RemoveSignerParams memory params) internal {
         bytes memory raw_request = params.serializeRemoveSignerParams();
 
-        bytes memory raw_response = Actor.callByID(target, MultisigTypes.RemoveSignerMethodNum, Misc.DAG_CBOR_CODEC, raw_request, 0, false);
+        bytes memory raw_response = Actor.callByID(target, MultisigTypes.RemoveSignerMethodNum, Misc.CBOR_CODEC, raw_request, 0, false);
 
         bytes memory result = Actor.readRespData(raw_response);
         require(result.length == 0, "unexpected response received");
@@ -150,7 +150,7 @@ library MultisigAPI {
     function swapSigner(bytes memory target, MultisigTypes.SwapSignerParams memory params) internal {
         bytes memory raw_request = params.serializeSwapSignerParams();
 
-        bytes memory raw_response = Actor.call(MultisigTypes.SwapSignerMethodNum, target, raw_request, Misc.DAG_CBOR_CODEC, 0, false);
+        bytes memory raw_response = Actor.call(MultisigTypes.SwapSignerMethodNum, target, raw_request, Misc.CBOR_CODEC, 0, false);
 
         bytes memory result = Actor.readRespData(raw_response);
         require(result.length == 0, "unexpected response received");
@@ -161,7 +161,7 @@ library MultisigAPI {
     function swapSigner(uint64 target, MultisigTypes.SwapSignerParams memory params) internal {
         bytes memory raw_request = params.serializeSwapSignerParams();
 
-        bytes memory raw_response = Actor.callByID(target, MultisigTypes.SwapSignerMethodNum, Misc.DAG_CBOR_CODEC, raw_request, 0, false);
+        bytes memory raw_response = Actor.callByID(target, MultisigTypes.SwapSignerMethodNum, Misc.CBOR_CODEC, raw_request, 0, false);
 
         bytes memory result = Actor.readRespData(raw_response);
         require(result.length == 0, "unexpected response received");
@@ -172,7 +172,7 @@ library MultisigAPI {
     function changeNumApprovalsThreshold(bytes memory target, MultisigTypes.ChangeNumApprovalsThresholdParams memory params) internal {
         bytes memory raw_request = params.serializeChangeNumApprovalsThresholdParams();
 
-        bytes memory raw_response = Actor.call(MultisigTypes.ChangeNumApprovalsThresholdMethodNum, target, raw_request, Misc.DAG_CBOR_CODEC, 0, false);
+        bytes memory raw_response = Actor.call(MultisigTypes.ChangeNumApprovalsThresholdMethodNum, target, raw_request, Misc.CBOR_CODEC, 0, false);
 
         bytes memory result = Actor.readRespData(raw_response);
         require(result.length == 0, "unexpected response received");
@@ -183,7 +183,7 @@ library MultisigAPI {
     function changeNumApprovalsThreshold(uint64 target, MultisigTypes.ChangeNumApprovalsThresholdParams memory params) internal {
         bytes memory raw_request = params.serializeChangeNumApprovalsThresholdParams();
 
-        bytes memory raw_response = Actor.callByID(target, MultisigTypes.ChangeNumApprovalsThresholdMethodNum, Misc.DAG_CBOR_CODEC, raw_request, 0, false);
+        bytes memory raw_response = Actor.callByID(target, MultisigTypes.ChangeNumApprovalsThresholdMethodNum, Misc.CBOR_CODEC, raw_request, 0, false);
 
         bytes memory result = Actor.readRespData(raw_response);
         require(result.length == 0, "unexpected response received");
@@ -194,7 +194,7 @@ library MultisigAPI {
     function lockBalance(bytes memory target, MultisigTypes.LockBalanceParams memory params) internal {
         bytes memory raw_request = params.serializeLockBalanceParams();
 
-        bytes memory raw_response = Actor.call(MultisigTypes.LockBalanceMethodNum, target, raw_request, Misc.DAG_CBOR_CODEC, 0, false);
+        bytes memory raw_response = Actor.call(MultisigTypes.LockBalanceMethodNum, target, raw_request, Misc.CBOR_CODEC, 0, false);
 
         bytes memory result = Actor.readRespData(raw_response);
         require(result.length == 0, "unexpected response received");
@@ -205,7 +205,7 @@ library MultisigAPI {
     function lockBalance(uint64 target, MultisigTypes.LockBalanceParams memory params) internal {
         bytes memory raw_request = params.serializeLockBalanceParams();
 
-        bytes memory raw_response = Actor.callByID(target, MultisigTypes.LockBalanceMethodNum, Misc.DAG_CBOR_CODEC, raw_request, 0, false);
+        bytes memory raw_response = Actor.callByID(target, MultisigTypes.LockBalanceMethodNum, Misc.CBOR_CODEC, raw_request, 0, false);
 
         bytes memory result = Actor.readRespData(raw_response);
         require(result.length == 0, "unexpected response received");
@@ -216,7 +216,7 @@ library MultisigAPI {
     function universalReceiverHook(bytes memory target, bytes memory params) internal {
         bytes memory raw_request = params.serializeBytes();
 
-        bytes memory raw_response = Actor.call(MultisigTypes.UniversalReceiverHookMethodNum, target, raw_request, Misc.DAG_CBOR_CODEC, 0, false);
+        bytes memory raw_response = Actor.call(MultisigTypes.UniversalReceiverHookMethodNum, target, raw_request, Misc.CBOR_CODEC, 0, false);
 
         bytes memory result = Actor.readRespData(raw_response);
         require(result.length == 0, "unexpected response received");
@@ -227,7 +227,7 @@ library MultisigAPI {
     function universalReceiverHook(uint64 target, bytes memory params) internal {
         bytes memory raw_request = params.serializeBytes();
 
-        bytes memory raw_response = Actor.callByID(target, MultisigTypes.UniversalReceiverHookMethodNum, Misc.DAG_CBOR_CODEC, raw_request, 0, false);
+        bytes memory raw_response = Actor.callByID(target, MultisigTypes.UniversalReceiverHookMethodNum, Misc.CBOR_CODEC, raw_request, 0, false);
 
         bytes memory result = Actor.readRespData(raw_response);
         require(result.length == 0, "unexpected response received");

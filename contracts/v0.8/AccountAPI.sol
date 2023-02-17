@@ -36,7 +36,7 @@ library AccountAPI {
     function authenticateMessage(bytes memory target, AccountTypes.AuthenticateMessageParams memory params) internal {
         bytes memory raw_request = params.serializeAuthenticateMessageParams();
 
-        bytes memory raw_response = Actor.call(AccountTypes.AuthenticateMessageMethodNum, target, raw_request, Misc.DAG_CBOR_CODEC, 0, false);
+        bytes memory raw_response = Actor.call(AccountTypes.AuthenticateMessageMethodNum, target, raw_request, Misc.CBOR_CODEC, 0, false);
 
         bytes memory result = Actor.readRespData(raw_response);
         require(result.length == 0, "unexpected response received");
@@ -47,7 +47,7 @@ library AccountAPI {
     function authenticateMessage(uint64 target, AccountTypes.AuthenticateMessageParams memory params) internal {
         bytes memory raw_request = params.serializeAuthenticateMessageParams();
 
-        bytes memory raw_response = Actor.callByID(target, AccountTypes.AuthenticateMessageMethodNum, Misc.DAG_CBOR_CODEC, raw_request, 0, false);
+        bytes memory raw_response = Actor.callByID(target, AccountTypes.AuthenticateMessageMethodNum, Misc.CBOR_CODEC, raw_request, 0, false);
 
         bytes memory result = Actor.readRespData(raw_response);
         require(result.length == 0, "unexpected response received");
@@ -58,7 +58,7 @@ library AccountAPI {
     function universalReceiverHook(bytes memory target, AccountTypes.UniversalReceiverParams memory params) internal {
         bytes memory raw_request = params.serializeUniversalReceiverParams();
 
-        bytes memory raw_response = Actor.call(AccountTypes.UniversalReceiverHookMethodNum, target, raw_request, Misc.DAG_CBOR_CODEC, 0, false);
+        bytes memory raw_response = Actor.call(AccountTypes.UniversalReceiverHookMethodNum, target, raw_request, Misc.CBOR_CODEC, 0, false);
 
         bytes memory result = Actor.readRespData(raw_response);
         require(result.length == 0, "unexpected response received");
@@ -69,7 +69,7 @@ library AccountAPI {
     function universalReceiverHook(uint64 target, AccountTypes.UniversalReceiverParams memory params) internal {
         bytes memory raw_request = params.serializeUniversalReceiverParams();
 
-        bytes memory raw_response = Actor.callByID(target, AccountTypes.UniversalReceiverHookMethodNum, Misc.DAG_CBOR_CODEC, raw_request, 0, false);
+        bytes memory raw_response = Actor.callByID(target, AccountTypes.UniversalReceiverHookMethodNum, Misc.CBOR_CODEC, raw_request, 0, false);
 
         bytes memory result = Actor.readRespData(raw_response);
         require(result.length == 0, "unexpected response received");
