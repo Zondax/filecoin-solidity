@@ -39,7 +39,7 @@ After a few seconds, you will end up on the following page. Please, click on "Ad
 Now it is time to fill each text box with the corresponding value. Once you finish typing in the values, hit "Save".
 
 -   Name: Filecoin Hypersapce
--   RPC URL: https://api.zondax.ch/fil/node/hyperspace/rpc/v0
+-   RPC URL: https://api.zondax.ch/fil/node/hyperspace/rpc/v1
 -   ChainID: 3141 (Hyperspace's ID)
 -   Currency symbol: TFIL (Test FIL).
 
