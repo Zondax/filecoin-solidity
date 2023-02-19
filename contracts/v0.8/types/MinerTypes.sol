@@ -43,11 +43,14 @@ library MinerTypes {
     uint constant WithdrawBalanceMethodNum = 2280458852;
 
     struct GetOwnerReturn {
+        // TODO tighten type to Address
         bytes owner;
+        // TODO tighten type to Address
         bytes proposed;
     }
 
     struct IsControllingAddressParam {
+        // TODO address
         bytes addr;
     }
 

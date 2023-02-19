@@ -24,6 +24,9 @@ import "../cbor/BigIntCbor.sol";
 /// @title Filecoin actors' common types for Solidity.
 /// @author Zondax AG
 library CommonTypes {
+
+    // TODO this is a miner type.
+    // TODO paranoid: consider not making an enum as it's not clear which values each entry corresponds to.
     enum RegisteredSealProof {
         StackedDRG2KiBV1,
         StackedDRG512MiBV1,
@@ -38,6 +41,8 @@ library CommonTypes {
         Invalid
     }
 
+    // TODO this is a miner type.
+    // TODO paranoid: consider not making an enum as it's not clear which values each entry corresponds to.
     enum RegisteredPoStProof {
         StackedDRGWinning2KiBV1,
         StackedDRGWinning8MiBV1,
@@ -52,6 +57,8 @@ library CommonTypes {
         Invalid
     }
 
+    // TODO this is a miner type.
+    // TODO paranoid: consider not making an enum as it's not clear which values each entry corresponds to.
     enum RegisteredUpdateProof {
         StackedDRG2KiBV1,
         StackedDRG8MiBV1,
@@ -60,11 +67,17 @@ library CommonTypes {
         StackedDRG64GiBV1,
         Invalid
     }
+
+    // TODO this is a miner type.
+    // TODO paranoid: consider not making an enum as it's not clear which values each entry corresponds to.
     enum ExtensionKind {
         ExtendCommittmentLegacy,
         ExtendCommittment
     }
 
+    // TODO UNUSED; USE OR REMOVE.
+    // TODO this is a miner type.
+    // TODO paranoid: consider not making an enum as it's not clear which values each entry corresponds to.
     enum SectorSize {
         _2KiB,
         _8MiB,
@@ -76,15 +89,18 @@ library CommonTypes {
     struct ValidatedExpirationExtension {
         uint64 deadline;
         uint64 partition;
+        // TODO this type is wrong! This is a bitfield!
         uint8 sectors;
         int64 new_expiration;
     }
 
+    // TODO UNUSED; USE OR REMOVE.
     struct ExtendExpirationsInner {
         ValidatedExpirationExtension[] extensions;
         bytes claims; // FIXME this is a BTreeMap<SectorNumber, (u64, u64)> on rust
     }
 
+    // TODO UNUSED; this type is not part of the public API!
     struct PendingBeneficiaryChange {
         bytes new_beneficiary;
         BigInt new_quota;
@@ -93,41 +109,48 @@ library CommonTypes {
         bool approved_by_nominee;
     }
 
+    // TODO UNUSED; this is a state type.
     struct BeneficiaryTerm {
         BigInt quota;
         BigInt used_quota;
         uint64 expiration;
     }
 
+    // TODO UNUSED; this is a state type.
     struct ActiveBeneficiary {
         bytes beneficiary;
         BeneficiaryTerm term;
     }
 
+    // TODO UNUSED; this is a state type.
     struct RecoveryDeclaration {
         uint64 deadline;
         uint64 partition;
         uint8 sectors;
     }
 
+    // TODO UNUSED; this is a state type.
     struct FaultDeclaration {
         uint64 deadline;
         uint64 partition;
         uint8 sectors;
     }
 
+    // TODO UNUSED; this is a state type.
     struct TerminationDeclaration {
         uint64 deadline;
         uint64 partition;
         uint8 sectors;
     }
 
+    // TODO UNUSED; this is a state type.
     struct SectorClaim {
         uint64 sector_number;
         uint64[] maintain_claims;
         uint64[] drop_claims;
     }
 
+    // TODO UNUSED; this is a state type.
     struct ExpirationExtension2 {
         uint64 deadline;
         uint64 partition;
@@ -136,6 +159,7 @@ library CommonTypes {
         int64 new_expiration;
     }
 
+    // TODO UNUSED; this is a state type.
     struct ExpirationExtension {
         uint64 deadline;
         uint64 partition;
@@ -143,6 +167,7 @@ library CommonTypes {
         int64 new_expiration;
     }
 
+    // TODO UNUSED; this is a state type.
     struct SectorPreCommitInfoInner {
         RegisteredSealProof seal_proof;
         uint64 sector_number;
@@ -153,6 +178,7 @@ library CommonTypes {
         bytes unsealed_cid;
     }
 
+    // TODO UNUSED; this is a state type.
     struct SectorPreCommitInfo {
         RegisteredSealProof seal_proof;
         uint64 sector_number;
@@ -162,6 +188,8 @@ library CommonTypes {
         int64 expiration;
         bytes unsealed_cid;
     }
+
+    // TODO UNUSED; this is a state type.
     struct ReplicaUpdateInner {
         uint64 sector_number;
         uint64 deadline;
@@ -173,6 +201,7 @@ library CommonTypes {
         bytes replica_proof;
     }
 
+    // TODO UNUSED; this is a state type.
     struct ReplicaUpdate {
         uint64 sector_number;
         uint64 deadline;
@@ -183,6 +212,7 @@ library CommonTypes {
         bytes replica_proof;
     }
 
+    // TODO UNUSED; this is a state type.
     struct ReplicaUpdate2 {
         uint64 sector_number;
         uint64 deadline;
@@ -194,26 +224,32 @@ library CommonTypes {
         bytes replica_proof;
     }
 
+    // TODO UNUSED; this is a state type.
     struct PoStPartition {
         uint64 index;
         int8 skipped;
     }
 
+    // TODO this is a Miner type, it should be with Miner types.
     struct PoStProof {
         RegisteredPoStProof post_proof;
         bytes proof_bytes;
     }
 
+    // TODO this is a Miner type, it should be with Miner types.
     struct VestingFunds {
         int64 epoch;
         BigInt amount;
     }
+
+    // TODO this is a Miner type, it should be with Miner types.
     struct SectorDeals {
         int64 sector_type;
         int64 sector_expiry;
         uint64[] deal_ids;
     }
 
+    // TODO this is a Miner type, it should be with Miner types.
     struct DealProposal {
         bytes piece_cid;
         uint64 piece_size;
@@ -261,11 +297,13 @@ library CommonTypes {
         int64 sector_type;
     }
 
+    // TODO docs
     struct FailCode {
         uint32 idx;
         uint32 code;
     }
 
+    // TODO docs
     struct BatchReturn {
         // Total successes in batch
         uint32 success_count;
@@ -273,6 +311,7 @@ library CommonTypes {
         FailCode[] fail_codes;
     }
 
+    // TODO this is a Miner type, it should be with Miner types.
     struct Claim {
         // The provider storing the data (from allocation).
         uint64 provider;
