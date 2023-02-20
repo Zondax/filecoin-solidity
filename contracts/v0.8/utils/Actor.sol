@@ -41,7 +41,10 @@ library Actor {
         bool read_only
     ) internal returns (bytes memory) {
         // Address in bytes format only start by 0, 1, 2, 3 or 4
-        require(actor_address[0] == 0x00 || actor_address[0] == 0x01 || actor_address[0] == 0x02 || actor_address[0] == 0x03 || actor_address[0] == 0x04, "actor_address address should be bytes format");
+        require(
+            actor_address[0] == 0x00 || actor_address[0] == 0x01 || actor_address[0] == 0x02 || actor_address[0] == 0x03 || actor_address[0] == 0x04,
+            "actor_address address should be bytes format"
+        );
 
         (bool success, bytes memory data) = address(CALL_ACTOR_ADDRESS).delegatecall(
             abi.encode(uint64(method_num), amount, read_only ? READ_ONLY_FLAG : DEFAULT_FLAG, codec, raw_request, actor_address)

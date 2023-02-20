@@ -24,7 +24,7 @@ import "./cbor/InitCbor.sol";
 import "./utils/Misc.sol";
 import "./utils/Actor.sol";
 
-/// @title This contract is a proxy to the singleton Init actor (address: f01). Calling one of its methods will result in a cross-actor call being performed.
+/// @title This library is a proxy to the singleton Init actor (address: f01). Calling one of its methods will result in a cross-actor call being performed.
 /// @author Zondax AG
 library InitAPI {
     using InitCBOR for *;

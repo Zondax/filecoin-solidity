@@ -21,13 +21,12 @@ pragma solidity ^0.8.17;
 
 import "solidity-cborutils/contracts/CBOR.sol";
 
-import {CommonTypes} from "../types/CommonTypes.sol";
 import {MinerTypes} from "../types/MinerTypes.sol";
 import "../utils/CborDecode.sol";
 import "../utils/Misc.sol";
 import "./BigIntCbor.sol";
 
-/// @title FIXME
+/// @title This library is a set of functions meant to handle CBOR parameters serialization and return values deserialization for Miner actor exported methods.
 /// @author Zondax AG
 library MinerCBOR {
     using CBOR for CBOR.CBORBuffer;
@@ -36,7 +35,6 @@ library MinerCBOR {
     using BigIntCBOR for bytes;
 
     function serializeChangeBeneficiaryParams(MinerTypes.ChangeBeneficiaryParams memory params) internal pure returns (bytes memory) {
-        // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
         buf.startFixedArray(3);
@@ -65,9 +63,7 @@ library MinerCBOR {
         return ret;
     }
 
-    function deserializeIsControllingAddressReturn(
-        bytes memory rawResp
-    ) internal pure returns (MinerTypes.IsControllingAddressReturn memory ret) {
+    function deserializeIsControllingAddressReturn(bytes memory rawResp) internal pure returns (MinerTypes.IsControllingAddressReturn memory ret) {
         uint byteIdx = 0;
 
         (ret.is_controlling, byteIdx) = rawResp.readBool(byteIdx);
@@ -81,9 +77,7 @@ library MinerCBOR {
         return ret;
     }
 
-    function deserializeGetAvailableBalanceReturn(
-        bytes memory rawResp
-    ) internal pure returns (MinerTypes.GetAvailableBalanceReturn memory ret) {
+    function deserializeGetAvailableBalanceReturn(bytes memory rawResp) internal pure returns (MinerTypes.GetAvailableBalanceReturn memory ret) {
         uint byteIdx = 0;
 
         bytes memory tmp;
@@ -162,21 +156,20 @@ library MinerCBOR {
         assert(len == 1);
 
         (len, byteIdx) = rawResp.readFixedArray(byteIdx);
-        ret.vesting_funds = new CommonTypes.VestingFunds[](len);
+        ret.vesting_funds = new MinerTypes.VestingFunds[](len);
 
         for (uint i = 0; i < len; i++) {
             (epoch, byteIdx) = rawResp.readInt64(byteIdx);
             (tmp, byteIdx) = rawResp.readBytes(byteIdx);
 
             amount = tmp.deserializeBigInt();
-            ret.vesting_funds[i] = CommonTypes.VestingFunds(epoch, amount);
+            ret.vesting_funds[i] = MinerTypes.VestingFunds(epoch, amount);
         }
 
         return ret;
     }
 
     function serializeChangeWorkerAddressParams(MinerTypes.ChangeWorkerAddressParams memory params) internal pure returns (bytes memory) {
-        // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
         buf.startFixedArray(2);
@@ -191,7 +184,6 @@ library MinerCBOR {
     }
 
     function serializeChangePeerIDParams(MinerTypes.ChangePeerIDParams memory params) internal pure returns (bytes memory) {
-        // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
         buf.startFixedArray(1);
@@ -201,7 +193,6 @@ library MinerCBOR {
     }
 
     function serializeChangeMultiaddrsParams(MinerTypes.ChangeMultiaddrsParams memory params) internal pure returns (bytes memory) {
-        // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
         buf.startFixedArray(1);
@@ -242,7 +233,6 @@ library MinerCBOR {
     }
 
     function serializeWithdrawBalanceParams(MinerTypes.WithdrawBalanceParams memory params) internal pure returns (bytes memory) {
-        // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
         buf.startFixedArray(1);

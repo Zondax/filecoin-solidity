@@ -24,7 +24,7 @@ import "./cbor/DataCapCbor.sol";
 import "./cbor/BytesCbor.sol";
 import "./utils/Actor.sol";
 
-/// @title This contract is a proxy to the singleton DataCap actor (address: f0X). Calling one of its methods will result in a cross-actor call being performed.
+/// @title This library is a proxy to the singleton DataCap actor (address: f0X). Calling one of its methods will result in a cross-actor call being performed.
 /// @author Zondax AG
 library DataCapAPI {
     using DataCapCBOR for *;

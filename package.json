@@ -6,7 +6,9 @@
   "directories": {
     "doc": "docs"
   },
-  "scripts": {},
+  "scripts": {
+    "format": "prettier --write contracts"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Zondax/filecoin-solidity.git"

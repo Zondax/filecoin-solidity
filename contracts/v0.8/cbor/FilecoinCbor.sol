@@ -22,7 +22,7 @@ pragma solidity ^0.8.17;
 import "solidity-cborutils/contracts/CBOR.sol";
 import "@ensdomains/buffer/contracts/Buffer.sol";
 
-/// @title FIXME
+/// @title This library is a set of functions meant to handle CBOR serialization and deserialization for general data types on the filecoin network.
 /// @author Zondax AG
 library FilecoinCbor {
     using Buffer for Buffer.buffer;

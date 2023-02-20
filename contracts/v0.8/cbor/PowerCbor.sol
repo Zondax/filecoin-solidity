@@ -26,7 +26,7 @@ import "../utils/CborDecode.sol";
 import "../utils/Misc.sol";
 import "./BigIntCbor.sol";
 
-/// @title FIXME
+/// @title This library is a set of functions meant to handle CBOR parameters serialization and return values deserialization for Power actor exported methods.
 /// @author Zondax AG
 library PowerCBOR {
     using CBOR for CBOR.CBORBuffer;
@@ -35,7 +35,6 @@ library PowerCBOR {
     using BigIntCBOR for bytes;
 
     function serializeCreateMinerParams(PowerTypes.CreateMinerParams memory params) internal pure returns (bytes memory) {
-        // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
         uint multiaddrsLen = params.multiaddrs.length;
