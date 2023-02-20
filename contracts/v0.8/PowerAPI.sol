@@ -26,7 +26,7 @@ import "./cbor/IntCbor.sol";
 
 import "./utils/Actor.sol";
 
-/// @title FIXME
+/// @title This library is a proxy to a built-in Power actor. Calling one of its methods will result in a cross-actor call being performed.
 /// @author Zondax AG
 library PowerAPI {
     using Uint64CBOR for uint64;

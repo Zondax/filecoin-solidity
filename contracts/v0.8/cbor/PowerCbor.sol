@@ -26,7 +26,7 @@ import "../utils/CborDecode.sol";
 import "../utils/Misc.sol";
 import "./BigIntCbor.sol";
 
-/// @title FIXME
+/// @title This library is a set of functions meant to handle CBOR parameters serialization and return values deserialization for Power actor exported methods.
 /// @author Zondax AG
 library PowerCBOR {
     using CBOR for CBOR.CBORBuffer;

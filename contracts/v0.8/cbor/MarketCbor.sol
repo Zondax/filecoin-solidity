@@ -27,7 +27,7 @@ import "../utils/CborDecode.sol";
 import "../utils/Misc.sol";
 import "./FilecoinCbor.sol";
 
-/// @title FIXME
+/// @title This library is a set of functions meant to handle CBOR parameters serialization and return values deserialization for Market actor exported methods.
 /// @author Zondax AG
 library MarketCBOR {
     using CBOR for CBOR.CBORBuffer;
