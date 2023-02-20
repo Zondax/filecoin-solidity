@@ -99,11 +99,30 @@ library MarketTypes {
     }
 
     struct PublishStorageDealsParams {
-        CommonTypes.ClientDealProposal[] deals;
+        ClientDealProposal[] deals;
     }
 
     struct PublishStorageDealsReturn {
         uint64[] ids;
         bytes valid_deals;
+    }
+
+    struct DealProposal {
+        bytes piece_cid;
+        uint64 piece_size;
+        bool verified_deal;
+        bytes client;
+        bytes provider;
+        string label;
+        int64 start_epoch;
+        int64 end_epoch;
+        BigInt storage_price_per_epoch;
+        BigInt provider_collateral;
+        BigInt client_collateral;
+    }
+
+    struct ClientDealProposal {
+        DealProposal proposal;
+        bytes client_signature;
     }
 }

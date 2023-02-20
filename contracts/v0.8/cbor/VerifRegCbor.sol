@@ -75,7 +75,7 @@ library VerifRegCBOR {
         }
 
         (len, byteIdx) = rawResp.readFixedArray(byteIdx);
-        ret.claims = new CommonTypes.Claim[](len);
+        ret.claims = new VerifRegTypes.Claim[](len);
 
         for (uint i = 0; i < len; i++) {
             (len, byteIdx) = rawResp.readFixedArray(byteIdx);

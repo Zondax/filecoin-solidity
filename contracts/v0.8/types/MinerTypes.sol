@@ -63,7 +63,7 @@ library MinerTypes {
     }
 
     struct GetVestingFundsReturn {
-        CommonTypes.VestingFunds[] vesting_funds;
+        VestingFunds[] vesting_funds;
     }
 
     struct ChangeBeneficiaryParams {
@@ -73,8 +73,8 @@ library MinerTypes {
     }
 
     struct GetBeneficiaryReturn {
-        CommonTypes.ActiveBeneficiary active;
-        CommonTypes.PendingBeneficiaryChange proposed;
+        ActiveBeneficiary active;
+        PendingBeneficiaryChange proposed;
     }
 
     struct ChangeWorkerAddressParams {
@@ -104,5 +104,36 @@ library MinerTypes {
 
     struct WithdrawBalanceReturn {
         bytes amount_withdrawn;
+    }
+
+    struct VestingFunds {
+        int64 epoch;
+        BigInt amount;
+    }
+    struct BeneficiaryTerm {
+        BigInt quota;
+        BigInt used_quota;
+        uint64 expiration;
+    }
+
+    struct ActiveBeneficiary {
+        bytes beneficiary;
+        BeneficiaryTerm term;
+    }
+
+    struct PendingBeneficiaryChange {
+        bytes new_beneficiary;
+        BigInt new_quota;
+        uint64 new_expiration;
+        bool approved_by_beneficiary;
+        bool approved_by_nominee;
+    }
+
+    enum SectorSize {
+        _2KiB,
+        _8MiB,
+        _512MiB,
+        _32GiB,
+        _64GiB
     }
 }

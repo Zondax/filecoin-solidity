@@ -39,7 +39,7 @@ library VerifRegTypes {
     }
     struct GetClaimsReturn {
         CommonTypes.BatchReturn batch_info;
-        CommonTypes.Claim[] claims;
+        Claim[] claims;
     }
     struct AddVerifierClientParams {
         bytes addr;
@@ -74,8 +74,9 @@ library VerifRegTypes {
         CommonTypes.BatchReturn results;
     }
     struct ExtendClaimTermsParams {
-        CommonTypes.ClaimTerm[] terms;
+        ClaimTerm[] terms;
     }
+
     struct UniversalReceiverParams {
         /// Asset type
         uint32 type_;
@@ -90,5 +91,30 @@ library VerifRegTypes {
         CommonTypes.BatchReturn extension_results;
         // IDs of new allocations created.
         uint64[] new_allocations;
+    }
+
+    struct ClaimTerm {
+        uint64 provider;
+        uint64 claim_id;
+        int64 term_max;
+    }
+
+    struct Claim {
+        // The provider storing the data (from allocation).
+        uint64 provider;
+        // The client which allocated the DataCap (from allocation).
+        uint64 client;
+        // Identifier of the data committed (from allocation).
+        bytes data;
+        // The (padded) size of data (from allocation).
+        uint64 size;
+        // The min period after term_start which the provider must commit to storing data
+        int64 term_min;
+        // The max period after term_start for which provider can earn QA-power for the data
+        int64 term_max;
+        // The epoch at which the (first range of the) piece was committed.
+        int64 term_start;
+        // ID of the provider's sector in which the data is committed.
+        uint64 sector;
     }
 }

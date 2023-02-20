@@ -21,7 +21,6 @@ pragma solidity ^0.8.17;
 
 import "solidity-cborutils/contracts/CBOR.sol";
 
-import {CommonTypes} from "../types/CommonTypes.sol";
 import {MinerTypes} from "../types/MinerTypes.sol";
 import "../utils/CborDecode.sol";
 import "../utils/Misc.sol";
@@ -162,14 +161,14 @@ library MinerCBOR {
         assert(len == 1);
 
         (len, byteIdx) = rawResp.readFixedArray(byteIdx);
-        ret.vesting_funds = new CommonTypes.VestingFunds[](len);
+        ret.vesting_funds = new MinerTypes.VestingFunds[](len);
 
         for (uint i = 0; i < len; i++) {
             (epoch, byteIdx) = rawResp.readInt64(byteIdx);
             (tmp, byteIdx) = rawResp.readBytes(byteIdx);
 
             amount = tmp.deserializeBigInt();
-            ret.vesting_funds[i] = CommonTypes.VestingFunds(epoch, amount);
+            ret.vesting_funds[i] = MinerTypes.VestingFunds(epoch, amount);
         }
 
         return ret;
