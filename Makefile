@@ -2,7 +2,7 @@
 ################ BUILD ################
 build: build_api build_mock_api build_tests
 
-build_tests:
+build_tests: verify_solc
 	./bin/solc solidity-cborutils=${PWD}/node_modules/solidity-cborutils/ @openzeppelin=${PWD}/node_modules/@openzeppelin/ @ensdomains=${PWD}/node_modules/@ensdomains/ contracts/v0.8/tests/market.test.sol --output-dir ./build/v0.8/tests --overwrite --bin --hashes --opcodes --abi
 	./bin/solc solidity-cborutils=${PWD}/node_modules/solidity-cborutils/ @openzeppelin=${PWD}/node_modules/@openzeppelin/ @ensdomains=${PWD}/node_modules/@ensdomains/ contracts/v0.8/tests/miner.test.sol --output-dir ./build/v0.8/tests --overwrite --bin --hashes --opcodes --abi
 	./bin/solc solidity-cborutils=${PWD}/node_modules/solidity-cborutils/ @openzeppelin=${PWD}/node_modules/@openzeppelin/ @ensdomains=${PWD}/node_modules/@ensdomains/ contracts/v0.8/tests/power.test.sol --output-dir ./build/v0.8/tests --overwrite --bin --hashes --opcodes --abi
@@ -17,7 +17,7 @@ build_tests:
 	./bin/solc @zondax/solidity-bignumber=${PWD}/node_modules/@zondax/solidity-bignumber/ solidity-cborutils=${PWD}/node_modules/solidity-cborutils/ @openzeppelin=${PWD}/node_modules/@openzeppelin/ @ensdomains=${PWD}/node_modules/@ensdomains/ contracts/v0.8/mocks/tests/miner.test.sol --output-dir ./build/v0.8/mocks/tests --overwrite --bin --hashes --opcodes --abi
 
 
-build_api:
+build_api: verify_solc
 	./bin/solc solidity-cborutils=${PWD}/node_modules/solidity-cborutils/ @openzeppelin=${PWD}/node_modules/@openzeppelin/ @ensdomains=${PWD}/node_modules/@ensdomains/ contracts/v0.8/MarketAPI.sol --output-dir ./build/v0.8 --overwrite --bin --hashes --opcodes --abi
 	./bin/solc solidity-cborutils=${PWD}/node_modules/solidity-cborutils/ @openzeppelin=${PWD}/node_modules/@openzeppelin/ @ensdomains=${PWD}/node_modules/@ensdomains/ contracts/v0.8/MinerAPI.sol --output-dir ./build/v0.8 --overwrite --bin --hashes --opcodes --abi
 	./bin/solc solidity-cborutils=${PWD}/node_modules/solidity-cborutils/ @openzeppelin=${PWD}/node_modules/@openzeppelin/ @ensdomains=${PWD}/node_modules/@ensdomains/ contracts/v0.8/VerifRegAPI.sol --output-dir ./build/v0.8 --overwrite --bin --hashes --opcodes --abi
@@ -30,7 +30,7 @@ build_api:
 	./bin/solc solidity-cborutils=${PWD}/node_modules/solidity-cborutils/ @openzeppelin=${PWD}/node_modules/@openzeppelin/ @ensdomains=${PWD}/node_modules/@ensdomains/ contracts/v0.8/Utils.sol --output-dir ./build/v0.8 --overwrite --bin --hashes --opcodes --abi
 	./bin/solc solidity-cborutils=${PWD}/node_modules/solidity-cborutils/ @openzeppelin=${PWD}/node_modules/@openzeppelin/ @ensdomains=${PWD}/node_modules/@ensdomains/ contracts/v0.8/SendAPI.sol --output-dir ./build/v0.8 --overwrite --bin --hashes --opcodes --abi
 
-build_mock_api:
+build_mock_api: verify_solc
 	./bin/solc @zondax/solidity-bignumber=${PWD}/node_modules/@zondax/solidity-bignumber/ solidity-cborutils=${PWD}/node_modules/solidity-cborutils/ @openzeppelin=${PWD}/node_modules/@openzeppelin/ @ensdomains=${PWD}/node_modules/@ensdomains/ contracts/v0.8/mocks/MarketMockAPI.sol --output-dir ./build/v0.8/mocks --overwrite --bin --hashes --opcodes --abi
 	./bin/solc @zondax/solidity-bignumber=${PWD}/node_modules/@zondax/solidity-bignumber/ solidity-cborutils=${PWD}/node_modules/solidity-cborutils/ @openzeppelin=${PWD}/node_modules/@openzeppelin/ @ensdomains=${PWD}/node_modules/@ensdomains/ contracts/v0.8/mocks/MinerMockAPI.sol --output-dir ./build/v0.8/mocks --overwrite --bin --hashes --opcodes --abi
 
@@ -101,6 +101,9 @@ test_send_integration: build build_builtin_actors
 	cd testing && cargo test send_test -- --nocapture
 
 ################ DEPS ################
+
+verify_solc:
+	@[ ! -f ./bin/solc ] && echo "Please install solc using 'make install_solc_linux' or 'make install_solc_mac'" || true
 
 install_solc_linux:
 	wget https://github.com/ethereum/solidity/releases/download/v0.8.17/solc-static-linux
