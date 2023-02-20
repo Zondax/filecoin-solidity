@@ -29,7 +29,6 @@ import "./utils/Actor.sol";
 library InitAPI {
     using InitCBOR for *;
 
-    /// @notice TODO fill this a proper description
     function exec(InitTypes.ExecParams memory params) internal returns (InitTypes.ExecReturn memory) {
         bytes memory raw_request = params.serializeExecParams();
 
@@ -40,7 +39,6 @@ library InitAPI {
         return result.deserializeExecReturn();
     }
 
-    /// @notice TODO fill this a proper description
     function exec4(InitTypes.Exec4Params memory params) internal returns (InitTypes.Exec4Return memory) {
         bytes memory raw_request = params.serializeExec4Params();
 
