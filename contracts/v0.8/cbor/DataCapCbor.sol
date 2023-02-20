@@ -36,7 +36,6 @@ library DataCapCBOR {
     using BigIntCBOR for bytes;
 
     function serializeGetAllowanceParams(DataCapTypes.GetAllowanceParams memory params) internal pure returns (bytes memory) {
-        // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
         buf.startFixedArray(2);
@@ -47,7 +46,6 @@ library DataCapCBOR {
     }
 
     function serializeTransferParams(DataCapTypes.TransferParams memory params) internal pure returns (bytes memory) {
-        // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
         buf.startFixedArray(3);
@@ -78,7 +76,6 @@ library DataCapCBOR {
     }
 
     function serializeTransferFromParams(DataCapTypes.TransferFromParams memory params) internal pure returns (bytes memory) {
-        // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
         buf.startFixedArray(4);
@@ -113,7 +110,6 @@ library DataCapCBOR {
     }
 
     function serializeIncreaseAllowanceParams(DataCapTypes.IncreaseAllowanceParams memory params) internal pure returns (bytes memory) {
-        // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
         buf.startFixedArray(2);
@@ -124,7 +120,6 @@ library DataCapCBOR {
     }
 
     function serializeDecreaseAllowanceParams(DataCapTypes.DecreaseAllowanceParams memory params) internal pure returns (bytes memory) {
-        // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
         buf.startFixedArray(2);
@@ -135,7 +130,6 @@ library DataCapCBOR {
     }
 
     function serializeRevokeAllowanceParams(DataCapTypes.RevokeAllowanceParams memory params) internal pure returns (bytes memory) {
-        // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
         buf.startFixedArray(1);
@@ -145,7 +139,6 @@ library DataCapCBOR {
     }
 
     function serializeBurnParams(DataCapTypes.BurnParams memory params) internal pure returns (bytes memory) {
-        // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
         buf.startFixedArray(1);
@@ -169,7 +162,6 @@ library DataCapCBOR {
     }
 
     function serializeBurnFromParams(DataCapTypes.BurnFromParams memory params) internal pure returns (bytes memory) {
-        // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
         buf.startFixedArray(2);

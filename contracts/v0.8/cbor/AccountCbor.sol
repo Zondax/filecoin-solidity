@@ -32,7 +32,6 @@ library AccountCBOR {
     using CBORDecoder for bytes;
 
     function serializeAuthenticateMessageParams(AccountTypes.AuthenticateMessageParams memory params) internal pure returns (bytes memory) {
-        // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
         buf.startFixedArray(2);
@@ -56,7 +55,6 @@ library AccountCBOR {
     }
 
     function serializeUniversalReceiverParams(AccountTypes.UniversalReceiverParams memory params) internal pure returns (bytes memory) {
-        // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
         buf.startFixedArray(2);

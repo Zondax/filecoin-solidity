@@ -34,7 +34,6 @@ library InitCBOR {
     using CBORDecoder for bytes;
 
     function serializeExecParams(InitTypes.ExecParams memory params) internal pure returns (bytes memory) {
-        // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
         buf.startFixedArray(2);
@@ -58,7 +57,6 @@ library InitCBOR {
     }
 
     function serializeExec4Params(InitTypes.Exec4Params memory params) internal pure returns (bytes memory) {
-        // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
         buf.startFixedArray(3);

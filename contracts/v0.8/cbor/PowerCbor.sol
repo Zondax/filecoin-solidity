@@ -35,7 +35,6 @@ library PowerCBOR {
     using BigIntCBOR for bytes;
 
     function serializeCreateMinerParams(PowerTypes.CreateMinerParams memory params) internal pure returns (bytes memory) {
-        // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
         uint multiaddrsLen = params.multiaddrs.length;

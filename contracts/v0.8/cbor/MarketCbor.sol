@@ -37,7 +37,6 @@ library MarketCBOR {
     using FilecoinCbor for CBOR.CBORBuffer;
 
     function serializeWithdrawBalanceParams(MarketTypes.WithdrawBalanceParams memory params) internal pure returns (bytes memory) {
-        // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
         buf.startFixedArray(2);
@@ -179,7 +178,6 @@ library MarketCBOR {
     }
 
     function serializePublishStorageDealsParams(MarketTypes.PublishStorageDealsParams memory params) internal pure returns (bytes memory) {
-        // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
         buf.startFixedArray(1);
@@ -225,7 +223,6 @@ library MarketCBOR {
     }
 
     function serializeDealID(uint64 id) internal pure returns (bytes memory) {
-        // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
         buf.writeUInt64(id);

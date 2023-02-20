@@ -36,7 +36,6 @@ library VerifRegCBOR {
     using BigIntCBOR for bytes;
 
     function serializeGetClaimsParams(VerifRegTypes.GetClaimsParams memory params) internal pure returns (bytes memory) {
-        // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
         uint claimIdsLen = params.claim_ids.length;
@@ -95,7 +94,6 @@ library VerifRegCBOR {
     }
 
     function serializeAddVerifierClientParams(VerifRegTypes.AddVerifierClientParams memory params) internal pure returns (bytes memory) {
-        // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
         buf.startFixedArray(2);
@@ -106,7 +104,6 @@ library VerifRegCBOR {
     }
 
     function serializeRemoveExpiredAllocationsParams(VerifRegTypes.RemoveExpiredAllocationsParams memory params) internal pure returns (bytes memory) {
-        // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
         uint allocationIdsLen = params.allocation_ids.length;
@@ -159,7 +156,6 @@ library VerifRegCBOR {
     }
 
     function serializeExtendClaimTermsParams(VerifRegTypes.ExtendClaimTermsParams memory params) internal pure returns (bytes memory) {
-        // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
         uint termsLen = params.terms.length;
@@ -200,7 +196,6 @@ library VerifRegCBOR {
     }
 
     function serializeRemoveExpiredClaimsParams(VerifRegTypes.RemoveExpiredClaimsParams memory params) internal pure returns (bytes memory) {
-        // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
         uint claimIdsLen = params.claim_ids.length;
@@ -249,7 +244,6 @@ library VerifRegCBOR {
     }
 
     function serializeUniversalReceiverParams(VerifRegTypes.UniversalReceiverParams memory params) internal pure returns (bytes memory) {
-        // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
         buf.startFixedArray(2);
