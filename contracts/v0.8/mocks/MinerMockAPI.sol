@@ -19,7 +19,7 @@
 // SPDX-License-Identifier: Apache-2.0
 pragma solidity ^0.8.17;
 
-import {BigNumbers, BigNumber} from "@zondax/solidity-bignumber/src/BigNumbers.sol";
+import {BigNumbers, BigNumber} from "../external/BigNumbers.sol";
 
 import "../types/MinerTypes.sol";
 

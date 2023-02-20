@@ -18,7 +18,7 @@
 // SPDX-License-Identifier: Apache-2.0
 pragma solidity ^0.8.17;
 
-import "@openzeppelin/contracts/utils/Strings.sol";
+import "../external/Strings.sol";
 
 import "./Misc.sol";
 
