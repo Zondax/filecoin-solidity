@@ -27,7 +27,6 @@ prettytable-rs = "0.10"
 fil_actors_runtime = { version = "10.0.0-alpha.1", git = "https://github.com/filecoin-project/builtin-actors", tag = "dev/20230206-pre-rc.6" }
 fil_actor_eam = { version = "10.0.0-alpha.1", git = "https://github.com/filecoin-project/builtin-actors", tag = "dev/20230206-pre-rc.6" }
 fil_actor_datacap = { version = "10.0.0-alpha.1", git = "https://github.com/filecoin-project/builtin-actors", tag = "dev/20230206-pre-rc.6"  }
-fil_actor_multisig = { version = "10.0.0-alpha.1", git = "https://github.com/filecoin-project/builtin-actors", tag = "dev/20230206-pre-rc.6"  }
 fil_actor_init = { version = "10.0.0-alpha.1", git = "https://github.com/filecoin-project/builtin-actors", tag = "dev/20230206-pre-rc.6"  }
 fil_actor_miner = { version = "10.0.0-alpha.1", git = "https://github.com/filecoin-project/builtin-actors", tag = "dev/20230206-pre-rc.6"  }
 fil_actor_evm = { version = "10.0.0-alpha.1", git = "https://github.com/filecoin-project/builtin-actors", tag = "dev/20230206-pre-rc.6"  }
