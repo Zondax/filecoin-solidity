@@ -48,9 +48,7 @@ library PrecompilesAPI {
     }
 
     function lookupDelegatedAddress(uint64 actor_id) internal view returns (bytes memory) {
-        (bool success, bytes memory raw_response) = address(LOOKUP_DELEGATED_ADDRESS_PRECOMPILE_ADDR).staticcall(
-            abi.encodePacked(uint256(actor_id))
-        );
+        (bool success, bytes memory raw_response) = address(LOOKUP_DELEGATED_ADDRESS_PRECOMPILE_ADDR).staticcall(abi.encodePacked(uint256(actor_id)));
         require(success == true, "lookup delegated address error");
 
         return raw_response;

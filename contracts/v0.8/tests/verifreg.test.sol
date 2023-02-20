@@ -42,15 +42,11 @@ contract VerifRegApiTest {
         return VerifRegAPI.extendClaimTerms(params);
     }
 
-    function remove_expired_claims(
-        VerifRegTypes.RemoveExpiredClaimsParams memory params
-    ) public returns (VerifRegTypes.RemoveExpiredClaimsReturn memory) {
+    function remove_expired_claims(VerifRegTypes.RemoveExpiredClaimsParams memory params) public returns (VerifRegTypes.RemoveExpiredClaimsReturn memory) {
         return VerifRegAPI.removeExpiredClaims(params);
     }
 
-    function universal_receiver_hook(
-        VerifRegTypes.UniversalReceiverParams memory params
-    ) public returns (VerifRegTypes.AllocationsResponse memory) {
+    function universal_receiver_hook(VerifRegTypes.UniversalReceiverParams memory params) public returns (VerifRegTypes.AllocationsResponse memory) {
         return VerifRegAPI.universalReceiverHook(params);
     }
 }

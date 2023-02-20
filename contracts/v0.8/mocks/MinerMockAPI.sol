@@ -70,9 +70,7 @@ contract MinerMockAPI {
 
     /// @param params The "controlling" addresses are the Owner, the Worker, and all Control Addresses.
     /// @return Whether the provided address is "controlling".
-    function isControllingAddress(
-        MinerTypes.IsControllingAddressParam memory params
-    ) public pure returns (MinerTypes.IsControllingAddressReturn memory) {
+    function isControllingAddress(MinerTypes.IsControllingAddressParam memory params) public pure returns (MinerTypes.IsControllingAddressReturn memory) {
         require(params.addr[0] >= 0x00);
 
         return MinerTypes.IsControllingAddressReturn(false);
@@ -104,11 +102,7 @@ contract MinerMockAPI {
     function changeBeneficiary(MinerTypes.ChangeBeneficiaryParams memory params) public {
         if (!isBeneficiarySet) {
             BigNumber memory zero = BigNumbers.zero();
-            MinerTypes.BeneficiaryTerm memory term = MinerTypes.BeneficiaryTerm(
-                params.new_quota,
-                BigInt(zero.val, zero.neg),
-                params.new_expiration
-            );
+            MinerTypes.BeneficiaryTerm memory term = MinerTypes.BeneficiaryTerm(params.new_quota, BigInt(zero.val, zero.neg), params.new_expiration);
             activeBeneficiary = MinerTypes.ActiveBeneficiary(params.new_beneficiary, term);
             isBeneficiarySet = true;
         } else {

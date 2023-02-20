@@ -105,9 +105,7 @@ library VerifRegCBOR {
         return buf.data();
     }
 
-    function serializeRemoveExpiredAllocationsParams(
-        VerifRegTypes.RemoveExpiredAllocationsParams memory params
-    ) internal pure returns (bytes memory) {
+    function serializeRemoveExpiredAllocationsParams(VerifRegTypes.RemoveExpiredAllocationsParams memory params) internal pure returns (bytes memory) {
         // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
@@ -123,9 +121,7 @@ library VerifRegCBOR {
         return buf.data();
     }
 
-    function deserializeRemoveExpiredAllocationsReturn(
-        bytes memory rawResp
-    ) internal pure returns (VerifRegTypes.RemoveExpiredAllocationsReturn memory ret) {
+    function deserializeRemoveExpiredAllocationsReturn(bytes memory rawResp) internal pure returns (VerifRegTypes.RemoveExpiredAllocationsReturn memory ret) {
         uint byteIdx = 0;
         uint len;
 
@@ -203,9 +199,7 @@ library VerifRegCBOR {
         return ret;
     }
 
-    function serializeRemoveExpiredClaimsParams(
-        VerifRegTypes.RemoveExpiredClaimsParams memory params
-    ) internal pure returns (bytes memory) {
+    function serializeRemoveExpiredClaimsParams(VerifRegTypes.RemoveExpiredClaimsParams memory params) internal pure returns (bytes memory) {
         // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
@@ -221,9 +215,7 @@ library VerifRegCBOR {
         return buf.data();
     }
 
-    function deserializeRemoveExpiredClaimsReturn(
-        bytes memory rawResp
-    ) internal pure returns (VerifRegTypes.RemoveExpiredClaimsReturn memory ret) {
+    function deserializeRemoveExpiredClaimsReturn(bytes memory rawResp) internal pure returns (VerifRegTypes.RemoveExpiredClaimsReturn memory ret) {
         uint byteIdx = 0;
         uint len;
 

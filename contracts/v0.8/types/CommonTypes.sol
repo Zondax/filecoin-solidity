@@ -24,11 +24,6 @@ import "../cbor/BigIntCbor.sol";
 /// @title Filecoin actors' common types for Solidity.
 /// @author Zondax AG
 library CommonTypes {
-
-
-
-
-
     struct FailCode {
         uint32 idx;
         uint32 code;

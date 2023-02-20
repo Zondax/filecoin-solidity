@@ -64,9 +64,7 @@ library MinerCBOR {
         return ret;
     }
 
-    function deserializeIsControllingAddressReturn(
-        bytes memory rawResp
-    ) internal pure returns (MinerTypes.IsControllingAddressReturn memory ret) {
+    function deserializeIsControllingAddressReturn(bytes memory rawResp) internal pure returns (MinerTypes.IsControllingAddressReturn memory ret) {
         uint byteIdx = 0;
 
         (ret.is_controlling, byteIdx) = rawResp.readBool(byteIdx);
@@ -80,9 +78,7 @@ library MinerCBOR {
         return ret;
     }
 
-    function deserializeGetAvailableBalanceReturn(
-        bytes memory rawResp
-    ) internal pure returns (MinerTypes.GetAvailableBalanceReturn memory ret) {
+    function deserializeGetAvailableBalanceReturn(bytes memory rawResp) internal pure returns (MinerTypes.GetAvailableBalanceReturn memory ret) {
         uint byteIdx = 0;
 
         bytes memory tmp;

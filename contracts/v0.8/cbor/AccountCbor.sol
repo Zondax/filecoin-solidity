@@ -42,9 +42,7 @@ library AccountCBOR {
         return buf.data();
     }
 
-    function deserializeAuthenticateMessageParams(
-        bytes memory rawResp
-    ) internal pure returns (AccountTypes.AuthenticateMessageParams memory ret) {
+    function deserializeAuthenticateMessageParams(bytes memory rawResp) internal pure returns (AccountTypes.AuthenticateMessageParams memory ret) {
         uint byteIdx = 0;
         uint len;
 

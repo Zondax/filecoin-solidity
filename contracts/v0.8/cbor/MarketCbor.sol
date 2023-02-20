@@ -74,9 +74,7 @@ library MarketCBOR {
         return ret;
     }
 
-    function deserializeGetDealDataCommitmentReturn(
-        bytes memory rawResp
-    ) internal pure returns (MarketTypes.GetDealDataCommitmentReturn memory ret) {
+    function deserializeGetDealDataCommitmentReturn(bytes memory rawResp) internal pure returns (MarketTypes.GetDealDataCommitmentReturn memory ret) {
         uint byteIdx = 0;
         uint len;
 
@@ -129,9 +127,7 @@ library MarketCBOR {
         return ret;
     }
 
-    function deserializeGetDealEpochPriceReturn(
-        bytes memory rawResp
-    ) internal pure returns (MarketTypes.GetDealEpochPriceReturn memory ret) {
+    function deserializeGetDealEpochPriceReturn(bytes memory rawResp) internal pure returns (MarketTypes.GetDealEpochPriceReturn memory ret) {
         bytes memory tmp;
         uint byteIdx = 0;
 
@@ -141,9 +137,7 @@ library MarketCBOR {
         return ret;
     }
 
-    function deserializeGetDealClientCollateralReturn(
-        bytes memory rawResp
-    ) internal pure returns (MarketTypes.GetDealClientCollateralReturn memory ret) {
+    function deserializeGetDealClientCollateralReturn(bytes memory rawResp) internal pure returns (MarketTypes.GetDealClientCollateralReturn memory ret) {
         bytes memory tmp;
         uint byteIdx = 0;
 
@@ -153,9 +147,7 @@ library MarketCBOR {
         return ret;
     }
 
-    function deserializeGetDealProviderCollateralReturn(
-        bytes memory rawResp
-    ) internal pure returns (MarketTypes.GetDealProviderCollateralReturn memory ret) {
+    function deserializeGetDealProviderCollateralReturn(bytes memory rawResp) internal pure returns (MarketTypes.GetDealProviderCollateralReturn memory ret) {
         bytes memory tmp;
         uint byteIdx = 0;
 
@@ -173,9 +165,7 @@ library MarketCBOR {
         return ret;
     }
 
-    function deserializeGetDealActivationReturn(
-        bytes memory rawResp
-    ) internal pure returns (MarketTypes.GetDealActivationReturn memory ret) {
+    function deserializeGetDealActivationReturn(bytes memory rawResp) internal pure returns (MarketTypes.GetDealActivationReturn memory ret) {
         uint byteIdx = 0;
         uint len;
 
@@ -218,9 +208,7 @@ library MarketCBOR {
         return buf.data();
     }
 
-    function deserializePublishStorageDealsReturn(
-        bytes memory rawResp
-    ) internal pure returns (MarketTypes.PublishStorageDealsReturn memory ret) {
+    function deserializePublishStorageDealsReturn(bytes memory rawResp) internal pure returns (MarketTypes.PublishStorageDealsReturn memory ret) {
         uint byteIdx = 0;
         uint len;
 
