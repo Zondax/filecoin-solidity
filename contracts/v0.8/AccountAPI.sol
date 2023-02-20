@@ -31,7 +31,6 @@ library AccountAPI {
     using AccountCBOR for *;
     using BytesCBOR for bytes;
 
-    /// @notice TODO fill this a proper description
     /// @param target The account address (filecoin bytes format) you want to interact with
     function authenticateMessage(bytes memory target, AccountTypes.AuthenticateMessageParams memory params) internal {
         bytes memory raw_request = params.serializeAuthenticateMessageParams();
@@ -42,7 +41,6 @@ library AccountAPI {
         require(result.length == 0, "unexpected response received");
     }
 
-    /// @notice TODO fill this a proper description
     /// @param target The account actor id you want to interact with
     function authenticateMessage(uint64 target, AccountTypes.AuthenticateMessageParams memory params) internal {
         bytes memory raw_request = params.serializeAuthenticateMessageParams();
@@ -53,7 +51,6 @@ library AccountAPI {
         require(result.length == 0, "unexpected response received");
     }
 
-    /// @notice TODO fill this a proper description
     /// @param target The account address (filecoin bytes format) you want to interact with
     function universalReceiverHook(bytes memory target, AccountTypes.UniversalReceiverParams memory params) internal {
         bytes memory raw_request = params.serializeUniversalReceiverParams();
@@ -64,7 +61,6 @@ library AccountAPI {
         require(result.length == 0, "unexpected response received");
     }
 
-    /// @notice TODO fill this a proper description
     /// @param target The account actor id you want to interact with
     function universalReceiverHook(uint64 target, AccountTypes.UniversalReceiverParams memory params) internal {
         bytes memory raw_request = params.serializeUniversalReceiverParams();

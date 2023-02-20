@@ -243,7 +243,6 @@ library MinerAPI {
         return result.deserializeGetBeneficiaryReturn();
     }
 
-    /// @notice TODO fill me up
     /// @param target The miner address (filecoin bytes format) you want to interact with
     function changeWorkerAddress(bytes memory target, MinerTypes.ChangeWorkerAddressParams memory params) internal {
         bytes memory raw_request = params.serializeChangeWorkerAddressParams();
@@ -254,7 +253,6 @@ library MinerAPI {
         require(result.length == 0, "unexpected response received");
     }
 
-    /// @notice TODO fill me up
     /// @param target The miner actor id you want to interact with
     function changeWorkerAddress(uint64 target, MinerTypes.ChangeWorkerAddressParams memory params) internal {
         bytes memory raw_request = params.serializeChangeWorkerAddressParams();
@@ -265,7 +263,6 @@ library MinerAPI {
         require(result.length == 0, "unexpected response received");
     }
 
-    /// @notice TODO fill me up
     /// @param target The miner address (filecoin bytes format) you want to interact with
     function changePeerId(bytes memory target, MinerTypes.ChangePeerIDParams memory params) internal {
         bytes memory raw_request = params.serializeChangePeerIDParams();
@@ -276,7 +273,6 @@ library MinerAPI {
         require(result.length == 0, "unexpected response received");
     }
 
-    /// @notice TODO fill me up
     /// @param target The miner actor id you want to interact with
     function changePeerId(uint64 target, MinerTypes.ChangePeerIDParams memory params) internal {
         bytes memory raw_request = params.serializeChangePeerIDParams();
@@ -287,7 +283,6 @@ library MinerAPI {
         require(result.length == 0, "unexpected response received");
     }
 
-    /// @notice TODO fill me up
     /// @param target The miner address (filecoin bytes format) you want to interact with
     function changeMultiaddresses(bytes memory target, MinerTypes.ChangeMultiaddrsParams memory params) internal {
         bytes memory raw_request = params.serializeChangeMultiaddrsParams();
@@ -298,7 +293,6 @@ library MinerAPI {
         require(result.length == 0, "unexpected response received");
     }
 
-    /// @notice TODO fill me up
     /// @param target The miner actor id you want to interact with
     function changeMultiaddresses(uint64 target, MinerTypes.ChangeMultiaddrsParams memory params) internal {
         bytes memory raw_request = params.serializeChangeMultiaddrsParams();
@@ -309,7 +303,6 @@ library MinerAPI {
         require(result.length == 0, "unexpected response received");
     }
 
-    /// @notice TODO fill me up
     /// @param target The miner address (filecoin bytes format) you want to interact with
     function repayDebt(bytes memory target) internal {
         bytes memory raw_request = new bytes(0);
@@ -320,7 +313,6 @@ library MinerAPI {
         require(result.length == 0, "unexpected response received");
     }
 
-    /// @notice TODO fill me up
     /// @param target The miner actor id you want to interact with
     function repayDebt(uint64 target) internal {
         bytes memory raw_request = new bytes(0);
@@ -331,7 +323,6 @@ library MinerAPI {
         require(result.length == 0, "unexpected response received");
     }
 
-    /// @notice TODO fill me up
     /// @param target The miner address (filecoin bytes format) you want to interact with
     function confirmChangeWorkerAddress(bytes memory target) internal {
         bytes memory raw_request = new bytes(0);
@@ -342,7 +333,6 @@ library MinerAPI {
         require(result.length == 0, "unexpected response received");
     }
 
-    /// @notice TODO fill me up
     /// @param target The miner actor id you want to interact with
     function confirmChangeWorkerAddress(uint64 target) internal {
         bytes memory raw_request = new bytes(0);
@@ -353,7 +343,6 @@ library MinerAPI {
         require(result.length == 0, "unexpected response received");
     }
 
-    /// @notice TODO fill me up
     /// @param target The miner address (filecoin bytes format) you want to interact with
     function getPeerId(bytes memory target) internal returns (MinerTypes.GetPeerIDReturn memory) {
         bytes memory raw_request = new bytes(0);
@@ -365,7 +354,6 @@ library MinerAPI {
         return result.deserializeGetPeerIDReturn();
     }
 
-    /// @notice TODO fill me up
     /// @param target The miner actor id you want to interact with
     function getPeerId(uint64 target) internal returns (MinerTypes.GetPeerIDReturn memory) {
         bytes memory raw_request = new bytes(0);
@@ -377,7 +365,6 @@ library MinerAPI {
         return result.deserializeGetPeerIDReturn();
     }
 
-    /// @notice TODO fill me up
     /// @param target The miner address (filecoin bytes format) you want to interact with
     function getMultiaddresses(bytes memory target) internal returns (MinerTypes.GetMultiaddrsReturn memory) {
         bytes memory raw_request = new bytes(0);
@@ -389,7 +376,6 @@ library MinerAPI {
         return result.deserializeGetMultiaddrsReturn();
     }
 
-    /// @notice TODO fill me up
     /// @param target The miner actor id you want to interact with
     function getMultiaddresses(uint64 target) internal returns (MinerTypes.GetMultiaddrsReturn memory) {
         bytes memory raw_request = new bytes(0);
@@ -401,7 +387,6 @@ library MinerAPI {
         return result.deserializeGetMultiaddrsReturn();
     }
 
-    /// @notice TODO fill me up
     /// @param target The miner address (filecoin bytes format) you want to interact with
     /// @param params the amount you want to withdraw
     function withdrawBalance(bytes memory target, MinerTypes.WithdrawBalanceParams memory params) internal returns (MinerTypes.WithdrawBalanceReturn memory) {
@@ -414,7 +399,6 @@ library MinerAPI {
         return result.deserializeWithdrawBalanceReturn();
     }
 
-    /// @notice TODO fill me up
     /// @param target The miner actor id you want to interact with
     /// @param params the amount you want to withdraw
     function withdrawBalance(uint64 target, MinerTypes.WithdrawBalanceParams memory params) internal returns (MinerTypes.WithdrawBalanceReturn memory) {
