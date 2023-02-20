@@ -1,17 +1,3 @@
 [submodule "testing/builtin-actors"]
 	path = testing/builtin-actors
 	url = https://github.com/filecoin-project/builtin-actors
-[submodule "lib/solidity-cborutils"]
-	path = lib/solidity-cborutils
-	url = https://github.com/smartcontractkit/solidity-cborutils
-[submodule "lib/openzeppelin-contracts"]
-	path = lib/openzeppelin-contracts
-	url = https://github.com/OpenZeppelin/openzeppelin-contracts
-	branch = v4.8.1
-[submodule "lib/buffer"]
-	path = lib/buffer
-	url = https://github.com/ensdomains/buffer
-[submodule "lib/solidity-bignumber"]
-	path = lib/solidity-bignumber
-	url = https://github.com/zondax/solidity-bignumber
-	branch = v0.1.0

@@ -36,8 +36,5 @@
     "prettier-plugin-solidity": "^1.0.0"
   },
   "dependencies": {
-    "@openzeppelin/contracts": "^4.8.0",
-    "solidity-cborutils": "^2.0.0",
-    "@zondax/solidity-bignumber": "^0.1.0"
   }
 }
