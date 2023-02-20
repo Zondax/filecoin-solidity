@@ -55,20 +55,4 @@ library PrecompilesAPI {
 
         return raw_response;
     }
-
-    function getActorType(uint64 actor_id) internal view returns (uint256) {
-        (bool success, bytes memory raw_response) = address(GET_ACTOR_TYPE_PRECOMPILE_ADDR).staticcall(abi.encodePacked(uint256(actor_id)));
-        require(success == true, "get actor type error");
-
-        uint256 builtin_type = abi.decode(raw_response, (uint256));
-
-        return builtin_type;
-    }
-
-    function getRipemd160Hash(bytes memory input) internal view returns (bytes memory) {
-        (bool success, bytes memory raw_response) = address(RIPEMD160_PRECOMPILE_ADDR).staticcall(input);
-        require(success == true, "ripemd160 error");
-
-        return raw_response;
-    }
 }
