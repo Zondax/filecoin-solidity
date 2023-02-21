@@ -33,10 +33,10 @@ library Actor {
     uint64 constant DEFAULT_FLAG = 0x00000000;
 
     function callByAddress(
-        uint256 method_num,
         bytes memory actor_address,
-        bytes memory raw_request,
+        uint256 method_num,
         uint64 codec,
+        bytes memory raw_request,
         uint256 amount,
         bool read_only
     ) internal returns (bytes memory) {
