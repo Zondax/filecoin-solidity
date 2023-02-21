@@ -57,7 +57,7 @@ deploy_power_api:
 deploy_simple_coin:
 	cd hardhat && yarn hardhat deploy --tags SimpleCoin
 
-################ TESTS ################
+################ TESTS RUST ################
 
 test_miner_cbor_serialization:
 	cd hardhat && yarn hardhat change-beneficiary --beneficiary 0xaaaa12 --quota 12222 --expiration 1111 --contractaddress $(CONTRACT_ADDRESS)
@@ -94,6 +94,45 @@ test_precompiles_integration: build build_builtin_actors
 
 test_send_integration: build build_builtin_actors
 	cd testing && cargo test send_test -- --nocapture
+
+
+################ TESTS SECURITY ################
+
+security_account_api:
+	myth analyze contracts/v0.8/AccountAPI.sol -t 120
+	myth analyze contracts/v0.8/tests/account.test.sol -t 120
+
+security_market_api:
+	myth analyze contracts/v0.8/MarketAPI.sol -t 120
+	myth analyze contracts/v0.8/tests/market.test.sol -t 120
+
+security_miner_api:
+	myth analyze contracts/v0.8/MinerAPI.sol -t 120
+	myth analyze contracts/v0.8/tests/miner.test.sol -t 120
+
+security_verifreg_api:
+	myth analyze contracts/v0.8/VerifRegAPI.sol -t 120
+	myth analyze contracts/v0.8/tests/verifreg.test.sol -t 120
+
+security_power_api:
+	myth analyze contracts/v0.8/PowerAPI.sol -t 120
+	myth analyze contracts/v0.8/tests/power.test.sol -t 120
+
+security_datacap_api:
+	myth analyze contracts/v0.8/DataCapAPI.sol -t 120
+	myth analyze contracts/v0.8/tests/datacap.test.sol -t 120
+
+security_init_api:
+	myth analyze contracts/v0.8/InitAPI.sol -t 120
+	myth analyze contracts/v0.8/tests/init.test.sol -t 120
+
+security_send_api:
+	myth analyze contracts/v0.8/SendAPI.sol -t 120
+	myth analyze contracts/v0.8/tests/send.test.sol -t 120
+
+security_precompiles_api:
+	myth analyze contracts/v0.8/PrecompilesAPI.sol -t 120
+	myth analyze contracts/v0.8/tests/precompiles.test.sol -t 120
 
 ################ DEPS ################
 
