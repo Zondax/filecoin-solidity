@@ -99,40 +99,40 @@ test_send_integration: build build_builtin_actors
 ################ TESTS SECURITY ################
 
 security_account_api:
-	myth analyze contracts/v0.8/AccountAPI.sol -t 120
-	myth analyze contracts/v0.8/tests/account.test.sol -t 120
+	myth analyze contracts/v0.8/AccountAPI.sol --execution-timeout 300
+	myth analyze contracts/v0.8/tests/account.test.sol --execution-timeout 300
 
 security_market_api:
-	myth analyze contracts/v0.8/MarketAPI.sol -t 120
-	myth analyze contracts/v0.8/tests/market.test.sol -t 120
+	myth analyze contracts/v0.8/MarketAPI.sol --execution-timeout 300
+	myth analyze contracts/v0.8/tests/market.test.sol --execution-timeout 300
 
 security_miner_api:
-	myth analyze contracts/v0.8/MinerAPI.sol -t 120
-	myth analyze contracts/v0.8/tests/miner.test.sol -t 120
+	myth analyze contracts/v0.8/MinerAPI.sol --execution-timeout 300
+	myth analyze contracts/v0.8/tests/miner.test.sol --execution-timeout 300
 
 security_verifreg_api:
-	myth analyze contracts/v0.8/VerifRegAPI.sol -t 120
-	myth analyze contracts/v0.8/tests/verifreg.test.sol -t 120
+	myth analyze contracts/v0.8/VerifRegAPI.sol --execution-timeout 300
+	myth analyze contracts/v0.8/tests/verifreg.test.sol --execution-timeout 300
 
 security_power_api:
-	myth analyze contracts/v0.8/PowerAPI.sol -t 120
-	myth analyze contracts/v0.8/tests/power.test.sol -t 120
+	myth analyze contracts/v0.8/PowerAPI.sol --execution-timeout 300
+	myth analyze contracts/v0.8/tests/power.test.sol --execution-timeout 300
 
 security_datacap_api:
-	myth analyze contracts/v0.8/DataCapAPI.sol -t 120
-	myth analyze contracts/v0.8/tests/datacap.test.sol -t 120
+	myth analyze contracts/v0.8/DataCapAPI.sol --execution-timeout 300
+	myth analyze contracts/v0.8/tests/datacap.test.sol --execution-timeout 300
 
 security_init_api:
-	myth analyze contracts/v0.8/InitAPI.sol -t 120
-	myth analyze contracts/v0.8/tests/init.test.sol -t 120
+	myth analyze contracts/v0.8/InitAPI.sol --execution-timeout 300
+	myth analyze contracts/v0.8/tests/init.test.sol --execution-timeout 300
 
 security_send_api:
-	myth analyze contracts/v0.8/SendAPI.sol -t 120
-	myth analyze contracts/v0.8/tests/send.test.sol -t 120
+	myth analyze contracts/v0.8/SendAPI.sol --execution-timeout 300
+	myth analyze contracts/v0.8/tests/send.test.sol --execution-timeout 300
 
 security_precompiles_api:
-	myth analyze contracts/v0.8/PrecompilesAPI.sol -t 120
-	myth analyze contracts/v0.8/tests/precompiles.test.sol -t 120
+	myth analyze contracts/v0.8/PrecompilesAPI.sol --execution-timeout 300
+	myth analyze contracts/v0.8/tests/precompiles.test.sol --execution-timeout 300
 
 ################ DEPS ################
 
