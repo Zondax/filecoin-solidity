@@ -26,22 +26,24 @@ import "../cbor/BigIntCbor.sol";
 library CommonTypes {
     uint constant UniversalReceiverHookMethodNum = 3726118371;
 
+    /// @param idx index for the failure in batch
+    /// @param code failure code
     struct FailCode {
         uint32 idx;
         uint32 code;
     }
 
+    /// @param success_count total successes in batch
+    /// @param fail_codes list of failures code and index for each failure in batch
     struct BatchReturn {
-        // Total successes in batch
         uint32 success_count;
-        // Failure code and index for each failure in batch
         FailCode[] fail_codes;
     }
 
+    /// @param type_ asset type
+    /// @param payload payload corresponding to asset type
     struct UniversalReceiverParams {
-        /// Asset type
         uint32 type_;
-        /// Payload corresponding to asset type
         bytes payload;
     }
 }

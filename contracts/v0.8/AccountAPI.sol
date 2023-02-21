@@ -31,7 +31,11 @@ library AccountAPI {
     using AccountCBOR for *;
     using BytesCBOR for bytes;
 
+    /// @notice Authenticates whether the provided signature is valid for the provided message.
+    /// @dev Should be called with the raw bytes of a signature, NOT a serialized Signature object that includes a SignatureType.
+    /// @dev Errors if the authentication is invalid.
     /// @param target The account actor id you want to interact with
+    /// @param params message to be authenticated
     function authenticateMessage(uint64 target, AccountTypes.AuthenticateMessageParams memory params) internal {
         bytes memory raw_request = params.serializeAuthenticateMessageParams();
 

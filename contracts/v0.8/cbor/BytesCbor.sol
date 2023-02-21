@@ -24,11 +24,16 @@ import "../external/CBOR.sol";
 import "../utils/CborDecode.sol";
 import "./BigIntCbor.sol";
 
+/// @title This library is a set of functions meant to handle CBOR serialization and deserialization for bytes
+/// @author Zondax AG
 library BytesCBOR {
     using CBOR for CBOR.CBORBuffer;
     using CBORDecoder for bytes;
     using BigIntCBOR for bytes;
 
+    /// @notice serialize raw bytes as cbor bytes string encoded
+    /// @param data raw data in bytes
+    /// @return encoded cbor bytes
     function serializeBytes(bytes memory data) internal pure returns (bytes memory) {
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
@@ -37,6 +42,9 @@ library BytesCBOR {
         return buf.data();
     }
 
+    /// @notice serialize raw address (in bytes) as cbor bytes string encoded (how an address is passed to filecoin actors)
+    /// @param addr raw address in bytes
+    /// @return encoded address as cbor bytes
     function serializeAddress(bytes memory addr) internal pure returns (bytes memory) {
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
@@ -45,6 +53,8 @@ library BytesCBOR {
         return buf.data();
     }
 
+    /// @notice encoded null value as cbor
+    /// @return cbor encoded null
     function serializeNull() internal pure returns (bytes memory) {
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
@@ -53,6 +63,9 @@ library BytesCBOR {
         return buf.data();
     }
 
+    /// @notice deserialize cbor encoded filecoin address to bytes
+    /// @param ret cbor encoded filecoin address
+    /// @return raw bytes representing a filecoin address
     function deserializeAddress(bytes memory ret) internal pure returns (bytes memory) {
         bytes memory addr;
         uint byteIdx = 0;
@@ -62,6 +75,9 @@ library BytesCBOR {
         return addr;
     }
 
+    /// @notice deserialize cbor encoded string
+    /// @param ret cbor encoded string (in bytes)
+    /// @return decoded string
     function deserializeString(bytes memory ret) internal pure returns (string memory) {
         string memory response;
         uint byteIdx = 0;
@@ -71,6 +87,10 @@ library BytesCBOR {
         return response;
     }
 
+    /// @notice deserialize cbor encoded BigInt
+    /// @param ret cbor encoded BigInt (in bytes)
+    /// @return decoded BigInt
+    /// @dev BigInts are cbor encoded as bytes string first. That is why it unwraps the cbor encoded bytes first, and then parse the result into BigInt
     function deserializeBytesBigInt(bytes memory ret) internal pure returns (BigInt memory) {
         bytes memory tmp;
         uint byteIdx = 0;
@@ -85,6 +105,9 @@ library BytesCBOR {
         return BigInt(new bytes(0), false);
     }
 
+    /// @notice deserialize cbor encoded uint64
+    /// @param rawResp cbor encoded uint64 (in bytes)
+    /// @return decoded uint64
     function deserializeUint64(bytes memory rawResp) internal pure returns (uint64) {
         uint byteIdx = 0;
         uint64 value;
@@ -93,6 +116,9 @@ library BytesCBOR {
         return value;
     }
 
+    /// @notice deserialize cbor encoded int64
+    /// @param rawResp cbor encoded int64 (in bytes)
+    /// @return decoded int64
     function deserializeInt64(bytes memory rawResp) internal pure returns (int64) {
         uint byteIdx = 0;
         int64 value;

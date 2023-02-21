@@ -23,6 +23,8 @@ import "../types/VerifRegTypes.sol";
 import "../types/CommonTypes.sol";
 import "../VerifRegAPI.sol";
 
+/// @notice This file is meant to serve as a deployable contract of the verified registry actor API, as the library by itself is not.
+/// @notice It imports the library and create a callable method for each method in the library
 /// @author Zondax AG
 contract VerifRegApiTest {
     function get_claims(VerifRegTypes.GetClaimsParams memory params) public returns (VerifRegTypes.GetClaimsReturn memory) {

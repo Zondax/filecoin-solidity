@@ -56,6 +56,7 @@ library MarketAPI {
         return result.deserializeWithdrawBalanceReturn();
     }
 
+    /// @notice Return the escrow balance and locked amount for an address.
     /// @return the escrow balance and locked amount for an address.
     function getBalance(bytes memory addr) internal returns (MarketTypes.GetBalanceReturn memory) {
         bytes memory raw_request = addr.serializeAddress();
@@ -67,8 +68,8 @@ library MarketAPI {
         return result.deserializeGetBalanceReturn();
     }
 
-    /// @return the data commitment and size of a deal proposal.
     /// @notice This will be available after the deal is published (whether or not is is activated) and up until some undefined period after it is terminated.
+    /// @return the data commitment and size of a deal proposal.
     function getDealDataCommitment(uint64 dealID) internal returns (MarketTypes.GetDealDataCommitmentReturn memory) {
         bytes memory raw_request = dealID.serializeDealID();
 
@@ -79,6 +80,7 @@ library MarketAPI {
         return result.deserializeGetDealDataCommitmentReturn();
     }
 
+    /// @notice get the client of the deal proposal.
     /// @return the client of a deal proposal.
     function getDealClient(uint64 dealID) internal returns (MarketTypes.GetDealClientReturn memory) {
         bytes memory raw_request = dealID.serializeDealID();
@@ -90,6 +92,7 @@ library MarketAPI {
         return result.deserializeGetDealClientReturn();
     }
 
+    /// @notice get the provider of a deal proposal.
     /// @return the provider of a deal proposal.
     function getDealProvider(uint64 dealID) internal returns (MarketTypes.GetDealProviderReturn memory) {
         bytes memory raw_request = dealID.serializeDealID();
@@ -101,6 +104,7 @@ library MarketAPI {
         return result.deserializeGetDealProviderReturn();
     }
 
+    /// @notice Get the label of a deal proposal.
     /// @return the label of a deal proposal.
     function getDealLabel(uint64 dealID) internal returns (MarketTypes.GetDealLabelReturn memory) {
         bytes memory raw_request = dealID.serializeDealID();
@@ -112,6 +116,7 @@ library MarketAPI {
         return result.deserializeGetDealLabelReturn();
     }
 
+    /// @notice Get the start epoch and duration(in epochs) of a deal proposal.
     /// @return the start epoch and duration (in epochs) of a deal proposal.
     function getDealTerm(uint64 dealID) internal returns (MarketTypes.GetDealTermReturn memory) {
         bytes memory raw_request = dealID.serializeDealID();
@@ -123,6 +128,7 @@ library MarketAPI {
         return result.deserializeGetDealTermReturn();
     }
 
+    /// @notice get the total price that will be paid from the client to the provider for this deal.
     /// @return the per-epoch price of a deal proposal.
     function getDealTotalPrice(uint64 dealID) internal returns (MarketTypes.GetDealEpochPriceReturn memory) {
         bytes memory raw_request = dealID.serializeDealID();
@@ -134,6 +140,7 @@ library MarketAPI {
         return result.deserializeGetDealEpochPriceReturn();
     }
 
+    /// @notice get the client collateral requirement for a deal proposal.
     /// @return the client collateral requirement for a deal proposal.
     function getDealClientCollateral(uint64 dealID) internal returns (MarketTypes.GetDealClientCollateralReturn memory) {
         bytes memory raw_request = dealID.serializeDealID();
@@ -152,6 +159,7 @@ library MarketAPI {
         return result.deserializeGetDealClientCollateralReturn();
     }
 
+    /// @notice get the provide collateral requirement for a deal proposal.
     /// @return the provider collateral requirement for a deal proposal.
     function getDealProviderCollateral(uint64 dealID) internal returns (MarketTypes.GetDealProviderCollateralReturn memory) {
         bytes memory raw_request = dealID.serializeDealID();
@@ -170,8 +178,9 @@ library MarketAPI {
         return result.deserializeGetDealProviderCollateralReturn();
     }
 
-    /// @return the verified flag for a deal proposal.
+    /// @notice get the verified flag for a deal proposal.
     /// @notice Note that the source of truth for verified allocations and claims is the verified registry actor.
+    /// @return the verified flag for a deal proposal.
     function getDealVerified(uint64 dealID) internal returns (MarketTypes.GetDealVerifiedReturn memory) {
         bytes memory raw_request = dealID.serializeDealID();
 

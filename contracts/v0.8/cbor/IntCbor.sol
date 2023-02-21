@@ -23,10 +23,15 @@ import "../external/CBOR.sol";
 
 import "../utils/CborDecode.sol";
 
+/// @title This library is a set of functions meant to handle CBOR serialization and deserialization for uint64 type
+/// @author Zondax AG
 library Uint64CBOR {
     using CBOR for CBOR.CBORBuffer;
     using CBORDecoder for bytes;
 
+    /// @notice serialize uint64 to cbor
+    /// @param id value to serialize
+    /// @return cbor encoded bytes
     function serialize(uint64 id) internal pure returns (bytes memory) {
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 

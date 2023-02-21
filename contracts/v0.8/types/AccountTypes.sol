@@ -27,6 +27,8 @@ library AccountTypes {
     uint constant AuthenticateMessageMethodNum = 2643134072;
     uint constant UniversalReceiverHookMethodNum = 3726118371;
 
+    /// @param it should be a raw byte of signature, NOT a serialized signature object with a signatureType.
+    /// @param message The message which is signed by the corresponding account address.
     struct AuthenticateMessageParams {
         bytes signature;
         bytes message;

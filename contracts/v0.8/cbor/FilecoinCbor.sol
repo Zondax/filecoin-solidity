@@ -33,12 +33,19 @@ library FilecoinCBOR {
     uint8 private constant TAG_TYPE_CID_CODE = 42;
     uint8 private constant PAYLOAD_LEN_8_BITS = 24;
 
+    /// @notice write CID into a cbor buffer
+    /// @dev the cbor mejor will be 6 (type tag) and the tag type is 42, as per filecoin definition
+    /// @param buf buffer containing the actual cbor serialization process
+    /// @param value cid data to serialize as cbor
     function writeCid(CBOR.CBORBuffer memory buf, bytes memory value) internal pure {
         buf.buf.appendUint8(uint8(((MAJOR_TYPE_TAG << 5) | PAYLOAD_LEN_8_BITS)));
         buf.buf.appendUint8(TAG_TYPE_CID_CODE);
         buf.writeBytes(value);
     }
 
+    /// @notice serialize UniversalReceiverParams struct to cbor in order to pass as arguments to an actor
+    /// @param params UniversalReceiverParams to serialize as cbor
+    /// @return cbor serialized data as bytes
     function serializeUniversalReceiverParams(CommonTypes.UniversalReceiverParams memory params) internal pure returns (bytes memory) {
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 

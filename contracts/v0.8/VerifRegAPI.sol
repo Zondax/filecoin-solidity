@@ -31,6 +31,7 @@ import "./Utils.sol";
 library VerifRegAPI {
     using VerifRegCBOR for *;
 
+    /// @notice get a list of claims corresponding to the requested claim ID for specific provider.
     function getClaims(VerifRegTypes.GetClaimsParams memory params) internal returns (VerifRegTypes.GetClaimsReturn memory) {
         bytes memory raw_request = params.serializeGetClaimsParams();
 
@@ -41,6 +42,7 @@ library VerifRegAPI {
         return result.deserializeGetClaimsReturn();
     }
 
+    /// @notice add a verified Client address to Filecoin Plus program.
     function addVerifiedClient(VerifRegTypes.AddVerifierClientParams memory params) internal {
         bytes memory raw_request = params.serializeAddVerifierClientParams();
 
@@ -50,6 +52,7 @@ library VerifRegAPI {
         require(result.length == 0, "unexpected response received");
     }
 
+    /// @notice remove the expired DataCap allocations and reclaimed those DataCap token back to Client. If the allocation amount is not specified, all expired DataCap allocation will be removed.
     function removeExpiredAllocations(
         VerifRegTypes.RemoveExpiredAllocationsParams memory params
     ) internal returns (VerifRegTypes.RemoveExpiredAllocationsReturn memory) {
@@ -69,6 +72,7 @@ library VerifRegAPI {
         return result.deserializeRemoveExpiredAllocationsReturn();
     }
 
+    /// @notice extends the  maximum term of some claims up to the largest value they could have been originally allocated. This method can only be called by the claims' client.
     function extendClaimTerms(VerifRegTypes.ExtendClaimTermsParams memory params) internal returns (CommonTypes.BatchReturn memory) {
         bytes memory raw_request = params.serializeExtendClaimTermsParams();
 
@@ -79,6 +83,7 @@ library VerifRegAPI {
         return result.deserializeBatchReturn();
     }
 
+    /// @notice remove a claim with its maximum term has elapsed.
     function removeExpiredClaims(VerifRegTypes.RemoveExpiredClaimsParams memory params) internal returns (VerifRegTypes.RemoveExpiredClaimsReturn memory) {
         bytes memory raw_request = params.serializeRemoveExpiredClaimsParams();
 

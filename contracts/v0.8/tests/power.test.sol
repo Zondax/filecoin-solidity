@@ -22,6 +22,8 @@ pragma solidity ^0.8.17;
 import "../types/PowerTypes.sol";
 import "../PowerAPI.sol";
 
+/// @notice This file is meant to serve as a deployable contract of the power actor API, as the library by itself is not.
+/// @notice It imports the library and create a callable method for each method in the library
 /// @author Zondax AG
 contract PowerApiTest {
     function create_miner(PowerTypes.CreateMinerParams memory params, uint256 value) public payable returns (PowerTypes.CreateMinerReturn memory) {
