@@ -163,7 +163,9 @@ fn market_tests() {
      * Instantiate Account Actor with a BLS address
      *
      ***********************************************/
-    let bls_private_key_client = bls_signatures::PrivateKey::generate(&mut OsRng);
+    let bls_private_key_client = bls_signatures::PrivateKey::new(
+        hex::decode("deadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef").unwrap(),
+    );
     let client = Address::new_bls(&bls_private_key_client.public_key().as_bytes()).unwrap();
 
     let state_tree = tester.state_tree.as_mut().unwrap();
@@ -206,6 +208,16 @@ fn market_tests() {
     };
 
     state_tree.set_actor(assigned_addr, actor_state).unwrap();
+
+    // Create embryo address to deploy the contract on it (assign some FILs to it)
+    let tmp = hex::decode("DAFEA492D9c6733ae3d56b7Ed1ADB60692c98Bc5").unwrap();
+    let embryo_eth_address = tmp.as_slice();
+    let embryo_delegated_address = Address::new_delegated(10, embryo_eth_address).unwrap();
+    tester
+        .create_placeholder(&embryo_delegated_address, TokenAmount::from_whole(100))
+        .unwrap();
+
+    dbg!(hex::encode(&embryo_delegated_address.to_bytes()));
 
     // Instantiate machine
     tester.instantiate_machine(DummyExterns).unwrap();
@@ -296,11 +308,11 @@ fn market_tests() {
     let constructor_params = CreateExternalParams(evm_bin);
 
     let message = Message {
-        from: sender[0].1,
+        from: embryo_delegated_address,
         to: EAM_ACTOR_ADDR,
         gas_limit: 1000000000,
         method_num: 4,
-        sequence: 1,
+        sequence: 0,
         params: RawBytes::serialize(constructor_params).unwrap(),
         ..Message::default()
     };
@@ -323,7 +335,7 @@ fn market_tests() {
         piece_size: PaddedPieceSize(8388608),
         verified_deal: false,
         client: client,
-        provider: Address::new_id(103),
+        provider: Address::new_id(104),
         label: Label::String("mAXCg5AIg8YBXbFjtdBy1iZjpDYAwRSt0elGLF5GvTqulEii1VcM".to_string()),
         start_epoch: ChainEpoch::from(25245),
         end_epoch: ChainEpoch::from(545150),
@@ -383,7 +395,32 @@ fn market_tests() {
         method_num: 2,
         sequence: 0,
         value: TokenAmount::from_whole(100_000),
-        params: RawBytes::serialize(Address::new_id(103)).unwrap(),
+        params: RawBytes::serialize(Address::new_id(104)).unwrap(),
+        ..Message::default()
+    };
+
+    let res = executor
+        .execute_message(message, ApplyKind::Explicit, 100)
+        .unwrap();
+
+    assert_eq!(res.msg_receipt.exit_code.value(), 0);
+
+    // We need to add our solidity contract as a control address
+
+    dbg!(&exec_return.actor_id);
+
+    let params = fil_actor_miner::ChangeWorkerAddressParams {
+        new_worker: worker,
+        new_control_addresses: vec![Address::new_id(exec_return.actor_id)],
+    };
+
+    let message = Message {
+        from: sender[0].1,
+        to: Address::new_id(104),
+        gas_limit: 1000000000,
+        method_num: fil_actor_miner::Method::ChangeWorkerAddress as u64,
+        sequence: 1,
+        params: RawBytes::serialize(params).unwrap(),
         ..Message::default()
     };
 
@@ -426,7 +463,7 @@ fn market_tests() {
         method_num: EvmMethods::InvokeContract as u64,
         sequence: 2,
         value: TokenAmount::from_atto(1_000),
-        params: RawBytes::new(hex::decode("5884E7A874C20000000000000000000000000000000000000000000000000000000000000040000000000000000000000000000000000000000000000000000000000000006400000000000000000000000000000000000000000000000000000000000000020068000000000000000000000000000000000000000000000000000000000000").unwrap()),
+        params: RawBytes::new(hex::decode("5884E7A874C20000000000000000000000000000000000000000000000000000000000000040000000000000000000000000000000000000000000000000000000000000006400000000000000000000000000000000000000000000000000000000000000020069000000000000000000000000000000000000000000000000000000000000").unwrap()),
         ..Message::default()
     };
 
@@ -446,7 +483,7 @@ fn market_tests() {
         gas_limit: 1000000000,
         method_num: EvmMethods::InvokeContract as u64,
         sequence: 3,
-        params: RawBytes::new(hex::decode("5901242698552B000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000080000000000000000000000000000000000000000000000000000000000000000200680000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000040000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000016400000000000000000000000000000000000000000000000000000000000000").unwrap()),
+        params: RawBytes::new(hex::decode("5901242698552B000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000080000000000000000000000000000000000000000000000000000000000000000200690000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000040000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000016400000000000000000000000000000000000000000000000000000000000000").unwrap()),
         ..Message::default()
     };
 
@@ -556,7 +593,7 @@ fn market_tests() {
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
     assert_eq!(
         hex::encode(res.msg_receipt.return_data.bytes()),
-        "58200000000000000000000000000000000000000000000000000000000000000067"
+        "58200000000000000000000000000000000000000000000000000000000000000068"
     );
 
     println!("Calling `get_deal_label`");
