@@ -35,7 +35,7 @@ library AccountAPI {
     function authenticateMessage(uint64 target, AccountTypes.AuthenticateMessageParams memory params) internal {
         bytes memory raw_request = params.serializeAuthenticateMessageParams();
 
-        bytes memory raw_response = Actor.callByID(target, AccountTypes.AuthenticateMessageMethodNum, Misc.CBOR_CODEC, raw_request, 0, false);
+        bytes memory raw_response = Actor.callNonSingletonByID(target, AccountTypes.AuthenticateMessageMethodNum, Misc.CBOR_CODEC, raw_request, 0, false);
 
         bytes memory result = Actor.readRespData(raw_response);
         require(result.length == 0, "unexpected response received");
