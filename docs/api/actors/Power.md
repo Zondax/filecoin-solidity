@@ -74,7 +74,7 @@ Return the raw power claimed by the specified miner, and whether the miner has m
 
 **Results**:
 
-+ `struct` MinerRawPowerParams
++ `struct` MinerRawPowerReturn
 + `int256` RawBytePower - the row power of the miner.
   
 + `bool` MeetsConsensusMinimum - if the miner power meets the minimum for consensus.
