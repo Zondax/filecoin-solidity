@@ -24,6 +24,8 @@ struct BigInt {
     bool neg;
 }
 
+/// @title This library is a set of functions meant to handle CBOR serialization and deserialization for BigInt type
+/// @author Zondax AG
 library BigIntCBOR {
     function serializeBigInt(BigInt memory num) internal pure returns (bytes memory) {
         bytes memory raw = new bytes(num.val.length + 1);
