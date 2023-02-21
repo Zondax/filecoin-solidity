@@ -70,6 +70,18 @@ library Actor {
         return data;
     }
 
+    function callNonSingletonByID(
+        uint64 actor_id,
+        uint256 method_num,
+        uint64 codec,
+        bytes memory raw_request,
+        uint256 amount,
+        bool read_only
+    ) internal returns (bytes memory) {
+        require(actor_id >= 100, "actor id is not valid");
+        return callByID(actor_id, method_num, codec, raw_request, amount, read_only);
+    }
+
     function readRespData(bytes memory raw_response) internal pure returns (bytes memory) {
         (int256 exit, uint64 return_codec, bytes memory return_value) = abi.decode(raw_response, (int256, uint64, bytes));
 

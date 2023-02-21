@@ -22,7 +22,7 @@ pragma solidity ^0.8.17;
 import "./utils/Misc.sol";
 import "./utils/Actor.sol";
 
-/// @title This library is helper method to send funds to some specfici address. Calling one of its methods will result in a cross-actor call being performed.
+/// @title This library is helper method to send funds to some specific address. Calling one of its methods will result in a cross-actor call being performed.
 /// @author Zondax AG
 library SendAPI {
     /// @param receiverActorId The id address (uint64) you want to send funds to
