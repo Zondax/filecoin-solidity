@@ -32,7 +32,7 @@ library Actor {
     uint64 constant READ_ONLY_FLAG = 0x00000001; // https://github.com/filecoin-project/ref-fvm/blob/master/shared/src/sys/mod.rs#L60
     uint64 constant DEFAULT_FLAG = 0x00000000;
 
-    function call(
+    function callByAddress(
         uint256 method_num,
         bytes memory actor_address,
         bytes memory raw_request,
