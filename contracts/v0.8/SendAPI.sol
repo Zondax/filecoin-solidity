@@ -25,9 +25,9 @@ import "./utils/Actor.sol";
 /// @title This library is helper method to send funds to some specfici address. Calling one of its methods will result in a cross-actor call being performed.
 /// @author Zondax AG
 library SendAPI {
-    /// @param toAddress The address (filecoin bytes format) you want to send funds to
-    function send(bytes memory toAddress, uint256 amount) internal {
-        bytes memory rawResponse = Actor.call(0, toAddress, new bytes(0), Misc.NONE_CODEC, amount, false);
+    /// @param receiverActorId The id address (uint64) you want to send funds to
+    function send(uint64 receiverActorId, uint256 amount) internal {
+        bytes memory rawResponse = Actor.callByID(receiverActorId, 0, Misc.NONE_CODEC, new bytes(0), amount, false);
 
         bytes memory result = Actor.readRespData(rawResponse);
         require(result.length == 0, "unexpected response received");

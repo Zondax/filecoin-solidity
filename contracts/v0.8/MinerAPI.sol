@@ -35,20 +35,6 @@ library MinerAPI {
 
     /// @notice Income and returned collateral are paid to this address
     /// @notice This address is also allowed to change the worker address for the miner
-    /// @param target The miner address (filecoin bytes format) you want to interact with
-    /// @return the owner address of a Miner
-    function getOwner(bytes memory target) internal returns (MinerTypes.GetOwnerReturn memory) {
-        bytes memory raw_request = new bytes(0);
-
-        bytes memory raw_response = Actor.call(MinerTypes.GetOwnerMethodNum, target, raw_request, Misc.NONE_CODEC, 0, true);
-
-        bytes memory result = Actor.readRespData(raw_response);
-
-        return result.deserializeGetOwnerReturn();
-    }
-
-    /// @notice Income and returned collateral are paid to this address
-    /// @notice This address is also allowed to change the worker address for the miner
     /// @param target The miner actor id you want to interact with
     /// @return the owner address of a Miner
     function getOwner(uint64 target) internal returns (MinerTypes.GetOwnerReturn memory) {
@@ -59,19 +45,6 @@ library MinerAPI {
         bytes memory result = Actor.readRespData(raw_response);
 
         return result.deserializeGetOwnerReturn();
-    }
-
-    /// @param target The miner address (filecoin bytes format) you want to interact with
-    /// @param addr New owner address
-    /// @notice Proposes or confirms a change of owner address.
-    /// @notice If invoked by the current owner, proposes a new owner address for confirmation. If the proposed address is the current owner address, revokes any existing proposal that proposed address.
-    function changeOwnerAddress(bytes memory target, bytes memory addr) internal {
-        bytes memory raw_request = addr.serializeAddress();
-
-        bytes memory raw_response = Actor.call(MinerTypes.ChangeOwnerAddressMethodNum, target, raw_request, Misc.CBOR_CODEC, 0, false);
-
-        bytes memory result = Actor.readRespData(raw_response);
-        require(result.length == 0, "unexpected response received");
     }
 
     /// @param target The miner actor id you want to interact with
@@ -85,19 +58,6 @@ library MinerAPI {
 
         bytes memory result = Actor.readRespData(raw_response);
         require(result.length == 0, "unexpected response received");
-    }
-
-    /// @param target The miner address (filecoin bytes format) you want to interact with
-    /// @param addr The "controlling" addresses are the Owner, the Worker, and all Control Addresses.
-    /// @return Whether the provided address is "controlling".
-    function isControllingAddress(bytes memory target, bytes memory addr) internal returns (MinerTypes.IsControllingAddressReturn memory) {
-        bytes memory raw_request = addr.serializeAddress();
-
-        bytes memory raw_response = Actor.call(MinerTypes.IsControllingAddressMethodNum, target, raw_request, Misc.CBOR_CODEC, 0, true);
-
-        bytes memory result = Actor.readRespData(raw_response);
-
-        return result.deserializeIsControllingAddressReturn();
     }
 
     /// @param target The miner actor id you want to interact with
@@ -114,19 +74,6 @@ library MinerAPI {
     }
 
     /// @return the miner's sector size.
-    /// @param target The miner address (filecoin bytes format) you want to interact with
-    /// @dev For more information about sector sizes, please refer to https://spec.filecoin.io/systems/filecoin_mining/sector/#section-systems.filecoin_mining.sector
-    function getSectorSize(bytes memory target) internal returns (MinerTypes.GetSectorSizeReturn memory) {
-        bytes memory raw_request = new bytes(0);
-
-        bytes memory raw_response = Actor.call(MinerTypes.GetSectorSizeMethodNum, target, raw_request, Misc.NONE_CODEC, 0, true);
-
-        bytes memory result = Actor.readRespData(raw_response);
-
-        return result.deserializeGetSectorSizeReturn();
-    }
-
-    /// @return the miner's sector size.
     /// @param target The miner actor id you want to interact with
     /// @dev For more information about sector sizes, please refer to https://spec.filecoin.io/systems/filecoin_mining/sector/#section-systems.filecoin_mining.sector
     function getSectorSize(uint64 target) internal returns (MinerTypes.GetSectorSizeReturn memory) {
@@ -137,20 +84,6 @@ library MinerAPI {
         bytes memory result = Actor.readRespData(raw_response);
 
         return result.deserializeGetSectorSizeReturn();
-    }
-
-    /// @param target The miner address (filecoin bytes format) you want to interact with
-    /// @notice This is calculated as actor balance - (vesting funds + pre-commit deposit + initial pledge requirement + fee debt)
-    /// @notice Can go negative if the miner is in IP debt.
-    /// @return the available balance of this miner.
-    function getAvailableBalance(bytes memory target) internal returns (MinerTypes.GetAvailableBalanceReturn memory) {
-        bytes memory raw_request = new bytes(0);
-
-        bytes memory raw_response = Actor.call(MinerTypes.GetAvailableBalanceMethodNum, target, raw_request, Misc.NONE_CODEC, 0, true);
-
-        bytes memory result = Actor.readRespData(raw_response);
-
-        return result.deserializeGetAvailableBalanceReturn();
     }
 
     /// @param target The miner actor id you want to interact with
@@ -167,18 +100,6 @@ library MinerAPI {
         return result.deserializeGetAvailableBalanceReturn();
     }
 
-    /// @param target The miner address (filecoin bytes format) you want to interact with
-    /// @return the funds vesting in this miner as a list of (vesting_epoch, vesting_amount) tuples.
-    function getVestingFunds(bytes memory target) internal returns (MinerTypes.GetVestingFundsReturn memory) {
-        bytes memory raw_request = new bytes(0);
-
-        bytes memory raw_response = Actor.call(MinerTypes.GetVestingFundsMethodNum, target, raw_request, Misc.NONE_CODEC, 0, true);
-
-        bytes memory result = Actor.readRespData(raw_response);
-
-        return result.deserializeGetVestingFundsReturn();
-    }
-
     /// @param target The miner actor id you want to interact with
     /// @return the funds vesting in this miner as a list of (vesting_epoch, vesting_amount) tuples.
     function getVestingFunds(uint64 target) internal returns (MinerTypes.GetVestingFundsReturn memory) {
@@ -189,19 +110,6 @@ library MinerAPI {
         bytes memory result = Actor.readRespData(raw_response);
 
         return result.deserializeGetVestingFundsReturn();
-    }
-
-    /// @param target The miner address (filecoin bytes format) you want to interact with
-    /// @notice Proposes or confirms a change of beneficiary address.
-    /// @notice A proposal must be submitted by the owner, and takes effect after approval of both the proposed beneficiary and current beneficiary, if applicable, any current beneficiary that has time and quota remaining.
-    /// @notice See FIP-0029, https://github.com/filecoin-project/FIPs/blob/master/FIPS/fip-0029.md
-    function changeBeneficiary(bytes memory target, MinerTypes.ChangeBeneficiaryParams memory params) internal {
-        bytes memory raw_request = params.serializeChangeBeneficiaryParams();
-
-        bytes memory raw_response = Actor.call(MinerTypes.ChangeBeneficiaryMethodNum, target, raw_request, Misc.CBOR_CODEC, 0, false);
-
-        bytes memory result = Actor.readRespData(raw_response);
-        require(result.length == 0, "unexpected response received");
     }
 
     /// @param target The miner actor id you want to interact with
@@ -217,19 +125,6 @@ library MinerAPI {
         require(result.length == 0, "unexpected response received");
     }
 
-    /// @param target The miner address (filecoin bytes format) you want to interact with
-    /// @notice This method is for use by other actors (such as those acting as beneficiaries), and to abstract the state representation for clients.
-    /// @notice Retrieves the currently active and proposed beneficiary information.
-    function getBeneficiary(bytes memory target) internal returns (MinerTypes.GetBeneficiaryReturn memory) {
-        bytes memory raw_request = new bytes(0);
-
-        bytes memory raw_response = Actor.call(MinerTypes.GetBeneficiaryMethodNum, target, raw_request, Misc.NONE_CODEC, 0, true);
-
-        bytes memory result = Actor.readRespData(raw_response);
-
-        return result.deserializeGetBeneficiaryReturn();
-    }
-
     /// @param target The miner actor id you want to interact with
     /// @notice This method is for use by other actors (such as those acting as beneficiaries), and to abstract the state representation for clients.
     /// @notice Retrieves the currently active and proposed beneficiary information.
@@ -243,31 +138,11 @@ library MinerAPI {
         return result.deserializeGetBeneficiaryReturn();
     }
 
-    /// @param target The miner address (filecoin bytes format) you want to interact with
-    function changeWorkerAddress(bytes memory target, MinerTypes.ChangeWorkerAddressParams memory params) internal {
-        bytes memory raw_request = params.serializeChangeWorkerAddressParams();
-
-        bytes memory raw_response = Actor.call(MinerTypes.ChangeWorkerAddressMethodNum, target, raw_request, Misc.CBOR_CODEC, 0, false);
-
-        bytes memory result = Actor.readRespData(raw_response);
-        require(result.length == 0, "unexpected response received");
-    }
-
     /// @param target The miner actor id you want to interact with
     function changeWorkerAddress(uint64 target, MinerTypes.ChangeWorkerAddressParams memory params) internal {
         bytes memory raw_request = params.serializeChangeWorkerAddressParams();
 
         bytes memory raw_response = Actor.callByID(target, MinerTypes.ChangeWorkerAddressMethodNum, Misc.CBOR_CODEC, raw_request, 0, false);
-
-        bytes memory result = Actor.readRespData(raw_response);
-        require(result.length == 0, "unexpected response received");
-    }
-
-    /// @param target The miner address (filecoin bytes format) you want to interact with
-    function changePeerId(bytes memory target, MinerTypes.ChangePeerIDParams memory params) internal {
-        bytes memory raw_request = params.serializeChangePeerIDParams();
-
-        bytes memory raw_response = Actor.call(MinerTypes.ChangePeerIDMethodNum, target, raw_request, Misc.CBOR_CODEC, 0, false);
 
         bytes memory result = Actor.readRespData(raw_response);
         require(result.length == 0, "unexpected response received");
@@ -283,31 +158,11 @@ library MinerAPI {
         require(result.length == 0, "unexpected response received");
     }
 
-    /// @param target The miner address (filecoin bytes format) you want to interact with
-    function changeMultiaddresses(bytes memory target, MinerTypes.ChangeMultiaddrsParams memory params) internal {
-        bytes memory raw_request = params.serializeChangeMultiaddrsParams();
-
-        bytes memory raw_response = Actor.call(MinerTypes.ChangeMultiaddrsMethodNum, target, raw_request, Misc.CBOR_CODEC, 0, false);
-
-        bytes memory result = Actor.readRespData(raw_response);
-        require(result.length == 0, "unexpected response received");
-    }
-
     /// @param target The miner actor id you want to interact with
     function changeMultiaddresses(uint64 target, MinerTypes.ChangeMultiaddrsParams memory params) internal {
         bytes memory raw_request = params.serializeChangeMultiaddrsParams();
 
         bytes memory raw_response = Actor.callByID(target, MinerTypes.ChangeMultiaddrsMethodNum, Misc.CBOR_CODEC, raw_request, 0, false);
-
-        bytes memory result = Actor.readRespData(raw_response);
-        require(result.length == 0, "unexpected response received");
-    }
-
-    /// @param target The miner address (filecoin bytes format) you want to interact with
-    function repayDebt(bytes memory target) internal {
-        bytes memory raw_request = new bytes(0);
-
-        bytes memory raw_response = Actor.call(MinerTypes.RepayDebtMethodNum, target, raw_request, Misc.NONE_CODEC, 0, false);
 
         bytes memory result = Actor.readRespData(raw_response);
         require(result.length == 0, "unexpected response received");
@@ -323,16 +178,6 @@ library MinerAPI {
         require(result.length == 0, "unexpected response received");
     }
 
-    /// @param target The miner address (filecoin bytes format) you want to interact with
-    function confirmChangeWorkerAddress(bytes memory target) internal {
-        bytes memory raw_request = new bytes(0);
-
-        bytes memory raw_response = Actor.call(MinerTypes.ConfirmChangeWorkerAddressMethodNum, target, raw_request, Misc.NONE_CODEC, 0, false);
-
-        bytes memory result = Actor.readRespData(raw_response);
-        require(result.length == 0, "unexpected response received");
-    }
-
     /// @param target The miner actor id you want to interact with
     function confirmChangeWorkerAddress(uint64 target) internal {
         bytes memory raw_request = new bytes(0);
@@ -341,17 +186,6 @@ library MinerAPI {
 
         bytes memory result = Actor.readRespData(raw_response);
         require(result.length == 0, "unexpected response received");
-    }
-
-    /// @param target The miner address (filecoin bytes format) you want to interact with
-    function getPeerId(bytes memory target) internal returns (MinerTypes.GetPeerIDReturn memory) {
-        bytes memory raw_request = new bytes(0);
-
-        bytes memory raw_response = Actor.call(MinerTypes.GetPeerIDMethodNum, target, raw_request, Misc.NONE_CODEC, 0, true);
-
-        bytes memory result = Actor.readRespData(raw_response);
-
-        return result.deserializeGetPeerIDReturn();
     }
 
     /// @param target The miner actor id you want to interact with
@@ -365,17 +199,6 @@ library MinerAPI {
         return result.deserializeGetPeerIDReturn();
     }
 
-    /// @param target The miner address (filecoin bytes format) you want to interact with
-    function getMultiaddresses(bytes memory target) internal returns (MinerTypes.GetMultiaddrsReturn memory) {
-        bytes memory raw_request = new bytes(0);
-
-        bytes memory raw_response = Actor.call(MinerTypes.GetMultiaddrsMethodNum, target, raw_request, Misc.NONE_CODEC, 0, true);
-
-        bytes memory result = Actor.readRespData(raw_response);
-
-        return result.deserializeGetMultiaddrsReturn();
-    }
-
     /// @param target The miner actor id you want to interact with
     function getMultiaddresses(uint64 target) internal returns (MinerTypes.GetMultiaddrsReturn memory) {
         bytes memory raw_request = new bytes(0);
@@ -385,18 +208,6 @@ library MinerAPI {
         bytes memory result = Actor.readRespData(raw_response);
 
         return result.deserializeGetMultiaddrsReturn();
-    }
-
-    /// @param target The miner address (filecoin bytes format) you want to interact with
-    /// @param params the amount you want to withdraw
-    function withdrawBalance(bytes memory target, MinerTypes.WithdrawBalanceParams memory params) internal returns (MinerTypes.WithdrawBalanceReturn memory) {
-        bytes memory raw_request = params.serializeWithdrawBalanceParams();
-
-        bytes memory raw_response = Actor.call(MinerTypes.WithdrawBalanceMethodNum, target, raw_request, Misc.CBOR_CODEC, 0, false);
-
-        bytes memory result = Actor.readRespData(raw_response);
-
-        return result.deserializeWithdrawBalanceReturn();
     }
 
     /// @param target The miner actor id you want to interact with

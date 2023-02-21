@@ -24,8 +24,6 @@ pragma solidity ^0.8.0;
 library PrecompilesAPI {
     address constant RESOLVE_ADDRESS_PRECOMPILE_ADDR = 0xFE00000000000000000000000000000000000001;
     address constant LOOKUP_DELEGATED_ADDRESS_PRECOMPILE_ADDR = 0xfE00000000000000000000000000000000000002;
-    address constant GET_ACTOR_TYPE_PRECOMPILE_ADDR = 0xFe00000000000000000000000000000000000004;
-    address constant RIPEMD160_PRECOMPILE_ADDR = 0x0000000000000000000000000000000000000003;
 
     function resolveAddress(bytes memory addr) internal view returns (uint64) {
         (bool success, bytes memory raw_response) = address(RESOLVE_ADDRESS_PRECOMPILE_ADDR).staticcall(addr);
