@@ -40,14 +40,4 @@ library AccountAPI {
         bytes memory result = Actor.readRespData(raw_response);
         require(result.length == 0, "unexpected response received");
     }
-
-    /// @param target The account actor id you want to interact with
-    function universalReceiverHook(uint64 target, AccountTypes.UniversalReceiverParams memory params) internal {
-        bytes memory raw_request = params.serializeUniversalReceiverParams();
-
-        bytes memory raw_response = Actor.callByID(target, AccountTypes.UniversalReceiverHookMethodNum, Misc.CBOR_CODEC, raw_request, 0, false);
-
-        bytes memory result = Actor.readRespData(raw_response);
-        require(result.length == 0, "unexpected response received");
-    }
 }

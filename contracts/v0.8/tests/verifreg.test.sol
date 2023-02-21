@@ -20,6 +20,7 @@
 pragma solidity ^0.8.17;
 
 import "../types/VerifRegTypes.sol";
+import "../types/CommonTypes.sol";
 import "../VerifRegAPI.sol";
 
 /// @author Zondax AG
@@ -46,7 +47,7 @@ contract VerifRegApiTest {
         return VerifRegAPI.removeExpiredClaims(params);
     }
 
-    function universal_receiver_hook(VerifRegTypes.UniversalReceiverParams memory params) public returns (VerifRegTypes.AllocationsResponse memory) {
+    function universal_receiver_hook(CommonTypes.UniversalReceiverParams memory params) public returns (VerifRegTypes.AllocationsResponse memory) {
         return VerifRegAPI.universalReceiverHook(params);
     }
 }

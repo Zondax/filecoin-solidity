@@ -243,16 +243,6 @@ library VerifRegCBOR {
         return ret;
     }
 
-    function serializeUniversalReceiverParams(VerifRegTypes.UniversalReceiverParams memory params) internal pure returns (bytes memory) {
-        CBOR.CBORBuffer memory buf = CBOR.create(64);
-
-        buf.startFixedArray(2);
-        buf.writeUInt64(params.type_);
-        buf.writeBytes(params.payload);
-
-        return buf.data();
-    }
-
     function deserializeAllocationsResponse(bytes memory rawResp) internal pure returns (VerifRegTypes.AllocationsResponse memory ret) {
         uint byteIdx = 0;
         uint len;

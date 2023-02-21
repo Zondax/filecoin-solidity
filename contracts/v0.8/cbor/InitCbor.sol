@@ -30,7 +30,7 @@ import "../utils/Misc.sol";
 /// @author Zondax AG
 library InitCBOR {
     using CBOR for CBOR.CBORBuffer;
-    using FilecoinCbor for CBOR.CBORBuffer;
+    using FilecoinCBOR for CBOR.CBORBuffer;
     using CBORDecoder for bytes;
 
     function serializeExecParams(InitTypes.ExecParams memory params) internal pure returns (bytes memory) {

@@ -24,6 +24,8 @@ import "../cbor/BigIntCbor.sol";
 /// @title Filecoin actors' common types for Solidity.
 /// @author Zondax AG
 library CommonTypes {
+    uint constant UniversalReceiverHookMethodNum = 3726118371;
+
     struct FailCode {
         uint32 idx;
         uint32 code;
@@ -34,5 +36,12 @@ library CommonTypes {
         uint32 success_count;
         // Failure code and index for each failure in batch
         FailCode[] fail_codes;
+    }
+
+    struct UniversalReceiverParams {
+        /// Asset type
+        uint32 type_;
+        /// Payload corresponding to asset type
+        bytes payload;
     }
 }
