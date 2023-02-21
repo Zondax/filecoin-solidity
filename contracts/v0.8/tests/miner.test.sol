@@ -22,6 +22,8 @@ pragma solidity ^0.8.17;
 import "../MinerAPI.sol";
 import "../types/MinerTypes.sol";
 
+/// @notice This file is meant to serve as a deployable contract of the miner actor API, as the library by itself is not.
+/// @notice It imports the library and create a callable method for each method in the library
 /// @author Zondax AG
 contract MinerApiTest {
     function get_owner(uint64 target) public returns (MinerTypes.GetOwnerReturn memory) {

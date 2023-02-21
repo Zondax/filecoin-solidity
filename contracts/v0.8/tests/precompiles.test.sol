@@ -21,6 +21,8 @@ pragma solidity ^0.8.17;
 
 import "../PrecompilesAPI.sol";
 
+/// @notice This file is meant to serve as a deployable contract of the precompiles API, as the library by itself is not.
+/// @notice It imports the library and create a callable method for each method in the library
 /// @author Zondax AG
 contract PrecompilesApiTest {
     function resolve_address(bytes memory addr) public view returns (uint64) {

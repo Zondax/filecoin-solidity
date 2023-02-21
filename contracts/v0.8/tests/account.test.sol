@@ -24,6 +24,8 @@ import "../types/CommonTypes.sol";
 import "../AccountAPI.sol";
 import "../Utils.sol";
 
+/// @notice This file is meant to serve as a deployable contract of the account actor API, as the library by itself is not.
+/// @notice It imports the library and create a callable method for each method in the library
 /// @author Zondax AG
 contract AccountApiTest {
     function authenticate_message(uint64 target, AccountTypes.AuthenticateMessageParams memory params) public {

@@ -22,6 +22,8 @@ pragma solidity ^0.8.17;
 import "../MarketAPI.sol";
 import "../types/MarketTypes.sol";
 
+/// @notice This file is meant to serve as a deployable contract of the market actor API, as the library by itself is not.
+/// @notice It imports the library and create a callable method for each method in the library
 /// @author Zondax AG
 contract MarketApiTest {
     function add_balance(bytes memory provider_or_client, uint256 value) public payable {
