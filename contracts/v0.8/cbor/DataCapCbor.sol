@@ -35,6 +35,9 @@ library DataCapCBOR {
     using BigIntCBOR for BigInt;
     using BigIntCBOR for bytes;
 
+    /// @notice serialize GetAllowanceParams object to cbor in order to pass as arguments to the datacap actor
+    /// @param params GetAllowanceParams to serialize as cbor
+    /// @return cbor serialized data as bytes
     function serializeGetAllowanceParams(DataCapTypes.GetAllowanceParams memory params) internal pure returns (bytes memory) {
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
@@ -45,6 +48,9 @@ library DataCapCBOR {
         return buf.data();
     }
 
+    /// @notice serialize TransferParams object to cbor in order to pass as arguments to the datacap actor
+    /// @param params TransferParams to serialize as cbor
+    /// @return cbor serialized data as bytes
     function serializeTransferParams(DataCapTypes.TransferParams memory params) internal pure returns (bytes memory) {
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
@@ -56,6 +62,9 @@ library DataCapCBOR {
         return buf.data();
     }
 
+    /// @notice deserialize TransferReturn object from cbor encoded bytes coming from a datacap actor call
+    /// @param rawResp cbor encoded response
+    /// @return new instance of TransferReturn created based on parsed data
     function deserializeTransferReturn(bytes memory rawResp) internal pure returns (DataCapTypes.TransferReturn memory ret) {
         uint byteIdx = 0;
         uint len;
@@ -75,6 +84,9 @@ library DataCapCBOR {
         return ret;
     }
 
+    /// @notice serialize TransferFromParams object to cbor in order to pass as arguments to the datacap actor
+    /// @param params TransferFromParams to serialize as cbor
+    /// @return cbor serialized data as bytes
     function serializeTransferFromParams(DataCapTypes.TransferFromParams memory params) internal pure returns (bytes memory) {
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
@@ -87,6 +99,9 @@ library DataCapCBOR {
         return buf.data();
     }
 
+    /// @notice deserialize TransferFromReturn object from cbor encoded bytes coming from a datacap actor call
+    /// @param rawResp cbor encoded response
+    /// @return new instance of TransferFromReturn created based on parsed data
     function deserializeTransferFromReturn(bytes memory rawResp) internal pure returns (DataCapTypes.TransferFromReturn memory ret) {
         uint byteIdx = 0;
         uint len;
@@ -109,6 +124,9 @@ library DataCapCBOR {
         return ret;
     }
 
+    /// @notice serialize IncreaseAllowanceParams object to cbor in order to pass as arguments to the datacap actor
+    /// @param params IncreaseAllowanceParams to serialize as cbor
+    /// @return cbor serialized data as bytes
     function serializeIncreaseAllowanceParams(DataCapTypes.IncreaseAllowanceParams memory params) internal pure returns (bytes memory) {
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
@@ -119,6 +137,9 @@ library DataCapCBOR {
         return buf.data();
     }
 
+    /// @notice serialize DecreaseAllowanceParams object to cbor in order to pass as arguments to the datacap actor
+    /// @param params DecreaseAllowanceParams to serialize as cbor
+    /// @return cbor serialized data as bytes
     function serializeDecreaseAllowanceParams(DataCapTypes.DecreaseAllowanceParams memory params) internal pure returns (bytes memory) {
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
@@ -129,6 +150,9 @@ library DataCapCBOR {
         return buf.data();
     }
 
+    /// @notice serialize RevokeAllowanceParams object to cbor in order to pass as arguments to the datacap actor
+    /// @param params RevokeAllowanceParams to serialize as cbor
+    /// @return cbor serialized data as bytes
     function serializeRevokeAllowanceParams(DataCapTypes.RevokeAllowanceParams memory params) internal pure returns (bytes memory) {
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
@@ -138,6 +162,9 @@ library DataCapCBOR {
         return buf.data();
     }
 
+    /// @notice serialize BurnParams object to cbor in order to pass as arguments to the datacap actor
+    /// @param params BurnParams to serialize as cbor
+    /// @return cbor serialized data as bytes
     function serializeBurnParams(DataCapTypes.BurnParams memory params) internal pure returns (bytes memory) {
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
@@ -147,6 +174,9 @@ library DataCapCBOR {
         return buf.data();
     }
 
+    /// @notice deserialize BurnReturn object from cbor encoded bytes coming from a datacap actor call
+    /// @param rawResp cbor encoded response
+    /// @return new instance of BurnReturn created based on parsed data
     function deserializeBurnReturn(bytes memory rawResp) internal pure returns (DataCapTypes.BurnReturn memory ret) {
         uint byteIdx = 0;
         uint len;
@@ -161,6 +191,9 @@ library DataCapCBOR {
         return ret;
     }
 
+    /// @notice serialize BurnFromParams object to cbor in order to pass as arguments to the datacap actor
+    /// @param params BurnFromParams to serialize as cbor
+    /// @return cbor serialized data as bytes
     function serializeBurnFromParams(DataCapTypes.BurnFromParams memory params) internal pure returns (bytes memory) {
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
@@ -171,6 +204,9 @@ library DataCapCBOR {
         return buf.data();
     }
 
+    /// @notice deserialize BurnFromReturn object from cbor encoded bytes coming from a datacap actor call
+    /// @param rawResp cbor encoded response
+    /// @return new instance of BurnFromReturn created based on parsed data
     function deserializeBurnFromReturn(bytes memory rawResp) internal pure returns (DataCapTypes.BurnFromReturn memory ret) {
         uint byteIdx = 0;
         uint len;
