@@ -27,6 +27,9 @@ struct BigInt {
 /// @title This library is a set of functions meant to handle CBOR serialization and deserialization for BigInt type
 /// @author Zondax AG
 library BigIntCBOR {
+    /// @notice serialize BigInt instance to bytes
+    /// @param num BigInt instance to serialize
+    /// @return serialized BigInt as bytes
     function serializeBigInt(BigInt memory num) internal pure returns (bytes memory) {
         bytes memory raw = new bytes(num.val.length + 1);
 
@@ -43,6 +46,9 @@ library BigIntCBOR {
         return raw;
     }
 
+    /// @notice deserialize big int (encoded as bytes) to BigInt instance
+    /// @param raw as bytes to parse
+    /// @return parsed BigInt instance
     function deserializeBigInt(bytes memory raw) internal pure returns (BigInt memory) {
         if (raw.length == 0) {
             return BigInt(hex"00", false);

@@ -34,6 +34,9 @@ library PowerCBOR {
     using BigIntCBOR for BigInt;
     using BigIntCBOR for bytes;
 
+    /// @notice serialize CreateMinerParams struct to cbor in order to pass as arguments to the power actor
+    /// @param params CreateMinerParams to serialize as cbor
+    /// @return cbor serialized data as bytes
     function serializeCreateMinerParams(PowerTypes.CreateMinerParams memory params) internal pure returns (bytes memory) {
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
@@ -52,6 +55,9 @@ library PowerCBOR {
         return buf.data();
     }
 
+    /// @notice deserialize CreateMinerReturn struct from cbor encoded bytes coming from a power actor call
+    /// @param rawResp cbor encoded response
+    /// @return new instance of CreateMinerReturn created based on parsed data
     function deserializeCreateMinerReturn(bytes memory rawResp) internal pure returns (PowerTypes.CreateMinerReturn memory ret) {
         uint byteIdx = 0;
         uint len;
@@ -65,6 +71,9 @@ library PowerCBOR {
         return ret;
     }
 
+    /// @notice deserialize MinerRawPowerReturn struct from cbor encoded bytes coming from a power actor call
+    /// @param rawResp cbor encoded response
+    /// @return new instance of MinerRawPowerReturn created based on parsed data
     function deserializeMinerRawPowerReturn(bytes memory rawResp) internal pure returns (PowerTypes.MinerRawPowerReturn memory ret) {
         uint byteIdx = 0;
         uint len;

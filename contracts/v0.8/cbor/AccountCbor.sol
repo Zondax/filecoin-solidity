@@ -31,7 +31,7 @@ library AccountCBOR {
     using CBOR for CBOR.CBORBuffer;
     using CBORDecoder for bytes;
 
-    /// @notice serialize AuthenticateMessageParams object to cbor in order to pass as arguments to an account actor
+    /// @notice serialize AuthenticateMessageParams struct to cbor in order to pass as arguments to an account actor
     /// @param params AuthenticateMessageParams to serialize as cbor
     /// @return cbor serialized data as bytes
     function serializeAuthenticateMessageParams(AccountTypes.AuthenticateMessageParams memory params) internal pure returns (bytes memory) {
@@ -44,7 +44,7 @@ library AccountCBOR {
         return buf.data();
     }
 
-    /// @notice deserialize AuthenticateMessageParams object from cbor encoded bytes coming from an account actor call
+    /// @notice deserialize AuthenticateMessageParams struct from cbor encoded bytes coming from an account actor call
     /// @param rawResp cbor encoded response
     /// @return new instance of AuthenticateMessageParams created based on parsed data
     function deserializeAuthenticateMessageParams(bytes memory rawResp) internal pure returns (AccountTypes.AuthenticateMessageParams memory ret) {

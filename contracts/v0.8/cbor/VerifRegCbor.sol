@@ -35,6 +35,9 @@ library VerifRegCBOR {
     using BigIntCBOR for BigInt;
     using BigIntCBOR for bytes;
 
+    /// @notice serialize GetClaimsParams struct to cbor in order to pass as arguments to the verified registry actor
+    /// @param params GetClaimsParams to serialize as cbor
+    /// @return cbor serialized data as bytes
     function serializeGetClaimsParams(VerifRegTypes.GetClaimsParams memory params) internal pure returns (bytes memory) {
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
@@ -50,6 +53,9 @@ library VerifRegCBOR {
         return buf.data();
     }
 
+    /// @notice deserialize GetClaimsReturn struct from cbor encoded bytes coming from a verified registry actor call
+    /// @param rawResp cbor encoded response
+    /// @return new instance of GetClaimsReturn created based on parsed data
     function deserializeGetClaimsReturn(bytes memory rawResp) internal pure returns (VerifRegTypes.GetClaimsReturn memory ret) {
         uint byteIdx = 0;
         uint len;
@@ -93,6 +99,9 @@ library VerifRegCBOR {
         return ret;
     }
 
+    /// @notice serialize AddVerifierClientParams struct to cbor in order to pass as arguments to the verified registry actor
+    /// @param params AddVerifierClientParams to serialize as cbor
+    /// @return cbor serialized data as bytes
     function serializeAddVerifierClientParams(VerifRegTypes.AddVerifierClientParams memory params) internal pure returns (bytes memory) {
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
@@ -103,6 +112,9 @@ library VerifRegCBOR {
         return buf.data();
     }
 
+    /// @notice serialize RemoveExpiredAllocationsParams struct to cbor in order to pass as arguments to the verified registry actor
+    /// @param params RemoveExpiredAllocationsParams to serialize as cbor
+    /// @return cbor serialized data as bytes
     function serializeRemoveExpiredAllocationsParams(VerifRegTypes.RemoveExpiredAllocationsParams memory params) internal pure returns (bytes memory) {
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
@@ -118,6 +130,9 @@ library VerifRegCBOR {
         return buf.data();
     }
 
+    /// @notice deserialize RemoveExpiredAllocationsReturn struct from cbor encoded bytes coming from a verified registry actor call
+    /// @param rawResp cbor encoded response
+    /// @return new instance of RemoveExpiredAllocationsReturn created based on parsed data
     function deserializeRemoveExpiredAllocationsReturn(bytes memory rawResp) internal pure returns (VerifRegTypes.RemoveExpiredAllocationsReturn memory ret) {
         uint byteIdx = 0;
         uint len;
@@ -155,6 +170,9 @@ library VerifRegCBOR {
         return ret;
     }
 
+    /// @notice serialize ExtendClaimTermsParams struct to cbor in order to pass as arguments to the verified registry actor
+    /// @param params ExtendClaimTermsParams to serialize as cbor
+    /// @return cbor serialized data as bytes
     function serializeExtendClaimTermsParams(VerifRegTypes.ExtendClaimTermsParams memory params) internal pure returns (bytes memory) {
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
@@ -172,6 +190,9 @@ library VerifRegCBOR {
         return buf.data();
     }
 
+    /// @notice deserialize BatchReturn struct from cbor encoded bytes coming from a verified registry actor call
+    /// @param rawResp cbor encoded response
+    /// @return new instance of BatchReturn created based on parsed data
     function deserializeBatchReturn(bytes memory rawResp) internal pure returns (CommonTypes.BatchReturn memory ret) {
         uint byteIdx = 0;
         uint len;
@@ -195,6 +216,9 @@ library VerifRegCBOR {
         return ret;
     }
 
+    /// @notice serialize RemoveExpiredClaimsParams struct to cbor in order to pass as arguments to the verified registry actor
+    /// @param params RemoveExpiredClaimsParams to serialize as cbor
+    /// @return cbor serialized data as bytes
     function serializeRemoveExpiredClaimsParams(VerifRegTypes.RemoveExpiredClaimsParams memory params) internal pure returns (bytes memory) {
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
@@ -210,6 +234,9 @@ library VerifRegCBOR {
         return buf.data();
     }
 
+    /// @notice deserialize RemoveExpiredClaimsReturn struct from cbor encoded bytes coming from a verified registry actor call
+    /// @param rawResp cbor encoded response
+    /// @return new instance of RemoveExpiredClaimsReturn created based on parsed data
     function deserializeRemoveExpiredClaimsReturn(bytes memory rawResp) internal pure returns (VerifRegTypes.RemoveExpiredClaimsReturn memory ret) {
         uint byteIdx = 0;
         uint len;
@@ -243,6 +270,9 @@ library VerifRegCBOR {
         return ret;
     }
 
+    /// @notice deserialize AllocationsResponse struct from cbor encoded bytes coming from a verified registry actor call
+    /// @param rawResp cbor encoded response
+    /// @return new instance of AllocationsResponse created based on parsed data
     function deserializeAllocationsResponse(bytes memory rawResp) internal pure returns (VerifRegTypes.AllocationsResponse memory ret) {
         uint byteIdx = 0;
         uint len;

@@ -43,7 +43,7 @@ library FilecoinCBOR {
         buf.writeBytes(value);
     }
 
-    /// @notice serialize UniversalReceiverParams object to cbor in order to pass as arguments to an actor
+    /// @notice serialize UniversalReceiverParams struct to cbor in order to pass as arguments to an actor
     /// @param params UniversalReceiverParams to serialize as cbor
     /// @return cbor serialized data as bytes
     function serializeUniversalReceiverParams(CommonTypes.UniversalReceiverParams memory params) internal pure returns (bytes memory) {
