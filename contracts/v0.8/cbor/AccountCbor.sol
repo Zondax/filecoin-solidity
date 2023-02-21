@@ -53,14 +53,4 @@ library AccountCBOR {
 
         return ret;
     }
-
-    function serializeUniversalReceiverParams(AccountTypes.UniversalReceiverParams memory params) internal pure returns (bytes memory) {
-        CBOR.CBORBuffer memory buf = CBOR.create(64);
-
-        buf.startFixedArray(2);
-        buf.writeUInt64(params.type_);
-        buf.writeBytes(params.payload);
-
-        return buf.data();
-    }
 }

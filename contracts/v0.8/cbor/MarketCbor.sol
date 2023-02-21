@@ -34,7 +34,7 @@ library MarketCBOR {
     using CBORDecoder for bytes;
     using BigIntCBOR for BigInt;
     using BigIntCBOR for bytes;
-    using FilecoinCbor for CBOR.CBORBuffer;
+    using FilecoinCBOR for CBOR.CBORBuffer;
 
     function serializeWithdrawBalanceParams(MarketTypes.WithdrawBalanceParams memory params) internal pure returns (bytes memory) {
         CBOR.CBORBuffer memory buf = CBOR.create(64);
