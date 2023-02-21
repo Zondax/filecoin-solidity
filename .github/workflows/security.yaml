@@ -9,7 +9,7 @@ on:
 
 jobs:
   account:
-    name: "Account API"
+    name: "Account API: security checks"
     timeout-minutes: 20
     runs-on: ubuntu-22.04
     steps:
@@ -23,7 +23,7 @@ jobs:
         run:  make security_account_api
 
   power:
-    name: "Power API"
+    name: "Power API: security checks"
     timeout-minutes: 20
     runs-on: ubuntu-22.04
     steps:
@@ -37,7 +37,7 @@ jobs:
         run:  make security_power_api
 
   verifreg:
-    name: "VerifReg API"
+    name: "VerifReg API: security checks"
     timeout-minutes: 20
     runs-on: ubuntu-22.04
     steps:
@@ -51,7 +51,7 @@ jobs:
         run:  make security_verifreg_api
 
   market:
-    name: "Market API"
+    name: "Market API: security checks"
     timeout-minutes: 20
     runs-on: ubuntu-22.04
     steps:
@@ -65,7 +65,7 @@ jobs:
         run:  make security_market_api
 
   miner:
-    name: "Miner API"
+    name: "Miner API: security checks"
     timeout-minutes: 20
     runs-on: ubuntu-22.04
     steps:
@@ -79,7 +79,7 @@ jobs:
         run:  make security_miner_api
 
   datacap:
-    name: "DataCap API"
+    name: "DataCap API: security checks"
     timeout-minutes: 20
     runs-on: ubuntu-22.04
     steps:
@@ -93,7 +93,7 @@ jobs:
         run:  make security_datacap_api
 
   send:
-    name: "Send API"
+    name: "Send API: security checks"
     timeout-minutes: 20
     runs-on: ubuntu-22.04
     steps:
@@ -107,7 +107,7 @@ jobs:
         run:  make security_send_api
 
   precompiles:
-    name: "Precompiles API"
+    name: "Precompiles API: security checks"
     timeout-minutes: 20
     runs-on: ubuntu-22.04
     steps:
@@ -121,7 +121,7 @@ jobs:
         run:  make security_precompiles_api
 
   init:
-    name: "Init API"
+    name: "Init API: security checks"
     timeout-minutes: 20
     runs-on: ubuntu-22.04
     steps:
