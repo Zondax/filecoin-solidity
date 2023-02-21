@@ -33,6 +33,9 @@ library PowerAPI {
     using BytesCBOR for bytes;
     using PowerCBOR for *;
 
+    /// @notice create a new miner for the owner address and worker address.
+    /// @param params data required to create the miner
+    /// @param value the amount of token the new miner will receive
     function createMiner(PowerTypes.CreateMinerParams memory params, uint256 value) internal returns (PowerTypes.CreateMinerReturn memory) {
         require(address(this).balance >= value, "not enough balance");
 
@@ -45,6 +48,7 @@ library PowerAPI {
         return result.deserializeCreateMinerReturn();
     }
 
+    /// @notice get the total number of miners created, regardless of whether or not they have any pledged storage.
     function minerCount() internal returns (uint64) {
         bytes memory raw_request = new bytes(0);
 
@@ -55,6 +59,7 @@ library PowerAPI {
         return result.deserializeUint64();
     }
 
+    /// @notice get the total number of miners that have more than the consensus minimum amount of storage active.
     function minerConsensusCount() internal returns (int64) {
         bytes memory raw_request = new bytes(0);
 
@@ -65,6 +70,7 @@ library PowerAPI {
         return result.deserializeInt64();
     }
 
+    /// @notice get the total raw power of the network.
     function networkRawPower() internal returns (BigInt memory) {
         bytes memory raw_request = new bytes(0);
 
@@ -75,6 +81,8 @@ library PowerAPI {
         return result.deserializeBytesBigInt();
     }
 
+    /// @notice get the raw power claimed by the specified miner, and whether the miner has more than the consensus minimum amount of storage active.
+    /// @param minerID the miner id you want to get information from
     function minerRawPower(uint64 minerID) internal returns (PowerTypes.MinerRawPowerReturn memory) {
         bytes memory raw_request = minerID.serialize();
 
