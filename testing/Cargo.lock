@@ -1293,27 +1293,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "fil_actor_multisig"
-version = "10.0.0-alpha.1"
-source = "git+https://github.com/filecoin-project/builtin-actors?tag=dev/20230206-pre-rc.6#c5cbd5bc25b26958b83d43ecabed782132e43773"
-dependencies = [
- "anyhow",
- "cid",
- "fil_actors_runtime",
- "frc42_dispatch",
- "fvm_actor_utils",
- "fvm_ipld_blockstore",
- "fvm_ipld_encoding 0.3.3",
- "fvm_ipld_hamt",
- "fvm_shared 3.0.0-alpha.17",
- "indexmap",
- "integer-encoding",
- "num-derive",
- "num-traits",
- "serde",
-]
-
-[[package]]
 name = "fil_actors_evm_shared"
 version = "10.0.0-alpha.1"
 source = "git+https://github.com/filecoin-project/builtin-actors?tag=dev/20230206-pre-rc.6#c5cbd5bc25b26958b83d43ecabed782132e43773"
@@ -3646,7 +3625,6 @@ dependencies = [
  "fil_actor_evm",
  "fil_actor_init",
  "fil_actor_miner",
- "fil_actor_multisig",
  "fil_actors_runtime",
  "frc42_dispatch",
  "frc46_token",

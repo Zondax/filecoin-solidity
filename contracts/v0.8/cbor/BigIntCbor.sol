@@ -26,7 +26,6 @@ struct BigInt {
 
 library BigIntCBOR {
     function serializeBigInt(BigInt memory num) internal pure returns (bytes memory) {
-        // TODO improve gas efficiency by using assembly code
         bytes memory raw = new bytes(num.val.length + 1);
 
         if (num.neg) {
@@ -43,9 +42,6 @@ library BigIntCBOR {
     }
 
     function deserializeBigInt(bytes memory raw) internal pure returns (BigInt memory) {
-        // TODO improve gas efficiency by using assembly code
-
-        // Is an empty byte a valid BigInt ? We should have the sign byte at least
         if (raw.length == 0) {
             return BigInt(hex"00", false);
         }

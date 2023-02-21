@@ -19,7 +19,7 @@
 // SPDX-License-Identifier: Apache-2.0
 pragma solidity ^0.8.17;
 
-import "solidity-cborutils/contracts/CBOR.sol";
+import "../external/CBOR.sol";
 
 import "../types/MarketTypes.sol";
 import "./BigIntCbor.sol";
@@ -27,17 +27,16 @@ import "../utils/CborDecode.sol";
 import "../utils/Misc.sol";
 import "./FilecoinCbor.sol";
 
-/// @title FIXME
+/// @title This library is a set of functions meant to handle CBOR parameters serialization and return values deserialization for Market actor exported methods.
 /// @author Zondax AG
 library MarketCBOR {
     using CBOR for CBOR.CBORBuffer;
     using CBORDecoder for bytes;
     using BigIntCBOR for BigInt;
     using BigIntCBOR for bytes;
-    using FilecoinCbor for CBOR.CBORBuffer;
+    using FilecoinCBOR for CBOR.CBORBuffer;
 
     function serializeWithdrawBalanceParams(MarketTypes.WithdrawBalanceParams memory params) internal pure returns (bytes memory) {
-        // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
         buf.startFixedArray(2);
@@ -74,9 +73,7 @@ library MarketCBOR {
         return ret;
     }
 
-    function deserializeGetDealDataCommitmentReturn(
-        bytes memory rawResp
-    ) internal pure returns (MarketTypes.GetDealDataCommitmentReturn memory ret) {
+    function deserializeGetDealDataCommitmentReturn(bytes memory rawResp) internal pure returns (MarketTypes.GetDealDataCommitmentReturn memory ret) {
         uint byteIdx = 0;
         uint len;
 
@@ -129,9 +126,7 @@ library MarketCBOR {
         return ret;
     }
 
-    function deserializeGetDealEpochPriceReturn(
-        bytes memory rawResp
-    ) internal pure returns (MarketTypes.GetDealEpochPriceReturn memory ret) {
+    function deserializeGetDealEpochPriceReturn(bytes memory rawResp) internal pure returns (MarketTypes.GetDealEpochPriceReturn memory ret) {
         bytes memory tmp;
         uint byteIdx = 0;
 
@@ -141,9 +136,7 @@ library MarketCBOR {
         return ret;
     }
 
-    function deserializeGetDealClientCollateralReturn(
-        bytes memory rawResp
-    ) internal pure returns (MarketTypes.GetDealClientCollateralReturn memory ret) {
+    function deserializeGetDealClientCollateralReturn(bytes memory rawResp) internal pure returns (MarketTypes.GetDealClientCollateralReturn memory ret) {
         bytes memory tmp;
         uint byteIdx = 0;
 
@@ -153,9 +146,7 @@ library MarketCBOR {
         return ret;
     }
 
-    function deserializeGetDealProviderCollateralReturn(
-        bytes memory rawResp
-    ) internal pure returns (MarketTypes.GetDealProviderCollateralReturn memory ret) {
+    function deserializeGetDealProviderCollateralReturn(bytes memory rawResp) internal pure returns (MarketTypes.GetDealProviderCollateralReturn memory ret) {
         bytes memory tmp;
         uint byteIdx = 0;
 
@@ -173,9 +164,7 @@ library MarketCBOR {
         return ret;
     }
 
-    function deserializeGetDealActivationReturn(
-        bytes memory rawResp
-    ) internal pure returns (MarketTypes.GetDealActivationReturn memory ret) {
+    function deserializeGetDealActivationReturn(bytes memory rawResp) internal pure returns (MarketTypes.GetDealActivationReturn memory ret) {
         uint byteIdx = 0;
         uint len;
 
@@ -189,7 +178,6 @@ library MarketCBOR {
     }
 
     function serializePublishStorageDealsParams(MarketTypes.PublishStorageDealsParams memory params) internal pure returns (bytes memory) {
-        // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
         buf.startFixedArray(1);
@@ -218,9 +206,7 @@ library MarketCBOR {
         return buf.data();
     }
 
-    function deserializePublishStorageDealsReturn(
-        bytes memory rawResp
-    ) internal pure returns (MarketTypes.PublishStorageDealsReturn memory ret) {
+    function deserializePublishStorageDealsReturn(bytes memory rawResp) internal pure returns (MarketTypes.PublishStorageDealsReturn memory ret) {
         uint byteIdx = 0;
         uint len;
 
@@ -237,7 +223,6 @@ library MarketCBOR {
     }
 
     function serializeDealID(uint64 id) internal pure returns (bytes memory) {
-        // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
         buf.writeUInt64(id);

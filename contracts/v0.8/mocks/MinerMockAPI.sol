@@ -19,29 +19,29 @@
 // SPDX-License-Identifier: Apache-2.0
 pragma solidity ^0.8.17;
 
-import {BigNumbers, BigNumber} from "@zondax/solidity-bignumber/src/BigNumbers.sol";
+import {BigNumbers, BigNumber} from "../external/BigNumbers.sol";
 
 import "../types/MinerTypes.sol";
 
-/// @title This contract is a proxy to a built-in Miner actor. Calling one of its methods will result in a cross-actor call being performed. However, in this mock library, no actual call is performed.
+/// @title This library is a proxy to a built-in Miner actor. Calling one of its methods will result in a cross-actor call being performed. However, in this mock library, no actual call is performed.
 /// @author Zondax AG
 /// @dev Methods prefixed with mock_ will not be available in the real library. These methods are merely used to set mock state. Note that this interface will likely break in the future as we align it
 //       with that of the real library!
 contract MinerMockAPI {
     bytes owner;
     bool isBeneficiarySet = false;
-    CommonTypes.ActiveBeneficiary activeBeneficiary;
-    mapping(CommonTypes.SectorSize => uint64) sectorSizesBytes;
+    MinerTypes.ActiveBeneficiary activeBeneficiary;
+    mapping(MinerTypes.SectorSize => uint64) sectorSizesBytes;
 
     /// @notice (Mock method) Sets the owner of a Miner on contract deployment, which will be returned via get_owner().
     constructor(bytes memory _owner) {
         owner = _owner;
 
-        sectorSizesBytes[CommonTypes.SectorSize._2KiB] = 2 << 10;
-        sectorSizesBytes[CommonTypes.SectorSize._8MiB] = 8 << 20;
-        sectorSizesBytes[CommonTypes.SectorSize._512MiB] = 512 << 20;
-        sectorSizesBytes[CommonTypes.SectorSize._32GiB] = 32 << 30;
-        sectorSizesBytes[CommonTypes.SectorSize._64GiB] = 2 * (32 << 30);
+        sectorSizesBytes[MinerTypes.SectorSize._2KiB] = 2 << 10;
+        sectorSizesBytes[MinerTypes.SectorSize._8MiB] = 8 << 20;
+        sectorSizesBytes[MinerTypes.SectorSize._512MiB] = 512 << 20;
+        sectorSizesBytes[MinerTypes.SectorSize._32GiB] = 32 << 30;
+        sectorSizesBytes[MinerTypes.SectorSize._64GiB] = 2 * (32 << 30);
     }
 
     /// @notice (Mock method) Sets the owner of a Miner, which will be returned via get_owner().
@@ -70,9 +70,7 @@ contract MinerMockAPI {
 
     /// @param params The "controlling" addresses are the Owner, the Worker, and all Control Addresses.
     /// @return Whether the provided address is "controlling".
-    function isControllingAddress(
-        MinerTypes.IsControllingAddressParam memory params
-    ) public pure returns (MinerTypes.IsControllingAddressReturn memory) {
+    function isControllingAddress(MinerTypes.IsControllingAddressParam memory params) public pure returns (MinerTypes.IsControllingAddressReturn memory) {
         require(params.addr[0] >= 0x00);
 
         return MinerTypes.IsControllingAddressReturn(false);
@@ -80,7 +78,7 @@ contract MinerMockAPI {
 
     /// @return the miner's sector size.
     function getSectorSize() public view returns (MinerTypes.GetSectorSizeReturn memory) {
-        return MinerTypes.GetSectorSizeReturn(sectorSizesBytes[CommonTypes.SectorSize._8MiB]);
+        return MinerTypes.GetSectorSizeReturn(sectorSizesBytes[MinerTypes.SectorSize._8MiB]);
     }
 
     /// @notice This is calculated as actor balance - (vesting funds + pre-commit deposit + initial pledge requirement + fee debt)
@@ -92,8 +90,8 @@ contract MinerMockAPI {
 
     /// @return the funds vesting in this miner as a list of (vesting_epoch, vesting_amount) tuples.
     function getVestingFunds() public pure returns (MinerTypes.GetVestingFundsReturn memory) {
-        CommonTypes.VestingFunds[] memory vesting_funds = new CommonTypes.VestingFunds[](1);
-        vesting_funds[0] = CommonTypes.VestingFunds(1668514825, BigInt(hex"6C6B935B8BBD400000", false));
+        MinerTypes.VestingFunds[] memory vesting_funds = new MinerTypes.VestingFunds[](1);
+        vesting_funds[0] = MinerTypes.VestingFunds(1668514825, BigInt(hex"6C6B935B8BBD400000", false));
 
         return MinerTypes.GetVestingFundsReturn(vesting_funds);
     }
@@ -104,12 +102,8 @@ contract MinerMockAPI {
     function changeBeneficiary(MinerTypes.ChangeBeneficiaryParams memory params) public {
         if (!isBeneficiarySet) {
             BigNumber memory zero = BigNumbers.zero();
-            CommonTypes.BeneficiaryTerm memory term = CommonTypes.BeneficiaryTerm(
-                params.new_quota,
-                BigInt(zero.val, zero.neg),
-                params.new_expiration
-            );
-            activeBeneficiary = CommonTypes.ActiveBeneficiary(params.new_beneficiary, term);
+            MinerTypes.BeneficiaryTerm memory term = MinerTypes.BeneficiaryTerm(params.new_quota, BigInt(zero.val, zero.neg), params.new_expiration);
+            activeBeneficiary = MinerTypes.ActiveBeneficiary(params.new_beneficiary, term);
             isBeneficiarySet = true;
         } else {
             activeBeneficiary.beneficiary = params.new_beneficiary;
@@ -123,7 +117,7 @@ contract MinerMockAPI {
     function getBeneficiary() public view returns (MinerTypes.GetBeneficiaryReturn memory) {
         require(isBeneficiarySet);
 
-        CommonTypes.PendingBeneficiaryChange memory proposed;
+        MinerTypes.PendingBeneficiaryChange memory proposed;
         return MinerTypes.GetBeneficiaryReturn(activeBeneficiary, proposed);
     }
 }

@@ -19,7 +19,7 @@
 // SPDX-License-Identifier: Apache-2.0
 pragma solidity ^0.8.17;
 
-import "solidity-cborutils/contracts/CBOR.sol";
+import "../external/CBOR.sol";
 
 import "../types/CommonTypes.sol";
 import "../types/VerifRegTypes.sol";
@@ -27,7 +27,7 @@ import "../utils/CborDecode.sol";
 import "../utils/Misc.sol";
 import "./BigIntCbor.sol";
 
-/// @title FIXME
+/// @title This library is a set of functions meant to handle CBOR parameters serialization and return values deserialization for VerifReg actor exported methods.
 /// @author Zondax AG
 library VerifRegCBOR {
     using CBOR for CBOR.CBORBuffer;
@@ -36,7 +36,6 @@ library VerifRegCBOR {
     using BigIntCBOR for bytes;
 
     function serializeGetClaimsParams(VerifRegTypes.GetClaimsParams memory params) internal pure returns (bytes memory) {
-        // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
         uint claimIdsLen = params.claim_ids.length;
@@ -75,7 +74,7 @@ library VerifRegCBOR {
         }
 
         (len, byteIdx) = rawResp.readFixedArray(byteIdx);
-        ret.claims = new CommonTypes.Claim[](len);
+        ret.claims = new VerifRegTypes.Claim[](len);
 
         for (uint i = 0; i < len; i++) {
             (len, byteIdx) = rawResp.readFixedArray(byteIdx);
@@ -95,7 +94,6 @@ library VerifRegCBOR {
     }
 
     function serializeAddVerifierClientParams(VerifRegTypes.AddVerifierClientParams memory params) internal pure returns (bytes memory) {
-        // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
         buf.startFixedArray(2);
@@ -105,10 +103,7 @@ library VerifRegCBOR {
         return buf.data();
     }
 
-    function serializeRemoveExpiredAllocationsParams(
-        VerifRegTypes.RemoveExpiredAllocationsParams memory params
-    ) internal pure returns (bytes memory) {
-        // FIXME what should the max length be on the buffer?
+    function serializeRemoveExpiredAllocationsParams(VerifRegTypes.RemoveExpiredAllocationsParams memory params) internal pure returns (bytes memory) {
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
         uint allocationIdsLen = params.allocation_ids.length;
@@ -123,9 +118,7 @@ library VerifRegCBOR {
         return buf.data();
     }
 
-    function deserializeRemoveExpiredAllocationsReturn(
-        bytes memory rawResp
-    ) internal pure returns (VerifRegTypes.RemoveExpiredAllocationsReturn memory ret) {
+    function deserializeRemoveExpiredAllocationsReturn(bytes memory rawResp) internal pure returns (VerifRegTypes.RemoveExpiredAllocationsReturn memory ret) {
         uint byteIdx = 0;
         uint len;
 
@@ -163,7 +156,6 @@ library VerifRegCBOR {
     }
 
     function serializeExtendClaimTermsParams(VerifRegTypes.ExtendClaimTermsParams memory params) internal pure returns (bytes memory) {
-        // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
         uint termsLen = params.terms.length;
@@ -203,10 +195,7 @@ library VerifRegCBOR {
         return ret;
     }
 
-    function serializeRemoveExpiredClaimsParams(
-        VerifRegTypes.RemoveExpiredClaimsParams memory params
-    ) internal pure returns (bytes memory) {
-        // FIXME what should the max length be on the buffer?
+    function serializeRemoveExpiredClaimsParams(VerifRegTypes.RemoveExpiredClaimsParams memory params) internal pure returns (bytes memory) {
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
         uint claimIdsLen = params.claim_ids.length;
@@ -221,9 +210,7 @@ library VerifRegCBOR {
         return buf.data();
     }
 
-    function deserializeRemoveExpiredClaimsReturn(
-        bytes memory rawResp
-    ) internal pure returns (VerifRegTypes.RemoveExpiredClaimsReturn memory ret) {
+    function deserializeRemoveExpiredClaimsReturn(bytes memory rawResp) internal pure returns (VerifRegTypes.RemoveExpiredClaimsReturn memory ret) {
         uint byteIdx = 0;
         uint len;
 
@@ -254,17 +241,6 @@ library VerifRegCBOR {
         }
 
         return ret;
-    }
-
-    function serializeUniversalReceiverParams(VerifRegTypes.UniversalReceiverParams memory params) internal pure returns (bytes memory) {
-        // FIXME what should the max length be on the buffer?
-        CBOR.CBORBuffer memory buf = CBOR.create(64);
-
-        buf.startFixedArray(2);
-        buf.writeUInt64(params.type_);
-        buf.writeBytes(params.payload);
-
-        return buf.data();
     }
 
     function deserializeAllocationsResponse(bytes memory rawResp) internal pure returns (VerifRegTypes.AllocationsResponse memory ret) {

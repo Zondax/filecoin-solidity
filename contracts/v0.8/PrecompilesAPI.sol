@@ -24,8 +24,6 @@ pragma solidity ^0.8.0;
 library PrecompilesAPI {
     address constant RESOLVE_ADDRESS_PRECOMPILE_ADDR = 0xFE00000000000000000000000000000000000001;
     address constant LOOKUP_DELEGATED_ADDRESS_PRECOMPILE_ADDR = 0xfE00000000000000000000000000000000000002;
-    address constant GET_ACTOR_TYPE_PRECOMPILE_ADDR = 0xFe00000000000000000000000000000000000004;
-    address constant RIPEMD160_PRECOMPILE_ADDR = 0x0000000000000000000000000000000000000003;
 
     function resolveAddress(bytes memory addr) internal view returns (uint64) {
         (bool success, bytes memory raw_response) = address(RESOLVE_ADDRESS_PRECOMPILE_ADDR).staticcall(addr);
@@ -48,26 +46,8 @@ library PrecompilesAPI {
     }
 
     function lookupDelegatedAddress(uint64 actor_id) internal view returns (bytes memory) {
-        (bool success, bytes memory raw_response) = address(LOOKUP_DELEGATED_ADDRESS_PRECOMPILE_ADDR).staticcall(
-            abi.encodePacked(uint256(actor_id))
-        );
+        (bool success, bytes memory raw_response) = address(LOOKUP_DELEGATED_ADDRESS_PRECOMPILE_ADDR).staticcall(abi.encodePacked(uint256(actor_id)));
         require(success == true, "lookup delegated address error");
-
-        return raw_response;
-    }
-
-    function getActorType(uint64 actor_id) internal view returns (uint256) {
-        (bool success, bytes memory raw_response) = address(GET_ACTOR_TYPE_PRECOMPILE_ADDR).staticcall(abi.encodePacked(uint256(actor_id)));
-        require(success == true, "get actor type error");
-
-        uint256 builtin_type = abi.decode(raw_response, (uint256));
-
-        return builtin_type;
-    }
-
-    function getRipemd160Hash(bytes memory input) internal view returns (bytes memory) {
-        (bool success, bytes memory raw_response) = address(RIPEMD160_PRECOMPILE_ADDR).staticcall(input);
-        require(success == true, "ripemd160 error");
 
         return raw_response;
     }

@@ -21,13 +21,19 @@ pragma solidity ^0.8.0;
 
 import "./cbor/AccountCbor.sol";
 import "./cbor/BytesCbor.sol";
+import "./cbor/FilecoinCbor.sol";
+
 import "./types/AccountTypes.sol";
+import "./types/CommonTypes.sol";
 import "./types/DataCapTypes.sol";
+
+import "./utils/Actor.sol";
 
 /// @title This library compiles a bunch of help function.
 /// @author Zondax AG
 library Utils {
     using AccountCBOR for *;
+    using FilecoinCBOR for *;
     using BytesCBOR for bytes;
 
     event ReceivedDataCap(string received);
@@ -44,5 +50,17 @@ library Utils {
         } else {
             revert("the filecoin method that was called is not handled");
         }
+    }
+
+    /// @param target The actor id you want to interact with
+    function universalReceiverHook(uint64 target, CommonTypes.UniversalReceiverParams memory params) internal returns (bytes memory) {
+        bytes memory raw_request = params.serializeUniversalReceiverParams();
+
+        bytes memory raw_response = Actor.callByID(target, CommonTypes.UniversalReceiverHookMethodNum, Misc.CBOR_CODEC, raw_request, 0, false);
+
+        bytes memory result = Actor.readRespData(raw_response);
+        require(result.length == 0, "unexpected response received");
+
+        return result;
     }
 }

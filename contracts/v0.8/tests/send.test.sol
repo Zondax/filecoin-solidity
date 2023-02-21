@@ -23,7 +23,7 @@ import "../SendAPI.sol";
 
 /// @author Zondax AG
 contract SendApiTest {
-    function send(bytes memory toAddress, uint256 amount) public {
-        return SendAPI.send(toAddress, amount);
+    function send(uint64 receiverActorId, uint256 amount) public {
+        return SendAPI.send(receiverActorId, amount);
     }
 }

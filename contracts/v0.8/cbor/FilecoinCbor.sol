@@ -19,12 +19,13 @@
 // SPDX-License-Identifier: Apache-2.0
 pragma solidity ^0.8.17;
 
-import "solidity-cborutils/contracts/CBOR.sol";
-import "@ensdomains/buffer/contracts/Buffer.sol";
+import "../external/CBOR.sol";
+import "../external/Buffer.sol";
+import "../types/CommonTypes.sol";
 
-/// @title FIXME
+/// @title This library is a set of functions meant to handle CBOR serialization and deserialization for general data types on the filecoin network.
 /// @author Zondax AG
-library FilecoinCbor {
+library FilecoinCBOR {
     using Buffer for Buffer.buffer;
     using CBOR for CBOR.CBORBuffer;
 
@@ -36,5 +37,15 @@ library FilecoinCbor {
         buf.buf.appendUint8(uint8(((MAJOR_TYPE_TAG << 5) | PAYLOAD_LEN_8_BITS)));
         buf.buf.appendUint8(TAG_TYPE_CID_CODE);
         buf.writeBytes(value);
+    }
+
+    function serializeUniversalReceiverParams(CommonTypes.UniversalReceiverParams memory params) internal pure returns (bytes memory) {
+        CBOR.CBORBuffer memory buf = CBOR.create(64);
+
+        buf.startFixedArray(2);
+        buf.writeUInt64(params.type_);
+        buf.writeBytes(params.payload);
+
+        return buf.data();
     }
 }
