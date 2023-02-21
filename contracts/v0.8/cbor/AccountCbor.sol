@@ -46,7 +46,7 @@ library AccountCBOR {
 
     /// @notice deserialize AuthenticateMessageParams struct from cbor encoded bytes coming from an account actor call
     /// @param rawResp cbor encoded response
-    /// @return new instance of AuthenticateMessageParams created based on parsed data
+    /// @return ret new instance of AuthenticateMessageParams created based on parsed data
     function deserializeAuthenticateMessageParams(bytes memory rawResp) internal pure returns (AccountTypes.AuthenticateMessageParams memory ret) {
         uint byteIdx = 0;
         uint len;

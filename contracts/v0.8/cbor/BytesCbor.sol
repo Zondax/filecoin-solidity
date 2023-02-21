@@ -106,7 +106,7 @@ library BytesCBOR {
     }
 
     /// @notice deserialize cbor encoded uint64
-    /// @param ret cbor encoded uint64 (in bytes)
+    /// @param rawResp cbor encoded uint64 (in bytes)
     /// @return decoded uint64
     function deserializeUint64(bytes memory rawResp) internal pure returns (uint64) {
         uint byteIdx = 0;
@@ -117,7 +117,7 @@ library BytesCBOR {
     }
 
     /// @notice deserialize cbor encoded int64
-    /// @param ret cbor encoded int64 (in bytes)
+    /// @param rawResp cbor encoded int64 (in bytes)
     /// @return decoded int64
     function deserializeInt64(bytes memory rawResp) internal pure returns (int64) {
         uint byteIdx = 0;

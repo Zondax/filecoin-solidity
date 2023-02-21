@@ -48,7 +48,7 @@ library InitCBOR {
 
     /// @notice deserialize ExecReturn struct from cbor encoded bytes coming from a init actor call
     /// @param rawResp cbor encoded response
-    /// @return new instance of ExecReturn created based on parsed data
+    /// @return ret new instance of ExecReturn created based on parsed data
     function deserializeExecReturn(bytes memory rawResp) internal pure returns (InitTypes.ExecReturn memory ret) {
         uint byteIdx = 0;
         uint len;
@@ -78,7 +78,7 @@ library InitCBOR {
 
     /// @notice deserialize Exec4Return struct from cbor encoded bytes coming from a init actor call
     /// @param rawResp cbor encoded response
-    /// @return new instance of Exec4Return created based on parsed data
+    /// @return ret new instance of Exec4Return created based on parsed data
     function deserializeExec4Return(bytes memory rawResp) internal pure returns (InitTypes.Exec4Return memory ret) {
         uint byteIdx = 0;
         uint len;

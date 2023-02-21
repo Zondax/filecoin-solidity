@@ -50,7 +50,7 @@ library MinerCBOR {
 
     /// @notice deserialize GetOwnerReturn struct from cbor encoded bytes coming from a miner actor call
     /// @param rawResp cbor encoded response
-    /// @return new instance of GetOwnerReturn created based on parsed data
+    /// @return ret new instance of GetOwnerReturn created based on parsed data
     function deserializeGetOwnerReturn(bytes memory rawResp) internal pure returns (MinerTypes.GetOwnerReturn memory ret) {
         uint byteIdx = 0;
         uint len;
@@ -71,7 +71,7 @@ library MinerCBOR {
 
     /// @notice deserialize IsControllingAddressReturn struct from cbor encoded bytes coming from a miner actor call
     /// @param rawResp cbor encoded response
-    /// @return new instance of IsControllingAddressReturn created based on parsed data
+    /// @return ret new instance of IsControllingAddressReturn created based on parsed data
     function deserializeIsControllingAddressReturn(bytes memory rawResp) internal pure returns (MinerTypes.IsControllingAddressReturn memory ret) {
         uint byteIdx = 0;
 
@@ -81,7 +81,7 @@ library MinerCBOR {
 
     /// @notice deserialize GetSectorSizeReturn struct from cbor encoded bytes coming from a miner actor call
     /// @param rawResp cbor encoded response
-    /// @return new instance of GetSectorSizeReturn created based on parsed data
+    /// @return ret new instance of GetSectorSizeReturn created based on parsed data
     function deserializeGetSectorSizeReturn(bytes memory rawResp) internal pure returns (MinerTypes.GetSectorSizeReturn memory ret) {
         uint byteIdx = 0;
 
@@ -91,7 +91,7 @@ library MinerCBOR {
 
     /// @notice deserialize GetAvailableBalanceReturn struct from cbor encoded bytes coming from a miner actor call
     /// @param rawResp cbor encoded response
-    /// @return new instance of GetAvailableBalanceReturn created based on parsed data
+    /// @return ret new instance of GetAvailableBalanceReturn created based on parsed data
     function deserializeGetAvailableBalanceReturn(bytes memory rawResp) internal pure returns (MinerTypes.GetAvailableBalanceReturn memory ret) {
         uint byteIdx = 0;
 
@@ -108,7 +108,7 @@ library MinerCBOR {
 
     /// @notice deserialize GetBeneficiaryReturn struct from cbor encoded bytes coming from a miner actor call
     /// @param rawResp cbor encoded response
-    /// @return new instance of GetBeneficiaryReturn created based on parsed data
+    /// @return ret new instance of GetBeneficiaryReturn created based on parsed data
     function deserializeGetBeneficiaryReturn(bytes memory rawResp) internal pure returns (MinerTypes.GetBeneficiaryReturn memory ret) {
         bytes memory tmp;
         uint byteIdx = 0;
@@ -164,7 +164,7 @@ library MinerCBOR {
 
     /// @notice deserialize GetVestingFundsReturn struct from cbor encoded bytes coming from a miner actor call
     /// @param rawResp cbor encoded response
-    /// @return new instance of GetVestingFundsReturn created based on parsed data
+    /// @return ret new instance of GetVestingFundsReturn created based on parsed data
     function deserializeGetVestingFundsReturn(bytes memory rawResp) internal pure returns (MinerTypes.GetVestingFundsReturn memory ret) {
         int64 epoch;
         BigInt memory amount;
@@ -237,7 +237,7 @@ library MinerCBOR {
 
     /// @notice deserialize GetPeerIDReturn struct from cbor encoded bytes coming from a miner actor call
     /// @param rawResp cbor encoded response
-    /// @return new instance of GetPeerIDReturn created based on parsed data
+    /// @return ret new instance of GetPeerIDReturn created based on parsed data
     function deserializeGetPeerIDReturn(bytes memory rawResp) internal pure returns (MinerTypes.GetPeerIDReturn memory ret) {
         uint byteIdx = 0;
         uint len;
@@ -250,7 +250,7 @@ library MinerCBOR {
 
     /// @notice deserialize GetMultiaddrsReturn struct from cbor encoded bytes coming from a miner actor call
     /// @param rawResp cbor encoded response
-    /// @return new instance of GetMultiaddrsReturn created based on parsed data
+    /// @return ret new instance of GetMultiaddrsReturn created based on parsed data
     function deserializeGetMultiaddrsReturn(bytes memory rawResp) internal pure returns (MinerTypes.GetMultiaddrsReturn memory ret) {
         uint byteIdx = 0;
         uint len;
@@ -282,7 +282,7 @@ library MinerCBOR {
 
     /// @notice deserialize WithdrawBalanceReturn struct from cbor encoded bytes coming from a miner actor call
     /// @param rawResp cbor encoded response
-    /// @return new instance of WithdrawBalanceReturn created based on parsed data
+    /// @return ret new instance of WithdrawBalanceReturn created based on parsed data
     function deserializeWithdrawBalanceReturn(bytes memory rawResp) internal pure returns (MinerTypes.WithdrawBalanceReturn memory ret) {
         uint byteIdx = 0;
 

@@ -57,7 +57,7 @@ library PowerCBOR {
 
     /// @notice deserialize CreateMinerReturn struct from cbor encoded bytes coming from a power actor call
     /// @param rawResp cbor encoded response
-    /// @return new instance of CreateMinerReturn created based on parsed data
+    /// @return ret new instance of CreateMinerReturn created based on parsed data
     function deserializeCreateMinerReturn(bytes memory rawResp) internal pure returns (PowerTypes.CreateMinerReturn memory ret) {
         uint byteIdx = 0;
         uint len;
@@ -73,7 +73,7 @@ library PowerCBOR {
 
     /// @notice deserialize MinerRawPowerReturn struct from cbor encoded bytes coming from a power actor call
     /// @param rawResp cbor encoded response
-    /// @return new instance of MinerRawPowerReturn created based on parsed data
+    /// @return ret new instance of MinerRawPowerReturn created based on parsed data
     function deserializeMinerRawPowerReturn(bytes memory rawResp) internal pure returns (PowerTypes.MinerRawPowerReturn memory ret) {
         uint byteIdx = 0;
         uint len;

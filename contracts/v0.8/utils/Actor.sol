@@ -64,7 +64,7 @@ library Actor {
     }
 
     /// @notice allows to interact with an specific actor by its id (uint64)
-    /// @param actor_address actor id (uint64) to interact with
+    /// @param actor_id actor id (uint64) to interact with
     /// @param method_num id of the method from the actor to call
     /// @param codec how the request data passed as argument is encoded
     /// @param raw_request encoded arguments to be passed in the call
@@ -87,7 +87,7 @@ library Actor {
     }
 
     /// @notice allows to interact with an non-singleton actors by its id (uint64)
-    /// @param actor_address actor id (uint64) to interact with
+    /// @param actor_id actor id (uint64) to interact with
     /// @param method_num id of the method from the actor to call
     /// @param codec how the request data passed as argument is encoded
     /// @param raw_request encoded arguments to be passed in the call

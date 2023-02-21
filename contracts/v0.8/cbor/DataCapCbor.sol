@@ -64,7 +64,7 @@ library DataCapCBOR {
 
     /// @notice deserialize TransferReturn struct from cbor encoded bytes coming from a datacap actor call
     /// @param rawResp cbor encoded response
-    /// @return new instance of TransferReturn created based on parsed data
+    /// @return ret new instance of TransferReturn created based on parsed data
     function deserializeTransferReturn(bytes memory rawResp) internal pure returns (DataCapTypes.TransferReturn memory ret) {
         uint byteIdx = 0;
         uint len;
@@ -101,7 +101,7 @@ library DataCapCBOR {
 
     /// @notice deserialize TransferFromReturn struct from cbor encoded bytes coming from a datacap actor call
     /// @param rawResp cbor encoded response
-    /// @return new instance of TransferFromReturn created based on parsed data
+    /// @return ret new instance of TransferFromReturn created based on parsed data
     function deserializeTransferFromReturn(bytes memory rawResp) internal pure returns (DataCapTypes.TransferFromReturn memory ret) {
         uint byteIdx = 0;
         uint len;
@@ -176,7 +176,7 @@ library DataCapCBOR {
 
     /// @notice deserialize BurnReturn struct from cbor encoded bytes coming from a datacap actor call
     /// @param rawResp cbor encoded response
-    /// @return new instance of BurnReturn created based on parsed data
+    /// @return ret new instance of BurnReturn created based on parsed data
     function deserializeBurnReturn(bytes memory rawResp) internal pure returns (DataCapTypes.BurnReturn memory ret) {
         uint byteIdx = 0;
         uint len;
@@ -206,7 +206,7 @@ library DataCapCBOR {
 
     /// @notice deserialize BurnFromReturn struct from cbor encoded bytes coming from a datacap actor call
     /// @param rawResp cbor encoded response
-    /// @return new instance of BurnFromReturn created based on parsed data
+    /// @return ret new instance of BurnFromReturn created based on parsed data
     function deserializeBurnFromReturn(bytes memory rawResp) internal pure returns (DataCapTypes.BurnFromReturn memory ret) {
         uint byteIdx = 0;
         uint len;

@@ -55,7 +55,7 @@ library VerifRegCBOR {
 
     /// @notice deserialize GetClaimsReturn struct from cbor encoded bytes coming from a verified registry actor call
     /// @param rawResp cbor encoded response
-    /// @return new instance of GetClaimsReturn created based on parsed data
+    /// @return ret new instance of GetClaimsReturn created based on parsed data
     function deserializeGetClaimsReturn(bytes memory rawResp) internal pure returns (VerifRegTypes.GetClaimsReturn memory ret) {
         uint byteIdx = 0;
         uint len;
@@ -132,7 +132,7 @@ library VerifRegCBOR {
 
     /// @notice deserialize RemoveExpiredAllocationsReturn struct from cbor encoded bytes coming from a verified registry actor call
     /// @param rawResp cbor encoded response
-    /// @return new instance of RemoveExpiredAllocationsReturn created based on parsed data
+    /// @return ret new instance of RemoveExpiredAllocationsReturn created based on parsed data
     function deserializeRemoveExpiredAllocationsReturn(bytes memory rawResp) internal pure returns (VerifRegTypes.RemoveExpiredAllocationsReturn memory ret) {
         uint byteIdx = 0;
         uint len;
@@ -192,7 +192,7 @@ library VerifRegCBOR {
 
     /// @notice deserialize BatchReturn struct from cbor encoded bytes coming from a verified registry actor call
     /// @param rawResp cbor encoded response
-    /// @return new instance of BatchReturn created based on parsed data
+    /// @return ret new instance of BatchReturn created based on parsed data
     function deserializeBatchReturn(bytes memory rawResp) internal pure returns (CommonTypes.BatchReturn memory ret) {
         uint byteIdx = 0;
         uint len;
@@ -236,7 +236,7 @@ library VerifRegCBOR {
 
     /// @notice deserialize RemoveExpiredClaimsReturn struct from cbor encoded bytes coming from a verified registry actor call
     /// @param rawResp cbor encoded response
-    /// @return new instance of RemoveExpiredClaimsReturn created based on parsed data
+    /// @return ret new instance of RemoveExpiredClaimsReturn created based on parsed data
     function deserializeRemoveExpiredClaimsReturn(bytes memory rawResp) internal pure returns (VerifRegTypes.RemoveExpiredClaimsReturn memory ret) {
         uint byteIdx = 0;
         uint len;
@@ -272,7 +272,7 @@ library VerifRegCBOR {
 
     /// @notice deserialize AllocationsResponse struct from cbor encoded bytes coming from a verified registry actor call
     /// @param rawResp cbor encoded response
-    /// @return new instance of AllocationsResponse created based on parsed data
+    /// @return ret new instance of AllocationsResponse created based on parsed data
     function deserializeAllocationsResponse(bytes memory rawResp) internal pure returns (VerifRegTypes.AllocationsResponse memory ret) {
         uint byteIdx = 0;
         uint len;
