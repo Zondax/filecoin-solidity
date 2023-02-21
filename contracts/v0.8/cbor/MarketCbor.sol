@@ -259,6 +259,28 @@ library MarketCBOR {
 
     }
 
+    function serializeDealProposal(CommonTypes.DealProposal memory dealProposal) internal pure returns (bytes memory) {
+        // FIXME what should the max length be on the buffer?
+        CBOR.CBORBuffer memory buf = CBOR.create(64);
+
+        buf.startFixedArray(11);
+
+        buf.writeCid(dealProposal.piece_cid);
+        buf.writeUInt64(dealProposal.piece_size);
+        buf.writeBool(dealProposal.verified_deal);
+        buf.writeBytes(dealProposal.client);
+        buf.writeBytes(dealProposal.provider);
+        buf.writeString(dealProposal.label);
+        buf.writeInt64(dealProposal.start_epoch);
+        buf.writeInt64(dealProposal.end_epoch);
+        buf.writeBytes(dealProposal.storage_price_per_epoch.serializeBigInt());
+        buf.writeBytes(dealProposal.provider_collateral.serializeBigInt());
+        buf.writeBytes(dealProposal.client_collateral.serializeBigInt());
+
+        return buf.data();
+    }
+
+
     function deserializeDealProposal(bytes memory rawResp) internal pure returns (CommonTypes.DealProposal memory ret) {
         uint byteIdx = 0;
         uint len;
