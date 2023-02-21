@@ -31,31 +31,11 @@ library AccountAPI {
     using AccountCBOR for *;
     using BytesCBOR for bytes;
 
-    /// @param target The account address (filecoin bytes format) you want to interact with
-    function authenticateMessage(bytes memory target, AccountTypes.AuthenticateMessageParams memory params) internal {
-        bytes memory raw_request = params.serializeAuthenticateMessageParams();
-
-        bytes memory raw_response = Actor.call(AccountTypes.AuthenticateMessageMethodNum, target, raw_request, Misc.CBOR_CODEC, 0, false);
-
-        bytes memory result = Actor.readRespData(raw_response);
-        require(result.length == 0, "unexpected response received");
-    }
-
     /// @param target The account actor id you want to interact with
     function authenticateMessage(uint64 target, AccountTypes.AuthenticateMessageParams memory params) internal {
         bytes memory raw_request = params.serializeAuthenticateMessageParams();
 
         bytes memory raw_response = Actor.callByID(target, AccountTypes.AuthenticateMessageMethodNum, Misc.CBOR_CODEC, raw_request, 0, false);
-
-        bytes memory result = Actor.readRespData(raw_response);
-        require(result.length == 0, "unexpected response received");
-    }
-
-    /// @param target The account address (filecoin bytes format) you want to interact with
-    function universalReceiverHook(bytes memory target, AccountTypes.UniversalReceiverParams memory params) internal {
-        bytes memory raw_request = params.serializeUniversalReceiverParams();
-
-        bytes memory raw_response = Actor.call(AccountTypes.UniversalReceiverHookMethodNum, target, raw_request, Misc.CBOR_CODEC, 0, false);
 
         bytes memory result = Actor.readRespData(raw_response);
         require(result.length == 0, "unexpected response received");
