@@ -19,14 +19,14 @@
 // SPDX-License-Identifier: Apache-2.0
 pragma solidity ^0.8.17;
 
-import "solidity-cborutils/contracts/CBOR.sol";
+import "../external/CBOR.sol";
 
 import {InitTypes} from "../types/InitTypes.sol";
 import "./FilecoinCbor.sol";
 import "../utils/CborDecode.sol";
 import "../utils/Misc.sol";
 
-/// @title FIXME
+/// @title This library is a set of functions meant to handle CBOR parameters serialization and return values deserialization for Init actor exported methods.
 /// @author Zondax AG
 library InitCBOR {
     using CBOR for CBOR.CBORBuffer;
@@ -34,7 +34,6 @@ library InitCBOR {
     using CBORDecoder for bytes;
 
     function serializeExecParams(InitTypes.ExecParams memory params) internal pure returns (bytes memory) {
-        // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
         buf.startFixedArray(2);
@@ -58,7 +57,6 @@ library InitCBOR {
     }
 
     function serializeExec4Params(InitTypes.Exec4Params memory params) internal pure returns (bytes memory) {
-        // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
         buf.startFixedArray(3);

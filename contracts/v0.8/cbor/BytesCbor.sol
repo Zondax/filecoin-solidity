@@ -19,7 +19,7 @@
 // SPDX-License-Identifier: Apache-2.0
 pragma solidity ^0.8.17;
 
-import "solidity-cborutils/contracts/CBOR.sol";
+import "../external/CBOR.sol";
 
 import "../utils/CborDecode.sol";
 import "./BigIntCbor.sol";
@@ -30,7 +30,6 @@ library BytesCBOR {
     using BigIntCBOR for bytes;
 
     function serializeBytes(bytes memory data) internal pure returns (bytes memory) {
-        // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
         buf.writeBytes(data);
@@ -39,7 +38,6 @@ library BytesCBOR {
     }
 
     function serializeAddress(bytes memory addr) internal pure returns (bytes memory) {
-        // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
         buf.writeBytes(addr);
@@ -48,7 +46,6 @@ library BytesCBOR {
     }
 
     function serializeNull() internal pure returns (bytes memory) {
-        // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
         buf.writeNull();

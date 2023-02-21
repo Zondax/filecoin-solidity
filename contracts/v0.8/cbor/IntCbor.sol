@@ -19,7 +19,7 @@
 // SPDX-License-Identifier: Apache-2.0
 pragma solidity ^0.8.17;
 
-import "solidity-cborutils/contracts/CBOR.sol";
+import "../external/CBOR.sol";
 
 import "../utils/CborDecode.sol";
 
@@ -28,7 +28,6 @@ library Uint64CBOR {
     using CBORDecoder for bytes;
 
     function serialize(uint64 id) internal pure returns (bytes memory) {
-        // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
         buf.writeUInt64(id);

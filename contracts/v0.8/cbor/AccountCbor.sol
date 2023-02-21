@@ -19,20 +19,19 @@
 // SPDX-License-Identifier: Apache-2.0
 pragma solidity ^0.8.17;
 
-import "solidity-cborutils/contracts/CBOR.sol";
+import "../external/CBOR.sol";
 
 import "../types/AccountTypes.sol";
 import "../utils/CborDecode.sol";
 import "../utils/Misc.sol";
 
-/// @title FIXME
+/// @title This library is a set of functions meant to handle CBOR parameters serialization and return values deserialization for Account actor exported methods.
 /// @author Zondax AG
 library AccountCBOR {
     using CBOR for CBOR.CBORBuffer;
     using CBORDecoder for bytes;
 
     function serializeAuthenticateMessageParams(AccountTypes.AuthenticateMessageParams memory params) internal pure returns (bytes memory) {
-        // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
         buf.startFixedArray(2);
@@ -42,9 +41,7 @@ library AccountCBOR {
         return buf.data();
     }
 
-    function deserializeAuthenticateMessageParams(
-        bytes memory rawResp
-    ) internal pure returns (AccountTypes.AuthenticateMessageParams memory ret) {
+    function deserializeAuthenticateMessageParams(bytes memory rawResp) internal pure returns (AccountTypes.AuthenticateMessageParams memory ret) {
         uint byteIdx = 0;
         uint len;
 
@@ -58,7 +55,6 @@ library AccountCBOR {
     }
 
     function serializeUniversalReceiverParams(AccountTypes.UniversalReceiverParams memory params) internal pure returns (bytes memory) {
-        // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
         buf.startFixedArray(2);
