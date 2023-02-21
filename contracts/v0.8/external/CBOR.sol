@@ -31,17 +31,17 @@ pragma solidity ^0.8.4;
 import "./Buffer.sol";
 
 /**
-* @dev A library for populating CBOR encoded payload in Solidity.
-*
-* https://datatracker.ietf.org/doc/html/rfc7049
-*
-* The library offers various write* and start* methods to encode values of different types.
-* The resulted buffer can be obtained with data() method.
-* Encoding of primitive types is staightforward, whereas encoding of sequences can result
-* in an invalid CBOR if start/write/end flow is violated.
-* For the purpose of gas saving, the library does not verify start/write/end flow internally,
-* except for nested start/end pairs.
-*/
+ * @dev A library for populating CBOR encoded payload in Solidity.
+ *
+ * https://datatracker.ietf.org/doc/html/rfc7049
+ *
+ * The library offers various write* and start* methods to encode values of different types.
+ * The resulted buffer can be obtained with data() method.
+ * Encoding of primitive types is staightforward, whereas encoding of sequences can result
+ * in an invalid CBOR if start/write/end flow is violated.
+ * For the purpose of gas saving, the library does not verify start/write/end flow internally,
+ * except for nested start/end pairs.
+ */
 
 library CBOR {
     using Buffer for Buffer.buffer;
@@ -68,13 +68,13 @@ library CBOR {
     uint8 private constant CBOR_NULL = 22;
     uint8 private constant CBOR_UNDEFINED = 23;
 
-    function create(uint256 capacity) internal pure returns(CBORBuffer memory cbor) {
+    function create(uint256 capacity) internal pure returns (CBORBuffer memory cbor) {
         Buffer.init(cbor.buf, capacity);
         cbor.depth = 0;
         return cbor;
     }
 
-    function data(CBORBuffer memory buf) internal pure returns(bytes memory) {
+    function data(CBORBuffer memory buf) internal pure returns (bytes memory) {
         require(buf.depth == 0, "Invalid CBOR");
         return buf.buf.buf;
     }
@@ -86,9 +86,7 @@ library CBOR {
 
     function writeInt256(CBORBuffer memory buf, int256 value) internal pure {
         if (value < 0) {
-            buf.buf.appendUint8(
-                uint8((MAJOR_TYPE_TAG << 5) | TAG_TYPE_NEGATIVE_BIGNUM)
-            );
+            buf.buf.appendUint8(uint8((MAJOR_TYPE_TAG << 5) | TAG_TYPE_NEGATIVE_BIGNUM));
             writeBytes(buf, abi.encode(uint256(-1 - value)));
         } else {
             writeUInt256(buf, uint256(value));
@@ -100,9 +98,9 @@ library CBOR {
     }
 
     function writeInt64(CBORBuffer memory buf, int64 value) internal pure {
-        if(value >= 0) {
+        if (value >= 0) {
             writeFixedNumeric(buf, MAJOR_TYPE_INT, uint64(value));
-        } else{
+        } else {
             writeFixedNumeric(buf, MAJOR_TYPE_NEGATIVE_INT, uint64(-1 - value));
         }
     }
@@ -207,11 +205,7 @@ library CBOR {
         startArray(buf);
     }
 
-    function writeFixedNumeric(
-        CBORBuffer memory buf,
-        uint8 major,
-        uint64 value
-    ) private pure {
+    function writeFixedNumeric(CBORBuffer memory buf, uint8 major, uint64 value) private pure {
         if (value <= 23) {
             buf.buf.appendUint8(uint8((major << 5) | value));
         } else if (value <= 0xFF) {
@@ -229,17 +223,11 @@ library CBOR {
         }
     }
 
-    function writeIndefiniteLengthType(CBORBuffer memory buf, uint8 major)
-    private
-    pure
-    {
+    function writeIndefiniteLengthType(CBORBuffer memory buf, uint8 major) private pure {
         buf.buf.appendUint8(uint8((major << 5) | 31));
     }
 
-    function writeDefiniteLengthType(CBORBuffer memory buf, uint8 major, uint64 length)
-    private
-    pure
-    {
+    function writeDefiniteLengthType(CBORBuffer memory buf, uint8 major, uint64 length) private pure {
         writeFixedNumeric(buf, major, length);
     }
 
