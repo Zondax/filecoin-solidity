@@ -49,7 +49,7 @@ library DataCapAPI {
     }
 
     /// @notice Return the total supply of DataCap token.
-    function totalSupply() internal returns (BigInt memory) {
+    function totalSupply() internal returns (CommonTypes.BigInt memory) {
         bytes memory raw_request = new bytes(0);
 
         bytes memory result = Actor.callByID(DataCapTypes.ActorID, DataCapTypes.TotalSupplyMethodNum, Misc.NONE_CODEC, raw_request, 0, true);
@@ -58,7 +58,7 @@ library DataCapAPI {
     }
 
     /// @notice Return the DataCap token balance for the wallet address.
-    function balance(bytes memory addr) internal returns (BigInt memory) {
+    function balance(bytes memory addr) internal returns (CommonTypes.BigInt memory) {
         bytes memory raw_request = addr.serializeAddress();
 
         bytes memory result = Actor.callByID(DataCapTypes.ActorID, DataCapTypes.BalanceOfMethodNum, Misc.CBOR_CODEC, raw_request, 0, true);
@@ -67,7 +67,7 @@ library DataCapAPI {
     }
 
     /// @notice Return the allowance between owner and operator address.
-    function allowance(DataCapTypes.GetAllowanceParams memory params) internal returns (BigInt memory) {
+    function allowance(DataCapTypes.GetAllowanceParams memory params) internal returns (CommonTypes.BigInt memory) {
         bytes memory raw_request = params.serializeGetAllowanceParams();
 
         bytes memory result = Actor.callByID(DataCapTypes.ActorID, DataCapTypes.AllowanceMethodNum, Misc.CBOR_CODEC, raw_request, 0, true);
@@ -98,7 +98,7 @@ library DataCapAPI {
     }
 
     /// @notice Increase the DataCap token allowance that an operator can control of the owner's balance by the requested amount.
-    function increaseAllowance(DataCapTypes.IncreaseAllowanceParams memory params) internal returns (BigInt memory) {
+    function increaseAllowance(DataCapTypes.IncreaseAllowanceParams memory params) internal returns (CommonTypes.BigInt memory) {
         bytes memory raw_request = params.serializeIncreaseAllowanceParams();
 
         bytes memory result = Actor.callByID(DataCapTypes.ActorID, DataCapTypes.IncreaseAllowanceMethodNum, Misc.CBOR_CODEC, raw_request, 0, false);
@@ -107,7 +107,7 @@ library DataCapAPI {
     }
 
     /// @notice Decrease the DataCap token allowance that an operator controls of the owner's balance by the requested amount.
-    function decreaseAllowance(DataCapTypes.DecreaseAllowanceParams memory params) internal returns (BigInt memory) {
+    function decreaseAllowance(DataCapTypes.DecreaseAllowanceParams memory params) internal returns (CommonTypes.BigInt memory) {
         bytes memory raw_request = params.serializeDecreaseAllowanceParams();
 
         bytes memory result = Actor.callByID(DataCapTypes.ActorID, DataCapTypes.DecreaseAllowanceMethodNum, Misc.CBOR_CODEC, raw_request, 0, false);
@@ -116,7 +116,7 @@ library DataCapAPI {
     }
 
     /// @notice Revoke the DataCap token allowance from the operator and set the operator's allowance in behave of owner/caller address to 0.
-    function revokeAllowance(DataCapTypes.RevokeAllowanceParams memory params) internal returns (BigInt memory) {
+    function revokeAllowance(DataCapTypes.RevokeAllowanceParams memory params) internal returns (CommonTypes.BigInt memory) {
         bytes memory raw_request = params.serializeRevokeAllowanceParams();
 
         bytes memory result = Actor.callByID(DataCapTypes.ActorID, DataCapTypes.RevokeAllowanceMethodNum, Misc.CBOR_CODEC, raw_request, 0, false);

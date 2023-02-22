@@ -32,7 +32,7 @@ import "./FilecoinCbor.sol";
 library MarketCBOR {
     using CBOR for CBOR.CBORBuffer;
     using CBORDecoder for bytes;
-    using BigIntCBOR for BigInt;
+    using BigIntCBOR for CommonTypes.BigInt;
     using BigIntCBOR for bytes;
     using FilecoinCBOR for CBOR.CBORBuffer;
 

@@ -32,7 +32,7 @@ import "./BigIntCbor.sol";
 library VerifRegCBOR {
     using CBOR for CBOR.CBORBuffer;
     using CBORDecoder for bytes;
-    using BigIntCBOR for BigInt;
+    using BigIntCBOR for CommonTypes.BigInt;
     using BigIntCBOR for bytes;
 
     /// @notice serialize GetClaimsParams struct to cbor in order to pass as arguments to the verified registry actor

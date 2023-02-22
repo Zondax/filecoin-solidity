@@ -67,7 +67,7 @@ library VerifRegTypes {
     struct RemoveExpiredAllocationsReturn {
         uint64[] considered;
         CommonTypes.BatchReturn results;
-        BigInt datacap_recovered;
+        CommonTypes.BigInt datacap_recovered;
     }
 
     /// @param provider the provider address (need not be the caller)
