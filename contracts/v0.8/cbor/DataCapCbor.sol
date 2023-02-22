@@ -21,8 +21,8 @@ pragma solidity ^0.8.17;
 
 import "../external/CBOR.sol";
 
-import {CommonTypes} from "../types/CommonTypes.sol";
-import {DataCapTypes} from "../types/DataCapTypes.sol";
+import "../types/CommonTypes.sol";
+import "../types/DataCapTypes.sol";
 import "../utils/CborDecode.sol";
 import "../utils/Misc.sol";
 import "./BigIntCbor.sol";
@@ -32,7 +32,7 @@ import "./BigIntCbor.sol";
 library DataCapCBOR {
     using CBOR for CBOR.CBORBuffer;
     using CBORDecoder for bytes;
-    using BigIntCBOR for BigInt;
+    using BigIntCBOR for CommonTypes.BigInt;
     using BigIntCBOR for bytes;
 
     /// @notice serialize GetAllowanceParams struct to cbor in order to pass as arguments to the datacap actor

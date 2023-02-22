@@ -46,4 +46,11 @@ library CommonTypes {
         uint32 type_;
         bytes payload;
     }
+
+    /// @param val contains the actual arbitrary number written as binary
+    /// @param neg indicates if val is negative or not
+    struct BigInt {
+        bytes val;
+        bool neg;
+    }
 }

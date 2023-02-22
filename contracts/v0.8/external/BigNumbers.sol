@@ -28,12 +28,7 @@ SOFTWARE.
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.17;
 
-// Definition here allows both the lib and inheriting contracts to use BigNumber directly.
-struct BigNumber {
-    bytes val;
-    bool neg;
-    uint bitlen;
-}
+
 
 /**
  * @notice BigNumbers library for Solidity.
@@ -46,6 +41,13 @@ library BigNumbers {
     bytes constant  ONE = hex"0000000000000000000000000000000000000000000000000000000000000001";
     /// @notice the value for number 2 of a BigNumber instance.
     bytes constant  TWO = hex"0000000000000000000000000000000000000000000000000000000000000002";
+
+    // Definition here allows both the lib and inheriting contracts to use BigNumber directly.
+    struct BigNumber {
+        bytes val;
+        bool neg;
+        uint bitlen;
+    }
 
     // ***************** BEGIN EXPOSED MANAGEMENT FUNCTIONS ******************
     /** @notice verify a BN instance

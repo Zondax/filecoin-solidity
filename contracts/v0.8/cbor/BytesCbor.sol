@@ -22,6 +22,7 @@ pragma solidity ^0.8.17;
 import "../external/CBOR.sol";
 
 import "../utils/CborDecode.sol";
+import "../types/CommonTypes.sol";
 import "./BigIntCbor.sol";
 
 /// @title This library is a set of functions meant to handle CBOR serialization and deserialization for bytes
@@ -91,7 +92,7 @@ library BytesCBOR {
     /// @param ret cbor encoded BigInt (in bytes)
     /// @return decoded BigInt
     /// @dev BigInts are cbor encoded as bytes string first. That is why it unwraps the cbor encoded bytes first, and then parse the result into BigInt
-    function deserializeBytesBigInt(bytes memory ret) internal pure returns (BigInt memory) {
+    function deserializeBytesBigInt(bytes memory ret) internal pure returns (CommonTypes.BigInt memory) {
         bytes memory tmp;
         uint byteIdx = 0;
 
@@ -102,7 +103,7 @@ library BytesCBOR {
             }
         }
 
-        return BigInt(new bytes(0), false);
+        return CommonTypes.BigInt(new bytes(0), false);
     }
 
     /// @notice deserialize cbor encoded uint64

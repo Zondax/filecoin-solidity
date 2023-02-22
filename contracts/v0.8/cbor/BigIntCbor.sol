@@ -19,10 +19,7 @@
 // SPDX-License-Identifier: Apache-2.0
 pragma solidity ^0.8.17;
 
-struct BigInt {
-    bytes val;
-    bool neg;
-}
+import "../types/CommonTypes.sol";
 
 /// @title This library is a set of functions meant to handle CBOR serialization and deserialization for BigInt type
 /// @author Zondax AG
@@ -30,7 +27,7 @@ library BigIntCBOR {
     /// @notice serialize BigInt instance to bytes
     /// @param num BigInt instance to serialize
     /// @return serialized BigInt as bytes
-    function serializeBigInt(BigInt memory num) internal pure returns (bytes memory) {
+    function serializeBigInt(CommonTypes.BigInt memory num) internal pure returns (bytes memory) {
         bytes memory raw = new bytes(num.val.length + 1);
 
         if (num.neg) {
@@ -49,9 +46,9 @@ library BigIntCBOR {
     /// @notice deserialize big int (encoded as bytes) to BigInt instance
     /// @param raw as bytes to parse
     /// @return parsed BigInt instance
-    function deserializeBigInt(bytes memory raw) internal pure returns (BigInt memory) {
+    function deserializeBigInt(bytes memory raw) internal pure returns (CommonTypes.BigInt memory) {
         if (raw.length == 0) {
-            return BigInt(hex"00", false);
+            return CommonTypes.BigInt(hex"00", false);
         }
 
         bytes memory val = new bytes(raw.length - 1);
@@ -65,6 +62,6 @@ library BigIntCBOR {
             val[i - 1] = raw[i];
         }
 
-        return BigInt(val, neg);
+        return CommonTypes.BigInt(val, neg);
     }
 }

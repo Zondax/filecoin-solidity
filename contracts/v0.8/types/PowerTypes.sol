@@ -57,7 +57,7 @@ library PowerTypes {
     /// @param raw_byte_power the row power of the miner.
     /// @param meets_consensus_minimum if the miner power meets the minimum for consensus.
     struct MinerRawPowerReturn {
-        BigInt raw_byte_power;
+        CommonTypes.BigInt raw_byte_power;
         bool meets_consensus_minimum;
     }
 
