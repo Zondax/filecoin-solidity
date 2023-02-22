@@ -34,12 +34,12 @@ library AccountAPI {
     /// @notice Authenticates whether the provided signature is valid for the provided message.
     /// @dev Should be called with the raw bytes of a signature, NOT a serialized Signature object that includes a SignatureType.
     /// @dev Errors if the authentication is invalid.
-    /// @param target The account actor id you want to interact with
+    /// @param actorId The account actor id you want to interact with
     /// @param params message to be authenticated
-    function authenticateMessage(uint64 target, AccountTypes.AuthenticateMessageParams memory params) internal {
+    function authenticateMessage(uint64 actorId, AccountTypes.AuthenticateMessageParams memory params) internal {
         bytes memory raw_request = params.serializeAuthenticateMessageParams();
 
-        bytes memory raw_response = Actor.callNonSingletonByID(target, AccountTypes.AuthenticateMessageMethodNum, Misc.CBOR_CODEC, raw_request, 0, false);
+        bytes memory raw_response = Actor.callNonSingletonByID(actorId, AccountTypes.AuthenticateMessageMethodNum, Misc.CBOR_CODEC, raw_request, 0, false);
 
         bytes memory result = Actor.readRespData(raw_response);
         require(result.length == 0, "unexpected response received");

@@ -55,11 +55,11 @@ library Utils {
         }
     }
 
-    /// @param target The actor id you want to interact with
-    function universalReceiverHook(uint64 target, CommonTypes.UniversalReceiverParams memory params) internal returns (bytes memory) {
+    /// @param actorId The actor id you want to interact with
+    function universalReceiverHook(uint64 actorId, CommonTypes.UniversalReceiverParams memory params) internal returns (bytes memory) {
         bytes memory raw_request = params.serializeUniversalReceiverParams();
 
-        bytes memory raw_response = Actor.callByID(target, CommonTypes.UniversalReceiverHookMethodNum, Misc.CBOR_CODEC, raw_request, 0, false);
+        bytes memory raw_response = Actor.callByID(actorId, CommonTypes.UniversalReceiverHookMethodNum, Misc.CBOR_CODEC, raw_request, 0, false);
 
         bytes memory result = Actor.readRespData(raw_response);
         require(result.length == 0, "unexpected response received");
