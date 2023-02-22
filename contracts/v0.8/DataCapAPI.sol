@@ -30,122 +30,114 @@ library DataCapAPI {
     using DataCapCBOR for *;
     using BytesCBOR for *;
 
+    /// @notice Return the name of DataCap token which is 'DataCap'.
     function name() internal returns (string memory) {
         bytes memory raw_request = new bytes(0);
 
-        bytes memory raw_response = Actor.call(DataCapTypes.NameMethodNum, DataCapTypes.ActorID, raw_request, Misc.NONE_CODEC, 0, true);
-
-        bytes memory result = Actor.readRespData(raw_response);
+        bytes memory result = Actor.callByID(DataCapTypes.ActorID, DataCapTypes.NameMethodNum, Misc.NONE_CODEC, raw_request, 0, true);
 
         return result.deserializeString();
     }
 
+    /// @notice Return the symbol of DataCap token which is 'DCAP'.
     function symbol() internal returns (string memory) {
         bytes memory raw_request = new bytes(0);
 
-        bytes memory raw_response = Actor.call(DataCapTypes.SymbolMethodNum, DataCapTypes.ActorID, raw_request, Misc.NONE_CODEC, 0, true);
-
-        bytes memory result = Actor.readRespData(raw_response);
+        bytes memory result = Actor.callByID(DataCapTypes.ActorID, DataCapTypes.SymbolMethodNum, Misc.NONE_CODEC, raw_request, 0, true);
 
         return result.deserializeString();
     }
 
+    /// @notice Return the total supply of DataCap token.
     function totalSupply() internal returns (BigInt memory) {
         bytes memory raw_request = new bytes(0);
 
-        bytes memory raw_response = Actor.call(DataCapTypes.TotalSupplyMethodNum, DataCapTypes.ActorID, raw_request, Misc.NONE_CODEC, 0, true);
-
-        bytes memory result = Actor.readRespData(raw_response);
+        bytes memory result = Actor.callByID(DataCapTypes.ActorID, DataCapTypes.TotalSupplyMethodNum, Misc.NONE_CODEC, raw_request, 0, true);
 
         return result.deserializeBytesBigInt();
     }
 
+    /// @notice Return the DataCap token balance for the wallet address.
     function balance(bytes memory addr) internal returns (BigInt memory) {
         bytes memory raw_request = addr.serializeAddress();
 
-        bytes memory raw_response = Actor.call(DataCapTypes.BalanceOfMethodNum, DataCapTypes.ActorID, raw_request, Misc.CBOR_CODEC, 0, true);
-
-        bytes memory result = Actor.readRespData(raw_response);
+        bytes memory result = Actor.callByID(DataCapTypes.ActorID, DataCapTypes.BalanceOfMethodNum, Misc.CBOR_CODEC, raw_request, 0, true);
 
         return result.deserializeBytesBigInt();
     }
 
+    /// @notice Return the allowance between owner and operator address.
     function allowance(DataCapTypes.GetAllowanceParams memory params) internal returns (BigInt memory) {
         bytes memory raw_request = params.serializeGetAllowanceParams();
 
-        bytes memory raw_response = Actor.call(DataCapTypes.AllowanceMethodNum, DataCapTypes.ActorID, raw_request, Misc.CBOR_CODEC, 0, true);
-
-        bytes memory result = Actor.readRespData(raw_response);
+        bytes memory result = Actor.callByID(DataCapTypes.ActorID, DataCapTypes.AllowanceMethodNum, Misc.CBOR_CODEC, raw_request, 0, true);
 
         return result.deserializeBytesBigInt();
     }
 
+    /// @notice Transfers data cap tokens to an address.
+    /// @notice Data cap tokens are not generally transferable.
+    /// @notice Succeeds if the to or from address is the governor, otherwise always fails.
     function transfer(DataCapTypes.TransferParams memory params) internal returns (DataCapTypes.TransferReturn memory) {
         bytes memory raw_request = params.serializeTransferParams();
 
-        bytes memory raw_response = Actor.call(DataCapTypes.TransferMethodNum, DataCapTypes.ActorID, raw_request, Misc.CBOR_CODEC, 0, false);
-
-        bytes memory result = Actor.readRespData(raw_response);
+        bytes memory result = Actor.callByID(DataCapTypes.ActorID, DataCapTypes.TransferMethodNum, Misc.CBOR_CODEC, raw_request, 0, false);
 
         return result.deserializeTransferReturn();
     }
 
+    /// @notice Transfers data cap tokens between addresses.
+    /// @notice Data cap tokens are not generally transferable between addresses.
+    /// @notice Succeeds if the to address is the governor, otherwise always fails.
     function transferFrom(DataCapTypes.TransferFromParams memory params) internal returns (DataCapTypes.TransferFromReturn memory) {
         bytes memory raw_request = params.serializeTransferFromParams();
 
-        bytes memory raw_response = Actor.call(DataCapTypes.TransferFromMethodNum, DataCapTypes.ActorID, raw_request, Misc.CBOR_CODEC, 0, false);
-
-        bytes memory result = Actor.readRespData(raw_response);
+        bytes memory result = Actor.callByID(DataCapTypes.ActorID, DataCapTypes.TransferFromMethodNum, Misc.CBOR_CODEC, raw_request, 0, false);
 
         return result.deserializeTransferFromReturn();
     }
 
+    /// @notice Increase the DataCap token allowance that an operator can control of the owner's balance by the requested amount.
     function increaseAllowance(DataCapTypes.IncreaseAllowanceParams memory params) internal returns (BigInt memory) {
         bytes memory raw_request = params.serializeIncreaseAllowanceParams();
 
-        bytes memory raw_response = Actor.call(DataCapTypes.IncreaseAllowanceMethodNum, DataCapTypes.ActorID, raw_request, Misc.CBOR_CODEC, 0, false);
-
-        bytes memory result = Actor.readRespData(raw_response);
+        bytes memory result = Actor.callByID(DataCapTypes.ActorID, DataCapTypes.IncreaseAllowanceMethodNum, Misc.CBOR_CODEC, raw_request, 0, false);
 
         return result.deserializeBytesBigInt();
     }
 
+    /// @notice Decrease the DataCap token allowance that an operator controls of the owner's balance by the requested amount.
     function decreaseAllowance(DataCapTypes.DecreaseAllowanceParams memory params) internal returns (BigInt memory) {
         bytes memory raw_request = params.serializeDecreaseAllowanceParams();
 
-        bytes memory raw_response = Actor.call(DataCapTypes.DecreaseAllowanceMethodNum, DataCapTypes.ActorID, raw_request, Misc.CBOR_CODEC, 0, false);
-
-        bytes memory result = Actor.readRespData(raw_response);
+        bytes memory result = Actor.callByID(DataCapTypes.ActorID, DataCapTypes.DecreaseAllowanceMethodNum, Misc.CBOR_CODEC, raw_request, 0, false);
 
         return result.deserializeBytesBigInt();
     }
 
+    /// @notice Revoke the DataCap token allowance from the operator and set the operator's allowance in behave of owner/caller address to 0.
     function revokeAllowance(DataCapTypes.RevokeAllowanceParams memory params) internal returns (BigInt memory) {
         bytes memory raw_request = params.serializeRevokeAllowanceParams();
 
-        bytes memory raw_response = Actor.call(DataCapTypes.RevokeAllowanceMethodNum, DataCapTypes.ActorID, raw_request, Misc.CBOR_CODEC, 0, false);
-
-        bytes memory result = Actor.readRespData(raw_response);
+        bytes memory result = Actor.callByID(DataCapTypes.ActorID, DataCapTypes.RevokeAllowanceMethodNum, Misc.CBOR_CODEC, raw_request, 0, false);
 
         return result.deserializeBytesBigInt();
     }
 
+    /// @notice Burn an amount of DataCap token from the owner/caller address, decreasing total token supply.
     function burn(DataCapTypes.BurnParams memory params) internal returns (DataCapTypes.BurnReturn memory) {
         bytes memory raw_request = params.serializeBurnParams();
 
-        bytes memory raw_response = Actor.call(DataCapTypes.BurnMethodNum, DataCapTypes.ActorID, raw_request, Misc.CBOR_CODEC, 0, false);
-
-        bytes memory result = Actor.readRespData(raw_response);
+        bytes memory result = Actor.callByID(DataCapTypes.ActorID, DataCapTypes.BurnMethodNum, Misc.CBOR_CODEC, raw_request, 0, false);
 
         return result.deserializeBurnReturn();
     }
 
+    /// @notice Burn an amount of DataCap token from the specified address (owner address), decrease the allowance of operator/caller, and decrease total token supply.
     function burnFrom(DataCapTypes.BurnFromParams memory params) internal returns (DataCapTypes.BurnFromReturn memory) {
         bytes memory raw_request = params.serializeBurnFromParams();
 
-        bytes memory raw_response = Actor.call(DataCapTypes.BurnFromMethodNum, DataCapTypes.ActorID, raw_request, Misc.CBOR_CODEC, 0, false);
-
-        bytes memory result = Actor.readRespData(raw_response);
+        bytes memory result = Actor.callByID(DataCapTypes.ActorID, DataCapTypes.BurnFromMethodNum, Misc.CBOR_CODEC, raw_request, 0, false);
 
         return result.deserializeBurnFromReturn();
     }

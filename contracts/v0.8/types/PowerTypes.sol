@@ -25,13 +25,18 @@ import "./CommonTypes.sol";
 /// @title Filecoin power actor types for Solidity.
 /// @author Zondax AG
 library PowerTypes {
-    bytes constant ActorID = hex"0004";
+    uint64 constant ActorID = 4;
     uint constant CreateMinerMethodNum = 1173380165;
     uint constant MinerCountMethodNum = 1987646258;
     uint constant MinerConsensusCountMethodNum = 196739875;
     uint constant NetworkRawPowerMethodNum = 931722534;
     uint constant MinerRawPowerMethodNum = 3753401894;
 
+    /// @param ownerthe address of the owner.
+    /// @param worker the address of the worker.
+    /// @param window_post_proof_type the type of RegisteredPoStProof.
+    /// @param peer peer ID.
+    /// @param multiaddrs the multi-address which is used to control new created miner.
     struct CreateMinerParams {
         bytes owner;
         bytes worker;
@@ -40,6 +45,8 @@ library PowerTypes {
         bytes[] multiaddrs;
     }
 
+    /// @param id_address the canonical ID-based address for the actor.
+    /// @param robust_address a more expensive but re-org-safe address for the newly created actor.
     struct CreateMinerReturn {
         /// Canonical ID-based address for the actor.
         bytes id_address;
@@ -47,11 +54,14 @@ library PowerTypes {
         bytes robust_address;
     }
 
+    /// @param raw_byte_power the row power of the miner.
+    /// @param meets_consensus_minimum if the miner power meets the minimum for consensus.
     struct MinerRawPowerReturn {
         BigInt raw_byte_power;
         bool meets_consensus_minimum;
     }
 
+    /// @notice the type of RegisteredPoStProof.
     enum RegisteredPoStProof {
         StackedDRGWinning2KiBV1,
         StackedDRGWinning8MiBV1,

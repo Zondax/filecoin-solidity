@@ -163,7 +163,9 @@ fn market_tests() {
      * Instantiate Account Actor with a BLS address
      *
      ***********************************************/
-    let bls_private_key_client = bls_signatures::PrivateKey::generate(&mut OsRng);
+    let bls_private_key_client = bls_signatures::PrivateKey::new(
+        hex::decode("deadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef").unwrap(),
+    );
     let client = Address::new_bls(&bls_private_key_client.public_key().as_bytes()).unwrap();
 
     let state_tree = tester.state_tree.as_mut().unwrap();
@@ -206,6 +208,16 @@ fn market_tests() {
     };
 
     state_tree.set_actor(assigned_addr, actor_state).unwrap();
+
+    // Create embryo address to deploy the contract on it (assign some FILs to it)
+    let tmp = hex::decode("DAFEA492D9c6733ae3d56b7Ed1ADB60692c98Bc5").unwrap();
+    let embryo_eth_address = tmp.as_slice();
+    let embryo_delegated_address = Address::new_delegated(10, embryo_eth_address).unwrap();
+    tester
+        .create_placeholder(&embryo_delegated_address, TokenAmount::from_whole(100))
+        .unwrap();
+
+    dbg!(hex::encode(&embryo_delegated_address.to_bytes()));
 
     // Instantiate machine
     tester.instantiate_machine(DummyExterns).unwrap();
@@ -296,11 +308,11 @@ fn market_tests() {
     let constructor_params = CreateExternalParams(evm_bin);
 
     let message = Message {
-        from: sender[0].1,
+        from: embryo_delegated_address,
         to: EAM_ACTOR_ADDR,
         gas_limit: 1000000000,
         method_num: 4,
-        sequence: 1,
+        sequence: 0,
         params: RawBytes::serialize(constructor_params).unwrap(),
         ..Message::default()
     };
@@ -323,7 +335,7 @@ fn market_tests() {
         piece_size: PaddedPieceSize(8388608),
         verified_deal: false,
         client: client,
-        provider: Address::new_id(103),
+        provider: Address::new_id(104),
         label: Label::String("mAXCg5AIg8YBXbFjtdBy1iZjpDYAwRSt0elGLF5GvTqulEii1VcM".to_string()),
         start_epoch: ChainEpoch::from(25245),
         end_epoch: ChainEpoch::from(545150),
@@ -383,7 +395,7 @@ fn market_tests() {
         method_num: 2,
         sequence: 0,
         value: TokenAmount::from_whole(100_000),
-        params: RawBytes::serialize(Address::new_id(103)).unwrap(),
+        params: RawBytes::serialize(Address::new_id(104)).unwrap(),
         ..Message::default()
     };
 
@@ -393,7 +405,32 @@ fn market_tests() {
 
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
 
-    let deal = ClientDealProposal {
+    // We need to add our solidity contract as a control address
+
+    dbg!(&exec_return.actor_id);
+
+    let params = fil_actor_miner::ChangeWorkerAddressParams {
+        new_worker: worker,
+        new_control_addresses: vec![Address::new_id(exec_return.actor_id)],
+    };
+
+    let message = Message {
+        from: sender[0].1,
+        to: Address::new_id(104),
+        gas_limit: 1000000000,
+        method_num: fil_actor_miner::Method::ChangeWorkerAddress as u64,
+        sequence: 1,
+        params: RawBytes::serialize(params).unwrap(),
+        ..Message::default()
+    };
+
+    let res = executor
+        .execute_message(message, ApplyKind::Explicit, 100)
+        .unwrap();
+
+    assert_eq!(res.msg_receipt.exit_code.value(), 0);
+
+    /*let deal = ClientDealProposal {
         proposal,
         client_signature: Signature::new_bls(sig.as_bytes()),
     };
@@ -409,12 +446,31 @@ fn market_tests() {
         params: RawBytes::serialize(params).unwrap(),
         //params: RawBytes::new(hex::decode("8181828bd82a5828000181e2039220206b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b190800f4420068420066656c6162656c0a1a0008ca0a42000a42000a42000a584d028bd82a5828000181e2039220206b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b190800f4420068420066656c6162656c0a1a0008ca0a42000a42000a42000a").unwrap()),
         ..Message::default()
+    };*/
+
+    println!("Calling `publish_storage_deals`");
+
+    let message = Message {
+        from: sender[0].1,
+        to: Address::new_id(exec_return.actor_id),
+        gas_limit: 1000000000,
+        method_num: EvmMethods::InvokeContract as u64,
+        sequence: 2,
+        params: RawBytes::new(
+            // [[[["0x000181E203922020B51BCC94BB0977C984C093770289DEA4E83EF08C355145D412C6673E06152A09", 8388608, false, "0x0390A40613DFB06445DFC3759EC22146D66B832AFE57B4AC441E5209D154131B1540E937CB837831855553E17EEFEEEED1", "0x0068", "mAXCg5AIg8YBXbFjtdBy1iZjpDYAwRSt0elGLF5GvTqulEii1VcM", 25245, 545150, ["0x01001D1BF800", false], ["0x038D7EA4C68000", false], ["0x038D7EA4C68000", false]], "0x02B7E4AD239896D5DF3491AFE01F9A6F9D5C4A1E59C16E6B386CE16797C00A1224D5ABB8EFE0EDC7B052FC0AB5772BA4DA10C064537320FEFCADA4167017508D882207B23DD457966DAF21393710A26CC5509AC079EC9A0846028B279435BD5F22" ]]]
+            hex::decode(
+                "5905A4EEDB495B00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000040000000000000000000000000000000000000000000000000000000000000048000000000000000000000000000000000000000000000000000000000000001600000000000000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001C000000000000000000000000000000000000000000000000000000000000002200000000000000000000000000000000000000000000000000000000000000260000000000000000000000000000000000000000000000000000000000000629D000000000000000000000000000000000000000000000000000000000008517E00000000000000000000000000000000000000000000000000000000000002C0000000000000000000000000000000000000000000000000000000000000034000000000000000000000000000000000000000000000000000000000000003C00000000000000000000000000000000000000000000000000000000000000028000181E203922020B51BCC94BB0977C984C093770289DEA4E83EF08C355145D412C6673E06152A0900000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000310390A40613DFB06445DFC3759EC22146D66B832AFE57B4AC441E5209D154131B1540E937CB837831855553E17EEFEEEED10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002006800000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000346D41584367354149673859425862466A7464427931695A6A704459417752537430656C474C463547765471756C4569693156634D00000000000000000000000000000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000601001D1BF8000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000007038D7EA4C6800000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000007038D7EA4C6800000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000006102B7E4AD239896D5DF3491AFE01F9A6F9D5C4A1E59C16E6B386CE16797C00A1224D5ABB8EFE0EDC7B052FC0AB5772BA4DA10C064537320FEFCADA4167017508D882207B23DD457966DAF21393710A26CC5509AC079EC9A0846028B279435BD5F2200000000000000000000000000000000000000000000000000000000000000",
+            )
+            .unwrap(),
+        ),
+        ..Message::default()
     };
 
     let res = executor
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
+    gas_result.push(("publish_storage_deals".into(), res.msg_receipt.gas_used));
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
 
     println!("Calling `add_balance`");
@@ -424,9 +480,9 @@ fn market_tests() {
         to: Address::new_id(exec_return.actor_id),
         gas_limit: 1000000000,
         method_num: EvmMethods::InvokeContract as u64,
-        sequence: 2,
+        sequence: 3,
         value: TokenAmount::from_atto(1_000),
-        params: RawBytes::new(hex::decode("5884E7A874C20000000000000000000000000000000000000000000000000000000000000040000000000000000000000000000000000000000000000000000000000000006400000000000000000000000000000000000000000000000000000000000000020068000000000000000000000000000000000000000000000000000000000000").unwrap()),
+        params: RawBytes::new(hex::decode("5884E7A874C20000000000000000000000000000000000000000000000000000000000000040000000000000000000000000000000000000000000000000000000000000006400000000000000000000000000000000000000000000000000000000000000020069000000000000000000000000000000000000000000000000000000000000").unwrap()),
         ..Message::default()
     };
 
@@ -445,8 +501,8 @@ fn market_tests() {
         to: Address::new_id(exec_return.actor_id),
         gas_limit: 1000000000,
         method_num: EvmMethods::InvokeContract as u64,
-        sequence: 3,
-        params: RawBytes::new(hex::decode("5901242698552B000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000080000000000000000000000000000000000000000000000000000000000000000200680000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000040000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000016400000000000000000000000000000000000000000000000000000000000000").unwrap()),
+        sequence: 4,
+        params: RawBytes::new(hex::decode("5901242698552B000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000080000000000000000000000000000000000000000000000000000000000000000200690000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000040000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000016400000000000000000000000000000000000000000000000000000000000000").unwrap()),
         ..Message::default()
     };
 
@@ -465,7 +521,7 @@ fn market_tests() {
         to: Address::new_id(exec_return.actor_id),
         gas_limit: 1000000000,
         method_num: EvmMethods::InvokeContract as u64,
-        sequence: 4,
+        sequence: 5,
         params: RawBytes::new(hex::decode("58643587a9fd000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000020065000000000000000000000000000000000000000000000000000000000000").unwrap()),
         ..Message::default()
     };
@@ -485,7 +541,7 @@ fn market_tests() {
         to: Address::new_id(exec_return.actor_id),
         gas_limit: 1000000000,
         method_num: EvmMethods::InvokeContract as u64,
-        sequence: 5,
+        sequence: 6,
         params: RawBytes::new(
             hex::decode(
                 "5824915BD52A0000000000000000000000000000000000000000000000000000000000000000",
@@ -510,7 +566,7 @@ fn market_tests() {
         to: Address::new_id(exec_return.actor_id),
         gas_limit: 1000000000,
         method_num: EvmMethods::InvokeContract as u64,
-        sequence: 6,
+        sequence: 7,
         params: RawBytes::new(
             hex::decode(
                 "5824AABB67B40000000000000000000000000000000000000000000000000000000000000000",
@@ -538,7 +594,7 @@ fn market_tests() {
         to: Address::new_id(exec_return.actor_id),
         gas_limit: 1000000000,
         method_num: EvmMethods::InvokeContract as u64,
-        sequence: 7,
+        sequence: 8,
         params: RawBytes::new(
             hex::decode(
                 "58240E2F33670000000000000000000000000000000000000000000000000000000000000000",
@@ -556,7 +612,7 @@ fn market_tests() {
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
     assert_eq!(
         hex::encode(res.msg_receipt.return_data.bytes()),
-        "58200000000000000000000000000000000000000000000000000000000000000067"
+        "58200000000000000000000000000000000000000000000000000000000000000068"
     );
 
     println!("Calling `get_deal_label`");
@@ -566,7 +622,7 @@ fn market_tests() {
         to: Address::new_id(exec_return.actor_id),
         gas_limit: 1000000000,
         method_num: EvmMethods::InvokeContract as u64,
-        sequence: 8,
+        sequence: 9,
         params: RawBytes::new(
             hex::decode(
                 "5824B6D312EA0000000000000000000000000000000000000000000000000000000000000000",
@@ -591,7 +647,7 @@ fn market_tests() {
         to: Address::new_id(exec_return.actor_id),
         gas_limit: 1000000000,
         method_num: EvmMethods::InvokeContract as u64,
-        sequence: 9,
+        sequence: 10,
         params: RawBytes::new(
             hex::decode(
                 "58249CFC4C330000000000000000000000000000000000000000000000000000000000000000",
@@ -616,7 +672,7 @@ fn market_tests() {
         to: Address::new_id(exec_return.actor_id),
         gas_limit: 1000000000,
         method_num: EvmMethods::InvokeContract as u64,
-        sequence: 10,
+        sequence: 11,
         params: RawBytes::new(
             hex::decode(
                 "5824614C34150000000000000000000000000000000000000000000000000000000000000000",
@@ -641,7 +697,7 @@ fn market_tests() {
         to: Address::new_id(exec_return.actor_id),
         gas_limit: 1000000000,
         method_num: EvmMethods::InvokeContract as u64,
-        sequence: 11,
+        sequence: 12,
         params: RawBytes::new(
             hex::decode(
                 "5824D5E7B9DB0000000000000000000000000000000000000000000000000000000000000000",
@@ -669,7 +725,7 @@ fn market_tests() {
         to: Address::new_id(exec_return.actor_id),
         gas_limit: 1000000000,
         method_num: EvmMethods::InvokeContract as u64,
-        sequence: 12,
+        sequence: 13,
         params: RawBytes::new(
             hex::decode(
                 "58242F2229FE0000000000000000000000000000000000000000000000000000000000000000",
@@ -697,7 +753,7 @@ fn market_tests() {
         to: Address::new_id(exec_return.actor_id),
         gas_limit: 1000000000,
         method_num: EvmMethods::InvokeContract as u64,
-        sequence: 13,
+        sequence: 14,
         params: RawBytes::new(
             hex::decode(
                 "58243219A6290000000000000000000000000000000000000000000000000000000000000000",
@@ -725,7 +781,7 @@ fn market_tests() {
         to: Address::new_id(exec_return.actor_id),
         gas_limit: 1000000000,
         method_num: EvmMethods::InvokeContract as u64,
-        sequence: 14,
+        sequence: 15,
         params: RawBytes::new(
             hex::decode(
                 "5824F5C036580000000000000000000000000000000000000000000000000000000000000000",
@@ -742,31 +798,6 @@ fn market_tests() {
     gas_result.push(("get_deal_activation".into(), res.msg_receipt.gas_used));
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
     assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "584000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000");
-
-    println!("Calling `publish_storage_deals`");
-
-    let message = Message {
-        from: sender[0].1,
-        to: Address::new_id(exec_return.actor_id),
-        gas_limit: 1000000000,
-        method_num: EvmMethods::InvokeContract as u64,
-        sequence: 15,
-        params: RawBytes::new(
-            hex::decode(
-                "58246E65901F0000000000000000000000000000000000000000000000000000000000000000",
-            )
-            .unwrap(),
-        ), // FIXME this arguments are not correct
-        ..Message::default()
-    };
-
-    let res = executor
-        .execute_message(message, ApplyKind::Explicit, 100)
-        .unwrap();
-
-    gas_result.push(("publish_storage_deals".into(), res.msg_receipt.gas_used));
-    // FIXME
-    assert_eq!(res.msg_receipt.exit_code.value(), 33);
 
     let table = testing::create_gas_table(gas_result);
     testing::save_gas_table(&table, "market");

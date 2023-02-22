@@ -31,43 +31,15 @@ library AccountAPI {
     using AccountCBOR for *;
     using BytesCBOR for bytes;
 
-    /// @param target The account address (filecoin bytes format) you want to interact with
-    function authenticateMessage(bytes memory target, AccountTypes.AuthenticateMessageParams memory params) internal {
+    /// @notice Authenticates whether the provided signature is valid for the provided message.
+    /// @dev Should be called with the raw bytes of a signature, NOT a serialized Signature object that includes a SignatureType.
+    /// @dev Errors if the authentication is invalid.
+    /// @param actorId The account actor id you want to interact with
+    /// @param params message to be authenticated
+    function authenticateMessage(uint64 actorId, AccountTypes.AuthenticateMessageParams memory params) internal {
         bytes memory raw_request = params.serializeAuthenticateMessageParams();
 
-        bytes memory raw_response = Actor.call(AccountTypes.AuthenticateMessageMethodNum, target, raw_request, Misc.CBOR_CODEC, 0, false);
-
-        bytes memory result = Actor.readRespData(raw_response);
-        require(result.length == 0, "unexpected response received");
-    }
-
-    /// @param target The account actor id you want to interact with
-    function authenticateMessage(uint64 target, AccountTypes.AuthenticateMessageParams memory params) internal {
-        bytes memory raw_request = params.serializeAuthenticateMessageParams();
-
-        bytes memory raw_response = Actor.callByID(target, AccountTypes.AuthenticateMessageMethodNum, Misc.CBOR_CODEC, raw_request, 0, false);
-
-        bytes memory result = Actor.readRespData(raw_response);
-        require(result.length == 0, "unexpected response received");
-    }
-
-    /// @param target The account address (filecoin bytes format) you want to interact with
-    function universalReceiverHook(bytes memory target, AccountTypes.UniversalReceiverParams memory params) internal {
-        bytes memory raw_request = params.serializeUniversalReceiverParams();
-
-        bytes memory raw_response = Actor.call(AccountTypes.UniversalReceiverHookMethodNum, target, raw_request, Misc.CBOR_CODEC, 0, false);
-
-        bytes memory result = Actor.readRespData(raw_response);
-        require(result.length == 0, "unexpected response received");
-    }
-
-    /// @param target The account actor id you want to interact with
-    function universalReceiverHook(uint64 target, AccountTypes.UniversalReceiverParams memory params) internal {
-        bytes memory raw_request = params.serializeUniversalReceiverParams();
-
-        bytes memory raw_response = Actor.callByID(target, AccountTypes.UniversalReceiverHookMethodNum, Misc.CBOR_CODEC, raw_request, 0, false);
-
-        bytes memory result = Actor.readRespData(raw_response);
-        require(result.length == 0, "unexpected response received");
+        bytes memory data = Actor.callNonSingletonByID(actorId, AccountTypes.AuthenticateMessageMethodNum, Misc.CBOR_CODEC, raw_request, 0, true);
+        require(data.length == 0, Actor.UNEXPECTED_RESPONSE_MESSAGE);
     }
 }

@@ -647,6 +647,7 @@ jobs:
   comment-result:
     name: "Comment the result on PR"
     runs-on: ubuntu-22.04
+    if: github.event_name == 'pull_request'
     needs: [account-integration, datacap-integration, init-integration, market-integration, miner-integration, power-integration, precompiles-integration, send-integration, verifreg-integration]
     steps:
       - name: "Get gas_results_account.csv"

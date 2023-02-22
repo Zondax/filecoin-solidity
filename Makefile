@@ -2,7 +2,7 @@
 ################ BUILD ################
 build: build_api build_mock_api build_tests
 
-build_tests:
+build_tests: verify_solc
 	./bin/solc solidity-cborutils=${PWD}/node_modules/solidity-cborutils/ @openzeppelin=${PWD}/node_modules/@openzeppelin/ @ensdomains=${PWD}/node_modules/@ensdomains/ contracts/v0.8/tests/market.test.sol --output-dir ./build/v0.8/tests --overwrite --bin --hashes --opcodes --abi
 	./bin/solc solidity-cborutils=${PWD}/node_modules/solidity-cborutils/ @openzeppelin=${PWD}/node_modules/@openzeppelin/ @ensdomains=${PWD}/node_modules/@ensdomains/ contracts/v0.8/tests/marketcbor.test.sol --output-dir ./build/v0.8/tests --overwrite --bin --hashes --opcodes --abi
 	./bin/solc solidity-cborutils=${PWD}/node_modules/solidity-cborutils/ @openzeppelin=${PWD}/node_modules/@openzeppelin/ @ensdomains=${PWD}/node_modules/@ensdomains/ contracts/v0.8/tests/miner.test.sol --output-dir ./build/v0.8/tests --overwrite --bin --hashes --opcodes --abi
@@ -17,7 +17,7 @@ build_tests:
 	./bin/solc @zondax/solidity-bignumber=${PWD}/node_modules/@zondax/solidity-bignumber/ solidity-cborutils=${PWD}/node_modules/solidity-cborutils/ @openzeppelin=${PWD}/node_modules/@openzeppelin/ @ensdomains=${PWD}/node_modules/@ensdomains/ contracts/v0.8/mocks/tests/miner.test.sol --output-dir ./build/v0.8/mocks/tests --overwrite --bin --hashes --opcodes --abi
 
 
-build_api:
+build_api: verify_solc
 	./bin/solc solidity-cborutils=${PWD}/node_modules/solidity-cborutils/ @openzeppelin=${PWD}/node_modules/@openzeppelin/ @ensdomains=${PWD}/node_modules/@ensdomains/ contracts/v0.8/MarketAPI.sol --output-dir ./build/v0.8 --overwrite --bin --hashes --opcodes --abi
 	./bin/solc solidity-cborutils=${PWD}/node_modules/solidity-cborutils/ @openzeppelin=${PWD}/node_modules/@openzeppelin/ @ensdomains=${PWD}/node_modules/@ensdomains/ contracts/v0.8/MinerAPI.sol --output-dir ./build/v0.8 --overwrite --bin --hashes --opcodes --abi
 	./bin/solc solidity-cborutils=${PWD}/node_modules/solidity-cborutils/ @openzeppelin=${PWD}/node_modules/@openzeppelin/ @ensdomains=${PWD}/node_modules/@ensdomains/ contracts/v0.8/VerifRegAPI.sol --output-dir ./build/v0.8 --overwrite --bin --hashes --opcodes --abi
@@ -29,7 +29,7 @@ build_api:
 	./bin/solc solidity-cborutils=${PWD}/node_modules/solidity-cborutils/ @openzeppelin=${PWD}/node_modules/@openzeppelin/ @ensdomains=${PWD}/node_modules/@ensdomains/ contracts/v0.8/Utils.sol --output-dir ./build/v0.8 --overwrite --bin --hashes --opcodes --abi
 	./bin/solc solidity-cborutils=${PWD}/node_modules/solidity-cborutils/ @openzeppelin=${PWD}/node_modules/@openzeppelin/ @ensdomains=${PWD}/node_modules/@ensdomains/ contracts/v0.8/SendAPI.sol --output-dir ./build/v0.8 --overwrite --bin --hashes --opcodes --abi
 
-build_mock_api:
+build_mock_api: verify_solc
 	./bin/solc @zondax/solidity-bignumber=${PWD}/node_modules/@zondax/solidity-bignumber/ solidity-cborutils=${PWD}/node_modules/solidity-cborutils/ @openzeppelin=${PWD}/node_modules/@openzeppelin/ @ensdomains=${PWD}/node_modules/@ensdomains/ contracts/v0.8/mocks/MarketMockAPI.sol --output-dir ./build/v0.8/mocks --overwrite --bin --hashes --opcodes --abi
 	./bin/solc @zondax/solidity-bignumber=${PWD}/node_modules/@zondax/solidity-bignumber/ solidity-cborutils=${PWD}/node_modules/solidity-cborutils/ @openzeppelin=${PWD}/node_modules/@openzeppelin/ @ensdomains=${PWD}/node_modules/@ensdomains/ contracts/v0.8/mocks/MinerMockAPI.sol --output-dir ./build/v0.8/mocks --overwrite --bin --hashes --opcodes --abi
 
@@ -58,7 +58,7 @@ deploy_power_api:
 deploy_simple_coin:
 	cd hardhat && yarn hardhat deploy --tags SimpleCoin
 
-################ TESTS ################
+################ TESTS RUST ################
 
 test_miner_cbor_serialization:
 	cd hardhat && yarn hardhat change-beneficiary --beneficiary 0xaaaa12 --quota 12222 --expiration 1111 --contractaddress $(CONTRACT_ADDRESS)
@@ -96,7 +96,49 @@ test_precompiles_integration: build build_builtin_actors
 test_send_integration: build build_builtin_actors
 	cd testing && cargo test send_test -- --nocapture
 
+
+################ TESTS SECURITY ################
+
+security_account_api:
+	myth analyze contracts/v0.8/AccountAPI.sol --execution-timeout 300
+	myth analyze contracts/v0.8/tests/account.test.sol --execution-timeout 300
+
+security_market_api:
+	myth analyze contracts/v0.8/MarketAPI.sol --execution-timeout 300
+	myth analyze contracts/v0.8/tests/market.test.sol --execution-timeout 300
+
+security_miner_api:
+	myth analyze contracts/v0.8/MinerAPI.sol --execution-timeout 300
+	myth analyze contracts/v0.8/tests/miner.test.sol --execution-timeout 300
+
+security_verifreg_api:
+	myth analyze contracts/v0.8/VerifRegAPI.sol --execution-timeout 300
+	myth analyze contracts/v0.8/tests/verifreg.test.sol --execution-timeout 300
+
+security_power_api:
+	myth analyze contracts/v0.8/PowerAPI.sol --execution-timeout 300
+	myth analyze contracts/v0.8/tests/power.test.sol --execution-timeout 300
+
+security_datacap_api:
+	myth analyze contracts/v0.8/DataCapAPI.sol --execution-timeout 300
+	myth analyze contracts/v0.8/tests/datacap.test.sol --execution-timeout 300
+
+security_init_api:
+	myth analyze contracts/v0.8/InitAPI.sol --execution-timeout 300
+	myth analyze contracts/v0.8/tests/init.test.sol --execution-timeout 300
+
+security_send_api:
+	myth analyze contracts/v0.8/SendAPI.sol --execution-timeout 300
+	myth analyze contracts/v0.8/tests/send.test.sol --execution-timeout 300
+
+security_precompiles_api:
+	myth analyze contracts/v0.8/PrecompilesAPI.sol --execution-timeout 300
+	myth analyze contracts/v0.8/tests/precompiles.test.sol --execution-timeout 300
+
 ################ DEPS ################
+
+verify_solc:
+	@[ ! -f ./bin/solc ] && echo "Please install solc using 'make install_solc_linux' or 'make install_solc_mac'" || true
 
 install_solc_linux:
 	wget https://github.com/ethereum/solidity/releases/download/v0.8.17/solc-static-linux

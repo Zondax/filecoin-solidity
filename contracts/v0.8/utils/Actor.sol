@@ -22,38 +22,52 @@ import "../external/Strings.sol";
 
 import "./Misc.sol";
 
+/// @title Call actors utilities library, meant to interact with Filecoin builtin actors
+/// @author Zondax AG
 library Actor {
     address constant CALL_ACTOR_ADDRESS = 0xfe00000000000000000000000000000000000003;
     address constant CALL_ACTOR_ID = 0xfe00000000000000000000000000000000000005;
     string constant CALL_ERROR_MESSAGE = "actor call failed";
+    string constant UNEXPECTED_RESPONSE_MESSAGE = "unexpected response received";
 
-    uint64 constant CALL_ACTOR_PRECOMPILE_ADDR = 0x0e;
-    uint64 constant MAX_RAW_RESPONSE_SIZE = 0x300;
     uint64 constant READ_ONLY_FLAG = 0x00000001; // https://github.com/filecoin-project/ref-fvm/blob/master/shared/src/sys/mod.rs#L60
     uint64 constant DEFAULT_FLAG = 0x00000000;
 
-    function call(
-        uint256 method_num,
+    /// @notice allows to interact with an specific actor by its address (bytes format)
+    /// @param actor_address actor address (bytes format) to interact with
+    /// @param method_num id of the method from the actor to call
+    /// @param codec how the request data passed as argument is encoded
+    /// @param raw_request encoded arguments to be passed in the call
+    /// @param amount tokens to be transfered to the called actor
+    /// @param read_only indicates if the call will be allaed to change the actor state or not (just read the state)
+    /// @return payload (in bytes) with the actual response data (without codec or response code)
+    function callByAddress(
         bytes memory actor_address,
-        bytes memory raw_request,
+        uint256 method_num,
         uint64 codec,
+        bytes memory raw_request,
         uint256 amount,
         bool read_only
     ) internal returns (bytes memory) {
-        // Address in bytes format only start by 0, 1, 2, 3 or 4
-        require(
-            actor_address[0] == 0x00 || actor_address[0] == 0x01 || actor_address[0] == 0x02 || actor_address[0] == 0x03 || actor_address[0] == 0x04,
-            "actor_address address should be bytes format"
-        );
+        require(actor_address.length > 1, "invalid actor_address");
+        require(address(this).balance >= amount, "not enough balance");
 
         (bool success, bytes memory data) = address(CALL_ACTOR_ADDRESS).delegatecall(
             abi.encode(uint64(method_num), amount, read_only ? READ_ONLY_FLAG : DEFAULT_FLAG, codec, raw_request, actor_address)
         );
         require(success == true, CALL_ERROR_MESSAGE);
 
-        return data;
+        return readRespData(data);
     }
 
+    /// @notice allows to interact with an specific actor by its id (uint64)
+    /// @param actor_id actor id (uint64) to interact with
+    /// @param method_num id of the method from the actor to call
+    /// @param codec how the request data passed as argument is encoded
+    /// @param raw_request encoded arguments to be passed in the call
+    /// @param amount tokens to be transferred to the called actor
+    /// @param read_only indicates if the call will be allowed to change the actor state or not (just read the state)
+    /// @return payload (in bytes) with the actual response data (without codec or response code)
     function callByID(
         uint64 actor_id,
         uint256 method_num,
@@ -62,14 +76,40 @@ library Actor {
         uint256 amount,
         bool read_only
     ) internal returns (bytes memory) {
+        require(address(this).balance >= amount, "not enough balance");
+
         (bool success, bytes memory data) = address(CALL_ACTOR_ID).delegatecall(
             abi.encode(uint64(method_num), amount, read_only ? READ_ONLY_FLAG : DEFAULT_FLAG, codec, raw_request, actor_id)
         );
         require(success == true, CALL_ERROR_MESSAGE);
 
-        return data;
+        return readRespData(data);
     }
 
+    /// @notice allows to interact with an non-singleton actors by its id (uint64)
+    /// @param actor_id actor id (uint64) to interact with
+    /// @param method_num id of the method from the actor to call
+    /// @param codec how the request data passed as argument is encoded
+    /// @param raw_request encoded arguments to be passed in the call
+    /// @param amount tokens to be transfered to the called actor
+    /// @param read_only indicates if the call will be allaed to change the actor state or not (just read the state)
+    /// @dev it requires the id to be bigger than 99, as singleton actors are smaller than that
+    function callNonSingletonByID(
+        uint64 actor_id,
+        uint256 method_num,
+        uint64 codec,
+        bytes memory raw_request,
+        uint256 amount,
+        bool read_only
+    ) internal returns (bytes memory) {
+        require(actor_id >= 100, "actor id is not valid");
+        return callByID(actor_id, method_num, codec, raw_request, amount, read_only);
+    }
+
+    /// @notice parse the response an actor returned
+    /// @notice it will validate the return code (success) and the codec (valid one)
+    /// @param raw_response raw data (bytes) the actor returned
+    /// @return the actual raw data (payload, in bytes) to be parsed according to the actor and method called
     function readRespData(bytes memory raw_response) internal pure returns (bytes memory) {
         (int256 exit, uint64 return_codec, bytes memory return_value) = abi.decode(raw_response, (int256, uint64, bytes));
 
@@ -86,6 +126,9 @@ library Actor {
         return return_value;
     }
 
+    /// @notice converts exit code to string message
+    /// @param exit_code the actual exit code
+    /// @return message based on the exit code
     function getErrorCodeMsg(int256 exit_code) internal pure returns (string memory) {
         return
             exit_code >= 0

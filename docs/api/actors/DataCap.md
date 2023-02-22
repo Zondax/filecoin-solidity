@@ -234,8 +234,8 @@ Burn an amount of DataCap token from the specified address (owner address), decr
 **Results**:
 
 + `struct` BurnFromReturn
-  + `bytes`  Owner - the wallet address of the owner.
-  + `int256` Amount - the new balance of owner wallet.
+  + `BigInt`  balance - new balance in the account after the successful burn.
+  + `BigInt` allowance - new remaining allowance between the owner and operator (caller)
 
 
 ### Allowance

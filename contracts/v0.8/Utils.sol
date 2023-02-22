@@ -21,17 +21,26 @@ pragma solidity ^0.8.0;
 
 import "./cbor/AccountCbor.sol";
 import "./cbor/BytesCbor.sol";
+import "./cbor/FilecoinCbor.sol";
+
 import "./types/AccountTypes.sol";
+import "./types/CommonTypes.sol";
 import "./types/DataCapTypes.sol";
 
-/// @title This library compiles a bunch of help function.
+import "./utils/Actor.sol";
+
+/// @title This library compiles a bunch of helper functions.
 /// @author Zondax AG
 library Utils {
     using AccountCBOR for *;
+    using FilecoinCBOR for *;
     using BytesCBOR for bytes;
 
     event ReceivedDataCap(string received);
 
+    /// @notice utility function meant to handle calls from other builtin actors. Arguments are passed as cbor serialized data (in filecoin native format)
+    /// @param method the filecoin method id that is being called
+    /// @param params raw data (in bytes) passed as arguments to the method call
     function handleFilecoinMethod(uint64 method, uint64, bytes calldata params) internal returns (AccountTypes.AuthenticateMessageParams memory) {
         // dispatch methods
         if (method == AccountTypes.AuthenticateMessageMethodNum) {
@@ -44,5 +53,14 @@ library Utils {
         } else {
             revert("the filecoin method that was called is not handled");
         }
+    }
+
+    /// @param actorId The actor id you want to interact with
+    function universalReceiverHook(uint64 actorId, CommonTypes.UniversalReceiverParams memory params) internal returns (bytes memory) {
+        bytes memory raw_request = params.serializeUniversalReceiverParams();
+
+        bytes memory result = Actor.callByID(actorId, CommonTypes.UniversalReceiverHookMethodNum, Misc.CBOR_CODEC, raw_request, 0, false);
+
+        return result;
     }
 }

@@ -22,6 +22,8 @@ pragma solidity ^0.8.17;
 import "../types/InitTypes.sol";
 import "../InitAPI.sol";
 
+/// @notice This file is meant to serve as a deployable contract of the init actor API, as the library by itself is not.
+/// @notice It imports the library and create a callable method for each method in the library
 /// @author Zondax AG
 contract InitApiTest {
     function exec(InitTypes.ExecParams memory params) public returns (InitTypes.ExecReturn memory) {
