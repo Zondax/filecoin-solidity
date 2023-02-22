@@ -47,11 +47,7 @@ library Actor {
         uint256 amount,
         bool read_only
     ) internal returns (bytes memory) {
-        // Address in bytes format only start by 0, 1, 2, 3 or 4
-        require(
-            actor_address[0] == 0x00 || actor_address[0] == 0x01 || actor_address[0] == 0x02 || actor_address[0] == 0x03 || actor_address[0] == 0x04,
-            "actor_address address should be bytes format"
-        );
+        require(actor_address.length > 1, "invalid actor_address");
         require(address(this).balance >= amount, "not enough balance");
 
         (bool success, bytes memory data) = address(CALL_ACTOR_ADDRESS).delegatecall(
