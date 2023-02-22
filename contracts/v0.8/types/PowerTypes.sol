@@ -25,7 +25,7 @@ import "./CommonTypes.sol";
 /// @title Filecoin power actor types for Solidity.
 /// @author Zondax AG
 library PowerTypes {
-    bytes constant ActorID = hex"0004";
+    uint64 constant ActorID = 4;
     uint constant CreateMinerMethodNum = 1173380165;
     uint constant MinerCountMethodNum = 1987646258;
     uint constant MinerConsensusCountMethodNum = 196739875;

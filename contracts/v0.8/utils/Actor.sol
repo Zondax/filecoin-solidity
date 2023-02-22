@@ -29,8 +29,6 @@ library Actor {
     address constant CALL_ACTOR_ID = 0xfe00000000000000000000000000000000000005;
     string constant CALL_ERROR_MESSAGE = "actor call failed";
 
-    uint64 constant CALL_ACTOR_PRECOMPILE_ADDR = 0x0e;
-    uint64 constant MAX_RAW_RESPONSE_SIZE = 0x300;
     uint64 constant READ_ONLY_FLAG = 0x00000001; // https://github.com/filecoin-project/ref-fvm/blob/master/shared/src/sys/mod.rs#L60
     uint64 constant DEFAULT_FLAG = 0x00000000;
 
@@ -54,6 +52,7 @@ library Actor {
             actor_address[0] == 0x00 || actor_address[0] == 0x01 || actor_address[0] == 0x02 || actor_address[0] == 0x03 || actor_address[0] == 0x04,
             "actor_address address should be bytes format"
         );
+        require(address(this).balance >= amount, "not enough balance");
 
         (bool success, bytes memory data) = address(CALL_ACTOR_ADDRESS).delegatecall(
             abi.encode(uint64(method_num), amount, read_only ? READ_ONLY_FLAG : DEFAULT_FLAG, codec, raw_request, actor_address)
@@ -78,6 +77,8 @@ library Actor {
         uint256 amount,
         bool read_only
     ) internal returns (bytes memory) {
+        require(address(this).balance >= amount, "not enough balance");
+
         (bool success, bytes memory data) = address(CALL_ACTOR_ID).delegatecall(
             abi.encode(uint64(method_num), amount, read_only ? READ_ONLY_FLAG : DEFAULT_FLAG, codec, raw_request, actor_id)
         );

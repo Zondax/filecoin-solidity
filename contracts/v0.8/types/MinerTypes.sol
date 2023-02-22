@@ -42,85 +42,119 @@ library MinerTypes {
     uint constant GetMultiaddrsMethodNum = 1332909407;
     uint constant WithdrawBalanceMethodNum = 2280458852;
 
+    /// @param owner owner address.
+    /// @param proposed owner address.
     struct GetOwnerReturn {
         bytes owner;
         bytes proposed;
     }
 
+    /// @param addr the address to be verified.
     struct IsControllingAddressParam {
         bytes addr;
     }
 
+    /// @param is_controlling if the specified address is the control address.
     struct IsControllingAddressReturn {
         bool is_controlling;
     }
 
+    /// @param sector_size the sector size of this miner.
     struct GetSectorSizeReturn {
         uint64 sector_size;
     }
+
+    /// @param available_balance the available token balance amount.
     struct GetAvailableBalanceReturn {
         BigInt available_balance;
     }
 
+    /// @param vesting_funds funds
     struct GetVestingFundsReturn {
         VestingFunds[] vesting_funds;
     }
 
+    /// @param new_beneficiary the new beneficiary address.
+    /// @param new_quota the new quota token amount.
+    /// @param new_expiration the epoch that the new quota will be expired.
     struct ChangeBeneficiaryParams {
         bytes new_beneficiary;
         BigInt new_quota;
         uint64 new_expiration;
     }
 
+    /// @param active current active beneficiary.
+    /// @param proposed the proposed and pending beneficiary.
     struct GetBeneficiaryReturn {
         ActiveBeneficiary active;
         PendingBeneficiaryChange proposed;
     }
 
+    /// @param new_worker the new worker address.
+    /// @param new_control_addresses the new controller addresses.
     struct ChangeWorkerAddressParams {
         bytes new_worker;
         bytes[] new_control_addresses;
     }
 
+    /// @param new_id the new peer ID.
     struct ChangePeerIDParams {
         bytes new_id;
     }
 
+    /// @param new_multi_addrs the new multi-signature address.
     struct ChangeMultiaddrsParams {
         bytes[] new_multi_addrs;
     }
 
+    /// @param peer_id the peer ID for the specified storage provider/miner.
     struct GetPeerIDReturn {
         bytes peer_id;
     }
 
+    /// @param multi_addrs the multi-signature address.
     struct GetMultiaddrsReturn {
         bytes[] multi_addrs;
     }
 
+    /// @param amount_requested withdraw token amount.
     struct WithdrawBalanceParams {
         bytes amount_requested;
     }
 
+    /// @param amount_withdrawn the token amount withdraw.
     struct WithdrawBalanceReturn {
         bytes amount_withdrawn;
     }
 
+    /// @param epoch the epoch of funds vested.
+    /// @param amount the amount of funds vested.
     struct VestingFunds {
         int64 epoch;
         BigInt amount;
     }
+
+    /// @param quota the quota token amount.
+    /// @param used_quota the used quota token amount.
+    /// @param expiration the epoch that the quota will be expired.
     struct BeneficiaryTerm {
         BigInt quota;
         BigInt used_quota;
         uint64 expiration;
     }
 
+    /// @param beneficiary the address of the beneficiary.
+    /// @param term BeneficiaryTerm
     struct ActiveBeneficiary {
         bytes beneficiary;
         BeneficiaryTerm term;
     }
 
+    /// @param new_beneficiary the new beneficiary address.
+    /// @param new_quota the new quota token amount.
+    /// @param new_expiration the epoch that the new quota will be expired.
+    /// @param approved_by_beneficiary if this proposal is approved by beneficiary or not.
+    /// @param approved_by_nominee if this proposal is approved by nominee or not.
     struct PendingBeneficiaryChange {
         bytes new_beneficiary;
         BigInt new_quota;

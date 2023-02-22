@@ -34,7 +34,7 @@ library DataCapAPI {
     function name() internal returns (string memory) {
         bytes memory raw_request = new bytes(0);
 
-        bytes memory raw_response = Actor.callByAddress(DataCapTypes.ActorID, DataCapTypes.NameMethodNum, Misc.NONE_CODEC, raw_request, 0, true);
+        bytes memory raw_response = Actor.callByID(DataCapTypes.ActorID, DataCapTypes.NameMethodNum, Misc.NONE_CODEC, raw_request, 0, true);
 
         bytes memory result = Actor.readRespData(raw_response);
 
@@ -45,7 +45,7 @@ library DataCapAPI {
     function symbol() internal returns (string memory) {
         bytes memory raw_request = new bytes(0);
 
-        bytes memory raw_response = Actor.callByAddress(DataCapTypes.ActorID, DataCapTypes.SymbolMethodNum, Misc.NONE_CODEC, raw_request, 0, true);
+        bytes memory raw_response = Actor.callByID(DataCapTypes.ActorID, DataCapTypes.SymbolMethodNum, Misc.NONE_CODEC, raw_request, 0, true);
 
         bytes memory result = Actor.readRespData(raw_response);
 
@@ -56,7 +56,7 @@ library DataCapAPI {
     function totalSupply() internal returns (BigInt memory) {
         bytes memory raw_request = new bytes(0);
 
-        bytes memory raw_response = Actor.callByAddress(DataCapTypes.ActorID, DataCapTypes.TotalSupplyMethodNum, Misc.NONE_CODEC, raw_request, 0, true);
+        bytes memory raw_response = Actor.callByID(DataCapTypes.ActorID, DataCapTypes.TotalSupplyMethodNum, Misc.NONE_CODEC, raw_request, 0, true);
 
         bytes memory result = Actor.readRespData(raw_response);
 
@@ -67,7 +67,7 @@ library DataCapAPI {
     function balance(bytes memory addr) internal returns (BigInt memory) {
         bytes memory raw_request = addr.serializeAddress();
 
-        bytes memory raw_response = Actor.callByAddress(DataCapTypes.ActorID, DataCapTypes.BalanceOfMethodNum, Misc.CBOR_CODEC, raw_request, 0, true);
+        bytes memory raw_response = Actor.callByID(DataCapTypes.ActorID, DataCapTypes.BalanceOfMethodNum, Misc.CBOR_CODEC, raw_request, 0, true);
 
         bytes memory result = Actor.readRespData(raw_response);
 
@@ -78,7 +78,7 @@ library DataCapAPI {
     function allowance(DataCapTypes.GetAllowanceParams memory params) internal returns (BigInt memory) {
         bytes memory raw_request = params.serializeGetAllowanceParams();
 
-        bytes memory raw_response = Actor.callByAddress(DataCapTypes.ActorID, DataCapTypes.AllowanceMethodNum, Misc.CBOR_CODEC, raw_request, 0, true);
+        bytes memory raw_response = Actor.callByID(DataCapTypes.ActorID, DataCapTypes.AllowanceMethodNum, Misc.CBOR_CODEC, raw_request, 0, true);
 
         bytes memory result = Actor.readRespData(raw_response);
 
@@ -91,7 +91,7 @@ library DataCapAPI {
     function transfer(DataCapTypes.TransferParams memory params) internal returns (DataCapTypes.TransferReturn memory) {
         bytes memory raw_request = params.serializeTransferParams();
 
-        bytes memory raw_response = Actor.callByAddress(DataCapTypes.ActorID, DataCapTypes.TransferMethodNum, Misc.CBOR_CODEC, raw_request, 0, false);
+        bytes memory raw_response = Actor.callByID(DataCapTypes.ActorID, DataCapTypes.TransferMethodNum, Misc.CBOR_CODEC, raw_request, 0, false);
 
         bytes memory result = Actor.readRespData(raw_response);
 
@@ -104,7 +104,7 @@ library DataCapAPI {
     function transferFrom(DataCapTypes.TransferFromParams memory params) internal returns (DataCapTypes.TransferFromReturn memory) {
         bytes memory raw_request = params.serializeTransferFromParams();
 
-        bytes memory raw_response = Actor.callByAddress(DataCapTypes.ActorID, DataCapTypes.TransferFromMethodNum, Misc.CBOR_CODEC, raw_request, 0, false);
+        bytes memory raw_response = Actor.callByID(DataCapTypes.ActorID, DataCapTypes.TransferFromMethodNum, Misc.CBOR_CODEC, raw_request, 0, false);
 
         bytes memory result = Actor.readRespData(raw_response);
 
@@ -115,7 +115,7 @@ library DataCapAPI {
     function increaseAllowance(DataCapTypes.IncreaseAllowanceParams memory params) internal returns (BigInt memory) {
         bytes memory raw_request = params.serializeIncreaseAllowanceParams();
 
-        bytes memory raw_response = Actor.callByAddress(DataCapTypes.ActorID, DataCapTypes.IncreaseAllowanceMethodNum, Misc.CBOR_CODEC, raw_request, 0, false);
+        bytes memory raw_response = Actor.callByID(DataCapTypes.ActorID, DataCapTypes.IncreaseAllowanceMethodNum, Misc.CBOR_CODEC, raw_request, 0, false);
 
         bytes memory result = Actor.readRespData(raw_response);
 
@@ -126,7 +126,7 @@ library DataCapAPI {
     function decreaseAllowance(DataCapTypes.DecreaseAllowanceParams memory params) internal returns (BigInt memory) {
         bytes memory raw_request = params.serializeDecreaseAllowanceParams();
 
-        bytes memory raw_response = Actor.callByAddress(DataCapTypes.ActorID, DataCapTypes.DecreaseAllowanceMethodNum, Misc.CBOR_CODEC, raw_request, 0, false);
+        bytes memory raw_response = Actor.callByID(DataCapTypes.ActorID, DataCapTypes.DecreaseAllowanceMethodNum, Misc.CBOR_CODEC, raw_request, 0, false);
 
         bytes memory result = Actor.readRespData(raw_response);
 
@@ -137,7 +137,7 @@ library DataCapAPI {
     function revokeAllowance(DataCapTypes.RevokeAllowanceParams memory params) internal returns (BigInt memory) {
         bytes memory raw_request = params.serializeRevokeAllowanceParams();
 
-        bytes memory raw_response = Actor.callByAddress(DataCapTypes.ActorID, DataCapTypes.RevokeAllowanceMethodNum, Misc.CBOR_CODEC, raw_request, 0, false);
+        bytes memory raw_response = Actor.callByID(DataCapTypes.ActorID, DataCapTypes.RevokeAllowanceMethodNum, Misc.CBOR_CODEC, raw_request, 0, false);
 
         bytes memory result = Actor.readRespData(raw_response);
 
@@ -148,7 +148,7 @@ library DataCapAPI {
     function burn(DataCapTypes.BurnParams memory params) internal returns (DataCapTypes.BurnReturn memory) {
         bytes memory raw_request = params.serializeBurnParams();
 
-        bytes memory raw_response = Actor.callByAddress(DataCapTypes.ActorID, DataCapTypes.BurnMethodNum, Misc.CBOR_CODEC, raw_request, 0, false);
+        bytes memory raw_response = Actor.callByID(DataCapTypes.ActorID, DataCapTypes.BurnMethodNum, Misc.CBOR_CODEC, raw_request, 0, false);
 
         bytes memory result = Actor.readRespData(raw_response);
 
@@ -159,7 +159,7 @@ library DataCapAPI {
     function burnFrom(DataCapTypes.BurnFromParams memory params) internal returns (DataCapTypes.BurnFromReturn memory) {
         bytes memory raw_request = params.serializeBurnFromParams();
 
-        bytes memory raw_response = Actor.callByAddress(DataCapTypes.ActorID, DataCapTypes.BurnFromMethodNum, Misc.CBOR_CODEC, raw_request, 0, false);
+        bytes memory raw_response = Actor.callByID(DataCapTypes.ActorID, DataCapTypes.BurnFromMethodNum, Misc.CBOR_CODEC, raw_request, 0, false);
 
         bytes memory result = Actor.readRespData(raw_response);
 
