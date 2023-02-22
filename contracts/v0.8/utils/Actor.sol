@@ -28,6 +28,7 @@ library Actor {
     address constant CALL_ACTOR_ADDRESS = 0xfe00000000000000000000000000000000000003;
     address constant CALL_ACTOR_ID = 0xfe00000000000000000000000000000000000005;
     string constant CALL_ERROR_MESSAGE = "actor call failed";
+    string constant UNEXPECTED_RESPONSE_MESSAGE = "unexpected response received";
 
     uint64 constant READ_ONLY_FLAG = 0x00000001; // https://github.com/filecoin-project/ref-fvm/blob/master/shared/src/sys/mod.rs#L60
     uint64 constant DEFAULT_FLAG = 0x00000000;
@@ -39,6 +40,7 @@ library Actor {
     /// @param raw_request encoded arguments to be passed in the call
     /// @param amount tokens to be transfered to the called actor
     /// @param read_only indicates if the call will be allaed to change the actor state or not (just read the state)
+    /// @return payload (in bytes) with the actual response data (without codec or response code)
     function callByAddress(
         bytes memory actor_address,
         uint256 method_num,
@@ -47,11 +49,7 @@ library Actor {
         uint256 amount,
         bool read_only
     ) internal returns (bytes memory) {
-        // Address in bytes format only start by 0, 1, 2, 3 or 4
-        require(
-            actor_address[0] == 0x00 || actor_address[0] == 0x01 || actor_address[0] == 0x02 || actor_address[0] == 0x03 || actor_address[0] == 0x04,
-            "actor_address address should be bytes format"
-        );
+        require(actor_address.length > 1, "invalid actor_address");
         require(address(this).balance >= amount, "not enough balance");
 
         (bool success, bytes memory data) = address(CALL_ACTOR_ADDRESS).delegatecall(
@@ -59,7 +57,7 @@ library Actor {
         );
         require(success == true, CALL_ERROR_MESSAGE);
 
-        return data;
+        return readRespData(data);
     }
 
     /// @notice allows to interact with an specific actor by its id (uint64)
@@ -67,8 +65,9 @@ library Actor {
     /// @param method_num id of the method from the actor to call
     /// @param codec how the request data passed as argument is encoded
     /// @param raw_request encoded arguments to be passed in the call
-    /// @param amount tokens to be transfered to the called actor
-    /// @param read_only indicates if the call will be allaed to change the actor state or not (just read the state)
+    /// @param amount tokens to be transferred to the called actor
+    /// @param read_only indicates if the call will be allowed to change the actor state or not (just read the state)
+    /// @return payload (in bytes) with the actual response data (without codec or response code)
     function callByID(
         uint64 actor_id,
         uint256 method_num,
@@ -84,7 +83,7 @@ library Actor {
         );
         require(success == true, CALL_ERROR_MESSAGE);
 
-        return data;
+        return readRespData(data);
     }
 
     /// @notice allows to interact with an non-singleton actors by its id (uint64)
@@ -107,7 +106,7 @@ library Actor {
         return callByID(actor_id, method_num, codec, raw_request, amount, read_only);
     }
 
-    /// @notice parse response an actor returned
+    /// @notice parse the response an actor returned
     /// @notice it will validate the return code (success) and the codec (valid one)
     /// @param raw_response raw data (bytes) the actor returned
     /// @return the actual raw data (payload, in bytes) to be parsed according to the actor and method called

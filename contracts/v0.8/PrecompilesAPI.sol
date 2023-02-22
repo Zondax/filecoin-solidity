@@ -40,7 +40,7 @@ library PrecompilesAPI {
     /// @notice get the actor id from an eth address
     /// @param addr eth address you want to get id from (in bytes format)
     /// @return the actor id
-    function resolveEthAddress(bytes memory addr) internal view returns (uint64) {
+    function resolveEthAddress(address addr) internal view returns (uint64) {
         bytes memory delegatedAddr = abi.encodePacked(hex"040a", addr);
 
         (bool success, bytes memory raw_response) = address(RESOLVE_ADDRESS_PRECOMPILE_ADDR).staticcall(delegatedAddr);

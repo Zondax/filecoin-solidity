@@ -59,10 +59,7 @@ library Utils {
     function universalReceiverHook(uint64 actorId, CommonTypes.UniversalReceiverParams memory params) internal returns (bytes memory) {
         bytes memory raw_request = params.serializeUniversalReceiverParams();
 
-        bytes memory raw_response = Actor.callByID(actorId, CommonTypes.UniversalReceiverHookMethodNum, Misc.CBOR_CODEC, raw_request, 0, false);
-
-        bytes memory result = Actor.readRespData(raw_response);
-        require(result.length == 0, "unexpected response received");
+        bytes memory result = Actor.callByID(actorId, CommonTypes.UniversalReceiverHookMethodNum, Misc.CBOR_CODEC, raw_request, 0, false);
 
         return result;
     }
