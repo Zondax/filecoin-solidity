@@ -56,8 +56,7 @@ library MinerAPI {
 
         bytes memory raw_response = Actor.callNonSingletonByID(actorId, MinerTypes.ChangeOwnerAddressMethodNum, Misc.CBOR_CODEC, raw_request, 0, false);
 
-        bytes memory result = Actor.readRespData(raw_response);
-        require(result.length == 0, "unexpected response received");
+        Actor.readEmptyResponse(rawResponse);
     }
 
     /// @param actorId  The miner actor id you want to interact with
@@ -121,8 +120,7 @@ library MinerAPI {
 
         bytes memory raw_response = Actor.callNonSingletonByID(actorId, MinerTypes.ChangeBeneficiaryMethodNum, Misc.CBOR_CODEC, raw_request, 0, false);
 
-        bytes memory result = Actor.readRespData(raw_response);
-        require(result.length == 0, "unexpected response received");
+        Actor.readEmptyResponse(rawResponse);
     }
 
     /// @param actorId The miner actor id you want to interact with
@@ -144,8 +142,7 @@ library MinerAPI {
 
         bytes memory raw_response = Actor.callNonSingletonByID(actorId, MinerTypes.ChangeWorkerAddressMethodNum, Misc.CBOR_CODEC, raw_request, 0, false);
 
-        bytes memory result = Actor.readRespData(raw_response);
-        require(result.length == 0, "unexpected response received");
+        Actor.readEmptyResponse(rawResponse);
     }
 
     /// @param actorId The miner actor id you want to interact with
@@ -154,8 +151,7 @@ library MinerAPI {
 
         bytes memory raw_response = Actor.callNonSingletonByID(actorId, MinerTypes.ChangePeerIDMethodNum, Misc.CBOR_CODEC, raw_request, 0, false);
 
-        bytes memory result = Actor.readRespData(raw_response);
-        require(result.length == 0, "unexpected response received");
+        Actor.readEmptyResponse(rawResponse);
     }
 
     /// @param actorId The miner actor id you want to interact with
@@ -164,8 +160,7 @@ library MinerAPI {
 
         bytes memory raw_response = Actor.callNonSingletonByID(actorId, MinerTypes.ChangeMultiaddrsMethodNum, Misc.CBOR_CODEC, raw_request, 0, false);
 
-        bytes memory result = Actor.readRespData(raw_response);
-        require(result.length == 0, "unexpected response received");
+        Actor.readEmptyResponse(rawResponse);
     }
 
     /// @param actorId The miner actor id you want to interact with
@@ -174,8 +169,7 @@ library MinerAPI {
 
         bytes memory raw_response = Actor.callNonSingletonByID(actorId, MinerTypes.RepayDebtMethodNum, Misc.NONE_CODEC, raw_request, 0, false);
 
-        bytes memory result = Actor.readRespData(raw_response);
-        require(result.length == 0, "unexpected response received");
+        Actor.readEmptyResponse(rawResponse);
     }
 
     /// @param actorId The miner actor id you want to interact with
@@ -184,8 +178,7 @@ library MinerAPI {
 
         bytes memory raw_response = Actor.callNonSingletonByID(actorId, MinerTypes.ConfirmChangeWorkerAddressMethodNum, Misc.NONE_CODEC, raw_request, 0, false);
 
-        bytes memory result = Actor.readRespData(raw_response);
-        require(result.length == 0, "unexpected response received");
+        Actor.readEmptyResponse(rawResponse);
     }
 
     /// @param actorId The miner actor id you want to interact with

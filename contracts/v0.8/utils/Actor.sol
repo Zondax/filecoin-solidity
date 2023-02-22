@@ -103,7 +103,7 @@ library Actor {
         return callByID(actor_id, method_num, codec, raw_request, amount, read_only);
     }
 
-    /// @notice parse response an actor returned
+    /// @notice parse the response an actor returned
     /// @notice it will validate the return code (success) and the codec (valid one)
     /// @param raw_response raw data (bytes) the actor returned
     /// @return the actual raw data (payload, in bytes) to be parsed according to the actor and method called
@@ -121,6 +121,15 @@ library Actor {
         require(exit == 0, getErrorCodeMsg(exit));
 
         return return_value;
+    }
+
+    /// @notice parse the response an actor returned and  validate that the returned data is empty
+    /// @notice it will validate the return code (success) and the codec (valid one)
+    /// @param raw_response raw data (bytes) the actor returned
+    function readEmptyResponse(bytes memory raw_response) internal pure {
+        bytes memory result = readRespData(raw_response);
+
+        require(result.length == 0, "unexpected response received");
     }
 
     /// @notice converts exit code to string message

@@ -38,8 +38,7 @@ library MarketAPI {
 
         bytes memory raw_response = Actor.callByID(MarketTypes.ActorID, MarketTypes.AddBalanceMethodNum, Misc.CBOR_CODEC, raw_request, value, false);
 
-        bytes memory result = Actor.readRespData(raw_response);
-        require(result.length == 0, "unexpected response received");
+        Actor.readEmptyResponse(rawResponse);
     }
 
     /// @notice Attempt to withdraw the specified amount from the balance held in escrow.

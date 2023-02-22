@@ -61,9 +61,6 @@ library Utils {
 
         bytes memory raw_response = Actor.callByID(actorId, CommonTypes.UniversalReceiverHookMethodNum, Misc.CBOR_CODEC, raw_request, 0, false);
 
-        bytes memory result = Actor.readRespData(raw_response);
-        require(result.length == 0, "unexpected response received");
-
-        return result;
+        return Actor.readRespData(raw_response);
     }
 }
