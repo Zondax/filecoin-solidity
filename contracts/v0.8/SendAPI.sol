@@ -29,8 +29,8 @@ library SendAPI {
     /// @param receiverActorId The id address (uint64) you want to send funds to
     /// @param value tokens to be transferred to the receiver
     function send(uint64 receiverActorId, uint256 value) internal {
-        bytes memory rawResponse = Actor.callByID(receiverActorId, 0, Misc.NONE_CODEC, new bytes(0), value, false);
+        bytes memory result = Actor.callByID(receiverActorId, 0, Misc.NONE_CODEC, new bytes(0), value, false);
 
-        Actor.readEmptyResponse(rawResponse);
+        require(result.length == 0, Actor.UNEXPECTED_RESPONSE_MESSAGE);
     }
 }

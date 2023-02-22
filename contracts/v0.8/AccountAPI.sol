@@ -39,8 +39,7 @@ library AccountAPI {
     function authenticateMessage(uint64 actorId, AccountTypes.AuthenticateMessageParams memory params) internal {
         bytes memory raw_request = params.serializeAuthenticateMessageParams();
 
-        bytes memory raw_response = Actor.callNonSingletonByID(actorId, AccountTypes.AuthenticateMessageMethodNum, Misc.CBOR_CODEC, raw_request, 0, true);
-
-        Actor.readEmptyResponse(rawResponse);
+        bytes memory data = Actor.callNonSingletonByID(actorId, AccountTypes.AuthenticateMessageMethodNum, Misc.CBOR_CODEC, raw_request, 0, true);
+        require(data.length == 0, Actor.UNEXPECTED_RESPONSE_MESSAGE);
     }
 }

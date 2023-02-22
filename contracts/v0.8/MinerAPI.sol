@@ -40,9 +40,7 @@ library MinerAPI {
     function getOwner(uint64 actorId) internal returns (MinerTypes.GetOwnerReturn memory) {
         bytes memory raw_request = new bytes(0);
 
-        bytes memory raw_response = Actor.callNonSingletonByID(actorId, MinerTypes.GetOwnerMethodNum, Misc.NONE_CODEC, raw_request, 0, true);
-
-        bytes memory result = Actor.readRespData(raw_response);
+        bytes memory result = Actor.callNonSingletonByID(actorId, MinerTypes.GetOwnerMethodNum, Misc.NONE_CODEC, raw_request, 0, true);
 
         return result.deserializeGetOwnerReturn();
     }
@@ -54,9 +52,9 @@ library MinerAPI {
     function changeOwnerAddress(uint64 actorId, bytes memory addr) internal {
         bytes memory raw_request = addr.serializeAddress();
 
-        bytes memory raw_response = Actor.callNonSingletonByID(actorId, MinerTypes.ChangeOwnerAddressMethodNum, Misc.CBOR_CODEC, raw_request, 0, false);
+        bytes memory result = Actor.callNonSingletonByID(actorId, MinerTypes.ChangeOwnerAddressMethodNum, Misc.CBOR_CODEC, raw_request, 0, false);
 
-        Actor.readEmptyResponse(rawResponse);
+        require(result.length == 0, Actor.UNEXPECTED_RESPONSE_MESSAGE);
     }
 
     /// @param actorId  The miner actor id you want to interact with
@@ -65,9 +63,7 @@ library MinerAPI {
     function isControllingAddress(uint64 actorId, bytes memory addr) internal returns (MinerTypes.IsControllingAddressReturn memory) {
         bytes memory raw_request = addr.serializeAddress();
 
-        bytes memory raw_response = Actor.callNonSingletonByID(actorId, MinerTypes.IsControllingAddressMethodNum, Misc.CBOR_CODEC, raw_request, 0, true);
-
-        bytes memory result = Actor.readRespData(raw_response);
+        bytes memory result = Actor.callNonSingletonByID(actorId, MinerTypes.IsControllingAddressMethodNum, Misc.CBOR_CODEC, raw_request, 0, true);
 
         return result.deserializeIsControllingAddressReturn();
     }
@@ -78,9 +74,7 @@ library MinerAPI {
     function getSectorSize(uint64 actorId) internal returns (MinerTypes.GetSectorSizeReturn memory) {
         bytes memory raw_request = new bytes(0);
 
-        bytes memory raw_response = Actor.callNonSingletonByID(actorId, MinerTypes.GetSectorSizeMethodNum, Misc.NONE_CODEC, raw_request, 0, true);
-
-        bytes memory result = Actor.readRespData(raw_response);
+        bytes memory result = Actor.callNonSingletonByID(actorId, MinerTypes.GetSectorSizeMethodNum, Misc.NONE_CODEC, raw_request, 0, true);
 
         return result.deserializeGetSectorSizeReturn();
     }
@@ -92,9 +86,7 @@ library MinerAPI {
     function getAvailableBalance(uint64 actorId) internal returns (MinerTypes.GetAvailableBalanceReturn memory) {
         bytes memory raw_request = new bytes(0);
 
-        bytes memory raw_response = Actor.callNonSingletonByID(actorId, MinerTypes.GetAvailableBalanceMethodNum, Misc.NONE_CODEC, raw_request, 0, true);
-
-        bytes memory result = Actor.readRespData(raw_response);
+        bytes memory result = Actor.callNonSingletonByID(actorId, MinerTypes.GetAvailableBalanceMethodNum, Misc.NONE_CODEC, raw_request, 0, true);
 
         return result.deserializeGetAvailableBalanceReturn();
     }
@@ -104,9 +96,7 @@ library MinerAPI {
     function getVestingFunds(uint64 actorId) internal returns (MinerTypes.GetVestingFundsReturn memory) {
         bytes memory raw_request = new bytes(0);
 
-        bytes memory raw_response = Actor.callNonSingletonByID(actorId, MinerTypes.GetVestingFundsMethodNum, Misc.NONE_CODEC, raw_request, 0, true);
-
-        bytes memory result = Actor.readRespData(raw_response);
+        bytes memory result = Actor.callNonSingletonByID(actorId, MinerTypes.GetVestingFundsMethodNum, Misc.NONE_CODEC, raw_request, 0, true);
 
         return result.deserializeGetVestingFundsReturn();
     }
@@ -118,9 +108,9 @@ library MinerAPI {
     function changeBeneficiary(uint64 actorId, MinerTypes.ChangeBeneficiaryParams memory params) internal {
         bytes memory raw_request = params.serializeChangeBeneficiaryParams();
 
-        bytes memory raw_response = Actor.callNonSingletonByID(actorId, MinerTypes.ChangeBeneficiaryMethodNum, Misc.CBOR_CODEC, raw_request, 0, false);
+        bytes memory result = Actor.callNonSingletonByID(actorId, MinerTypes.ChangeBeneficiaryMethodNum, Misc.CBOR_CODEC, raw_request, 0, false);
 
-        Actor.readEmptyResponse(rawResponse);
+        require(result.length == 0, Actor.UNEXPECTED_RESPONSE_MESSAGE);
     }
 
     /// @param actorId The miner actor id you want to interact with
@@ -129,9 +119,7 @@ library MinerAPI {
     function getBeneficiary(uint64 actorId) internal returns (MinerTypes.GetBeneficiaryReturn memory) {
         bytes memory raw_request = new bytes(0);
 
-        bytes memory raw_response = Actor.callNonSingletonByID(actorId, MinerTypes.GetBeneficiaryMethodNum, Misc.NONE_CODEC, raw_request, 0, true);
-
-        bytes memory result = Actor.readRespData(raw_response);
+        bytes memory result = Actor.callNonSingletonByID(actorId, MinerTypes.GetBeneficiaryMethodNum, Misc.NONE_CODEC, raw_request, 0, true);
 
         return result.deserializeGetBeneficiaryReturn();
     }
@@ -140,54 +128,52 @@ library MinerAPI {
     function changeWorkerAddress(uint64 actorId, MinerTypes.ChangeWorkerAddressParams memory params) internal {
         bytes memory raw_request = params.serializeChangeWorkerAddressParams();
 
-        bytes memory raw_response = Actor.callNonSingletonByID(actorId, MinerTypes.ChangeWorkerAddressMethodNum, Misc.CBOR_CODEC, raw_request, 0, false);
+        bytes memory result = Actor.callNonSingletonByID(actorId, MinerTypes.ChangeWorkerAddressMethodNum, Misc.CBOR_CODEC, raw_request, 0, false);
 
-        Actor.readEmptyResponse(rawResponse);
+        require(result.length == 0, Actor.UNEXPECTED_RESPONSE_MESSAGE);
     }
 
     /// @param actorId The miner actor id you want to interact with
     function changePeerId(uint64 actorId, MinerTypes.ChangePeerIDParams memory params) internal {
         bytes memory raw_request = params.serializeChangePeerIDParams();
 
-        bytes memory raw_response = Actor.callNonSingletonByID(actorId, MinerTypes.ChangePeerIDMethodNum, Misc.CBOR_CODEC, raw_request, 0, false);
+        bytes memory result = Actor.callNonSingletonByID(actorId, MinerTypes.ChangePeerIDMethodNum, Misc.CBOR_CODEC, raw_request, 0, false);
 
-        Actor.readEmptyResponse(rawResponse);
+        require(result.length == 0, Actor.UNEXPECTED_RESPONSE_MESSAGE);
     }
 
     /// @param actorId The miner actor id you want to interact with
     function changeMultiaddresses(uint64 actorId, MinerTypes.ChangeMultiaddrsParams memory params) internal {
         bytes memory raw_request = params.serializeChangeMultiaddrsParams();
 
-        bytes memory raw_response = Actor.callNonSingletonByID(actorId, MinerTypes.ChangeMultiaddrsMethodNum, Misc.CBOR_CODEC, raw_request, 0, false);
+        bytes memory result = Actor.callNonSingletonByID(actorId, MinerTypes.ChangeMultiaddrsMethodNum, Misc.CBOR_CODEC, raw_request, 0, false);
 
-        Actor.readEmptyResponse(rawResponse);
+        require(result.length == 0, Actor.UNEXPECTED_RESPONSE_MESSAGE);
     }
 
     /// @param actorId The miner actor id you want to interact with
     function repayDebt(uint64 actorId) internal {
         bytes memory raw_request = new bytes(0);
 
-        bytes memory raw_response = Actor.callNonSingletonByID(actorId, MinerTypes.RepayDebtMethodNum, Misc.NONE_CODEC, raw_request, 0, false);
+        bytes memory result = Actor.callNonSingletonByID(actorId, MinerTypes.RepayDebtMethodNum, Misc.NONE_CODEC, raw_request, 0, false);
 
-        Actor.readEmptyResponse(rawResponse);
+        require(result.length == 0, Actor.UNEXPECTED_RESPONSE_MESSAGE);
     }
 
     /// @param actorId The miner actor id you want to interact with
     function confirmChangeWorkerAddress(uint64 actorId) internal {
         bytes memory raw_request = new bytes(0);
 
-        bytes memory raw_response = Actor.callNonSingletonByID(actorId, MinerTypes.ConfirmChangeWorkerAddressMethodNum, Misc.NONE_CODEC, raw_request, 0, false);
+        bytes memory result = Actor.callNonSingletonByID(actorId, MinerTypes.ConfirmChangeWorkerAddressMethodNum, Misc.NONE_CODEC, raw_request, 0, false);
 
-        Actor.readEmptyResponse(rawResponse);
+        require(result.length == 0, Actor.UNEXPECTED_RESPONSE_MESSAGE);
     }
 
     /// @param actorId The miner actor id you want to interact with
     function getPeerId(uint64 actorId) internal returns (MinerTypes.GetPeerIDReturn memory) {
         bytes memory raw_request = new bytes(0);
 
-        bytes memory raw_response = Actor.callNonSingletonByID(actorId, MinerTypes.GetPeerIDMethodNum, Misc.NONE_CODEC, raw_request, 0, true);
-
-        bytes memory result = Actor.readRespData(raw_response);
+        bytes memory result = Actor.callNonSingletonByID(actorId, MinerTypes.GetPeerIDMethodNum, Misc.NONE_CODEC, raw_request, 0, true);
 
         return result.deserializeGetPeerIDReturn();
     }
@@ -196,9 +182,7 @@ library MinerAPI {
     function getMultiaddresses(uint64 actorId) internal returns (MinerTypes.GetMultiaddrsReturn memory) {
         bytes memory raw_request = new bytes(0);
 
-        bytes memory raw_response = Actor.callNonSingletonByID(actorId, MinerTypes.GetMultiaddrsMethodNum, Misc.NONE_CODEC, raw_request, 0, true);
-
-        bytes memory result = Actor.readRespData(raw_response);
+        bytes memory result = Actor.callNonSingletonByID(actorId, MinerTypes.GetMultiaddrsMethodNum, Misc.NONE_CODEC, raw_request, 0, true);
 
         return result.deserializeGetMultiaddrsReturn();
     }
@@ -208,9 +192,7 @@ library MinerAPI {
     function withdrawBalance(uint64 actorId, MinerTypes.WithdrawBalanceParams memory params) internal returns (MinerTypes.WithdrawBalanceReturn memory) {
         bytes memory raw_request = params.serializeWithdrawBalanceParams();
 
-        bytes memory raw_response = Actor.callNonSingletonByID(actorId, MinerTypes.WithdrawBalanceMethodNum, Misc.CBOR_CODEC, raw_request, 0, false);
-
-        bytes memory result = Actor.readRespData(raw_response);
+        bytes memory result = Actor.callNonSingletonByID(actorId, MinerTypes.WithdrawBalanceMethodNum, Misc.CBOR_CODEC, raw_request, 0, false);
 
         return result.deserializeWithdrawBalanceReturn();
     }
