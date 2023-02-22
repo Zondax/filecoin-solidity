@@ -33,4 +33,13 @@ library SendAPI {
 
         require(result.length == 0, Actor.UNEXPECTED_RESPONSE_MESSAGE);
     }
+
+    /// @notice send token to a specific actor
+    /// @param addr The address (bytes format) you want to send funds to
+    /// @param value tokens to be transferred to the receiver
+    function send(bytes memory addr, uint256 value) internal {
+        bytes memory result = Actor.callByAddress(addr, 0, Misc.NONE_CODEC, new bytes(0), value, false);
+
+        require(result.length == 0, Actor.UNEXPECTED_RESPONSE_MESSAGE);
+    }
 }
