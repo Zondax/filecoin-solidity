@@ -256,6 +256,9 @@ library MarketCBOR {
         uint len;
 
         (len, byteIdx) = rawResp.readFixedArray(byteIdx);
+        assert(len == 2);
+
+        (len, byteIdx) = rawResp.readFixedArray(byteIdx);
         ret.ids = new uint64[](len);
 
         for (uint i = 0; i < len; i++) {
