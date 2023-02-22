@@ -37,8 +37,6 @@ library PowerAPI {
     /// @param params data required to create the miner
     /// @param value the amount of token the new miner will receive
     function createMiner(PowerTypes.CreateMinerParams memory params, uint256 value) internal returns (PowerTypes.CreateMinerReturn memory) {
-        require(address(this).balance >= value, "not enough balance");
-
         bytes memory raw_request = params.serializeCreateMinerParams();
 
         bytes memory raw_response = Actor.callByAddress(PowerTypes.ActorID, PowerTypes.CreateMinerMethodNum, Misc.CBOR_CODEC, raw_request, value, false);

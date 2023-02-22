@@ -52,6 +52,7 @@ library Actor {
             actor_address[0] == 0x00 || actor_address[0] == 0x01 || actor_address[0] == 0x02 || actor_address[0] == 0x03 || actor_address[0] == 0x04,
             "actor_address address should be bytes format"
         );
+        require(address(this).balance >= amount, "not enough balance");
 
         (bool success, bytes memory data) = address(CALL_ACTOR_ADDRESS).delegatecall(
             abi.encode(uint64(method_num), amount, read_only ? READ_ONLY_FLAG : DEFAULT_FLAG, codec, raw_request, actor_address)
@@ -76,6 +77,8 @@ library Actor {
         uint256 amount,
         bool read_only
     ) internal returns (bytes memory) {
+        require(address(this).balance >= amount, "not enough balance");
+
         (bool success, bytes memory data) = address(CALL_ACTOR_ID).delegatecall(
             abi.encode(uint64(method_num), amount, read_only ? READ_ONLY_FLAG : DEFAULT_FLAG, codec, raw_request, actor_id)
         );

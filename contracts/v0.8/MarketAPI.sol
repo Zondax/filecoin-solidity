@@ -34,8 +34,6 @@ library MarketAPI {
 
     /// @notice Deposits the received value into the balance held in escrow.
     function addBalance(bytes memory provider_or_client, uint256 value) internal {
-        require(address(this).balance >= value, "not enough balance");
-
         bytes memory raw_request = provider_or_client.serializeAddress();
 
         bytes memory raw_response = Actor.callByAddress(MarketTypes.ActorID, MarketTypes.AddBalanceMethodNum, Misc.CBOR_CODEC, raw_request, value, false);
