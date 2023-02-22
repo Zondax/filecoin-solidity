@@ -29,7 +29,7 @@ import "./types/DataCapTypes.sol";
 
 import "./utils/Actor.sol";
 
-/// @title This library compiles a bunch of help function.
+/// @title This library compiles a bunch of helper functions.
 /// @author Zondax AG
 library Utils {
     using AccountCBOR for *;
@@ -38,6 +38,9 @@ library Utils {
 
     event ReceivedDataCap(string received);
 
+    /// @notice utility function meant to handle calls from other builtin actors. Arguments are passed as cbor serialized data (in filecoin native format)
+    /// @param method the filecoin method id that is being called
+    /// @param params raw data (in bytes) passed as arguments to the method call
     function handleFilecoinMethod(uint64 method, uint64, bytes calldata params) internal returns (AccountTypes.AuthenticateMessageParams memory) {
         // dispatch methods
         if (method == AccountTypes.AuthenticateMessageMethodNum) {
