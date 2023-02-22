@@ -27,8 +27,9 @@ import "./utils/Actor.sol";
 library SendAPI {
     /// @notice send token to a specific actor
     /// @param receiverActorId The id address (uint64) you want to send funds to
-    function send(uint64 receiverActorId, uint256 amount) internal {
-        bytes memory rawResponse = Actor.callByID(receiverActorId, 0, Misc.NONE_CODEC, new bytes(0), amount, false);
+    /// @param value tokens to be transferred to the receiver
+    function send(uint64 receiverActorId, uint256 value) internal {
+        bytes memory rawResponse = Actor.callByID(receiverActorId, 0, Misc.NONE_CODEC, new bytes(0), value, false);
 
         bytes memory result = Actor.readRespData(rawResponse);
         require(result.length == 0, "unexpected response received");
