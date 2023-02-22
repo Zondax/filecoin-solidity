@@ -222,7 +222,7 @@ fn precompiles_tests() {
             gas_limit: 1000000000,
             method_num: EvmMethods::InvokeContract as u64,
             sequence: 4,
-            params: RawBytes::new(hex::decode("58640D6B2CE40000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000001476C499BE8821B5B9860144D292FFF728611BFD1A000000000000000000000000").unwrap()),
+            params: RawBytes::new(hex::decode("5824DCA7CA03000000000000000000000000DAFEA492D9C6733AE3D56B7ED1ADB60692C98BC5").unwrap()),
             ..Message::default()
         };
 
@@ -234,7 +234,7 @@ fn precompiles_tests() {
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
     assert_eq!(
         hex::encode(res.msg_receipt.return_data.bytes()),
-        "58200000000000000000000000000000000000000000000000000000000000000191"
+        "58200000000000000000000000000000000000000000000000000000000000000190"
     );
 
     let table = testing::create_gas_table(gas_result);

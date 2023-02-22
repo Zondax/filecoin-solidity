@@ -29,7 +29,7 @@ contract PrecompilesApiTest {
         return PrecompilesAPI.resolveAddress(addr);
     }
 
-    function resolve_eth_address(bytes memory addr) public view returns (uint64) {
+    function resolve_eth_address(address addr) public view returns (uint64) {
         return PrecompilesAPI.resolveEthAddress(addr);
     }
 
