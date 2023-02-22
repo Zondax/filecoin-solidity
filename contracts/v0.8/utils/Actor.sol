@@ -29,8 +29,6 @@ library Actor {
     address constant CALL_ACTOR_ID = 0xfe00000000000000000000000000000000000005;
     string constant CALL_ERROR_MESSAGE = "actor call failed";
 
-    uint64 constant CALL_ACTOR_PRECOMPILE_ADDR = 0x0e;
-    uint64 constant MAX_RAW_RESPONSE_SIZE = 0x300;
     uint64 constant READ_ONLY_FLAG = 0x00000001; // https://github.com/filecoin-project/ref-fvm/blob/master/shared/src/sys/mod.rs#L60
     uint64 constant DEFAULT_FLAG = 0x00000000;
 
