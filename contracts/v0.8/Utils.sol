@@ -36,20 +36,14 @@ library Utils {
     using FilecoinCBOR for *;
     using BytesCBOR for bytes;
 
-    event ReceivedDataCap(string received);
-
     /// @notice utility function meant to handle calls from other builtin actors. Arguments are passed as cbor serialized data (in filecoin native format)
     /// @param method the filecoin method id that is being called
     /// @param params raw data (in bytes) passed as arguments to the method call
-    function handleFilecoinMethod(uint64 method, uint64, bytes calldata params) internal returns (AccountTypes.AuthenticateMessageParams memory) {
-        // dispatch methods
-        if (method == AccountTypes.AuthenticateMessageMethodNum) {
-            // deserialize params here
-            return params.deserializeAuthenticateMessageParams();
-        } else if (method == DataCapTypes.ReceiverHookMethodNum) {
-            emit ReceivedDataCap("DataCap Received!");
+    function handleFilecoinMethod(uint64 method, uint64 codec, bytes calldata params) internal pure returns (CommonTypes.UniversalReceiverParams memory) {
+        require((codec == 0) == (params.length == 0));
 
-            return AccountTypes.AuthenticateMessageParams(new bytes(0), new bytes(0));
+        if (method == CommonTypes.UniversalReceiverHookMethodNum) {
+            return params.deserializeUniversalReceiverParams();
         } else {
             revert("the filecoin method that was called is not handled");
         }
