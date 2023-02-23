@@ -393,7 +393,7 @@ library CBORDecoder {
         if (low == 24) {
             uint8 next = sliceUInt8(cbor, byteIndex);
             byteIndex += 1;
-            assert(next >= 24); // otherwise this is invalid cbor
+            require(next >= 24, "invalid cbor"); // otherwise this is invalid cbor
             return (maj, next, byteIndex);
         }
 
