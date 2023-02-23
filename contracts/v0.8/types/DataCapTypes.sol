@@ -38,7 +38,6 @@ library DataCapTypes {
     uint constant BurnMethodNum = 1434719642;
     uint constant BurnFromMethodNum = 2979674018;
     uint constant AllowanceMethodNum = 4205072950;
-    uint constant ReceiverHookMethodNum = 3726118371;
 
     /// @param owner the wallet address of the owner.
     /// @param operator the wallet address of the owner.

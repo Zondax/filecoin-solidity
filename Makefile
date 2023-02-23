@@ -95,6 +95,8 @@ test_precompiles_integration: build build_builtin_actors
 test_send_integration: build build_builtin_actors
 	cd testing && cargo test send_test -- --nocapture
 
+frc0042:
+	cd script && cargo r
 
 ################ TESTS SECURITY ################
 
