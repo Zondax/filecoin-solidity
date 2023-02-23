@@ -67,7 +67,7 @@ library FilecoinCBOR {
         uint len;
 
         (len, byteIdx) = rawResp.readFixedArray(byteIdx);
-        require(len == 2, "wrong length in array");
+        assert(len == 2);
 
         (ret.type_, byteIdx) = rawResp.readUInt32(byteIdx);
         (ret.payload, byteIdx) = rawResp.readBytes(byteIdx);
