@@ -45,19 +45,19 @@ library MarketTypes {
     /// @param tokenAmount the token amount to withdraw.
     struct WithdrawBalanceParams {
         bytes provider_or_client;
-        BigInt tokenAmount;
+        CommonTypes.BigInt tokenAmount;
     }
 
     /// @param amount_withdrawn the token amount withdrawn.
     struct WithdrawBalanceReturn {
-        BigInt amount_withdrawn;
+        CommonTypes.BigInt amount_withdrawn;
     }
 
     /// @param balance the escrow balance for this address.
     /// @param locked the escrow locked amount for this address.
     struct GetBalanceReturn {
-        BigInt balance;
-        BigInt locked;
+        CommonTypes.BigInt balance;
+        CommonTypes.BigInt locked;
     }
 
     /// @param data the data commitment of this deal.
@@ -91,17 +91,17 @@ library MarketTypes {
 
     /// @param price_per_epoch the token amount that will be paid by client to provider.
     struct GetDealEpochPriceReturn {
-        BigInt price_per_epoch;
+        CommonTypes.BigInt price_per_epoch;
     }
 
     /// @param collateral the token amount as collateral paid by the client.
     struct GetDealClientCollateralReturn {
-        BigInt collateral;
+        CommonTypes.BigInt collateral;
     }
 
     /// @param collateral the token amount as collateral paid by the provider.
     struct GetDealProviderCollateralReturn {
-        BigInt collateral;
+        CommonTypes.BigInt collateral;
     }
 
     /// @param verified if the deal is verified or not.
@@ -148,9 +148,9 @@ library MarketTypes {
         string label;
         int64 start_epoch;
         int64 end_epoch;
-        BigInt storage_price_per_epoch;
-        BigInt provider_collateral;
-        BigInt client_collateral;
+        CommonTypes.BigInt storage_price_per_epoch;
+        CommonTypes.BigInt provider_collateral;
+        CommonTypes.BigInt client_collateral;
     }
 
     /// @param proposal Proposal

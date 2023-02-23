@@ -19,6 +19,7 @@
 // SPDX-License-Identifier: Apache-2.0
 pragma solidity ^0.8.17;
 
+import "./types/CommonTypes.sol";
 import "./types/PowerTypes.sol";
 import "./cbor/PowerCbor.sol";
 import "./cbor/BytesCbor.sol";
@@ -63,7 +64,7 @@ library PowerAPI {
     }
 
     /// @notice get the total raw power of the network.
-    function networkRawPower() internal returns (BigInt memory) {
+    function networkRawPower() internal returns (CommonTypes.BigInt memory) {
         bytes memory raw_request = new bytes(0);
 
         bytes memory result = Actor.callByID(PowerTypes.ActorID, PowerTypes.NetworkRawPowerMethodNum, Misc.NONE_CODEC, raw_request, 0, true);

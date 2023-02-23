@@ -19,9 +19,10 @@
 // SPDX-License-Identifier: Apache-2.0
 pragma solidity ^0.8.17;
 
-import {BigNumbers, BigNumber} from "../external/BigNumbers.sol";
+import "../external/BigNumbers.sol";
 
 import "../types/MinerTypes.sol";
+import "../types/CommonTypes.sol";
 
 /// @title This library is a proxy to a built-in Miner actor. Calling one of its methods will result in a cross-actor call being performed. However, in this mock library, no actual call is performed.
 /// @author Zondax AG
@@ -85,13 +86,13 @@ contract MinerMockAPI {
     /// @notice Can go negative if the miner is in IP debt.
     /// @return the available balance of this miner.
     function getAvailableBalance() public pure returns (MinerTypes.GetAvailableBalanceReturn memory) {
-        return MinerTypes.GetAvailableBalanceReturn(BigInt(hex"021E19E0C9BAB2400000", false));
+        return MinerTypes.GetAvailableBalanceReturn(CommonTypes.BigInt(hex"021E19E0C9BAB2400000", false));
     }
 
     /// @return the funds vesting in this miner as a list of (vesting_epoch, vesting_amount) tuples.
     function getVestingFunds() public pure returns (MinerTypes.GetVestingFundsReturn memory) {
         MinerTypes.VestingFunds[] memory vesting_funds = new MinerTypes.VestingFunds[](1);
-        vesting_funds[0] = MinerTypes.VestingFunds(1668514825, BigInt(hex"6C6B935B8BBD400000", false));
+        vesting_funds[0] = MinerTypes.VestingFunds(1668514825, CommonTypes.BigInt(hex"6C6B935B8BBD400000", false));
 
         return MinerTypes.GetVestingFundsReturn(vesting_funds);
     }
@@ -101,8 +102,12 @@ contract MinerMockAPI {
     /// @notice See FIP-0029, https://github.com/filecoin-project/FIPs/blob/master/FIPS/fip-0029.md
     function changeBeneficiary(MinerTypes.ChangeBeneficiaryParams memory params) public {
         if (!isBeneficiarySet) {
-            BigNumber memory zero = BigNumbers.zero();
-            MinerTypes.BeneficiaryTerm memory term = MinerTypes.BeneficiaryTerm(params.new_quota, BigInt(zero.val, zero.neg), params.new_expiration);
+            BigNumbers.BigNumber memory zero = BigNumbers.zero();
+            MinerTypes.BeneficiaryTerm memory term = MinerTypes.BeneficiaryTerm(
+                params.new_quota,
+                CommonTypes.BigInt(zero.val, zero.neg),
+                params.new_expiration
+            );
             activeBeneficiary = MinerTypes.ActiveBeneficiary(params.new_beneficiary, term);
             isBeneficiarySet = true;
         } else {

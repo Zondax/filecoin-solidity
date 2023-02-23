@@ -67,7 +67,7 @@ library VerifRegTypes {
     struct RemoveExpiredAllocationsReturn {
         uint64[] considered;
         CommonTypes.BatchReturn results;
-        BigInt datacap_recovered;
+        CommonTypes.BigInt datacap_recovered;
     }
 
     /// @param provider the provider address (need not be the caller)
@@ -87,15 +87,6 @@ library VerifRegTypes {
     /// @param terms list of claim terms to extend
     struct ExtendClaimTermsParams {
         ClaimTerm[] terms;
-    }
-
-    /// @param allocation_results result for each allocation request.
-    /// @param extension_results result for each extension request.
-    /// @param new_allocations list of IDs of new allocations created.
-    struct AllocationsResponse {
-        CommonTypes.BatchReturn allocation_results;
-        CommonTypes.BatchReturn extension_results;
-        uint64[] new_allocations;
     }
 
     /// @param provider the provider address which storing the data.

@@ -20,6 +20,7 @@
 pragma solidity ^0.8.17;
 
 import "../types/PowerTypes.sol";
+import "../types/CommonTypes.sol";
 import "../PowerAPI.sol";
 
 /// @notice This file is meant to serve as a deployable contract of the power actor API, as the library by itself is not.
@@ -38,7 +39,7 @@ contract PowerApiTest {
         return PowerAPI.minerConsensusCount();
     }
 
-    function network_raw_power() public returns (BigInt memory) {
+    function network_raw_power() public returns (CommonTypes.BigInt memory) {
         return PowerAPI.networkRawPower();
     }
 

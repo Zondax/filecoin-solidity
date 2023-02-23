@@ -28,4 +28,8 @@ contract SendApiTest {
     function send(uint64 receiverActorId, uint256 amount) public {
         return SendAPI.send(receiverActorId, amount);
     }
+
+    function send(bytes memory addr, uint256 amount) public {
+        return SendAPI.send(addr, amount);
+    }
 }

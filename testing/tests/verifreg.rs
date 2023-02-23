@@ -251,28 +251,6 @@ fn verifreg_tests() {
     gas_result.push(("remove_expired_claims".into(), res.msg_receipt.gas_used));
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
 
-    /*
-        universal_receiver_hook in Verifreg can only be call by DataCap actor.
-
-        TODO: investigate how it is supposed to work.
-
-    println!("Calling `universal_receiver_hook`");
-    let message = Message {
-        from: sender.1,
-        to: Address::new_id(exec_return.actor_id),
-        gas_limit: 1000000000,
-        method_num: EvmMethods::InvokeContract as u64,
-        sequence: 6,
-        params: RawBytes::new(hex::decode("58A4AA7E0F7B000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000C9000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000031245AB0000000000000000000000000000000000000000000000000000000000").unwrap()),
-        ..Message::default()
-    };
-
-    let res = executor
-        .execute_message(message, ApplyKind::Explicit, 100)
-        .unwrap();
-
-    assert_eq!(res.msg_receipt.exit_code.value(), 0);*/
-
     let table = testing::create_gas_table(gas_result);
     testing::save_gas_table(&table, "verifreg");
 

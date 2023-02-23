@@ -19,6 +19,7 @@
 // SPDX-License-Identifier: Apache-2.0
 pragma solidity ^0.8.17;
 
+import "../types/CommonTypes.sol";
 import "../cbor/BigIntCbor.sol";
 
 /// @title Filecoin datacap actor types for Solidity.
@@ -51,7 +52,7 @@ library DataCapTypes {
     /// @param operator_data Arbitrary data to pass on via the receiver hook.
     struct TransferParams {
         bytes to;
-        BigInt amount;
+        CommonTypes.BigInt amount;
         bytes operator_data;
     }
 
@@ -59,8 +60,8 @@ library DataCapTypes {
     /// @param to_balance the balance of to_address.
     /// @param recipient_data data returned from receive hook.
     struct TransferReturn {
-        BigInt from_balance;
-        BigInt to_balance;
+        CommonTypes.BigInt from_balance;
+        CommonTypes.BigInt to_balance;
         bytes recipient_data;
     }
 
@@ -71,7 +72,7 @@ library DataCapTypes {
     struct TransferFromParams {
         bytes from;
         bytes to;
-        BigInt amount;
+        CommonTypes.BigInt amount;
         bytes operator_data;
     }
 
@@ -80,9 +81,9 @@ library DataCapTypes {
     /// @param allowance the remaining allowance of owner address.
     /// @param recipient_data data returned from receive hook.
     struct TransferFromReturn {
-        BigInt from_balance;
-        BigInt to_balance;
-        BigInt allowance;
+        CommonTypes.BigInt from_balance;
+        CommonTypes.BigInt to_balance;
+        CommonTypes.BigInt allowance;
         bytes recipient_data;
     }
 
@@ -90,14 +91,14 @@ library DataCapTypes {
     /// @param increase increase DataCap token allowance for the operator address.
     struct IncreaseAllowanceParams {
         bytes operator;
-        BigInt increase;
+        CommonTypes.BigInt increase;
     }
 
     /// @param operator the wallet address of the operator.
     /// @param decrease the decreased DataCap token allowance of the operator address.
     struct DecreaseAllowanceParams {
         bytes operator;
-        BigInt decrease;
+        CommonTypes.BigInt decrease;
     }
 
     /// @param operator the wallet address of the operator.
@@ -107,25 +108,25 @@ library DataCapTypes {
 
     /// @param amount the amount the DataCap token to be burned.
     struct BurnParams {
-        BigInt amount;
+        CommonTypes.BigInt amount;
     }
 
     /// @param balance the updated DataCap token balance of the owner/caller address.
     struct BurnReturn {
-        BigInt balance;
+        CommonTypes.BigInt balance;
     }
 
     /// @param owner the wallet address of the owner.
     /// @param amount the amount of DataCap token to be burned.
     struct BurnFromParams {
         bytes owner;
-        BigInt amount;
+        CommonTypes.BigInt amount;
     }
 
     /// @param balance new balance in the account after the successful burn.
     /// @param allowance new remaining allowance between the owner and operator (caller)
     struct BurnFromReturn {
-        BigInt balance;
-        BigInt allowance;
+        CommonTypes.BigInt balance;
+        CommonTypes.BigInt allowance;
     }
 }

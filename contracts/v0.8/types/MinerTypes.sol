@@ -66,7 +66,7 @@ library MinerTypes {
 
     /// @param available_balance the available token balance amount.
     struct GetAvailableBalanceReturn {
-        BigInt available_balance;
+        CommonTypes.BigInt available_balance;
     }
 
     /// @param vesting_funds funds
@@ -79,7 +79,7 @@ library MinerTypes {
     /// @param new_expiration the epoch that the new quota will be expired.
     struct ChangeBeneficiaryParams {
         bytes new_beneficiary;
-        BigInt new_quota;
+        CommonTypes.BigInt new_quota;
         uint64 new_expiration;
     }
 
@@ -131,15 +131,15 @@ library MinerTypes {
     /// @param amount the amount of funds vested.
     struct VestingFunds {
         int64 epoch;
-        BigInt amount;
+        CommonTypes.BigInt amount;
     }
 
     /// @param quota the quota token amount.
     /// @param used_quota the used quota token amount.
     /// @param expiration the epoch that the quota will be expired.
     struct BeneficiaryTerm {
-        BigInt quota;
-        BigInt used_quota;
+        CommonTypes.BigInt quota;
+        CommonTypes.BigInt used_quota;
         uint64 expiration;
     }
 
@@ -157,7 +157,7 @@ library MinerTypes {
     /// @param approved_by_nominee if this proposal is approved by nominee or not.
     struct PendingBeneficiaryChange {
         bytes new_beneficiary;
-        BigInt new_quota;
+        CommonTypes.BigInt new_quota;
         uint64 new_expiration;
         bool approved_by_beneficiary;
         bool approved_by_nominee;

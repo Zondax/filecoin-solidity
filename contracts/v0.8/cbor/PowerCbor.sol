@@ -21,6 +21,7 @@ pragma solidity ^0.8.17;
 
 import "../external/CBOR.sol";
 
+import "../types/CommonTypes.sol";
 import "../types/PowerTypes.sol";
 import "../utils/CborDecode.sol";
 import "../utils/Misc.sol";
@@ -31,7 +32,7 @@ import "./BigIntCbor.sol";
 library PowerCBOR {
     using CBOR for CBOR.CBORBuffer;
     using CBORDecoder for bytes;
-    using BigIntCBOR for BigInt;
+    using BigIntCBOR for CommonTypes.BigInt;
     using BigIntCBOR for bytes;
 
     /// @notice serialize CreateMinerParams struct to cbor in order to pass as arguments to the power actor
@@ -86,7 +87,7 @@ library PowerCBOR {
         if (tmp.length > 0) {
             ret.raw_byte_power = tmp.deserializeBigInt();
         } else {
-            ret.raw_byte_power = BigInt(new bytes(0), false);
+            ret.raw_byte_power = CommonTypes.BigInt(new bytes(0), false);
         }
 
         (ret.meets_consensus_minimum, byteIdx) = rawResp.readBool(byteIdx);

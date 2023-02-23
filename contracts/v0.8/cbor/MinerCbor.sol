@@ -22,6 +22,7 @@ pragma solidity ^0.8.17;
 import "../external/CBOR.sol";
 
 import "../types/MinerTypes.sol";
+import "../types/CommonTypes.sol";
 import "../utils/CborDecode.sol";
 import "../utils/Misc.sol";
 import "./BigIntCbor.sol";
@@ -31,7 +32,7 @@ import "./BigIntCbor.sol";
 library MinerCBOR {
     using CBOR for CBOR.CBORBuffer;
     using CBORDecoder for bytes;
-    using BigIntCBOR for BigInt;
+    using BigIntCBOR for CommonTypes.BigInt;
     using BigIntCBOR for bytes;
 
     /// @notice serialize ChangeBeneficiaryParams struct to cbor in order to pass as arguments to the miner actor
@@ -100,7 +101,7 @@ library MinerCBOR {
         if (tmp.length > 0) {
             ret.available_balance = tmp.deserializeBigInt();
         } else {
-            ret.available_balance = BigInt(new bytes(0), false);
+            ret.available_balance = CommonTypes.BigInt(new bytes(0), false);
         }
 
         return ret;
@@ -129,14 +130,14 @@ library MinerCBOR {
         if (tmp.length > 0) {
             ret.active.term.quota = tmp.deserializeBigInt();
         } else {
-            ret.active.term.quota = BigInt(new bytes(0), false);
+            ret.active.term.quota = CommonTypes.BigInt(new bytes(0), false);
         }
 
         (tmp, byteIdx) = rawResp.readBytes(byteIdx);
         if (tmp.length > 0) {
             ret.active.term.used_quota = tmp.deserializeBigInt();
         } else {
-            ret.active.term.used_quota = BigInt(new bytes(0), false);
+            ret.active.term.used_quota = CommonTypes.BigInt(new bytes(0), false);
         }
 
         (ret.active.term.expiration, byteIdx) = rawResp.readUInt64(byteIdx);
@@ -151,7 +152,7 @@ library MinerCBOR {
             if (tmp.length > 0) {
                 ret.proposed.new_quota = tmp.deserializeBigInt();
             } else {
-                ret.proposed.new_quota = BigInt(new bytes(0), false);
+                ret.proposed.new_quota = CommonTypes.BigInt(new bytes(0), false);
             }
 
             (ret.proposed.new_expiration, byteIdx) = rawResp.readUInt64(byteIdx);
@@ -167,7 +168,7 @@ library MinerCBOR {
     /// @return ret new instance of GetVestingFundsReturn created based on parsed data
     function deserializeGetVestingFundsReturn(bytes memory rawResp) internal pure returns (MinerTypes.GetVestingFundsReturn memory ret) {
         int64 epoch;
-        BigInt memory amount;
+        CommonTypes.BigInt memory amount;
         bytes memory tmp;
 
         uint byteIdx = 0;
