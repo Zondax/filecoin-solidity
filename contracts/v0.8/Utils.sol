@@ -46,7 +46,7 @@ library Utils {
         if (method == AccountTypes.AuthenticateMessageMethodNum) {
             // deserialize params here
             return params.deserializeAuthenticateMessageParams();
-        } else if (method == DataCapTypes.ReceiverHookMethodNum) {
+        } else if (method == CommonTypes.UniversalReceiverHookMethodNum) {
             emit ReceivedDataCap("DataCap Received!");
 
             return AccountTypes.AuthenticateMessageParams(new bytes(0), new bytes(0));
