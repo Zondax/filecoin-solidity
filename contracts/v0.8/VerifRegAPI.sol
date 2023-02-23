@@ -78,9 +78,4 @@ library VerifRegAPI {
         return result.deserializeRemoveExpiredClaimsReturn();
     }
 
-    function universalReceiverHook(CommonTypes.UniversalReceiverParams memory params) internal returns (VerifRegTypes.AllocationsResponse memory) {
-        bytes memory result = Utils.universalReceiverHook(VerifRegTypes.ActorID, params);
-
-        return result.deserializeAllocationsResponse();
-    }
 }

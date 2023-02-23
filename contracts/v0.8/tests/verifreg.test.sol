@@ -48,8 +48,4 @@ contract VerifRegApiTest {
     function remove_expired_claims(VerifRegTypes.RemoveExpiredClaimsParams memory params) public returns (VerifRegTypes.RemoveExpiredClaimsReturn memory) {
         return VerifRegAPI.removeExpiredClaims(params);
     }
-
-    function universal_receiver_hook(CommonTypes.UniversalReceiverParams memory params) public returns (VerifRegTypes.AllocationsResponse memory) {
-        return VerifRegAPI.universalReceiverHook(params);
-    }
 }

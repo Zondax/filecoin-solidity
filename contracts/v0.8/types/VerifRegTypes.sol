@@ -89,15 +89,6 @@ library VerifRegTypes {
         ClaimTerm[] terms;
     }
 
-    /// @param allocation_results result for each allocation request.
-    /// @param extension_results result for each extension request.
-    /// @param new_allocations list of IDs of new allocations created.
-    struct AllocationsResponse {
-        CommonTypes.BatchReturn allocation_results;
-        CommonTypes.BatchReturn extension_results;
-        uint64[] new_allocations;
-    }
-
     /// @param provider the provider address which storing the data.
     /// @param claim_id claim ID.
     /// @param term_max the max chain epoch to extend.
