@@ -39,7 +39,7 @@ library Actor {
     /// @param codec how the request data passed as argument is encoded
     /// @param raw_request encoded arguments to be passed in the call
     /// @param amount tokens to be transfered to the called actor
-    /// @param read_only indicates if the call will be allaed to change the actor state or not (just read the state)
+    /// @param static_call indicates if the call will be allaed to change the actor state or not (just read the state)
     /// @return payload (in bytes) with the actual response data (without codec or response code)
     function callByAddress(
         bytes memory actor_address,
@@ -47,13 +47,20 @@ library Actor {
         uint64 codec,
         bytes memory raw_request,
         uint256 amount,
-        bool read_only
+        bool static_call
     ) internal returns (bytes memory) {
         require(actor_address.length > 1, "invalid actor_address");
         require(address(this).balance >= amount, "not enough balance");
 
+        // We have to delegate-call the call-actor precompile because the call-actor precompile will
+        // call the target actor on our behalf. This will _not_ delegate to the target `actor_address`.
+        //
+        // Specifically:
+        //
+        // - `static_call == false`: `CALLER (you) --(DELEGATECALL)-> CALL_ACTOR_PRECOMPILE --(CALL)-> actor_address
+        // - `static_call == true`:  `CALLER (you) --(DELEGATECALL)-> CALL_ACTOR_PRECOMPILE --(STATICCALL)-> actor_address
         (bool success, bytes memory data) = address(CALL_ACTOR_ADDRESS).delegatecall(
-            abi.encode(uint64(method_num), amount, read_only ? READ_ONLY_FLAG : DEFAULT_FLAG, codec, raw_request, actor_address)
+            abi.encode(uint64(method_num), amount, static_call ? READ_ONLY_FLAG : DEFAULT_FLAG, codec, raw_request, actor_address)
         );
         require(success == true, CALL_ERROR_MESSAGE);
 
@@ -66,7 +73,7 @@ library Actor {
     /// @param codec how the request data passed as argument is encoded
     /// @param raw_request encoded arguments to be passed in the call
     /// @param amount tokens to be transferred to the called actor
-    /// @param read_only indicates if the call will be allowed to change the actor state or not (just read the state)
+    /// @param static_call indicates if the call will be allowed to change the actor state or not (just read the state)
     /// @return payload (in bytes) with the actual response data (without codec or response code)
     function callByID(
         uint64 actor_id,
@@ -74,12 +81,12 @@ library Actor {
         uint64 codec,
         bytes memory raw_request,
         uint256 amount,
-        bool read_only
+        bool static_call
     ) internal returns (bytes memory) {
         require(address(this).balance >= amount, "not enough balance");
 
         (bool success, bytes memory data) = address(CALL_ACTOR_ID).delegatecall(
-            abi.encode(uint64(method_num), amount, read_only ? READ_ONLY_FLAG : DEFAULT_FLAG, codec, raw_request, actor_id)
+            abi.encode(uint64(method_num), amount, static_call ? READ_ONLY_FLAG : DEFAULT_FLAG, codec, raw_request, actor_id)
         );
         require(success == true, CALL_ERROR_MESSAGE);
 
@@ -92,7 +99,7 @@ library Actor {
     /// @param codec how the request data passed as argument is encoded
     /// @param raw_request encoded arguments to be passed in the call
     /// @param amount tokens to be transfered to the called actor
-    /// @param read_only indicates if the call will be allaed to change the actor state or not (just read the state)
+    /// @param static_call indicates if the call will be allowed to change the actor state or not (just read the state)
     /// @dev it requires the id to be bigger than 99, as singleton actors are smaller than that
     function callNonSingletonByID(
         uint64 actor_id,
@@ -100,10 +107,10 @@ library Actor {
         uint64 codec,
         bytes memory raw_request,
         uint256 amount,
-        bool read_only
+        bool static_call
     ) internal returns (bytes memory) {
         require(actor_id >= 100, "actor id is not valid");
-        return callByID(actor_id, method_num, codec, raw_request, amount, read_only);
+        return callByID(actor_id, method_num, codec, raw_request, amount, static_call);
     }
 
     /// @notice parse the response an actor returned
