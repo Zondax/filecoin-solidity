@@ -41,8 +41,8 @@ library VerifRegAPI {
     }
 
     /// @notice add a verified Client address to Filecoin Plus program.
-    function addVerifiedClient(VerifRegTypes.AddVerifierClientParams memory params) internal {
-        bytes memory raw_request = params.serializeAddVerifierClientParams();
+    function addVerifiedClient(VerifRegTypes.AddVerifiedClientParams memory params) internal {
+        bytes memory raw_request = params.serializeAddVerifiedClientParams();
 
         bytes memory result = Actor.callByID(VerifRegTypes.ActorID, VerifRegTypes.AddVerifiedClientMethodNum, Misc.CBOR_CODEC, raw_request, 0, false);
 
@@ -77,5 +77,4 @@ library VerifRegAPI {
 
         return result.deserializeRemoveExpiredClaimsReturn();
     }
-
 }
