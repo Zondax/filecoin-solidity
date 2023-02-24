@@ -22,12 +22,15 @@ pragma solidity ^0.8.17;
 import "../external/CBOR.sol";
 import "../external/Buffer.sol";
 import "../types/CommonTypes.sol";
+import "../utils/CborDecode.sol";
+
 
 /// @title This library is a set of functions meant to handle CBOR serialization and deserialization for general data types on the filecoin network.
 /// @author Zondax AG
 library FilecoinCBOR {
     using Buffer for Buffer.buffer;
     using CBOR for CBOR.CBORBuffer;
+    using CBORDecoder for bytes;
 
     uint8 private constant MAJOR_TYPE_TAG = 6;
     uint8 private constant TAG_TYPE_CID_CODE = 42;
@@ -54,5 +57,19 @@ library FilecoinCBOR {
         buf.writeBytes(params.payload);
 
         return buf.data();
+    }
+
+    /// @notice deserialize UniversalReceiverParams cbor to struct when receiving a message
+    /// @param rawResp cbor encoded response
+    /// @return ret new instance of UniversalReceiverParams created based on parsed data
+    function deserializeUniversalReceiverParams(bytes memory rawResp) internal pure returns (CommonTypes.UniversalReceiverParams memory ret) {
+        uint byteIdx = 0;
+        uint len;
+
+        (len, byteIdx) = rawResp.readFixedArray(byteIdx);
+        require(len == 2, "Wrong numbers of parameters (should find 2)");
+
+        (ret.type_, byteIdx) = rawResp.readUInt32(byteIdx);
+        (ret.payload, byteIdx) = rawResp.readBytes(byteIdx);
     }
 }
