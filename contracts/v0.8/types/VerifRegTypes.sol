@@ -27,11 +27,10 @@ import "./CommonTypes.sol";
 library VerifRegTypes {
     uint64 constant ActorID = 6;
     uint constant GetClaimsMethodNum = 2199871187;
-    uint constant AddVerifierClientMethodNum = 3916220144;
+    uint constant AddVerifiedClientMethodNum = 3916220144;
     uint constant RemoveExpiredAllocationsMethodNum = 2421068268;
     uint constant ExtendClaimTermsMethodNum = 1752273514;
     uint constant RemoveExpiredClaimsMethodNum = 2873373899;
-    uint constant UniversalReceiverMethodNum = 3726118371;
 
     /// @param provider the provider address.
     /// @param  claim_ids a list of Claim IDs for specific provider.

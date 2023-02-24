@@ -644,6 +644,23 @@ jobs:
           name: gas_results_send.csv
           path: testing/gas_results_send.csv
 
+  frc0042-check:
+    name: "Check FRC0042 method number"
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: 'false'
+      - name: Install latest stable
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: nightly
+          override: true
+      - name: Check FRC0042 using rust script
+        run: make frc0042
+
+
   comment-result:
     name: "Comment the result on PR"
     runs-on: ubuntu-22.04

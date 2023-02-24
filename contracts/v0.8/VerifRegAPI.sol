@@ -44,7 +44,7 @@ library VerifRegAPI {
     function addVerifiedClient(VerifRegTypes.AddVerifierClientParams memory params) internal {
         bytes memory raw_request = params.serializeAddVerifierClientParams();
 
-        bytes memory result = Actor.callByID(VerifRegTypes.ActorID, VerifRegTypes.AddVerifierClientMethodNum, Misc.CBOR_CODEC, raw_request, 0, false);
+        bytes memory result = Actor.callByID(VerifRegTypes.ActorID, VerifRegTypes.AddVerifiedClientMethodNum, Misc.CBOR_CODEC, raw_request, 0, false);
 
         require(result.length == 0, Actor.UNEXPECTED_RESPONSE_MESSAGE);
     }

@@ -42,7 +42,6 @@ library Utils {
     function handleFilecoinMethod(uint64 method, uint64 codec, bytes calldata params) internal pure returns (CommonTypes.UniversalReceiverParams memory) {
         if (method == CommonTypes.UniversalReceiverHookMethodNum) {
             require(codec == Misc.CBOR_CODEC, "Incorrect codec (expected DAG_CBOR_CODEC)");
-
             return params.deserializeUniversalReceiverParams();
         } else {
             revert("the filecoin method that was called is not handled");
