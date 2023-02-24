@@ -131,7 +131,7 @@ fn send_tests() {
 
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
 
-    println!("Calling `send`");
+    println!("Calling `send (actor id)`");
 
     let message = Message {
             from: sender[0].1,
@@ -139,7 +139,7 @@ fn send_tests() {
             gas_limit: 1000000000,
             method_num: EvmMethods::InvokeContract as u64,
             sequence: 2,
-            params: RawBytes::new(hex::decode("58849372C4AB0000000000000000000000000000000000000000000000000000000000000040000000000000000000000000000000000000000000000000000000000000000A000000000000000000000000000000000000000000000000000000000000001501DCE5B7F69E73494891556A350F8CC357614916D50000000000000000000000").unwrap()),
+            params: RawBytes::new(hex::decode("58446F7EE35E0000000000000000000000000000000000000000000000000000000000000065000000000000000000000000000000000000000000000000000000000000000A").unwrap()),
             ..Message::default()
         };
 
@@ -147,7 +147,27 @@ fn send_tests() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
-    gas_result.push(("send".into(), res.msg_receipt.gas_used));
+    gas_result.push(("send (actor id)".into(), res.msg_receipt.gas_used));
+    assert_eq!(res.msg_receipt.exit_code.value(), 0);
+
+
+    println!("Calling `send (address)`");
+
+    let message = Message {
+        from: sender[0].1,
+        to: Address::new_id(contract_actor_id),
+        gas_limit: 1000000000,
+        method_num: EvmMethods::InvokeContract as u64,
+        sequence: 3,
+        params: RawBytes::new(hex::decode("58446F7EE35E0000000000000000000000000000000000000000000000000000000000000065000000000000000000000000000000000000000000000000000000000000000A").unwrap()),
+        ..Message::default()
+    };
+
+    let res = executor
+        .execute_message(message, ApplyKind::Explicit, 100)
+        .unwrap();
+
+    gas_result.push(("send (address)".into(), res.msg_receipt.gas_used));
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
 
     let table = testing::create_gas_table(gas_result);

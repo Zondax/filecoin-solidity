@@ -11,7 +11,7 @@ module.exports = {
     defaultNetwork: "hyperspace",
     networks: {
         hyperspace: {
-            url: "https://api.zondax.ch/fil/node/hyperspace/rpc/v0",
+            url: "https://api.zondax.ch/fil/node/hyperspace/rpc/v1",
             accounts: [PRIVATE_KEY],
         },
     },

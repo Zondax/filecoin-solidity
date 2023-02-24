@@ -19,7 +19,7 @@
 // SPDX-License-Identifier: Apache-2.0
 pragma solidity ^0.8.17;
 
-import "solidity-cborutils/contracts/CBOR.sol";
+import "../external/CBOR.sol";
 
 import "../types/CommonTypes.sol";
 import "../types/VerifRegTypes.sol";
@@ -27,16 +27,18 @@ import "../utils/CborDecode.sol";
 import "../utils/Misc.sol";
 import "./BigIntCbor.sol";
 
-/// @title FIXME
+/// @title This library is a set of functions meant to handle CBOR parameters serialization and return values deserialization for VerifReg actor exported methods.
 /// @author Zondax AG
 library VerifRegCBOR {
     using CBOR for CBOR.CBORBuffer;
     using CBORDecoder for bytes;
-    using BigIntCBOR for BigInt;
+    using BigIntCBOR for CommonTypes.BigInt;
     using BigIntCBOR for bytes;
 
+    /// @notice serialize GetClaimsParams struct to cbor in order to pass as arguments to the verified registry actor
+    /// @param params GetClaimsParams to serialize as cbor
+    /// @return cbor serialized data as bytes
     function serializeGetClaimsParams(VerifRegTypes.GetClaimsParams memory params) internal pure returns (bytes memory) {
-        // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
         uint claimIdsLen = params.claim_ids.length;
@@ -51,6 +53,9 @@ library VerifRegCBOR {
         return buf.data();
     }
 
+    /// @notice deserialize GetClaimsReturn struct from cbor encoded bytes coming from a verified registry actor call
+    /// @param rawResp cbor encoded response
+    /// @return ret new instance of GetClaimsReturn created based on parsed data
     function deserializeGetClaimsReturn(bytes memory rawResp) internal pure returns (VerifRegTypes.GetClaimsReturn memory ret) {
         uint byteIdx = 0;
         uint len;
@@ -75,7 +80,7 @@ library VerifRegCBOR {
         }
 
         (len, byteIdx) = rawResp.readFixedArray(byteIdx);
-        ret.claims = new CommonTypes.Claim[](len);
+        ret.claims = new VerifRegTypes.Claim[](len);
 
         for (uint i = 0; i < len; i++) {
             (len, byteIdx) = rawResp.readFixedArray(byteIdx);
@@ -94,8 +99,10 @@ library VerifRegCBOR {
         return ret;
     }
 
+    /// @notice serialize AddVerifierClientParams struct to cbor in order to pass as arguments to the verified registry actor
+    /// @param params AddVerifierClientParams to serialize as cbor
+    /// @return cbor serialized data as bytes
     function serializeAddVerifierClientParams(VerifRegTypes.AddVerifierClientParams memory params) internal pure returns (bytes memory) {
-        // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
         buf.startFixedArray(2);
@@ -105,10 +112,10 @@ library VerifRegCBOR {
         return buf.data();
     }
 
-    function serializeRemoveExpiredAllocationsParams(
-        VerifRegTypes.RemoveExpiredAllocationsParams memory params
-    ) internal pure returns (bytes memory) {
-        // FIXME what should the max length be on the buffer?
+    /// @notice serialize RemoveExpiredAllocationsParams struct to cbor in order to pass as arguments to the verified registry actor
+    /// @param params RemoveExpiredAllocationsParams to serialize as cbor
+    /// @return cbor serialized data as bytes
+    function serializeRemoveExpiredAllocationsParams(VerifRegTypes.RemoveExpiredAllocationsParams memory params) internal pure returns (bytes memory) {
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
         uint allocationIdsLen = params.allocation_ids.length;
@@ -123,9 +130,10 @@ library VerifRegCBOR {
         return buf.data();
     }
 
-    function deserializeRemoveExpiredAllocationsReturn(
-        bytes memory rawResp
-    ) internal pure returns (VerifRegTypes.RemoveExpiredAllocationsReturn memory ret) {
+    /// @notice deserialize RemoveExpiredAllocationsReturn struct from cbor encoded bytes coming from a verified registry actor call
+    /// @param rawResp cbor encoded response
+    /// @return ret new instance of RemoveExpiredAllocationsReturn created based on parsed data
+    function deserializeRemoveExpiredAllocationsReturn(bytes memory rawResp) internal pure returns (VerifRegTypes.RemoveExpiredAllocationsReturn memory ret) {
         uint byteIdx = 0;
         uint len;
 
@@ -162,8 +170,10 @@ library VerifRegCBOR {
         return ret;
     }
 
+    /// @notice serialize ExtendClaimTermsParams struct to cbor in order to pass as arguments to the verified registry actor
+    /// @param params ExtendClaimTermsParams to serialize as cbor
+    /// @return cbor serialized data as bytes
     function serializeExtendClaimTermsParams(VerifRegTypes.ExtendClaimTermsParams memory params) internal pure returns (bytes memory) {
-        // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
         uint termsLen = params.terms.length;
@@ -180,6 +190,9 @@ library VerifRegCBOR {
         return buf.data();
     }
 
+    /// @notice deserialize BatchReturn struct from cbor encoded bytes coming from a verified registry actor call
+    /// @param rawResp cbor encoded response
+    /// @return ret new instance of BatchReturn created based on parsed data
     function deserializeBatchReturn(bytes memory rawResp) internal pure returns (CommonTypes.BatchReturn memory ret) {
         uint byteIdx = 0;
         uint len;
@@ -203,10 +216,10 @@ library VerifRegCBOR {
         return ret;
     }
 
-    function serializeRemoveExpiredClaimsParams(
-        VerifRegTypes.RemoveExpiredClaimsParams memory params
-    ) internal pure returns (bytes memory) {
-        // FIXME what should the max length be on the buffer?
+    /// @notice serialize RemoveExpiredClaimsParams struct to cbor in order to pass as arguments to the verified registry actor
+    /// @param params RemoveExpiredClaimsParams to serialize as cbor
+    /// @return cbor serialized data as bytes
+    function serializeRemoveExpiredClaimsParams(VerifRegTypes.RemoveExpiredClaimsParams memory params) internal pure returns (bytes memory) {
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
         uint claimIdsLen = params.claim_ids.length;
@@ -221,9 +234,10 @@ library VerifRegCBOR {
         return buf.data();
     }
 
-    function deserializeRemoveExpiredClaimsReturn(
-        bytes memory rawResp
-    ) internal pure returns (VerifRegTypes.RemoveExpiredClaimsReturn memory ret) {
+    /// @notice deserialize RemoveExpiredClaimsReturn struct from cbor encoded bytes coming from a verified registry actor call
+    /// @param rawResp cbor encoded response
+    /// @return ret new instance of RemoveExpiredClaimsReturn created based on parsed data
+    function deserializeRemoveExpiredClaimsReturn(bytes memory rawResp) internal pure returns (VerifRegTypes.RemoveExpiredClaimsReturn memory ret) {
         uint byteIdx = 0;
         uint len;
 
@@ -251,66 +265,6 @@ library VerifRegCBOR {
 
             (ret.results.fail_codes[i].idx, byteIdx) = rawResp.readUInt32(byteIdx);
             (ret.results.fail_codes[i].code, byteIdx) = rawResp.readUInt32(byteIdx);
-        }
-
-        return ret;
-    }
-
-    function serializeUniversalReceiverParams(VerifRegTypes.UniversalReceiverParams memory params) internal pure returns (bytes memory) {
-        // FIXME what should the max length be on the buffer?
-        CBOR.CBORBuffer memory buf = CBOR.create(64);
-
-        buf.startFixedArray(2);
-        buf.writeUInt64(params.type_);
-        buf.writeBytes(params.payload);
-
-        return buf.data();
-    }
-
-    function deserializeAllocationsResponse(bytes memory rawResp) internal pure returns (VerifRegTypes.AllocationsResponse memory ret) {
-        uint byteIdx = 0;
-        uint len;
-
-        (len, byteIdx) = rawResp.readFixedArray(byteIdx);
-        assert(len == 3);
-
-        (len, byteIdx) = rawResp.readFixedArray(byteIdx);
-        assert(len == 2);
-
-        (ret.allocation_results.success_count, byteIdx) = rawResp.readUInt32(byteIdx);
-
-        (len, byteIdx) = rawResp.readFixedArray(byteIdx);
-        ret.allocation_results.fail_codes = new CommonTypes.FailCode[](len);
-
-        for (uint i = 0; i < len; i++) {
-            (len, byteIdx) = rawResp.readFixedArray(byteIdx);
-            assert(len == 2);
-
-            (ret.allocation_results.fail_codes[i].idx, byteIdx) = rawResp.readUInt32(byteIdx);
-            (ret.allocation_results.fail_codes[i].code, byteIdx) = rawResp.readUInt32(byteIdx);
-        }
-
-        (len, byteIdx) = rawResp.readFixedArray(byteIdx);
-        assert(len == 2);
-
-        (ret.extension_results.success_count, byteIdx) = rawResp.readUInt32(byteIdx);
-
-        (len, byteIdx) = rawResp.readFixedArray(byteIdx);
-        ret.extension_results.fail_codes = new CommonTypes.FailCode[](len);
-
-        for (uint i = 0; i < len; i++) {
-            (len, byteIdx) = rawResp.readFixedArray(byteIdx);
-            assert(len == 2);
-
-            (ret.extension_results.fail_codes[i].idx, byteIdx) = rawResp.readUInt32(byteIdx);
-            (ret.extension_results.fail_codes[i].code, byteIdx) = rawResp.readUInt32(byteIdx);
-        }
-
-        (len, byteIdx) = rawResp.readFixedArray(byteIdx);
-        ret.new_allocations = new uint64[](len);
-
-        for (uint i = 0; i < len; i++) {
-            (ret.new_allocations[i], byteIdx) = rawResp.readUInt64(byteIdx);
         }
 
         return ret;

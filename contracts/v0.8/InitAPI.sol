@@ -24,29 +24,23 @@ import "./cbor/InitCbor.sol";
 import "./utils/Misc.sol";
 import "./utils/Actor.sol";
 
-/// @title This contract is a proxy to the singleton Init actor (address: f01). Calling one of its methods will result in a cross-actor call being performed.
+/// @title This library is a proxy to the singleton Init actor (address: f01). Calling one of its methods will result in a cross-actor call being performed.
 /// @author Zondax AG
 library InitAPI {
     using InitCBOR for *;
 
-    /// @notice TODO fill this a proper description
     function exec(InitTypes.ExecParams memory params) internal returns (InitTypes.ExecReturn memory) {
         bytes memory raw_request = params.serializeExecParams();
 
-        bytes memory raw_response = Actor.call(InitTypes.ExecMethodNum, InitTypes.ActorID, raw_request, Misc.DAG_CBOR_CODEC, 0, false);
-
-        bytes memory result = Actor.readRespData(raw_response);
+        bytes memory result = Actor.callByID(InitTypes.ActorID, InitTypes.ExecMethodNum, Misc.CBOR_CODEC, raw_request, 0, false);
 
         return result.deserializeExecReturn();
     }
 
-    /// @notice TODO fill this a proper description
     function exec4(InitTypes.Exec4Params memory params) internal returns (InitTypes.Exec4Return memory) {
         bytes memory raw_request = params.serializeExec4Params();
 
-        bytes memory raw_response = Actor.call(InitTypes.Exec4MethodNum, InitTypes.ActorID, raw_request, Misc.DAG_CBOR_CODEC, 0, false);
-
-        bytes memory result = Actor.readRespData(raw_response);
+        bytes memory result = Actor.callByID(InitTypes.ActorID, InitTypes.Exec4MethodNum, Misc.CBOR_CODEC, raw_request, 0, false);
 
         return result.deserializeExec4Return();
     }

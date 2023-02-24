@@ -20,73 +20,62 @@
 pragma solidity ^0.8.17;
 
 import "./types/VerifRegTypes.sol";
+import "./types/CommonTypes.sol";
 import "./cbor/VerifRegCbor.sol";
 
 import "./utils/Actor.sol";
+import "./Utils.sol";
 
-/// @title FIXME
+/// @title This library is a proxy to a built-in VerifReg actor. Calling one of its methods will result in a cross-actor call being performed.
 /// @author Zondax AG
 library VerifRegAPI {
     using VerifRegCBOR for *;
 
+    /// @notice get a list of claims corresponding to the requested claim ID for specific provider.
     function getClaims(VerifRegTypes.GetClaimsParams memory params) internal returns (VerifRegTypes.GetClaimsReturn memory) {
         bytes memory raw_request = params.serializeGetClaimsParams();
 
-        bytes memory raw_response = Actor.call(VerifRegTypes.GetClaimsMethodNum, VerifRegTypes.ActorID, raw_request, Misc.DAG_CBOR_CODEC, 0, false);
-
-        bytes memory result = Actor.readRespData(raw_response);
+        bytes memory result = Actor.callByID(VerifRegTypes.ActorID, VerifRegTypes.GetClaimsMethodNum, Misc.CBOR_CODEC, raw_request, 0, true);
 
         return result.deserializeGetClaimsReturn();
     }
 
+    /// @notice add a verified Client address to Filecoin Plus program.
     function addVerifiedClient(VerifRegTypes.AddVerifierClientParams memory params) internal {
         bytes memory raw_request = params.serializeAddVerifierClientParams();
 
-        bytes memory raw_response = Actor.call(VerifRegTypes.AddVerifierClientMethodNum, VerifRegTypes.ActorID, raw_request, Misc.DAG_CBOR_CODEC, 0, false);
+        bytes memory result = Actor.callByID(VerifRegTypes.ActorID, VerifRegTypes.AddVerifierClientMethodNum, Misc.CBOR_CODEC, raw_request, 0, false);
 
-        bytes memory result = Actor.readRespData(raw_response);
-        require(result.length == 0, "unexpected response received");
+        require(result.length == 0, Actor.UNEXPECTED_RESPONSE_MESSAGE);
     }
 
+    /// @notice remove the expired DataCap allocations and reclaimed those DataCap token back to Client. If the allocation amount is not specified, all expired DataCap allocation will be removed.
     function removeExpiredAllocations(
         VerifRegTypes.RemoveExpiredAllocationsParams memory params
     ) internal returns (VerifRegTypes.RemoveExpiredAllocationsReturn memory) {
         bytes memory raw_request = params.serializeRemoveExpiredAllocationsParams();
 
-        bytes memory raw_response = Actor.call(VerifRegTypes.RemoveExpiredAllocationsMethodNum, VerifRegTypes.ActorID, raw_request, Misc.DAG_CBOR_CODEC, 0, false);
-
-        bytes memory result = Actor.readRespData(raw_response);
+        bytes memory result = Actor.callByID(VerifRegTypes.ActorID, VerifRegTypes.RemoveExpiredAllocationsMethodNum, Misc.CBOR_CODEC, raw_request, 0, false);
 
         return result.deserializeRemoveExpiredAllocationsReturn();
     }
 
+    /// @notice extends the  maximum term of some claims up to the largest value they could have been originally allocated. This method can only be called by the claims' client.
     function extendClaimTerms(VerifRegTypes.ExtendClaimTermsParams memory params) internal returns (CommonTypes.BatchReturn memory) {
         bytes memory raw_request = params.serializeExtendClaimTermsParams();
 
-        bytes memory raw_response = Actor.call(VerifRegTypes.ExtendClaimTermsMethodNum, VerifRegTypes.ActorID, raw_request, Misc.DAG_CBOR_CODEC, 0, false);
-
-        bytes memory result = Actor.readRespData(raw_response);
+        bytes memory result = Actor.callByID(VerifRegTypes.ActorID, VerifRegTypes.ExtendClaimTermsMethodNum, Misc.CBOR_CODEC, raw_request, 0, false);
 
         return result.deserializeBatchReturn();
     }
 
+    /// @notice remove a claim with its maximum term has elapsed.
     function removeExpiredClaims(VerifRegTypes.RemoveExpiredClaimsParams memory params) internal returns (VerifRegTypes.RemoveExpiredClaimsReturn memory) {
         bytes memory raw_request = params.serializeRemoveExpiredClaimsParams();
 
-        bytes memory raw_response = Actor.call(VerifRegTypes.RemoveExpiredClaimsMethodNum, VerifRegTypes.ActorID, raw_request, Misc.DAG_CBOR_CODEC, 0, false);
-
-        bytes memory result = Actor.readRespData(raw_response);
+        bytes memory result = Actor.callByID(VerifRegTypes.ActorID, VerifRegTypes.RemoveExpiredClaimsMethodNum, Misc.CBOR_CODEC, raw_request, 0, false);
 
         return result.deserializeRemoveExpiredClaimsReturn();
     }
 
-    function universalReceiverHook(VerifRegTypes.UniversalReceiverParams memory params) internal returns (VerifRegTypes.AllocationsResponse memory) {
-        bytes memory raw_request = params.serializeUniversalReceiverParams();
-
-        bytes memory raw_response = Actor.call(VerifRegTypes.UniversalReceiverMethodNum, VerifRegTypes.ActorID, raw_request, Misc.DAG_CBOR_CODEC, 0, false);
-
-        bytes memory result = Actor.readRespData(raw_response);
-
-        return result.deserializeAllocationsResponse();
-    }
 }

@@ -20,16 +20,17 @@
 pragma solidity ^0.8.17;
 
 import "../types/MarketTypes.sol";
+import "../types/CommonTypes.sol";
 import "./types/MockTypes.sol";
 
-import {BigNumbers, BigNumber} from "@zondax/solidity-bignumber/src/BigNumbers.sol";
+import "../external/BigNumbers.sol";
 
-/// @title This contract is a proxy to the singleton Storage Market actor (address: f05). Calling one of its methods will result in a cross-actor call being performed. However, in this mock library, no actual call is performed.
+/// @title This library is a proxy to the singleton Storage Market actor (address: f05). Calling one of its methods will result in a cross-actor call being performed. However, in this mock library, no actual call is performed.
 /// @author Zondax AG
 /// @dev Methods prefixed with mock_ will not be available in the real library. These methods are merely used to set mock state. Note that this interface will likely break in the future as we align it
 //       with that of the real library!
 contract MarketMockAPI {
-    mapping(string => BigNumber) balances;
+    mapping(string => BigNumbers.BigNumber) balances;
     mapping(uint64 => MockTypes.Deal) deals;
 
     constructor() {
@@ -39,7 +40,7 @@ contract MarketMockAPI {
     /// @notice Deposits the received value into the balance held in escrow.
     /// @dev Because this is a mock method, no real balance is being deducted from the caller, nor incremented in the Storage Market actor (f05).
     function addBalance(bytes memory provider_or_client, uint256 value) public payable {
-        BigNumber memory newValue = BigNumbers.init(value, false);
+        BigNumbers.BigNumber memory newValue = BigNumbers.init(value, false);
         balances[string(provider_or_client)] = BigNumbers.add(balances[string(provider_or_client)], newValue);
     }
 
@@ -48,8 +49,8 @@ contract MarketMockAPI {
     /// @dev This method should be called by an approved address, but the mock does not check that the caller is an approved party.
     /// @dev Because this is a mock method, no real balance is deposited in the designated address, nor decremented from the Storage Market actor (f05).
     function withdrawBalance(MarketTypes.WithdrawBalanceParams memory params) public returns (MarketTypes.WithdrawBalanceReturn memory) {
-        BigNumber memory balance = balances[string(params.provider_or_client)];
-        BigNumber memory tokenAmount = BigNumbers.init(params.tokenAmount.val, params.tokenAmount.neg);
+        BigNumbers.BigNumber memory balance = balances[string(params.provider_or_client)];
+        BigNumbers.BigNumber memory tokenAmount = BigNumbers.init(params.tokenAmount.val, params.tokenAmount.neg);
 
         if (BigNumbers.gte(balance, tokenAmount)) {
             balances[string(params.provider_or_client)] = BigNumbers.sub(balance, tokenAmount);
@@ -58,15 +59,15 @@ contract MarketMockAPI {
             balances[string(params.provider_or_client)] = BigNumbers.zero();
         }
 
-        return MarketTypes.WithdrawBalanceReturn(BigInt(balance.val, balance.neg));
+        return MarketTypes.WithdrawBalanceReturn(CommonTypes.BigInt(balance.val, balance.neg));
     }
 
     /// @return the escrow balance and locked amount for an address.
     function getBalance(bytes memory addr) public view returns (MarketTypes.GetBalanceReturn memory) {
-        BigNumber memory actualBalance = balances[string(addr)];
-        BigNumber memory zero = BigNumbers.zero();
+        BigNumbers.BigNumber memory actualBalance = balances[string(addr)];
+        BigNumbers.BigNumber memory zero = BigNumbers.zero();
 
-        return MarketTypes.GetBalanceReturn(BigInt(actualBalance.val, actualBalance.neg), BigInt(zero.val, zero.neg));
+        return MarketTypes.GetBalanceReturn(CommonTypes.BigInt(actualBalance.val, actualBalance.neg), CommonTypes.BigInt(zero.val, zero.neg));
     }
 
     /// @return the data commitment and size of a deal proposal.
@@ -110,24 +111,24 @@ contract MarketMockAPI {
     function getDealTotalPrice(uint64 dealID) public view returns (MarketTypes.GetDealEpochPriceReturn memory) {
         require(deals[dealID].id > 0);
 
-        BigNumber memory price_per_epoch = BigNumbers.init(deals[dealID].price_per_epoch, false);
-        return MarketTypes.GetDealEpochPriceReturn(BigInt(price_per_epoch.val, price_per_epoch.neg));
+        BigNumbers.BigNumber memory price_per_epoch = BigNumbers.init(deals[dealID].price_per_epoch, false);
+        return MarketTypes.GetDealEpochPriceReturn(CommonTypes.BigInt(price_per_epoch.val, price_per_epoch.neg));
     }
 
     /// @return the client collateral requirement for a deal proposal.
     function getDealClientCollateral(uint64 dealID) public view returns (MarketTypes.GetDealClientCollateralReturn memory) {
         require(deals[dealID].id > 0);
 
-        BigNumber memory client_collateral = BigNumbers.init(deals[dealID].client_collateral, false);
-        return MarketTypes.GetDealClientCollateralReturn(BigInt(client_collateral.val, client_collateral.neg));
+        BigNumbers.BigNumber memory client_collateral = BigNumbers.init(deals[dealID].client_collateral, false);
+        return MarketTypes.GetDealClientCollateralReturn(CommonTypes.BigInt(client_collateral.val, client_collateral.neg));
     }
 
     /// @return the provider collateral requirement for a deal proposal.
     function getDealProviderCollateral(uint64 dealID) public view returns (MarketTypes.GetDealProviderCollateralReturn memory) {
         require(deals[dealID].id > 0);
 
-        BigNumber memory provider_collateral = BigNumbers.init(deals[dealID].provider_collateral, false);
-        return MarketTypes.GetDealProviderCollateralReturn(BigInt(provider_collateral.val, provider_collateral.neg));
+        BigNumbers.BigNumber memory provider_collateral = BigNumbers.init(deals[dealID].provider_collateral, false);
+        return MarketTypes.GetDealProviderCollateralReturn(CommonTypes.BigInt(provider_collateral.val, provider_collateral.neg));
     }
 
     /// @return the verified flag for a deal proposal.

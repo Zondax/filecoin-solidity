@@ -19,24 +19,26 @@
 // SPDX-License-Identifier: Apache-2.0
 pragma solidity ^0.8.17;
 
-import "solidity-cborutils/contracts/CBOR.sol";
+import "../external/CBOR.sol";
 
-import {CommonTypes} from "../types/CommonTypes.sol";
-import {MinerTypes} from "../types/MinerTypes.sol";
+import "../types/MinerTypes.sol";
+import "../types/CommonTypes.sol";
 import "../utils/CborDecode.sol";
 import "../utils/Misc.sol";
 import "./BigIntCbor.sol";
 
-/// @title FIXME
+/// @title This library is a set of functions meant to handle CBOR parameters serialization and return values deserialization for Miner actor exported methods.
 /// @author Zondax AG
 library MinerCBOR {
     using CBOR for CBOR.CBORBuffer;
     using CBORDecoder for bytes;
-    using BigIntCBOR for BigInt;
+    using BigIntCBOR for CommonTypes.BigInt;
     using BigIntCBOR for bytes;
 
+    /// @notice serialize ChangeBeneficiaryParams struct to cbor in order to pass as arguments to the miner actor
+    /// @param params ChangeBeneficiaryParams to serialize as cbor
+    /// @return cbor serialized data as bytes
     function serializeChangeBeneficiaryParams(MinerTypes.ChangeBeneficiaryParams memory params) internal pure returns (bytes memory) {
-        // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
         buf.startFixedArray(3);
@@ -47,6 +49,9 @@ library MinerCBOR {
         return buf.data();
     }
 
+    /// @notice deserialize GetOwnerReturn struct from cbor encoded bytes coming from a miner actor call
+    /// @param rawResp cbor encoded response
+    /// @return ret new instance of GetOwnerReturn created based on parsed data
     function deserializeGetOwnerReturn(bytes memory rawResp) internal pure returns (MinerTypes.GetOwnerReturn memory ret) {
         uint byteIdx = 0;
         uint len;
@@ -65,15 +70,19 @@ library MinerCBOR {
         return ret;
     }
 
-    function deserializeIsControllingAddressReturn(
-        bytes memory rawResp
-    ) internal pure returns (MinerTypes.IsControllingAddressReturn memory ret) {
+    /// @notice deserialize IsControllingAddressReturn struct from cbor encoded bytes coming from a miner actor call
+    /// @param rawResp cbor encoded response
+    /// @return ret new instance of IsControllingAddressReturn created based on parsed data
+    function deserializeIsControllingAddressReturn(bytes memory rawResp) internal pure returns (MinerTypes.IsControllingAddressReturn memory ret) {
         uint byteIdx = 0;
 
         (ret.is_controlling, byteIdx) = rawResp.readBool(byteIdx);
         return ret;
     }
 
+    /// @notice deserialize GetSectorSizeReturn struct from cbor encoded bytes coming from a miner actor call
+    /// @param rawResp cbor encoded response
+    /// @return ret new instance of GetSectorSizeReturn created based on parsed data
     function deserializeGetSectorSizeReturn(bytes memory rawResp) internal pure returns (MinerTypes.GetSectorSizeReturn memory ret) {
         uint byteIdx = 0;
 
@@ -81,9 +90,10 @@ library MinerCBOR {
         return ret;
     }
 
-    function deserializeGetAvailableBalanceReturn(
-        bytes memory rawResp
-    ) internal pure returns (MinerTypes.GetAvailableBalanceReturn memory ret) {
+    /// @notice deserialize GetAvailableBalanceReturn struct from cbor encoded bytes coming from a miner actor call
+    /// @param rawResp cbor encoded response
+    /// @return ret new instance of GetAvailableBalanceReturn created based on parsed data
+    function deserializeGetAvailableBalanceReturn(bytes memory rawResp) internal pure returns (MinerTypes.GetAvailableBalanceReturn memory ret) {
         uint byteIdx = 0;
 
         bytes memory tmp;
@@ -91,12 +101,15 @@ library MinerCBOR {
         if (tmp.length > 0) {
             ret.available_balance = tmp.deserializeBigInt();
         } else {
-            ret.available_balance = BigInt(new bytes(0), false);
+            ret.available_balance = CommonTypes.BigInt(new bytes(0), false);
         }
 
         return ret;
     }
 
+    /// @notice deserialize GetBeneficiaryReturn struct from cbor encoded bytes coming from a miner actor call
+    /// @param rawResp cbor encoded response
+    /// @return ret new instance of GetBeneficiaryReturn created based on parsed data
     function deserializeGetBeneficiaryReturn(bytes memory rawResp) internal pure returns (MinerTypes.GetBeneficiaryReturn memory ret) {
         bytes memory tmp;
         uint byteIdx = 0;
@@ -117,14 +130,14 @@ library MinerCBOR {
         if (tmp.length > 0) {
             ret.active.term.quota = tmp.deserializeBigInt();
         } else {
-            ret.active.term.quota = BigInt(new bytes(0), false);
+            ret.active.term.quota = CommonTypes.BigInt(new bytes(0), false);
         }
 
         (tmp, byteIdx) = rawResp.readBytes(byteIdx);
         if (tmp.length > 0) {
             ret.active.term.used_quota = tmp.deserializeBigInt();
         } else {
-            ret.active.term.used_quota = BigInt(new bytes(0), false);
+            ret.active.term.used_quota = CommonTypes.BigInt(new bytes(0), false);
         }
 
         (ret.active.term.expiration, byteIdx) = rawResp.readUInt64(byteIdx);
@@ -139,7 +152,7 @@ library MinerCBOR {
             if (tmp.length > 0) {
                 ret.proposed.new_quota = tmp.deserializeBigInt();
             } else {
-                ret.proposed.new_quota = BigInt(new bytes(0), false);
+                ret.proposed.new_quota = CommonTypes.BigInt(new bytes(0), false);
             }
 
             (ret.proposed.new_expiration, byteIdx) = rawResp.readUInt64(byteIdx);
@@ -150,9 +163,12 @@ library MinerCBOR {
         return ret;
     }
 
+    /// @notice deserialize GetVestingFundsReturn struct from cbor encoded bytes coming from a miner actor call
+    /// @param rawResp cbor encoded response
+    /// @return ret new instance of GetVestingFundsReturn created based on parsed data
     function deserializeGetVestingFundsReturn(bytes memory rawResp) internal pure returns (MinerTypes.GetVestingFundsReturn memory ret) {
         int64 epoch;
-        BigInt memory amount;
+        CommonTypes.BigInt memory amount;
         bytes memory tmp;
 
         uint byteIdx = 0;
@@ -162,21 +178,23 @@ library MinerCBOR {
         assert(len == 1);
 
         (len, byteIdx) = rawResp.readFixedArray(byteIdx);
-        ret.vesting_funds = new CommonTypes.VestingFunds[](len);
+        ret.vesting_funds = new MinerTypes.VestingFunds[](len);
 
         for (uint i = 0; i < len; i++) {
             (epoch, byteIdx) = rawResp.readInt64(byteIdx);
             (tmp, byteIdx) = rawResp.readBytes(byteIdx);
 
             amount = tmp.deserializeBigInt();
-            ret.vesting_funds[i] = CommonTypes.VestingFunds(epoch, amount);
+            ret.vesting_funds[i] = MinerTypes.VestingFunds(epoch, amount);
         }
 
         return ret;
     }
 
+    /// @notice serialize ChangeWorkerAddressParams struct to cbor in order to pass as arguments to the miner actor
+    /// @param params ChangeWorkerAddressParams to serialize as cbor
+    /// @return cbor serialized data as bytes
     function serializeChangeWorkerAddressParams(MinerTypes.ChangeWorkerAddressParams memory params) internal pure returns (bytes memory) {
-        // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
         buf.startFixedArray(2);
@@ -190,8 +208,10 @@ library MinerCBOR {
         return buf.data();
     }
 
+    /// @notice serialize ChangePeerIDParams struct to cbor in order to pass as arguments to the miner actor
+    /// @param params ChangePeerIDParams to serialize as cbor
+    /// @return cbor serialized data as bytes
     function serializeChangePeerIDParams(MinerTypes.ChangePeerIDParams memory params) internal pure returns (bytes memory) {
-        // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
         buf.startFixedArray(1);
@@ -200,8 +220,10 @@ library MinerCBOR {
         return buf.data();
     }
 
+    /// @notice serialize ChangeMultiaddrsParams struct to cbor in order to pass as arguments to the miner actor
+    /// @param params ChangeMultiaddrsParams to serialize as cbor
+    /// @return cbor serialized data as bytes
     function serializeChangeMultiaddrsParams(MinerTypes.ChangeMultiaddrsParams memory params) internal pure returns (bytes memory) {
-        // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
         buf.startFixedArray(1);
@@ -214,6 +236,9 @@ library MinerCBOR {
         return buf.data();
     }
 
+    /// @notice deserialize GetPeerIDReturn struct from cbor encoded bytes coming from a miner actor call
+    /// @param rawResp cbor encoded response
+    /// @return ret new instance of GetPeerIDReturn created based on parsed data
     function deserializeGetPeerIDReturn(bytes memory rawResp) internal pure returns (MinerTypes.GetPeerIDReturn memory ret) {
         uint byteIdx = 0;
         uint len;
@@ -224,6 +249,9 @@ library MinerCBOR {
         return ret;
     }
 
+    /// @notice deserialize GetMultiaddrsReturn struct from cbor encoded bytes coming from a miner actor call
+    /// @param rawResp cbor encoded response
+    /// @return ret new instance of GetMultiaddrsReturn created based on parsed data
     function deserializeGetMultiaddrsReturn(bytes memory rawResp) internal pure returns (MinerTypes.GetMultiaddrsReturn memory ret) {
         uint byteIdx = 0;
         uint len;
@@ -241,8 +269,10 @@ library MinerCBOR {
         return ret;
     }
 
+    /// @notice serialize WithdrawBalanceParams struct to cbor in order to pass as arguments to the miner actor
+    /// @param params WithdrawBalanceParams to serialize as cbor
+    /// @return cbor serialized data as bytes
     function serializeWithdrawBalanceParams(MinerTypes.WithdrawBalanceParams memory params) internal pure returns (bytes memory) {
-        // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
         buf.startFixedArray(1);
@@ -251,6 +281,9 @@ library MinerCBOR {
         return buf.data();
     }
 
+    /// @notice deserialize WithdrawBalanceReturn struct from cbor encoded bytes coming from a miner actor call
+    /// @param rawResp cbor encoded response
+    /// @return ret new instance of WithdrawBalanceReturn created based on parsed data
     function deserializeWithdrawBalanceReturn(bytes memory rawResp) internal pure returns (MinerTypes.WithdrawBalanceReturn memory ret) {
         uint byteIdx = 0;
 

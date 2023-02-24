@@ -19,12 +19,13 @@
 // SPDX-License-Identifier: Apache-2.0
 pragma solidity ^0.8.17;
 
+import "../types/CommonTypes.sol";
 import "../cbor/BigIntCbor.sol";
 
 /// @title Filecoin datacap actor types for Solidity.
 /// @author Zondax AG
 library DataCapTypes {
-    bytes constant ActorID = hex"0007";
+    uint64 constant ActorID = 7;
     uint constant NameMethodNum = 48890204;
     uint constant SymbolMethodNum = 2061153854;
     uint constant TotalSupplyMethodNum = 114981429;
@@ -39,80 +40,93 @@ library DataCapTypes {
     uint constant AllowanceMethodNum = 4205072950;
     uint constant ReceiverHookMethodNum = 3726118371;
 
+    /// @param owner the wallet address of the owner.
+    /// @param operator the wallet address of the owner.
     struct GetAllowanceParams {
         bytes owner;
         bytes operator;
     }
 
+    /// @param to the address to receive DataCap token.
+    /// @param amount a non-negative amount to transfer.
+    /// @param operator_data Arbitrary data to pass on via the receiver hook.
     struct TransferParams {
         bytes to;
-        /// A non-negative amount to transfer
-        BigInt amount;
-        /// Arbitrary data to pass on via the receiver hook
+        CommonTypes.BigInt amount;
         bytes operator_data;
     }
 
+    /// @param from_balance the balance of from_address.
+    /// @param to_balance the balance of to_address.
+    /// @param recipient_data data returned from receive hook.
     struct TransferReturn {
-        BigInt from_balance;
-        /// The new balance of the `to` address
-        BigInt to_balance;
-        /// (Optional) data returned from receiver hook
+        CommonTypes.BigInt from_balance;
+        CommonTypes.BigInt to_balance;
         bytes recipient_data;
     }
 
+    /// @param from the address to send DataCap Token.
+    /// @param to the address to receive DataCap Token.
+    /// @param amount a non-negative amount to transfer.
+    /// @param operator_data arbitrary data to pass on via the receiver hook.
     struct TransferFromParams {
         bytes from;
         bytes to;
-        /// A non-negative amount to transfer
-        BigInt amount;
-        /// Arbitrary data to pass on via the receiver hook
+        CommonTypes.BigInt amount;
         bytes operator_data;
     }
 
+    /// @param from_balance the balance of from_address.
+    /// @param to_balance the balance of to_address.
+    /// @param allowance the remaining allowance of owner address.
+    /// @param recipient_data data returned from receive hook.
     struct TransferFromReturn {
-        BigInt from_balance;
-        /// The new balance of the `to` address
-        BigInt to_balance;
-        /// The new remaining allowance between `owner` and `operator` (caller)
-        BigInt allowance;
-        /// (Optional) data returned from receiver hook
+        CommonTypes.BigInt from_balance;
+        CommonTypes.BigInt to_balance;
+        CommonTypes.BigInt allowance;
         bytes recipient_data;
     }
 
+    /// @param operator the  wallet address of the operator.
+    /// @param increase increase DataCap token allowance for the operator address.
     struct IncreaseAllowanceParams {
         bytes operator;
-        /// A non-negative amount to increase the allowance by
-        BigInt increase;
+        CommonTypes.BigInt increase;
     }
+
+    /// @param operator the wallet address of the operator.
+    /// @param decrease the decreased DataCap token allowance of the operator address.
     struct DecreaseAllowanceParams {
         bytes operator;
-        /// A non-negative amount to decrease the allowance by
-        BigInt decrease;
+        CommonTypes.BigInt decrease;
     }
+
+    /// @param operator the wallet address of the operator.
     struct RevokeAllowanceParams {
         bytes operator;
     }
 
+    /// @param amount the amount the DataCap token to be burned.
     struct BurnParams {
-        /// A non-negative amount to burn
-        BigInt amount;
+        CommonTypes.BigInt amount;
     }
 
+    /// @param balance the updated DataCap token balance of the owner/caller address.
     struct BurnReturn {
-        /// New balance in the account after the successful burn
-        BigInt balance;
+        CommonTypes.BigInt balance;
     }
 
+    /// @param owner the wallet address of the owner.
+    /// @param amount the amount of DataCap token to be burned.
     struct BurnFromParams {
         bytes owner;
-        /// A non-negative amount to burn
-        BigInt amount;
+        CommonTypes.BigInt amount;
     }
 
+    /// @param balance new balance in the account after the successful burn.
+    /// @param allowance new remaining allowance between the owner and operator (caller)
     struct BurnFromReturn {
-        /// New balance in the account after the successful burn
-        BigInt balance;
-        /// New remaining allowance between the owner and operator (caller)
-        BigInt allowance;
+        CommonTypes.BigInt balance;
+        CommonTypes.BigInt allowance;
     }
 }

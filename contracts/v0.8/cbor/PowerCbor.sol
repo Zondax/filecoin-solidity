@@ -19,23 +19,26 @@
 // SPDX-License-Identifier: Apache-2.0
 pragma solidity ^0.8.17;
 
-import "solidity-cborutils/contracts/CBOR.sol";
+import "../external/CBOR.sol";
 
+import "../types/CommonTypes.sol";
 import "../types/PowerTypes.sol";
 import "../utils/CborDecode.sol";
 import "../utils/Misc.sol";
 import "./BigIntCbor.sol";
 
-/// @title FIXME
+/// @title This library is a set of functions meant to handle CBOR parameters serialization and return values deserialization for Power actor exported methods.
 /// @author Zondax AG
 library PowerCBOR {
     using CBOR for CBOR.CBORBuffer;
     using CBORDecoder for bytes;
-    using BigIntCBOR for BigInt;
+    using BigIntCBOR for CommonTypes.BigInt;
     using BigIntCBOR for bytes;
 
+    /// @notice serialize CreateMinerParams struct to cbor in order to pass as arguments to the power actor
+    /// @param params CreateMinerParams to serialize as cbor
+    /// @return cbor serialized data as bytes
     function serializeCreateMinerParams(PowerTypes.CreateMinerParams memory params) internal pure returns (bytes memory) {
-        // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
         uint multiaddrsLen = params.multiaddrs.length;
@@ -53,6 +56,9 @@ library PowerCBOR {
         return buf.data();
     }
 
+    /// @notice deserialize CreateMinerReturn struct from cbor encoded bytes coming from a power actor call
+    /// @param rawResp cbor encoded response
+    /// @return ret new instance of CreateMinerReturn created based on parsed data
     function deserializeCreateMinerReturn(bytes memory rawResp) internal pure returns (PowerTypes.CreateMinerReturn memory ret) {
         uint byteIdx = 0;
         uint len;
@@ -66,6 +72,9 @@ library PowerCBOR {
         return ret;
     }
 
+    /// @notice deserialize MinerRawPowerReturn struct from cbor encoded bytes coming from a power actor call
+    /// @param rawResp cbor encoded response
+    /// @return ret new instance of MinerRawPowerReturn created based on parsed data
     function deserializeMinerRawPowerReturn(bytes memory rawResp) internal pure returns (PowerTypes.MinerRawPowerReturn memory ret) {
         uint byteIdx = 0;
         uint len;
@@ -78,7 +87,7 @@ library PowerCBOR {
         if (tmp.length > 0) {
             ret.raw_byte_power = tmp.deserializeBigInt();
         } else {
-            ret.raw_byte_power = BigInt(new bytes(0), false);
+            ret.raw_byte_power = CommonTypes.BigInt(new bytes(0), false);
         }
 
         (ret.meets_consensus_minimum, byteIdx) = rawResp.readBool(byteIdx);

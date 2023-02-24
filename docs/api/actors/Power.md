@@ -1,6 +1,6 @@
 ---
 title: "Storage Power Actor"
-sidebar_position: 6
+sidebar_position: 5
 ---
 
 # Storage Power Actor
@@ -74,7 +74,7 @@ Return the raw power claimed by the specified miner, and whether the miner has m
 
 **Results**:
 
-+ `struct` MinerRawPowerParams
++ `struct` MinerRawPowerReturn
 + `int256` RawBytePower - the row power of the miner.
   
 + `bool` MeetsConsensusMinimum - if the miner power meets the minimum for consensus.

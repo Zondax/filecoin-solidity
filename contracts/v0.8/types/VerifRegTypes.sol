@@ -25,7 +25,7 @@ import "./CommonTypes.sol";
 /// @title Filecoin Verified Registry actor types for Solidity.
 /// @author Zondax AG
 library VerifRegTypes {
-    bytes constant ActorID = hex"0006";
+    uint64 constant ActorID = 6;
     uint constant GetClaimsMethodNum = 2199871187;
     uint constant AddVerifierClientMethodNum = 3916220144;
     uint constant RemoveExpiredAllocationsMethodNum = 2421068268;
@@ -33,62 +33,87 @@ library VerifRegTypes {
     uint constant RemoveExpiredClaimsMethodNum = 2873373899;
     uint constant UniversalReceiverMethodNum = 3726118371;
 
+    /// @param provider the provider address.
+    /// @param  claim_ids a list of Claim IDs for specific provider.
     struct GetClaimsParams {
         uint64 provider;
         uint64[] claim_ids;
     }
+
+    /// @param  claims list of Claims returned.
+    /// @param  batch_info total success and failures of the batch process
     struct GetClaimsReturn {
         CommonTypes.BatchReturn batch_info;
-        CommonTypes.Claim[] claims;
+        Claim[] claims;
     }
+
+    /// @param addr the verified client address
+    /// @param allowance approved DataCap for this verified client
     struct AddVerifierClientParams {
         bytes addr;
         bytes allowance;
     }
+
+    /// @param client the client address for which to expired allocations.
+    /// @param allocation_ids list of allocation IDs to attempt to remove. If empty, will remove all eligible expired allocations.
     struct RemoveExpiredAllocationsParams {
-        // Client for which to remove expired allocations.
         uint64 client;
-        // Optional list of allocation IDs to attempt to remove.
-        // Empty means remove all eligible expired allocations.
         uint64[] allocation_ids;
     }
+
+    /// @param considered Allocation IDs are either specified by the caller or discovered to be expired.
+    /// @param results results for each processed allocation.
+    /// @param datacap_recovered the amount of DataCap token reclaimed for the client.
     struct RemoveExpiredAllocationsReturn {
-        // Ids of the allocations that were either specified by the caller or discovered to be expired.
         uint64[] considered;
-        // Results for each processed allocation.
         CommonTypes.BatchReturn results;
-        // The amount of datacap reclaimed for the client.
-        BigInt datacap_recovered;
-    }
-    struct RemoveExpiredClaimsParams {
-        // Provider to clean up (need not be the caller)
-        uint64 provider;
-        // Optional list of claim IDs to attempt to remove.
-        // Empty means remove all eligible expired claims.
-        uint64[] claim_ids;
-    }
-    struct RemoveExpiredClaimsReturn {
-        // Ids of the claims that were either specified by the caller or discovered to be expired.
-        uint64[] considered;
-        // Results for each processed claim.
-        CommonTypes.BatchReturn results;
-    }
-    struct ExtendClaimTermsParams {
-        CommonTypes.ClaimTerm[] terms;
-    }
-    struct UniversalReceiverParams {
-        /// Asset type
-        uint32 type_;
-        /// Payload corresponding to asset type
-        bytes payload;
+        CommonTypes.BigInt datacap_recovered;
     }
 
-    struct AllocationsResponse {
-        // Result for each allocation request.
-        CommonTypes.BatchReturn allocation_results;
-        // Result for each extension request.
-        CommonTypes.BatchReturn extension_results;
-        // IDs of new allocations created.
-        uint64[] new_allocations;
+    /// @param provider the provider address (need not be the caller)
+    /// @param claim_ids a list of Claim IDs with expired term. If no claims are specified, all eligible claims will be removed.
+    struct RemoveExpiredClaimsParams {
+        uint64 provider;
+        uint64[] claim_ids;
+    }
+
+    /// @param considered a list of IDs of the claims that were either specified by the caller or discovered to be expired.
+    /// @param results results for each processed claim.
+    struct RemoveExpiredClaimsReturn {
+        uint64[] considered;
+        CommonTypes.BatchReturn results;
+    }
+
+    /// @param terms list of claim terms to extend
+    struct ExtendClaimTermsParams {
+        ClaimTerm[] terms;
+    }
+
+    /// @param provider the provider address which storing the data.
+    /// @param claim_id claim ID.
+    /// @param term_max the max chain epoch to extend.
+    struct ClaimTerm {
+        uint64 provider;
+        uint64 claim_id;
+        int64 term_max;
+    }
+
+    /// @param provider the provider storing the data.
+    /// @param client the client which allocated the DataCap.
+    /// @param data identifier for the data committed.
+    /// @param size the size of the data.
+    /// @param term_min the min period after term started which the provider must commit to storing data.
+    /// @param term_max the max period after term started for which the provider can earn QA-power for the data.
+    /// @param term_start the epoch at which the piece was committed.
+    /// @param sector ID of the provide's sector in which the data is committed.
+    struct Claim {
+        uint64 provider;
+        uint64 client;
+        bytes data;
+        uint64 size;
+        int64 term_min;
+        int64 term_max;
+        int64 term_start;
+        uint64 sector;
     }
 }

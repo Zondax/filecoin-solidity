@@ -21,25 +21,19 @@ pragma solidity ^0.8.17;
 
 import "../PrecompilesAPI.sol";
 
+/// @notice This file is meant to serve as a deployable contract of the precompiles API, as the library by itself is not.
+/// @notice It imports the library and create a callable method for each method in the library
 /// @author Zondax AG
 contract PrecompilesApiTest {
     function resolve_address(bytes memory addr) public view returns (uint64) {
         return PrecompilesAPI.resolveAddress(addr);
     }
 
-    function resolve_eth_address(bytes memory addr) public view returns (uint64) {
+    function resolve_eth_address(address addr) public view returns (uint64) {
         return PrecompilesAPI.resolveEthAddress(addr);
     }
 
     function lookup_delegated_address(uint64 actor_id) public view returns (bytes memory) {
         return PrecompilesAPI.lookupDelegatedAddress(actor_id);
-    }
-
-    function get_actor_type(uint64 actor_id) public view returns (uint256) {
-        return PrecompilesAPI.getActorType(actor_id);
-    }
-
-    function get_ripemd160_hash(bytes memory input) public view returns (bytes memory) {
-        return PrecompilesAPI.getRipemd160Hash(input);
     }
 }

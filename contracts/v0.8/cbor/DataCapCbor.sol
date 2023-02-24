@@ -19,24 +19,26 @@
 // SPDX-License-Identifier: Apache-2.0
 pragma solidity ^0.8.17;
 
-import "solidity-cborutils/contracts/CBOR.sol";
+import "../external/CBOR.sol";
 
-import {CommonTypes} from "../types/CommonTypes.sol";
-import {DataCapTypes} from "../types/DataCapTypes.sol";
+import "../types/CommonTypes.sol";
+import "../types/DataCapTypes.sol";
 import "../utils/CborDecode.sol";
 import "../utils/Misc.sol";
 import "./BigIntCbor.sol";
 
-/// @title FIXME
+/// @title This library is a set of functions meant to handle CBOR parameters serialization and return values deserialization for DataCap actor exported methods.
 /// @author Zondax AG
 library DataCapCBOR {
     using CBOR for CBOR.CBORBuffer;
     using CBORDecoder for bytes;
-    using BigIntCBOR for BigInt;
+    using BigIntCBOR for CommonTypes.BigInt;
     using BigIntCBOR for bytes;
 
+    /// @notice serialize GetAllowanceParams struct to cbor in order to pass as arguments to the datacap actor
+    /// @param params GetAllowanceParams to serialize as cbor
+    /// @return cbor serialized data as bytes
     function serializeGetAllowanceParams(DataCapTypes.GetAllowanceParams memory params) internal pure returns (bytes memory) {
-        // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
         buf.startFixedArray(2);
@@ -46,8 +48,10 @@ library DataCapCBOR {
         return buf.data();
     }
 
+    /// @notice serialize TransferParams struct to cbor in order to pass as arguments to the datacap actor
+    /// @param params TransferParams to serialize as cbor
+    /// @return cbor serialized data as bytes
     function serializeTransferParams(DataCapTypes.TransferParams memory params) internal pure returns (bytes memory) {
-        // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
         buf.startFixedArray(3);
@@ -58,6 +62,9 @@ library DataCapCBOR {
         return buf.data();
     }
 
+    /// @notice deserialize TransferReturn struct from cbor encoded bytes coming from a datacap actor call
+    /// @param rawResp cbor encoded response
+    /// @return ret new instance of TransferReturn created based on parsed data
     function deserializeTransferReturn(bytes memory rawResp) internal pure returns (DataCapTypes.TransferReturn memory ret) {
         uint byteIdx = 0;
         uint len;
@@ -77,8 +84,10 @@ library DataCapCBOR {
         return ret;
     }
 
+    /// @notice serialize TransferFromParams struct to cbor in order to pass as arguments to the datacap actor
+    /// @param params TransferFromParams to serialize as cbor
+    /// @return cbor serialized data as bytes
     function serializeTransferFromParams(DataCapTypes.TransferFromParams memory params) internal pure returns (bytes memory) {
-        // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
         buf.startFixedArray(4);
@@ -90,6 +99,9 @@ library DataCapCBOR {
         return buf.data();
     }
 
+    /// @notice deserialize TransferFromReturn struct from cbor encoded bytes coming from a datacap actor call
+    /// @param rawResp cbor encoded response
+    /// @return ret new instance of TransferFromReturn created based on parsed data
     function deserializeTransferFromReturn(bytes memory rawResp) internal pure returns (DataCapTypes.TransferFromReturn memory ret) {
         uint byteIdx = 0;
         uint len;
@@ -112,8 +124,10 @@ library DataCapCBOR {
         return ret;
     }
 
+    /// @notice serialize IncreaseAllowanceParams struct to cbor in order to pass as arguments to the datacap actor
+    /// @param params IncreaseAllowanceParams to serialize as cbor
+    /// @return cbor serialized data as bytes
     function serializeIncreaseAllowanceParams(DataCapTypes.IncreaseAllowanceParams memory params) internal pure returns (bytes memory) {
-        // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
         buf.startFixedArray(2);
@@ -123,8 +137,10 @@ library DataCapCBOR {
         return buf.data();
     }
 
+    /// @notice serialize DecreaseAllowanceParams struct to cbor in order to pass as arguments to the datacap actor
+    /// @param params DecreaseAllowanceParams to serialize as cbor
+    /// @return cbor serialized data as bytes
     function serializeDecreaseAllowanceParams(DataCapTypes.DecreaseAllowanceParams memory params) internal pure returns (bytes memory) {
-        // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
         buf.startFixedArray(2);
@@ -134,8 +150,10 @@ library DataCapCBOR {
         return buf.data();
     }
 
+    /// @notice serialize RevokeAllowanceParams struct to cbor in order to pass as arguments to the datacap actor
+    /// @param params RevokeAllowanceParams to serialize as cbor
+    /// @return cbor serialized data as bytes
     function serializeRevokeAllowanceParams(DataCapTypes.RevokeAllowanceParams memory params) internal pure returns (bytes memory) {
-        // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
         buf.startFixedArray(1);
@@ -144,8 +162,10 @@ library DataCapCBOR {
         return buf.data();
     }
 
+    /// @notice serialize BurnParams struct to cbor in order to pass as arguments to the datacap actor
+    /// @param params BurnParams to serialize as cbor
+    /// @return cbor serialized data as bytes
     function serializeBurnParams(DataCapTypes.BurnParams memory params) internal pure returns (bytes memory) {
-        // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
         buf.startFixedArray(1);
@@ -154,6 +174,9 @@ library DataCapCBOR {
         return buf.data();
     }
 
+    /// @notice deserialize BurnReturn struct from cbor encoded bytes coming from a datacap actor call
+    /// @param rawResp cbor encoded response
+    /// @return ret new instance of BurnReturn created based on parsed data
     function deserializeBurnReturn(bytes memory rawResp) internal pure returns (DataCapTypes.BurnReturn memory ret) {
         uint byteIdx = 0;
         uint len;
@@ -168,8 +191,10 @@ library DataCapCBOR {
         return ret;
     }
 
+    /// @notice serialize BurnFromParams struct to cbor in order to pass as arguments to the datacap actor
+    /// @param params BurnFromParams to serialize as cbor
+    /// @return cbor serialized data as bytes
     function serializeBurnFromParams(DataCapTypes.BurnFromParams memory params) internal pure returns (bytes memory) {
-        // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
         buf.startFixedArray(2);
@@ -179,6 +204,9 @@ library DataCapCBOR {
         return buf.data();
     }
 
+    /// @notice deserialize BurnFromReturn struct from cbor encoded bytes coming from a datacap actor call
+    /// @param rawResp cbor encoded response
+    /// @return ret new instance of BurnFromReturn created based on parsed data
     function deserializeBurnFromReturn(bytes memory rawResp) internal pure returns (DataCapTypes.BurnFromReturn memory ret) {
         uint byteIdx = 0;
         uint len;

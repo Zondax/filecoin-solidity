@@ -20,8 +20,11 @@
 pragma solidity ^0.8.17;
 
 import "../types/VerifRegTypes.sol";
+import "../types/CommonTypes.sol";
 import "../VerifRegAPI.sol";
 
+/// @notice This file is meant to serve as a deployable contract of the verified registry actor API, as the library by itself is not.
+/// @notice It imports the library and create a callable method for each method in the library
 /// @author Zondax AG
 contract VerifRegApiTest {
     function get_claims(VerifRegTypes.GetClaimsParams memory params) public returns (VerifRegTypes.GetClaimsReturn memory) {
@@ -42,15 +45,7 @@ contract VerifRegApiTest {
         return VerifRegAPI.extendClaimTerms(params);
     }
 
-    function remove_expired_claims(
-        VerifRegTypes.RemoveExpiredClaimsParams memory params
-    ) public returns (VerifRegTypes.RemoveExpiredClaimsReturn memory) {
+    function remove_expired_claims(VerifRegTypes.RemoveExpiredClaimsParams memory params) public returns (VerifRegTypes.RemoveExpiredClaimsReturn memory) {
         return VerifRegAPI.removeExpiredClaims(params);
-    }
-
-    function universal_receiver_hook(
-        VerifRegTypes.UniversalReceiverParams memory params
-    ) public returns (VerifRegTypes.AllocationsResponse memory) {
-        return VerifRegAPI.universalReceiverHook(params);
     }
 }

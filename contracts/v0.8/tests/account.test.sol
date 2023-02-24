@@ -20,23 +20,19 @@
 pragma solidity ^0.8.17;
 
 import "../types/AccountTypes.sol";
+import "../types/CommonTypes.sol";
 import "../AccountAPI.sol";
+import "../Utils.sol";
 
+/// @notice This file is meant to serve as a deployable contract of the account actor API, as the library by itself is not.
+/// @notice It imports the library and create a callable method for each method in the library
 /// @author Zondax AG
 contract AccountApiTest {
-    function authenticate_message(bytes memory target, AccountTypes.AuthenticateMessageParams memory params) public {
-        AccountAPI.authenticateMessage(target, params);
-    }
-
     function authenticate_message(uint64 target, AccountTypes.AuthenticateMessageParams memory params) public {
         AccountAPI.authenticateMessage(target, params);
     }
 
-    function universal_receiver_hook(bytes memory target, AccountTypes.UniversalReceiverParams memory params) public {
-        AccountAPI.universalReceiverHook(target, params);
-    }
-
-    function universal_receiver_hook(uint64 target, AccountTypes.UniversalReceiverParams memory params) public {
-        AccountAPI.universalReceiverHook(target, params);
+    function universal_receiver_hook(uint64 target, CommonTypes.UniversalReceiverParams memory params) public {
+        Utils.universalReceiverHook(target, params);
     }
 }

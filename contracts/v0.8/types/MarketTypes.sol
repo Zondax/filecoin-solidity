@@ -25,7 +25,7 @@ import "./CommonTypes.sol";
 /// @title Filecoin market actor types for Solidity.
 /// @author Zondax AG
 library MarketTypes {
-    bytes constant ActorID = hex"0005";
+    uint64 constant ActorID = 5;
     uint constant AddBalanceMethodNum = 822473126;
     uint constant WithdrawBalanceMethodNum = 2280458852;
     uint constant GetBalanceMethodNum = 726108461;
@@ -41,69 +41,122 @@ library MarketTypes {
     uint constant GetDealActivationMethodNum = 2567238399;
     uint constant PublishStorageDealsMethodNum = 2236929350;
 
+    /// @param provider_or_client the address of provider or client.
+    /// @param tokenAmount the token amount to withdraw.
     struct WithdrawBalanceParams {
         bytes provider_or_client;
-        BigInt tokenAmount;
+        CommonTypes.BigInt tokenAmount;
     }
 
+    /// @param amount_withdrawn the token amount withdrawn.
     struct WithdrawBalanceReturn {
-        BigInt amount_withdrawn;
+        CommonTypes.BigInt amount_withdrawn;
     }
 
+    /// @param balance the escrow balance for this address.
+    /// @param locked the escrow locked amount for this address.
     struct GetBalanceReturn {
-        BigInt balance;
-        BigInt locked;
+        CommonTypes.BigInt balance;
+        CommonTypes.BigInt locked;
     }
 
+    /// @param data the data commitment of this deal.
+    /// @param size the size of this deal.
     struct GetDealDataCommitmentReturn {
         bytes data;
         uint64 size;
     }
 
+    /// @param client the wallet address of the client.
     struct GetDealClientReturn {
         uint64 client;
     }
 
+    /// @param provider the wallet address of the provider.
     struct GetDealProviderReturn {
         uint64 provider;
     }
 
+    /// @param label the label of this deal.
     struct GetDealLabelReturn {
         string label;
     }
 
+    /// @param start the chain epoch to start the deal.
+    /// @param endthe chain epoch to end the deal.
     struct GetDealTermReturn {
         int64 start;
         int64 end;
     }
 
+    /// @param price_per_epoch the token amount that will be paid by client to provider.
     struct GetDealEpochPriceReturn {
-        BigInt price_per_epoch;
+        CommonTypes.BigInt price_per_epoch;
     }
 
+    /// @param collateral the token amount as collateral paid by the client.
     struct GetDealClientCollateralReturn {
-        BigInt collateral;
+        CommonTypes.BigInt collateral;
     }
 
+    /// @param collateral the token amount as collateral paid by the provider.
     struct GetDealProviderCollateralReturn {
-        BigInt collateral;
+        CommonTypes.BigInt collateral;
     }
 
+    /// @param verified if the deal is verified or not.
     struct GetDealVerifiedReturn {
         bool verified;
     }
 
+    /// @param activated Epoch at which the deal was activated, or -1.
+    /// @param terminated Epoch at which the deal was terminated abnormally, or -1.
     struct GetDealActivationReturn {
         int64 activated;
         int64 terminated;
     }
 
+    /// @param deals list of deal proposals signed by a client
     struct PublishStorageDealsParams {
-        CommonTypes.ClientDealProposal[] deals;
+        ClientDealProposal[] deals;
     }
 
+    /// @param ids returned storage deal IDs.
+    /// @param valid_deals represent all the valid deals.
     struct PublishStorageDealsReturn {
         uint64[] ids;
         bytes valid_deals;
+    }
+
+    /// @param piece_cid PieceCID.
+    /// @param piece_size the size of the piece.
+    /// @param verified_deal if the deal is verified or not.
+    /// @param client the address of the storage client.
+    /// @param provider the address of the storage provider.
+    /// @param label any label that client choose for the deal.
+    /// @param start_epoch the chain epoch to start the deal.
+    /// @param end_epoch the chain epoch to end the deal.
+    /// @param storage_price_per_epoch the token amount to pay to provider per epoch.
+    /// @param provider_collateral the token amount as collateral paid by the provider.
+    /// @param client_collateral the token amount as collateral paid by the client.
+    struct DealProposal {
+        bytes piece_cid;
+        uint64 piece_size;
+        bool verified_deal;
+        bytes client;
+        bytes provider;
+        string label;
+        int64 start_epoch;
+        int64 end_epoch;
+        CommonTypes.BigInt storage_price_per_epoch;
+        CommonTypes.BigInt provider_collateral;
+        CommonTypes.BigInt client_collateral;
+    }
+
+    /// @param proposal Proposal
+    /// @param client_signature the signature signed by the client.
+    struct ClientDealProposal {
+        DealProposal proposal;
+        bytes client_signature;
     }
 }

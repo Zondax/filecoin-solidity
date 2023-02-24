@@ -77,8 +77,8 @@ In your smart contract, copy and paste these lines.
 ```solidity
 import { MarketAPI } from "@zondax/filecoin-solidity/contracts/v0.8/MarketAPI.sol";
 import { CommonTypes } from "@zondax/filecoin-solidity/contracts/v0.8/types/CommonTypes.sol";
-import { MarketTypes } from "@zondax/filecoin-solidity/contracts/v0.8/types/MarketAPI.sol";
-import { BigInt } from "@zondax/filecoin-solidity/contracts/v0.8/cbor/BigNumberCbor.sol";
+import { MarketTypes } from "@zondax/filecoin-solidity/contracts/v0.8/types/MarketTypes.sol";
+import { BigInt } from "@zondax/filecoin-solidity/contracts/v0.8/cbor/BigIntCbor.sol";
 
 ```
 
@@ -104,3 +104,4 @@ Find nice articles with rich and valuable content about different topics related
 
 We have built this beautiful website for you!
 [Let's go to docs web](https://docs.zondax.ch/fevm/filecoin-solidity) :arrow_upper_right:
+ 
