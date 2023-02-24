@@ -25,7 +25,6 @@ import "../cbor/BigIntCbor.sol";
 import "../DataCapAPI.sol";
 import "../Utils.sol";
 
-
 /// @notice This file is meant to serve as a deployable contract of the datacap actor API, as the library by itself is not.
 /// @notice It imports the library and create a callable method for each method in the library
 /// @author Zondax AG
@@ -42,7 +41,7 @@ contract DataCapApiTest {
         return DataCapAPI.totalSupply();
     }
 
-    function balance(bytes memory addr) public returns (CommonTypes.BigInt memory) {
+    function balance(CommonTypes.FilAddress memory addr) public returns (CommonTypes.BigInt memory) {
         return DataCapAPI.balance(addr);
     }
 
@@ -66,12 +65,12 @@ contract DataCapApiTest {
         return DataCapAPI.decreaseAllowance(params);
     }
 
-    function revoke_allowance(DataCapTypes.RevokeAllowanceParams memory params) public returns (CommonTypes.BigInt memory) {
-        return DataCapAPI.revokeAllowance(params);
+    function revoke_allowance(CommonTypes.FilAddress memory operator) public returns (CommonTypes.BigInt memory) {
+        return DataCapAPI.revokeAllowance(operator);
     }
 
-    function burn(DataCapTypes.BurnParams memory params) public returns (DataCapTypes.BurnReturn memory) {
-        return DataCapAPI.burn(params);
+    function burn(CommonTypes.BigInt memory amount) public returns (CommonTypes.BigInt memory) {
+        return DataCapAPI.burn(amount);
     }
 
     function burn_from(DataCapTypes.BurnFromParams memory params) public returns (DataCapTypes.BurnFromReturn memory) {

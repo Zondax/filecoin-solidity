@@ -100,21 +100,6 @@ library DataCapTypes {
         CommonTypes.BigInt decrease;
     }
 
-    /// @param operator the wallet address of the operator.
-    struct RevokeAllowanceParams {
-        CommonTypes.FilAddress operator;
-    }
-
-    /// @param amount the amount the DataCap token to be burned.
-    struct BurnParams {
-        CommonTypes.BigInt amount;
-    }
-
-    /// @param balance the updated DataCap token balance of the owner/caller address.
-    struct BurnReturn {
-        CommonTypes.BigInt balance;
-    }
-
     /// @param owner the wallet address of the owner.
     /// @param amount the amount of DataCap token to be burned.
     struct BurnFromParams {

@@ -150,47 +150,6 @@ library DataCapCBOR {
         return buf.data();
     }
 
-    /// @notice serialize RevokeAllowanceParams struct to cbor in order to pass as arguments to the datacap actor
-    /// @param params RevokeAllowanceParams to serialize as cbor
-    /// @return cbor serialized data as bytes
-    function serializeRevokeAllowanceParams(DataCapTypes.RevokeAllowanceParams memory params) internal pure returns (bytes memory) {
-        CBOR.CBORBuffer memory buf = CBOR.create(64);
-
-        buf.startFixedArray(1);
-        buf.writeBytes(params.operator.data);
-
-        return buf.data();
-    }
-
-    /// @notice serialize BurnParams struct to cbor in order to pass as arguments to the datacap actor
-    /// @param params BurnParams to serialize as cbor
-    /// @return cbor serialized data as bytes
-    function serializeBurnParams(DataCapTypes.BurnParams memory params) internal pure returns (bytes memory) {
-        CBOR.CBORBuffer memory buf = CBOR.create(64);
-
-        buf.startFixedArray(1);
-        buf.writeBytes(params.amount.serializeBigInt());
-
-        return buf.data();
-    }
-
-    /// @notice deserialize BurnReturn struct from cbor encoded bytes coming from a datacap actor call
-    /// @param rawResp cbor encoded response
-    /// @return ret new instance of BurnReturn created based on parsed data
-    function deserializeBurnReturn(bytes memory rawResp) internal pure returns (DataCapTypes.BurnReturn memory ret) {
-        uint byteIdx = 0;
-        uint len;
-        bytes memory tmp;
-
-        (len, byteIdx) = rawResp.readFixedArray(byteIdx);
-        assert(len == 1);
-
-        (tmp, byteIdx) = rawResp.readBytes(byteIdx);
-        ret.balance = tmp.deserializeBigInt();
-
-        return ret;
-    }
-
     /// @notice serialize BurnFromParams struct to cbor in order to pass as arguments to the datacap actor
     /// @param params BurnFromParams to serialize as cbor
     /// @return cbor serialized data as bytes
