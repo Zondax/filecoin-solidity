@@ -1,0 +1,49 @@
+/*******************************************************************************
+ *   (c) 2022 Zondax AG
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ ********************************************************************************/
+// DRAFT!! THIS CODE HAS NOT BEEN AUDITED - USE ONLY FOR PROTOTYPING
+
+// SPDX-License-Identifier: Apache-2.0
+pragma solidity ^0.8.17;
+
+import "../types/CommonTypes.sol";
+import "../../../hardhat/contracts/v0.8/types/CommonTypes.sol";
+
+/// @notice This library is a set a functions that allows to handle filecoin addresses conversions and validations
+/// @author Zondax AG
+library FilAddresses {
+    /// @notice allow to get a delegated address (f4) from an eth address
+    /// @param addr eth address to convert
+    /// @return delegated filecoin address
+    function getDelegatedAddress(address addr) internal pure returns (CommonTypes.FilAddress memory) {
+        return CommonTypes.FilAddress(abi.encodePacked(hex"0410", addr));
+    }
+
+    /// @notice allow to validate if an address is valid or not
+    /// @dev we are only validating known address types. If the type is not known, the default value is true
+    /// @param addr the filecoin address to validate
+    /// @return whether the address is valid or not
+    function validate(CommonTypes.FilAddress memory addr) internal pure returns (bool) {
+        if (addr.data[0] == 0x01 || addr.data[0] == 0x02) {
+            return addr.data.length == 21;
+        } else if (addr.data[0] == 0x03) {
+            return addr.data.length == 49;
+        } else if (addr.data[0] == 0x04) {
+            return addr.data.length < 56;
+        }
+
+        return true;
+    }
+}
