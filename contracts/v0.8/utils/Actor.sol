@@ -18,16 +18,21 @@
 // SPDX-License-Identifier: Apache-2.0
 pragma solidity ^0.8.17;
 
-import "../external/Strings.sol";
-
 import "./Misc.sol";
+
+error InvalidAddress(bytes addr);
+error NotEnoughBalance(uint256 balance, uint256 value);
+error InvalidActorID(uint64 actorId);
+error FailToCallActor();
+error InvalidResponseLength(bytes response);
+error InvalidCodec();
+error ActorError(uint errorCode);
 
 /// @title Call actors utilities library, meant to interact with Filecoin builtin actors
 /// @author Zondax AG
 library Actor {
     address constant CALL_ACTOR_ADDRESS = 0xfe00000000000000000000000000000000000003;
     address constant CALL_ACTOR_ID = 0xfe00000000000000000000000000000000000005;
-    string constant CALL_ERROR_MESSAGE = "actor call failed";
     string constant UNEXPECTED_RESPONSE_MESSAGE = "unexpected response received";
 
     uint64 constant READ_ONLY_FLAG = 0x00000001; // https://github.com/filecoin-project/ref-fvm/blob/master/shared/src/sys/mod.rs#L60
@@ -38,7 +43,7 @@ library Actor {
     /// @param method_num id of the method from the actor to call
     /// @param codec how the request data passed as argument is encoded
     /// @param raw_request encoded arguments to be passed in the call
-    /// @param amount tokens to be transfered to the called actor
+    /// @param value tokens to be transfered to the called actor
     /// @param static_call indicates if the call will be allaed to change the actor state or not (just read the state)
     /// @return payload (in bytes) with the actual response data (without codec or response code)
     function callByAddress(
@@ -46,11 +51,17 @@ library Actor {
         uint256 method_num,
         uint64 codec,
         bytes memory raw_request,
-        uint256 amount,
+        uint256 value,
         bool static_call
     ) internal returns (bytes memory) {
-        require(actor_address.length > 1, "invalid actor_address");
-        require(address(this).balance >= amount, "not enough balance");
+        if (actor_address.length < 2) {
+            revert InvalidAddress(actor_address);
+        }
+
+        uint balance = address(this).balance;
+        if (balance < value) {
+            revert NotEnoughBalance(balance, value);
+        }
 
         // We have to delegate-call the call-actor precompile because the call-actor precompile will
         // call the target actor on our behalf. This will _not_ delegate to the target `actor_address`.
@@ -60,9 +71,11 @@ library Actor {
         // - `static_call == false`: `CALLER (you) --(DELEGATECALL)-> CALL_ACTOR_PRECOMPILE --(CALL)-> actor_address
         // - `static_call == true`:  `CALLER (you) --(DELEGATECALL)-> CALL_ACTOR_PRECOMPILE --(STATICCALL)-> actor_address
         (bool success, bytes memory data) = address(CALL_ACTOR_ADDRESS).delegatecall(
-            abi.encode(uint64(method_num), amount, static_call ? READ_ONLY_FLAG : DEFAULT_FLAG, codec, raw_request, actor_address)
+            abi.encode(uint64(method_num), value, static_call ? READ_ONLY_FLAG : DEFAULT_FLAG, codec, raw_request, actor_address)
         );
-        require(success == true, CALL_ERROR_MESSAGE);
+        if (!success) {
+            revert FailToCallActor();
+        }
 
         return readRespData(data);
     }
@@ -72,7 +85,7 @@ library Actor {
     /// @param method_num id of the method from the actor to call
     /// @param codec how the request data passed as argument is encoded
     /// @param raw_request encoded arguments to be passed in the call
-    /// @param amount tokens to be transferred to the called actor
+    /// @param value tokens to be transferred to the called actor
     /// @param static_call indicates if the call will be allowed to change the actor state or not (just read the state)
     /// @return payload (in bytes) with the actual response data (without codec or response code)
     function callByID(
@@ -80,15 +93,20 @@ library Actor {
         uint256 method_num,
         uint64 codec,
         bytes memory raw_request,
-        uint256 amount,
+        uint256 value,
         bool static_call
     ) internal returns (bytes memory) {
-        require(address(this).balance >= amount, "not enough balance");
+        uint balance = address(this).balance;
+        if (balance < value) {
+            revert NotEnoughBalance(balance, value);
+        }
 
         (bool success, bytes memory data) = address(CALL_ACTOR_ID).delegatecall(
-            abi.encode(uint64(method_num), amount, static_call ? READ_ONLY_FLAG : DEFAULT_FLAG, codec, raw_request, actor_id)
+            abi.encode(uint64(method_num), value, static_call ? READ_ONLY_FLAG : DEFAULT_FLAG, codec, raw_request, actor_id)
         );
-        require(success == true, CALL_ERROR_MESSAGE);
+        if (!success) {
+            revert FailToCallActor();
+        }
 
         return readRespData(data);
     }
@@ -98,7 +116,7 @@ library Actor {
     /// @param method_num id of the method from the actor to call
     /// @param codec how the request data passed as argument is encoded
     /// @param raw_request encoded arguments to be passed in the call
-    /// @param amount tokens to be transfered to the called actor
+    /// @param value tokens to be transfered to the called actor
     /// @param static_call indicates if the call will be allowed to change the actor state or not (just read the state)
     /// @dev it requires the id to be bigger than 99, as singleton actors are smaller than that
     function callNonSingletonByID(
@@ -106,11 +124,14 @@ library Actor {
         uint256 method_num,
         uint64 codec,
         bytes memory raw_request,
-        uint256 amount,
+        uint256 value,
         bool static_call
     ) internal returns (bytes memory) {
-        require(actor_id >= 100, "actor id is not valid");
-        return callByID(actor_id, method_num, codec, raw_request, amount, static_call);
+        if (actor_id < 100) {
+            revert InvalidActorID(actor_id);
+        }
+
+        return callByID(actor_id, method_num, codec, raw_request, value, static_call);
     }
 
     /// @notice parse the response an actor returned
@@ -121,25 +142,21 @@ library Actor {
         (int256 exit, uint64 return_codec, bytes memory return_value) = abi.decode(raw_response, (int256, uint64, bytes));
 
         if (return_codec == Misc.NONE_CODEC) {
-            require(return_value.length == 0, "response length should be 0");
+            if (return_value.length != 0) {
+                revert InvalidResponseLength(return_value);
+            }
         } else if (return_codec == Misc.CBOR_CODEC || return_codec == Misc.DAG_CBOR_CODEC) {
-            require(return_value.length > 0, "response length should greater than 0");
+            if (return_value.length == 0) {
+                revert InvalidResponseLength(return_value);
+            }
         } else {
-            require(false, "invalid response codec");
+            revert InvalidCodec();
         }
 
-        require(exit == 0, getErrorCodeMsg(exit));
+        if (exit != 0) {
+            revert ActorError(exit);
+        }
 
         return return_value;
-    }
-
-    /// @notice converts exit code to string message
-    /// @param exit_code the actual exit code
-    /// @return message based on the exit code
-    function getErrorCodeMsg(int256 exit_code) internal pure returns (string memory) {
-        return
-            exit_code >= 0
-                ? string(abi.encodePacked("actor error code ", Strings.toString(uint256(exit_code))))
-                : string(abi.encodePacked("actor error code -", Strings.toString(Misc.abs(exit_code))));
     }
 }
