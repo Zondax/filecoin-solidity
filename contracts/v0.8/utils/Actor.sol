@@ -25,8 +25,8 @@ error NotEnoughBalance(uint256 balance, uint256 value);
 error InvalidActorID(uint64 actorId);
 error FailToCallActor();
 error InvalidResponseLength(bytes response);
-error InvalidCodec();
-error ActorError(uint errorCode);
+error InvalidCodec(uint64);
+error ActorError(int256 errorCode);
 
 /// @title Call actors utilities library, meant to interact with Filecoin builtin actors
 /// @author Zondax AG
@@ -43,8 +43,8 @@ library Actor {
     /// @param method_num id of the method from the actor to call
     /// @param codec how the request data passed as argument is encoded
     /// @param raw_request encoded arguments to be passed in the call
-    /// @param value tokens to be transfered to the called actor
-    /// @param static_call indicates if the call will be allaed to change the actor state or not (just read the state)
+    /// @param value tokens to be transferred to the called actor
+    /// @param static_call indicates if the call will be allowed to change the actor state or not (just read the state)
     /// @return payload (in bytes) with the actual response data (without codec or response code)
     function callByAddress(
         bytes memory actor_address,
@@ -150,7 +150,7 @@ library Actor {
                 revert InvalidResponseLength(return_value);
             }
         } else {
-            revert InvalidCodec();
+            revert InvalidCodec(return_codec);
         }
 
         if (exit != 0) {
