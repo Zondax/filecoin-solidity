@@ -711,7 +711,7 @@ jobs:
         run: make build_builtin_actors
       - name: Build contracts
         run: make
-      - name: Run tests on send
+      - name: Run tests on cbor decode lib
         run: |
           cd testing
           rustup target add wasm32-unknown-unknown
