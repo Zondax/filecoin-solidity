@@ -36,9 +36,10 @@ library MarketAPI {
     function addBalance(bytes memory provider_or_client, uint256 value) internal {
         bytes memory raw_request = provider_or_client.serializeAddress();
 
-        bytes memory result = Actor.callByID(MarketTypes.ActorID, MarketTypes.AddBalanceMethodNum, Misc.CBOR_CODEC, raw_request, value, false);
-
-        require(result.length == 0, Actor.UNEXPECTED_RESPONSE_MESSAGE);
+        bytes memory data = Actor.callByID(MarketTypes.ActorID, MarketTypes.AddBalanceMethodNum, Misc.CBOR_CODEC, raw_request, value, false);
+        if (data.length != 0) {
+            revert Actor.InvalidResponseLength(data);
+        }
     }
 
     /// @notice Attempt to withdraw the specified amount from the balance held in escrow.
