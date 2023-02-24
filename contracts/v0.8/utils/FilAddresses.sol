@@ -36,14 +36,16 @@ library FilAddresses {
     /// @param addr the filecoin address to validate
     /// @return whether the address is valid or not
     function validate(CommonTypes.FilAddress memory addr) internal pure returns (bool) {
-        if (addr.data[0] == 0x01 || addr.data[0] == 0x02) {
+        if (addr.data[0] == 0x00) {
+            return addr.data.length <= 10;
+        } else if (addr.data[0] == 0x01 || addr.data[0] == 0x02) {
             return addr.data.length == 21;
         } else if (addr.data[0] == 0x03) {
             return addr.data.length == 49;
         } else if (addr.data[0] == 0x04) {
-            return addr.data.length < 56;
+            return addr.data.length <= 64;
         }
 
-        return true;
+        return addr.data.length <= 256;
     }
 }
