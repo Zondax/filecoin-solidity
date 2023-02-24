@@ -67,7 +67,7 @@ library FilecoinCBOR {
         uint len;
 
         (len, byteIdx) = rawResp.readFixedArray(byteIdx);
-        assert(len == 2);
+        require(len == 2, "Wrong numbers of parameters (should find 2)");
 
         (ret.type_, byteIdx) = rawResp.readUInt32(byteIdx);
         (ret.payload, byteIdx) = rawResp.readBytes(byteIdx);

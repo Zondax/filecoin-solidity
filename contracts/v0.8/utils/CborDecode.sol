@@ -63,7 +63,7 @@ library CBORDecoder {
         uint value;
 
         (maj, value, byteIdx) = parseCborHeader(cborData, byteIdx);
-        assert(maj == MajOther);
+        require(maj == MajOther, "invalid maj (expected MajOther)");
         assert(value == True_Type || value == False_Type);
 
         return (value != False_Type, byteIdx);
@@ -78,7 +78,7 @@ library CBORDecoder {
         uint len;
 
         (maj, len, byteIdx) = parseCborHeader(cborData, byteIdx);
-        assert(maj == MajArray);
+        require(maj == MajArray, "invalid maj (expected MajArray)");
 
         return (len, byteIdx);
     }
@@ -393,7 +393,7 @@ library CBORDecoder {
         if (low == 24) {
             uint8 next = sliceUInt8(cbor, byteIndex);
             byteIndex += 1;
-            assert(next >= 24); // otherwise this is invalid cbor
+            require(next >= 24, "invalid cbor"); // otherwise this is invalid cbor
             return (maj, next, byteIndex);
         }
 
