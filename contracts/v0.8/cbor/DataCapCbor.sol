@@ -42,8 +42,8 @@ library DataCapCBOR {
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
         buf.startFixedArray(2);
-        buf.writeBytes(params.owner);
-        buf.writeBytes(params.operator);
+        buf.writeBytes(params.owner.data);
+        buf.writeBytes(params.operator.data);
 
         return buf.data();
     }
@@ -55,7 +55,7 @@ library DataCapCBOR {
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
         buf.startFixedArray(3);
-        buf.writeBytes(params.to);
+        buf.writeBytes(params.to.data);
         buf.writeBytes(params.amount.serializeBigInt());
         buf.writeBytes(params.operator_data);
 
@@ -91,8 +91,8 @@ library DataCapCBOR {
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
         buf.startFixedArray(4);
-        buf.writeBytes(params.from);
-        buf.writeBytes(params.to);
+        buf.writeBytes(params.from.data);
+        buf.writeBytes(params.to.data);
         buf.writeBytes(params.amount.serializeBigInt());
         buf.writeBytes(params.operator_data);
 
@@ -131,7 +131,7 @@ library DataCapCBOR {
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
         buf.startFixedArray(2);
-        buf.writeBytes(params.operator);
+        buf.writeBytes(params.operator.data);
         buf.writeBytes(params.increase.serializeBigInt());
 
         return buf.data();
@@ -144,7 +144,7 @@ library DataCapCBOR {
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
         buf.startFixedArray(2);
-        buf.writeBytes(params.operator);
+        buf.writeBytes(params.operator.data);
         buf.writeBytes(params.decrease.serializeBigInt());
 
         return buf.data();
@@ -157,7 +157,7 @@ library DataCapCBOR {
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
         buf.startFixedArray(1);
-        buf.writeBytes(params.operator);
+        buf.writeBytes(params.operator.data);
 
         return buf.data();
     }
@@ -198,7 +198,7 @@ library DataCapCBOR {
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
         buf.startFixedArray(2);
-        buf.writeBytes(params.owner);
+        buf.writeBytes(params.owner.data);
         buf.writeBytes(params.amount.serializeBigInt());
 
         return buf.data();

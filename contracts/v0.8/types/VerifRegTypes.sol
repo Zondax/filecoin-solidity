@@ -49,7 +49,7 @@ library VerifRegTypes {
     /// @param addr the verified client address
     /// @param allowance approved DataCap for this verified client
     struct AddVerifiedClientParams {
-        bytes addr;
+        CommonTypes.FilAddress addr;
         bytes allowance;
     }
 

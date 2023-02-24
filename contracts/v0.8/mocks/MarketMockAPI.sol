@@ -49,14 +49,14 @@ contract MarketMockAPI {
     /// @dev This method should be called by an approved address, but the mock does not check that the caller is an approved party.
     /// @dev Because this is a mock method, no real balance is deposited in the designated address, nor decremented from the Storage Market actor (f05).
     function withdrawBalance(MarketTypes.WithdrawBalanceParams memory params) public returns (MarketTypes.WithdrawBalanceReturn memory) {
-        BigNumbers.BigNumber memory balance = balances[string(params.provider_or_client)];
+        BigNumbers.BigNumber memory balance = balances[string(params.provider_or_client.data)];
         BigNumbers.BigNumber memory tokenAmount = BigNumbers.init(params.tokenAmount.val, params.tokenAmount.neg);
 
         if (BigNumbers.gte(balance, tokenAmount)) {
-            balances[string(params.provider_or_client)] = BigNumbers.sub(balance, tokenAmount);
+            balances[string(params.provider_or_client.data)] = BigNumbers.sub(balance, tokenAmount);
             balance = tokenAmount;
         } else {
-            balances[string(params.provider_or_client)] = BigNumbers.zero();
+            balances[string(params.provider_or_client.data)] = BigNumbers.zero();
         }
 
         return MarketTypes.WithdrawBalanceReturn(CommonTypes.BigInt(balance.val, balance.neg));

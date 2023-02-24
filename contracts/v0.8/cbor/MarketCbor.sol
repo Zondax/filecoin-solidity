@@ -43,7 +43,7 @@ library MarketCBOR {
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
         buf.startFixedArray(2);
-        buf.writeBytes(params.provider_or_client);
+        buf.writeBytes(params.provider_or_client.data);
         buf.writeBytes(params.tokenAmount.serializeBigInt());
 
         return buf.data();
@@ -233,8 +233,8 @@ library MarketCBOR {
             buf.writeCid(params.deals[i].proposal.piece_cid);
             buf.writeUInt64(params.deals[i].proposal.piece_size);
             buf.writeBool(params.deals[i].proposal.verified_deal);
-            buf.writeBytes(params.deals[i].proposal.client);
-            buf.writeBytes(params.deals[i].proposal.provider);
+            buf.writeBytes(params.deals[i].proposal.client.data);
+            buf.writeBytes(params.deals[i].proposal.provider.data);
             buf.writeString(params.deals[i].proposal.label);
             buf.writeInt64(params.deals[i].proposal.start_epoch);
             buf.writeInt64(params.deals[i].proposal.end_epoch);

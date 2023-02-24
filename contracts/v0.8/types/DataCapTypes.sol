@@ -42,15 +42,15 @@ library DataCapTypes {
     /// @param owner the wallet address of the owner.
     /// @param operator the wallet address of the owner.
     struct GetAllowanceParams {
-        bytes owner;
-        bytes operator;
+        CommonTypes.FilAddress owner;
+        CommonTypes.FilAddress operator;
     }
 
     /// @param to the address to receive DataCap token.
     /// @param amount a non-negative amount to transfer.
     /// @param operator_data Arbitrary data to pass on via the receiver hook.
     struct TransferParams {
-        bytes to;
+        CommonTypes.FilAddress to;
         CommonTypes.BigInt amount;
         bytes operator_data;
     }
@@ -69,8 +69,8 @@ library DataCapTypes {
     /// @param amount a non-negative amount to transfer.
     /// @param operator_data arbitrary data to pass on via the receiver hook.
     struct TransferFromParams {
-        bytes from;
-        bytes to;
+        CommonTypes.FilAddress from;
+        CommonTypes.FilAddress to;
         CommonTypes.BigInt amount;
         bytes operator_data;
     }
@@ -89,20 +89,20 @@ library DataCapTypes {
     /// @param operator the  wallet address of the operator.
     /// @param increase increase DataCap token allowance for the operator address.
     struct IncreaseAllowanceParams {
-        bytes operator;
+        CommonTypes.FilAddress operator;
         CommonTypes.BigInt increase;
     }
 
     /// @param operator the wallet address of the operator.
     /// @param decrease the decreased DataCap token allowance of the operator address.
     struct DecreaseAllowanceParams {
-        bytes operator;
+        CommonTypes.FilAddress operator;
         CommonTypes.BigInt decrease;
     }
 
     /// @param operator the wallet address of the operator.
     struct RevokeAllowanceParams {
-        bytes operator;
+        CommonTypes.FilAddress operator;
     }
 
     /// @param amount the amount the DataCap token to be burned.
@@ -118,7 +118,7 @@ library DataCapTypes {
     /// @param owner the wallet address of the owner.
     /// @param amount the amount of DataCap token to be burned.
     struct BurnFromParams {
-        bytes owner;
+        CommonTypes.FilAddress owner;
         CommonTypes.BigInt amount;
     }
 

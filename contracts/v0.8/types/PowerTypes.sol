@@ -38,20 +38,20 @@ library PowerTypes {
     /// @param peer peer ID.
     /// @param multiaddrs the multi-address which is used to control new created miner.
     struct CreateMinerParams {
-        bytes owner;
-        bytes worker;
+        CommonTypes.FilAddress owner;
+        CommonTypes.FilAddress worker;
         RegisteredPoStProof window_post_proof_type;
-        bytes peer;
-        bytes[] multiaddrs;
+        CommonTypes.FilAddress peer;
+        CommonTypes.FilAddress[] multiaddrs;
     }
 
     /// @param id_address the canonical ID-based address for the actor.
     /// @param robust_address a more expensive but re-org-safe address for the newly created actor.
     struct CreateMinerReturn {
         /// Canonical ID-based address for the actor.
-        bytes id_address;
+        CommonTypes.FilAddress id_address;
         /// Re-org safe address for created actor.
-        bytes robust_address;
+        CommonTypes.FilAddress robust_address;
     }
 
     /// @param raw_byte_power the row power of the miner.

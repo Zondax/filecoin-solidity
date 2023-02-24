@@ -59,7 +59,7 @@ contract MinerMockAPI {
 
         bytes memory proposed = "0x00";
 
-        return MinerTypes.GetOwnerReturn(owner, proposed);
+        return MinerTypes.GetOwnerReturn(CommonTypes.FilAddress(owner), CommonTypes.FilAddress(proposed));
     }
 
     /// @param addr New owner address
@@ -72,7 +72,7 @@ contract MinerMockAPI {
     /// @param params The "controlling" addresses are the Owner, the Worker, and all Control Addresses.
     /// @return Whether the provided address is "controlling".
     function isControllingAddress(MinerTypes.IsControllingAddressParam memory params) public pure returns (MinerTypes.IsControllingAddressReturn memory) {
-        require(params.addr[0] >= 0x00);
+        require(params.addr.data[0] >= 0x00);
 
         return MinerTypes.IsControllingAddressReturn(false);
     }

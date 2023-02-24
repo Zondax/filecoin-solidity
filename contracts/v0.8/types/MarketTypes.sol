@@ -44,7 +44,7 @@ library MarketTypes {
     /// @param provider_or_client the address of provider or client.
     /// @param tokenAmount the token amount to withdraw.
     struct WithdrawBalanceParams {
-        bytes provider_or_client;
+        CommonTypes.FilAddress provider_or_client;
         CommonTypes.BigInt tokenAmount;
     }
 
@@ -143,8 +143,8 @@ library MarketTypes {
         bytes piece_cid;
         uint64 piece_size;
         bool verified_deal;
-        bytes client;
-        bytes provider;
+        CommonTypes.FilAddress client;
+        CommonTypes.FilAddress provider;
         string label;
         int64 start_epoch;
         int64 end_epoch;

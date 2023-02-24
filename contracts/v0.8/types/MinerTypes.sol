@@ -45,13 +45,13 @@ library MinerTypes {
     /// @param owner owner address.
     /// @param proposed owner address.
     struct GetOwnerReturn {
-        bytes owner;
-        bytes proposed;
+        CommonTypes.FilAddress owner;
+        CommonTypes.FilAddress proposed;
     }
 
     /// @param addr the address to be verified.
     struct IsControllingAddressParam {
-        bytes addr;
+        CommonTypes.FilAddress addr;
     }
 
     /// @param is_controlling if the specified address is the control address.
@@ -78,7 +78,7 @@ library MinerTypes {
     /// @param new_quota the new quota token amount.
     /// @param new_expiration the epoch that the new quota will be expired.
     struct ChangeBeneficiaryParams {
-        bytes new_beneficiary;
+        CommonTypes.FilAddress new_beneficiary;
         CommonTypes.BigInt new_quota;
         uint64 new_expiration;
     }
@@ -93,38 +93,38 @@ library MinerTypes {
     /// @param new_worker the new worker address.
     /// @param new_control_addresses the new controller addresses.
     struct ChangeWorkerAddressParams {
-        bytes new_worker;
+        CommonTypes.FilAddress new_worker;
         bytes[] new_control_addresses;
     }
 
     /// @param new_id the new peer ID.
     struct ChangePeerIDParams {
-        bytes new_id;
+        CommonTypes.FilAddress new_id;
     }
 
     /// @param new_multi_addrs the new multi-signature address.
     struct ChangeMultiaddrsParams {
-        bytes[] new_multi_addrs;
+        CommonTypes.FilAddress[] new_multi_addrs;
     }
 
     /// @param peer_id the peer ID for the specified storage provider/miner.
     struct GetPeerIDReturn {
-        bytes peer_id;
+        CommonTypes.FilAddress peer_id;
     }
 
     /// @param multi_addrs the multi-signature address.
     struct GetMultiaddrsReturn {
-        bytes[] multi_addrs;
+        CommonTypes.FilAddress[] multi_addrs;
     }
 
     /// @param amount_requested withdraw token amount.
     struct WithdrawBalanceParams {
-        bytes amount_requested;
+        CommonTypes.BigInt amount_requested;
     }
 
     /// @param amount_withdrawn the token amount withdraw.
     struct WithdrawBalanceReturn {
-        bytes amount_withdrawn;
+        CommonTypes.BigInt amount_withdrawn;
     }
 
     /// @param epoch the epoch of funds vested.
@@ -146,7 +146,7 @@ library MinerTypes {
     /// @param beneficiary the address of the beneficiary.
     /// @param term BeneficiaryTerm
     struct ActiveBeneficiary {
-        bytes beneficiary;
+        CommonTypes.FilAddress beneficiary;
         BeneficiaryTerm term;
     }
 
@@ -156,7 +156,7 @@ library MinerTypes {
     /// @param approved_by_beneficiary if this proposal is approved by beneficiary or not.
     /// @param approved_by_nominee if this proposal is approved by nominee or not.
     struct PendingBeneficiaryChange {
-        bytes new_beneficiary;
+        CommonTypes.FilAddress new_beneficiary;
         CommonTypes.BigInt new_quota;
         uint64 new_expiration;
         bool approved_by_beneficiary;

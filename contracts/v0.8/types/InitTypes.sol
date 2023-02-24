@@ -19,6 +19,8 @@
 // SPDX-License-Identifier: Apache-2.0
 pragma solidity ^0.8.17;
 
+import "./CommonTypes.sol";
+
 /// @title Filecoin init actor types for Solidity.
 /// @author Zondax AG
 library InitTypes {
@@ -36,8 +38,8 @@ library InitTypes {
     /// @param id_address the canonical ID-based address for the actor.
     /// @param robust_address a more expensive but re-org-safe address for the newly created actor.
     struct ExecReturn {
-        bytes id_address;
-        bytes robust_address;
+        CommonTypes.FilAddress id_address;
+        CommonTypes.FilAddress robust_address;
     }
 
     /// @param code_cid cid of the actor type to create
