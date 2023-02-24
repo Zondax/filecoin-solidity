@@ -48,7 +48,7 @@ library VerifRegTypes {
 
     /// @param addr the verified client address
     /// @param allowance approved DataCap for this verified client
-    struct AddVerifierClientParams {
+    struct AddVerifiedClientParams {
         bytes addr;
         bytes allowance;
     }

@@ -99,10 +99,10 @@ library VerifRegCBOR {
         return ret;
     }
 
-    /// @notice serialize AddVerifierClientParams struct to cbor in order to pass as arguments to the verified registry actor
-    /// @param params AddVerifierClientParams to serialize as cbor
+    /// @notice serialize AddVerifiedClientParams struct to cbor in order to pass as arguments to the verified registry actor
+    /// @param params AddVerifiedClientParams to serialize as cbor
     /// @return cbor serialized data as bytes
-    function serializeAddVerifierClientParams(VerifRegTypes.AddVerifierClientParams memory params) internal pure returns (bytes memory) {
+    function serializeAddVerifiedClientParams(VerifRegTypes.AddVerifiedClientParams memory params) internal pure returns (bytes memory) {
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
         buf.startFixedArray(2);

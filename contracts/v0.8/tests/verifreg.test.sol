@@ -31,7 +31,7 @@ contract VerifRegApiTest {
         return VerifRegAPI.getClaims(params);
     }
 
-    function add_verified_client(VerifRegTypes.AddVerifierClientParams memory params) public {
+    function add_verified_client(VerifRegTypes.AddVerifiedClientParams memory params) public {
         VerifRegAPI.addVerifiedClient(params);
     }
 
