@@ -63,7 +63,7 @@ library CBORDecoder {
         uint value;
 
         (maj, value, byteIdx) = parseCborHeader(cborData, byteIdx);
-        assert(maj == MajOther);
+        require(maj == MajOther, "invalid maj (expected MajOther)");
         assert(value == True_Type || value == False_Type);
 
         return (value != False_Type, byteIdx);
@@ -78,7 +78,7 @@ library CBORDecoder {
         uint len;
 
         (maj, len, byteIdx) = parseCborHeader(cborData, byteIdx);
-        assert(maj == MajArray);
+        require(maj == MajArray, "invalid maj (expected MajArray)");
 
         return (len, byteIdx);
     }
@@ -92,7 +92,7 @@ library CBORDecoder {
         uint len;
 
         (maj, len, byteIdx) = parseCborHeader(cborData, byteIdx);
-        assert(maj == MajTextString);
+        require(maj == MajTextString, "invalid maj (expected MajTextString)");
 
         uint max_len = byteIdx + len;
         bytes memory slice = new bytes(len);
@@ -114,7 +114,7 @@ library CBORDecoder {
         uint len;
 
         (maj, len, byteIdx) = parseCborHeader(cborData, byteIdx);
-        assert(maj == MajTag || maj == MajByteString);
+        require(maj == MajTag || maj == MajByteString, "invalid maj (expected MajTag or MajByteString)");
 
         if (maj == MajTag) {
             (maj, len, byteIdx) = parseCborHeader(cborData, byteIdx);
@@ -141,7 +141,7 @@ library CBORDecoder {
         uint len;
 
         (maj, len, byteIdx) = parseCborHeader(cborData, byteIdx);
-        assert(maj == MajByteString);
+        require(maj == MajByteString, "invalid maj (expected MajByteString)");
 
         uint max_len = byteIdx + len;
         bytes memory slice = new bytes(32);
@@ -163,14 +163,14 @@ library CBORDecoder {
         uint256 value;
 
         (maj, value, byteIdx) = parseCborHeader(cborData, byteIdx);
-        assert(maj == MajTag || maj == MajUnsignedInt);
+        require(maj == MajTag || maj == MajUnsignedInt, "invalid maj (expected MajTag or MajUnsignedInt)");
 
         if (maj == MajTag) {
-            assert(value == TagTypeBigNum);
+            require(value == TagTypeBigNum, "invalid tag (expected TagTypeBigNum)");
 
             uint len;
             (maj, len, byteIdx) = parseCborHeader(cborData, byteIdx);
-            assert(maj == MajByteString);
+            require(maj == MajByteString, "invalid maj (expected MajByteString)");
 
             require(cborData.length >= byteIdx + len, "slicing out of range");
             assembly {
@@ -192,14 +192,14 @@ library CBORDecoder {
         uint value;
 
         (maj, value, byteIdx) = parseCborHeader(cborData, byteIdx);
-        assert(maj == MajTag || maj == MajSignedInt);
+        require(maj == MajTag || maj == MajSignedInt, "invalid maj (expected MajTag or MajSignedInt)");
 
         if (maj == MajTag) {
             assert(value == TagTypeNegativeBigNum);
 
             uint len;
             (maj, len, byteIdx) = parseCborHeader(cborData, byteIdx);
-            assert(maj == MajByteString);
+            require(maj == MajByteString, "invalid maj (expected MajByteString)");
 
             require(cborData.length >= byteIdx + len, "slicing out of range");
             assembly {
@@ -221,7 +221,7 @@ library CBORDecoder {
         uint value;
 
         (maj, value, byteIdx) = parseCborHeader(cborData, byteIdx);
-        assert(maj == MajUnsignedInt);
+        require(maj == MajUnsignedInt, "invalid maj (expected MajUnsignedInt)");
 
         return (uint64(value), byteIdx);
     }
@@ -235,7 +235,7 @@ library CBORDecoder {
         uint value;
 
         (maj, value, byteIdx) = parseCborHeader(cborData, byteIdx);
-        assert(maj == MajUnsignedInt);
+        require(maj == MajUnsignedInt, "invalid maj (expected MajUnsignedInt)");
 
         return (uint32(value), byteIdx);
     }
@@ -249,7 +249,7 @@ library CBORDecoder {
         uint value;
 
         (maj, value, byteIdx) = parseCborHeader(cborData, byteIdx);
-        assert(maj == MajUnsignedInt);
+        require(maj == MajUnsignedInt, "invalid maj (expected MajUnsignedInt)");
 
         return (uint16(value), byteIdx);
     }
@@ -263,7 +263,7 @@ library CBORDecoder {
         uint value;
 
         (maj, value, byteIdx) = parseCborHeader(cborData, byteIdx);
-        assert(maj == MajUnsignedInt);
+        require(maj == MajUnsignedInt, "invalid maj (expected MajUnsignedInt)");
 
         return (uint8(value), byteIdx);
     }
@@ -277,7 +277,7 @@ library CBORDecoder {
         uint value;
 
         (maj, value, byteIdx) = parseCborHeader(cborData, byteIdx);
-        assert(maj == MajSignedInt || maj == MajUnsignedInt);
+        require(maj == MajSignedInt || maj == MajUnsignedInt, "invalid maj (expected MajSignedInt or MajUnsignedInt)");
 
         return (int64(uint64(value)), byteIdx);
     }
@@ -291,7 +291,7 @@ library CBORDecoder {
         uint value;
 
         (maj, value, byteIdx) = parseCborHeader(cborData, byteIdx);
-        assert(maj == MajSignedInt || maj == MajUnsignedInt);
+        require(maj == MajSignedInt || maj == MajUnsignedInt, "invalid maj (expected MajSignedInt or MajUnsignedInt)");
 
         return (int32(uint32(value)), byteIdx);
     }
@@ -305,7 +305,7 @@ library CBORDecoder {
         uint value;
 
         (maj, value, byteIdx) = parseCborHeader(cborData, byteIdx);
-        assert(maj == MajSignedInt || maj == MajUnsignedInt);
+        require(maj == MajSignedInt || maj == MajUnsignedInt, "invalid maj (expected MajSignedInt or MajUnsignedInt)");
 
         return (int16(uint16(value)), byteIdx);
     }
@@ -319,7 +319,7 @@ library CBORDecoder {
         uint value;
 
         (maj, value, byteIdx) = parseCborHeader(cborData, byteIdx);
-        assert(maj == MajSignedInt || maj == MajUnsignedInt);
+        require(maj == MajSignedInt || maj == MajUnsignedInt, "invalid maj (expected MajSignedInt or MajUnsignedInt)");
 
         return (int8(uint8(value)), byteIdx);
     }
@@ -382,7 +382,7 @@ library CBORDecoder {
         uint8 maj = (first & 0xe0) >> 5;
         uint8 low = first & 0x1f;
         // We don't handle CBOR headers with extra > 27, i.e. no indefinite lengths
-        assert(low < 28);
+        require(low < 28, "cannot handle headers with extra > 27");
 
         // extra is lower bits
         if (low < 24) {
@@ -393,7 +393,7 @@ library CBORDecoder {
         if (low == 24) {
             uint8 next = sliceUInt8(cbor, byteIndex);
             byteIndex += 1;
-            assert(next >= 24); // otherwise this is invalid cbor
+            require(next >= 24, "invalid cbor"); // otherwise this is invalid cbor
             return (maj, next, byteIndex);
         }
 
