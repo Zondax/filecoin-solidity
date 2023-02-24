@@ -20,23 +20,29 @@ pragma solidity ^0.8.17;
 
 import "./Misc.sol";
 
-error InvalidAddress(bytes addr);
-error NotEnoughBalance(uint256 balance, uint256 value);
-error InvalidActorID(uint64 actorId);
-error FailToCallActor();
-error InvalidResponseLength(bytes response);
-error InvalidCodec(uint64);
-error ActorError(int256 errorCode);
-
 /// @title Call actors utilities library, meant to interact with Filecoin builtin actors
 /// @author Zondax AG
 library Actor {
     address constant CALL_ACTOR_ADDRESS = 0xfe00000000000000000000000000000000000003;
     address constant CALL_ACTOR_ID = 0xfe00000000000000000000000000000000000005;
-    string constant UNEXPECTED_RESPONSE_MESSAGE = "unexpected response received";
 
     uint64 constant READ_ONLY_FLAG = 0x00000001; // https://github.com/filecoin-project/ref-fvm/blob/master/shared/src/sys/mod.rs#L60
     uint64 constant DEFAULT_FLAG = 0x00000000;
+
+    /// @notice the provided address is not valid
+    error InvalidAddress(bytes addr);
+    /// @notice the smart contract has no enough balance to transfer
+    error NotEnoughBalance(uint256 balance, uint256 value);
+    /// @notice the provided actor id is not valid
+    error InvalidActorID(uint64 actorId);
+    /// @notice an error happened trying to call the actor
+    error FailToCallActor();
+    /// @notice the response received is not correct. In some case no response is expected and we received one, or a response was indeed expected and we received none.
+    error InvalidResponseLength(bytes response);
+    /// @notice the codec received is not valid
+    error InvalidCodec(uint64);
+    /// @notice the called actor returned an error as part of its expected behaviour
+    error ActorError(int256 errorCode);
 
     /// @notice allows to interact with an specific actor by its address (bytes format)
     /// @param actor_address actor address (bytes format) to interact with

@@ -53,8 +53,9 @@ library MinerAPI {
         bytes memory raw_request = addr.serializeAddress();
 
         bytes memory result = Actor.callNonSingletonByID(actorId, MinerTypes.ChangeOwnerAddressMethodNum, Misc.CBOR_CODEC, raw_request, 0, false);
-
-        require(result.length == 0, Actor.UNEXPECTED_RESPONSE_MESSAGE);
+        if (result.length != 0) {
+            revert Actor.InvalidResponseLength(result);
+        }
     }
 
     /// @param actorId  The miner actor id you want to interact with
@@ -109,8 +110,9 @@ library MinerAPI {
         bytes memory raw_request = params.serializeChangeBeneficiaryParams();
 
         bytes memory result = Actor.callNonSingletonByID(actorId, MinerTypes.ChangeBeneficiaryMethodNum, Misc.CBOR_CODEC, raw_request, 0, false);
-
-        require(result.length == 0, Actor.UNEXPECTED_RESPONSE_MESSAGE);
+        if (result.length != 0) {
+            revert Actor.InvalidResponseLength(result);
+        }
     }
 
     /// @param actorId The miner actor id you want to interact with
@@ -129,8 +131,9 @@ library MinerAPI {
         bytes memory raw_request = params.serializeChangeWorkerAddressParams();
 
         bytes memory result = Actor.callNonSingletonByID(actorId, MinerTypes.ChangeWorkerAddressMethodNum, Misc.CBOR_CODEC, raw_request, 0, false);
-
-        require(result.length == 0, Actor.UNEXPECTED_RESPONSE_MESSAGE);
+        if (result.length != 0) {
+            revert Actor.InvalidResponseLength(result);
+        }
     }
 
     /// @param actorId The miner actor id you want to interact with
@@ -138,8 +141,9 @@ library MinerAPI {
         bytes memory raw_request = params.serializeChangePeerIDParams();
 
         bytes memory result = Actor.callNonSingletonByID(actorId, MinerTypes.ChangePeerIDMethodNum, Misc.CBOR_CODEC, raw_request, 0, false);
-
-        require(result.length == 0, Actor.UNEXPECTED_RESPONSE_MESSAGE);
+        if (result.length != 0) {
+            revert Actor.InvalidResponseLength(result);
+        }
     }
 
     /// @param actorId The miner actor id you want to interact with
@@ -147,8 +151,9 @@ library MinerAPI {
         bytes memory raw_request = params.serializeChangeMultiaddrsParams();
 
         bytes memory result = Actor.callNonSingletonByID(actorId, MinerTypes.ChangeMultiaddrsMethodNum, Misc.CBOR_CODEC, raw_request, 0, false);
-
-        require(result.length == 0, Actor.UNEXPECTED_RESPONSE_MESSAGE);
+        if (result.length != 0) {
+            revert Actor.InvalidResponseLength(result);
+        }
     }
 
     /// @param actorId The miner actor id you want to interact with
@@ -156,8 +161,9 @@ library MinerAPI {
         bytes memory raw_request = new bytes(0);
 
         bytes memory result = Actor.callNonSingletonByID(actorId, MinerTypes.RepayDebtMethodNum, Misc.NONE_CODEC, raw_request, 0, false);
-
-        require(result.length == 0, Actor.UNEXPECTED_RESPONSE_MESSAGE);
+        if (result.length != 0) {
+            revert Actor.InvalidResponseLength(result);
+        }
     }
 
     /// @param actorId The miner actor id you want to interact with
@@ -165,8 +171,9 @@ library MinerAPI {
         bytes memory raw_request = new bytes(0);
 
         bytes memory result = Actor.callNonSingletonByID(actorId, MinerTypes.ConfirmChangeWorkerAddressMethodNum, Misc.NONE_CODEC, raw_request, 0, false);
-
-        require(result.length == 0, Actor.UNEXPECTED_RESPONSE_MESSAGE);
+        if (result.length != 0) {
+            revert Actor.InvalidResponseLength(result);
+        }
     }
 
     /// @param actorId The miner actor id you want to interact with
