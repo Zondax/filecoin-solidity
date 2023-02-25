@@ -73,13 +73,26 @@ library FilecoinCBOR {
     /// @notice serialize a FilAddress value wrapped in a cbor fixed array.
     /// @param addr FilAddress to serialize as cbor inside an
     /// @return cbor serialized data as bytes
-    function serializeWrappedFilAddress(CommonTypes.FilAddress memory addr) internal pure returns (bytes memory) {
+    function serializeArrayFilAddress(CommonTypes.FilAddress memory addr) internal pure returns (bytes memory) {
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
         buf.startFixedArray(1);
         buf.writeBytes(addr.data);
 
         return buf.data();
+    }
+
+    /// @notice deserialize a FilAddress wrapped on a cbor fixed array coming from a actor call
+    /// @param rawResp cbor encoded response
+    /// @return ret new instance of FilAddress created based on parsed data
+    function deserializeArrayFilAddress(bytes memory rawResp) internal pure returns (CommonTypes.FilAddress memory ret) {
+        uint byteIdx = 0;
+        uint len;
+
+        (len, byteIdx) = rawResp.readFixedArray(byteIdx);
+        (ret.data, byteIdx) = rawResp.readBytes(byteIdx);
+
+        return ret;
     }
 
     /// @notice deserialize a BigInt wrapped on a cbor fixed array coming from a actor call

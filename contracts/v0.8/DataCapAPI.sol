@@ -120,7 +120,7 @@ library DataCapAPI {
 
     /// @notice Revoke the DataCap token allowance from the operator and set the operator's allowance in behave of owner/caller address to 0.
     function revokeAllowance(CommonTypes.FilAddress memory operator) internal returns (CommonTypes.BigInt memory) {
-        bytes memory raw_request = operator.serializeWrappedFilAddress();
+        bytes memory raw_request = operator.serializeArrayFilAddress();
 
         bytes memory result = Actor.callByID(DataCapTypes.ActorID, DataCapTypes.RevokeAllowanceMethodNum, Misc.CBOR_CODEC, raw_request, 0, false);
 

@@ -70,43 +70,6 @@ library MinerCBOR {
         return ret;
     }
 
-    /// @notice deserialize IsControllingAddressReturn struct from cbor encoded bytes coming from a miner actor call
-    /// @param rawResp cbor encoded response
-    /// @return ret new instance of IsControllingAddressReturn created based on parsed data
-    function deserializeIsControllingAddressReturn(bytes memory rawResp) internal pure returns (MinerTypes.IsControllingAddressReturn memory ret) {
-        uint byteIdx = 0;
-
-        (ret.is_controlling, byteIdx) = rawResp.readBool(byteIdx);
-        return ret;
-    }
-
-    /// @notice deserialize GetSectorSizeReturn struct from cbor encoded bytes coming from a miner actor call
-    /// @param rawResp cbor encoded response
-    /// @return ret new instance of GetSectorSizeReturn created based on parsed data
-    function deserializeGetSectorSizeReturn(bytes memory rawResp) internal pure returns (MinerTypes.GetSectorSizeReturn memory ret) {
-        uint byteIdx = 0;
-
-        (ret.sector_size, byteIdx) = rawResp.readUInt64(byteIdx);
-        return ret;
-    }
-
-    /// @notice deserialize GetAvailableBalanceReturn struct from cbor encoded bytes coming from a miner actor call
-    /// @param rawResp cbor encoded response
-    /// @return ret new instance of GetAvailableBalanceReturn created based on parsed data
-    function deserializeGetAvailableBalanceReturn(bytes memory rawResp) internal pure returns (MinerTypes.GetAvailableBalanceReturn memory ret) {
-        uint byteIdx = 0;
-
-        bytes memory tmp;
-        (tmp, byteIdx) = rawResp.readBytes(byteIdx);
-        if (tmp.length > 0) {
-            ret.available_balance = tmp.deserializeBigInt();
-        } else {
-            ret.available_balance = CommonTypes.BigInt(new bytes(0), false);
-        }
-
-        return ret;
-    }
-
     /// @notice deserialize GetBeneficiaryReturn struct from cbor encoded bytes coming from a miner actor call
     /// @param rawResp cbor encoded response
     /// @return ret new instance of GetBeneficiaryReturn created based on parsed data
@@ -208,18 +171,6 @@ library MinerCBOR {
         return buf.data();
     }
 
-    /// @notice serialize ChangePeerIDParams struct to cbor in order to pass as arguments to the miner actor
-    /// @param params ChangePeerIDParams to serialize as cbor
-    /// @return cbor serialized data as bytes
-    function serializeChangePeerIDParams(MinerTypes.ChangePeerIDParams memory params) internal pure returns (bytes memory) {
-        CBOR.CBORBuffer memory buf = CBOR.create(64);
-
-        buf.startFixedArray(1);
-        buf.writeBytes(params.new_id.data);
-
-        return buf.data();
-    }
-
     /// @notice serialize ChangeMultiaddrsParams struct to cbor in order to pass as arguments to the miner actor
     /// @param params ChangeMultiaddrsParams to serialize as cbor
     /// @return cbor serialized data as bytes
@@ -234,19 +185,6 @@ library MinerCBOR {
         }
 
         return buf.data();
-    }
-
-    /// @notice deserialize GetPeerIDReturn struct from cbor encoded bytes coming from a miner actor call
-    /// @param rawResp cbor encoded response
-    /// @return ret new instance of GetPeerIDReturn created based on parsed data
-    function deserializeGetPeerIDReturn(bytes memory rawResp) internal pure returns (MinerTypes.GetPeerIDReturn memory ret) {
-        uint byteIdx = 0;
-        uint len;
-
-        (len, byteIdx) = rawResp.readFixedArray(byteIdx);
-        (ret.peer_id.data, byteIdx) = rawResp.readBytes(byteIdx);
-
-        return ret;
     }
 
     /// @notice deserialize GetMultiaddrsReturn struct from cbor encoded bytes coming from a miner actor call
@@ -266,34 +204,6 @@ library MinerCBOR {
             (ret.multi_addrs[i].data, byteIdx) = rawResp.readBytes(byteIdx);
         }
 
-        return ret;
-    }
-
-    /// @notice serialize WithdrawBalanceParams struct to cbor in order to pass as arguments to the miner actor
-    /// @param params WithdrawBalanceParams to serialize as cbor
-    /// @return cbor serialized data as bytes
-    function serializeWithdrawBalanceParams(MinerTypes.WithdrawBalanceParams memory params) internal pure returns (bytes memory) {
-        CBOR.CBORBuffer memory buf = CBOR.create(64);
-
-        buf.startFixedArray(1);
-        buf.writeBytes(params.amount_requested.serializeBigInt());
-
-        return buf.data();
-    }
-
-    /// @notice deserialize WithdrawBalanceReturn struct from cbor encoded bytes coming from a miner actor call
-    /// @param rawResp cbor encoded response
-    /// @return ret new instance of WithdrawBalanceReturn created based on parsed data
-    function deserializeWithdrawBalanceReturn(bytes memory rawResp) internal pure returns (MinerTypes.WithdrawBalanceReturn memory ret) {
-        uint byteIdx = 0;
-        bytes memory tmp;
-
-        (tmp, byteIdx) = rawResp.readBytes(byteIdx);
-        if (tmp.length > 0) {
-            ret.amount_withdrawn = tmp.deserializeBigInt();
-        } else {
-            ret.amount_withdrawn = CommonTypes.BigInt(new bytes(0), false);
-        }
         return ret;
     }
 }

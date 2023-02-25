@@ -49,26 +49,6 @@ library MinerTypes {
         CommonTypes.FilAddress proposed;
     }
 
-    /// @param addr the address to be verified.
-    struct IsControllingAddressParam {
-        CommonTypes.FilAddress addr;
-    }
-
-    /// @param is_controlling if the specified address is the control address.
-    struct IsControllingAddressReturn {
-        bool is_controlling;
-    }
-
-    /// @param sector_size the sector size of this miner.
-    struct GetSectorSizeReturn {
-        uint64 sector_size;
-    }
-
-    /// @param available_balance the available token balance amount.
-    struct GetAvailableBalanceReturn {
-        CommonTypes.BigInt available_balance;
-    }
-
     /// @param vesting_funds funds
     struct GetVestingFundsReturn {
         VestingFunds[] vesting_funds;
@@ -97,34 +77,14 @@ library MinerTypes {
         bytes[] new_control_addresses;
     }
 
-    /// @param new_id the new peer ID.
-    struct ChangePeerIDParams {
-        CommonTypes.FilAddress new_id;
-    }
-
     /// @param new_multi_addrs the new multi-signature address.
     struct ChangeMultiaddrsParams {
         CommonTypes.FilAddress[] new_multi_addrs;
     }
 
-    /// @param peer_id the peer ID for the specified storage provider/miner.
-    struct GetPeerIDReturn {
-        CommonTypes.FilAddress peer_id;
-    }
-
     /// @param multi_addrs the multi-signature address.
     struct GetMultiaddrsReturn {
         CommonTypes.FilAddress[] multi_addrs;
-    }
-
-    /// @param amount_requested withdraw token amount.
-    struct WithdrawBalanceParams {
-        CommonTypes.BigInt amount_requested;
-    }
-
-    /// @param amount_withdrawn the token amount withdraw.
-    struct WithdrawBalanceReturn {
-        CommonTypes.BigInt amount_withdrawn;
     }
 
     /// @param epoch the epoch of funds vested.
