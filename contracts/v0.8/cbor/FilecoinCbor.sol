@@ -136,4 +136,15 @@ library FilecoinCBOR {
         (ret.type_, byteIdx) = rawResp.readUInt32(byteIdx);
         (ret.payload, byteIdx) = rawResp.readBytes(byteIdx);
     }
+
+    function readFilActorId(bytes memory rawResp, uint byteIdx) internal pure returns (CommonTypes.FilActorId, uint) {
+        uint64 tmp = 0;
+
+        (tmp, byteIdx) = rawResp.readUInt64(byteIdx);
+        return (CommonTypes.FilActorId.wrap(tmp), byteIdx);
+    }
+
+    function writeFilActorId(CBOR.CBORBuffer memory buf, CommonTypes.FilActorId id) internal pure {
+        buf.writeUInt64(CommonTypes.FilActorId.unwrap(id));
+    }
 }

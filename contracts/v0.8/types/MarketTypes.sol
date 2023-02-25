@@ -84,7 +84,7 @@ library MarketTypes {
     /// @param ids returned storage deal IDs.
     /// @param valid_deals represent all the valid deals.
     struct PublishStorageDealsReturn {
-        uint64[] ids;
+        CommonTypes.FilActorId[] ids;
         bytes valid_deals;
     }
 
