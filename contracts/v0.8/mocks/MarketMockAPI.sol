@@ -48,7 +48,7 @@ contract MarketMockAPI {
     /// @notice If less than the specified amount is available, yields the entire available balance.
     /// @dev This method should be called by an approved address, but the mock does not check that the caller is an approved party.
     /// @dev Because this is a mock method, no real balance is deposited in the designated address, nor decremented from the Storage Market actor (f05).
-    function withdrawBalance(MarketTypes.WithdrawBalanceParams memory params) public returns (MarketTypes.WithdrawBalanceReturn memory) {
+    function withdrawBalance(MarketTypes.WithdrawBalanceParams memory params) public returns (CommonTypes.BigInt memory) {
         BigNumbers.BigNumber memory balance = balances[string(params.provider_or_client.data)];
         BigNumbers.BigNumber memory tokenAmount = BigNumbers.init(params.tokenAmount.val, params.tokenAmount.neg);
 
@@ -59,7 +59,7 @@ contract MarketMockAPI {
             balances[string(params.provider_or_client.data)] = BigNumbers.zero();
         }
 
-        return MarketTypes.WithdrawBalanceReturn(CommonTypes.BigInt(balance.val, balance.neg));
+        return CommonTypes.BigInt(balance.val, balance.neg);
     }
 
     /// @return the escrow balance and locked amount for an address.
@@ -80,24 +80,24 @@ contract MarketMockAPI {
     }
 
     /// @return the client of a deal proposal.
-    function getDealClient(uint64 dealID) public view returns (MarketTypes.GetDealClientReturn memory) {
+    function getDealClient(uint64 dealID) public view returns (uint64) {
         require(deals[dealID].id > 0);
 
-        return MarketTypes.GetDealClientReturn(deals[dealID].client);
+        return deals[dealID].client;
     }
 
     /// @return the provider of a deal proposal.
-    function getDealProvider(uint64 dealID) public view returns (MarketTypes.GetDealProviderReturn memory) {
+    function getDealProvider(uint64 dealID) public view returns (uint64) {
         require(deals[dealID].id > 0);
 
-        return MarketTypes.GetDealProviderReturn(deals[dealID].provider);
+        return deals[dealID].provider;
     }
 
     /// @return the label of a deal proposal.
-    function getDealLabel(uint64 dealID) public view returns (MarketTypes.GetDealLabelReturn memory) {
+    function getDealLabel(uint64 dealID) public view returns (string memory) {
         require(deals[dealID].id > 0);
 
-        return MarketTypes.GetDealLabelReturn(deals[dealID].label);
+        return deals[dealID].label;
     }
 
     /// @return the start epoch and duration (in epochs) of a deal proposal.
@@ -108,35 +108,35 @@ contract MarketMockAPI {
     }
 
     /// @return the per-epoch price of a deal proposal.
-    function getDealTotalPrice(uint64 dealID) public view returns (MarketTypes.GetDealEpochPriceReturn memory) {
+    function getDealTotalPrice(uint64 dealID) public view returns (CommonTypes.BigInt memory) {
         require(deals[dealID].id > 0);
 
         BigNumbers.BigNumber memory price_per_epoch = BigNumbers.init(deals[dealID].price_per_epoch, false);
-        return MarketTypes.GetDealEpochPriceReturn(CommonTypes.BigInt(price_per_epoch.val, price_per_epoch.neg));
+        return CommonTypes.BigInt(price_per_epoch.val, price_per_epoch.neg);
     }
 
     /// @return the client collateral requirement for a deal proposal.
-    function getDealClientCollateral(uint64 dealID) public view returns (MarketTypes.GetDealClientCollateralReturn memory) {
+    function getDealClientCollateral(uint64 dealID) public view returns (CommonTypes.BigInt memory) {
         require(deals[dealID].id > 0);
 
         BigNumbers.BigNumber memory client_collateral = BigNumbers.init(deals[dealID].client_collateral, false);
-        return MarketTypes.GetDealClientCollateralReturn(CommonTypes.BigInt(client_collateral.val, client_collateral.neg));
+        return CommonTypes.BigInt(client_collateral.val, client_collateral.neg);
     }
 
     /// @return the provider collateral requirement for a deal proposal.
-    function getDealProviderCollateral(uint64 dealID) public view returns (MarketTypes.GetDealProviderCollateralReturn memory) {
+    function getDealProviderCollateral(uint64 dealID) public view returns (CommonTypes.BigInt memory) {
         require(deals[dealID].id > 0);
 
         BigNumbers.BigNumber memory provider_collateral = BigNumbers.init(deals[dealID].provider_collateral, false);
-        return MarketTypes.GetDealProviderCollateralReturn(CommonTypes.BigInt(provider_collateral.val, provider_collateral.neg));
+        return CommonTypes.BigInt(provider_collateral.val, provider_collateral.neg);
     }
 
     /// @return the verified flag for a deal proposal.
     /// @notice Note that the source of truth for verified allocations and claims is the verified registry actor.
-    function getDealVerified(uint64 dealID) public view returns (MarketTypes.GetDealVerifiedReturn memory) {
+    function getDealVerified(uint64 dealID) public view returns (bool) {
         require(deals[dealID].id > 0);
 
-        return MarketTypes.GetDealVerifiedReturn(deals[dealID].verified);
+        return deals[dealID].verified;
     }
 
     /// @notice Fetches activation state for a deal.

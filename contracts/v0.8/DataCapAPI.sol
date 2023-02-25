@@ -129,11 +129,11 @@ library DataCapAPI {
 
     /// @notice Burn an amount of DataCap token from the owner/caller address, decreasing total token supply.
     function burn(CommonTypes.BigInt memory amount) internal returns (CommonTypes.BigInt memory) {
-        bytes memory raw_request = amount.serializeWrappedBigInt();
+        bytes memory raw_request = amount.serializeArrayBigInt();
 
         bytes memory result = Actor.callByID(DataCapTypes.ActorID, DataCapTypes.BurnMethodNum, Misc.CBOR_CODEC, raw_request, 0, false);
 
-        return result.deserializeWrappedBigInt();
+        return result.deserializeArrayBigInt();
     }
 
     /// @notice Burn an amount of DataCap token from the specified address (owner address), decrease the allowance of operator/caller, and decrease total token supply.

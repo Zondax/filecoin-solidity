@@ -61,7 +61,7 @@ library FilecoinCBOR {
     /// @notice serialize a BigInt value wrapped in a cbor fixed array.
     /// @param value BigInt to serialize as cbor inside an
     /// @return cbor serialized data as bytes
-    function serializeWrappedBigInt(CommonTypes.BigInt memory value) internal pure returns (bytes memory) {
+    function serializeArrayBigInt(CommonTypes.BigInt memory value) internal pure returns (bytes memory) {
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
         buf.startFixedArray(1);
@@ -85,7 +85,7 @@ library FilecoinCBOR {
     /// @notice deserialize a BigInt wrapped on a cbor fixed array coming from a actor call
     /// @param rawResp cbor encoded response
     /// @return ret new instance of BigInt created based on parsed data
-    function deserializeWrappedBigInt(bytes memory rawResp) internal pure returns (CommonTypes.BigInt memory) {
+    function deserializeArrayBigInt(bytes memory rawResp) internal pure returns (CommonTypes.BigInt memory) {
         uint byteIdx = 0;
         uint len;
         bytes memory tmp;
