@@ -45,8 +45,9 @@ library VerifRegAPI {
         bytes memory raw_request = params.serializeAddVerifiedClientParams();
 
         bytes memory result = Actor.callByID(VerifRegTypes.ActorID, VerifRegTypes.AddVerifiedClientMethodNum, Misc.CBOR_CODEC, raw_request, 0, false);
-
-        require(result.length == 0, Actor.UNEXPECTED_RESPONSE_MESSAGE);
+        if (result.length != 0) {
+            revert Actor.InvalidResponseLength(result);
+        }
     }
 
     /// @notice remove the expired DataCap allocations and reclaimed those DataCap token back to Client. If the allocation amount is not specified, all expired DataCap allocation will be removed.

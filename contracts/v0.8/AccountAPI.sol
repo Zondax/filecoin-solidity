@@ -40,6 +40,8 @@ library AccountAPI {
         bytes memory raw_request = params.serializeAuthenticateMessageParams();
 
         bytes memory data = Actor.callNonSingletonByID(actorId, AccountTypes.AuthenticateMessageMethodNum, Misc.CBOR_CODEC, raw_request, 0, true);
-        require(data.length == 0, Actor.UNEXPECTED_RESPONSE_MESSAGE);
+        if (data.length != 0) {
+            revert Actor.InvalidResponseLength(data);
+        }
     }
 }
