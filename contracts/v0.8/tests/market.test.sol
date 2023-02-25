@@ -26,15 +26,15 @@ import "../types/MarketTypes.sol";
 /// @notice It imports the library and create a callable method for each method in the library
 /// @author Zondax AG
 contract MarketApiTest {
-    function add_balance(bytes memory provider_or_client, uint256 value) public payable {
-        MarketAPI.addBalance(provider_or_client, value);
+    function add_balance(CommonTypes.FilAddress memory providerOrClient, uint256 value) public payable {
+        MarketAPI.addBalance(providerOrClient, value);
     }
 
     function withdraw_balance(MarketTypes.WithdrawBalanceParams memory params) public returns (MarketTypes.WithdrawBalanceReturn memory) {
         return MarketAPI.withdrawBalance(params);
     }
 
-    function get_balance(bytes memory addr) public returns (MarketTypes.GetBalanceReturn memory) {
+    function get_balance(CommonTypes.FilAddress memory addr) public returns (MarketTypes.GetBalanceReturn memory) {
         return MarketAPI.getBalance(addr);
     }
 

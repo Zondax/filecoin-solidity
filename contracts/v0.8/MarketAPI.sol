@@ -25,16 +25,18 @@ import "./cbor/BytesCbor.sol";
 import "./types/CommonTypes.sol";
 import "./utils/Misc.sol";
 import "./utils/Actor.sol";
+import "./cbor/FilecoinCbor.sol";
 
 /// @title This library is a proxy to the singleton Storage Market actor (address: f05). Calling one of its methods will result in a cross-actor call being performed.
 /// @author Zondax AG
 library MarketAPI {
     using BytesCBOR for bytes;
     using MarketCBOR for *;
+    using FilecoinCBOR for *;
 
     /// @notice Deposits the received value into the balance held in escrow.
-    function addBalance(bytes memory provider_or_client, uint256 value) internal {
-        bytes memory raw_request = provider_or_client.serializeAddress();
+    function addBalance(CommonTypes.FilAddress memory providerOrClient, uint256 value) internal {
+        bytes memory raw_request = providerOrClient.serializeAddress();
 
         bytes memory data = Actor.callByID(MarketTypes.ActorID, MarketTypes.AddBalanceMethodNum, Misc.CBOR_CODEC, raw_request, value, false);
         if (data.length != 0) {
@@ -54,7 +56,7 @@ library MarketAPI {
 
     /// @notice Return the escrow balance and locked amount for an address.
     /// @return the escrow balance and locked amount for an address.
-    function getBalance(bytes memory addr) internal returns (MarketTypes.GetBalanceReturn memory) {
+    function getBalance(CommonTypes.FilAddress memory addr) internal returns (MarketTypes.GetBalanceReturn memory) {
         bytes memory raw_request = addr.serializeAddress();
 
         bytes memory result = Actor.callByID(MarketTypes.ActorID, MarketTypes.GetBalanceMethodNum, Misc.CBOR_CODEC, raw_request, 0, true);
