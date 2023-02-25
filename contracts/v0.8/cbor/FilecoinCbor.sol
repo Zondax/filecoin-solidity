@@ -137,6 +137,10 @@ library FilecoinCBOR {
         (ret.payload, byteIdx) = rawResp.readBytes(byteIdx);
     }
 
+    /// @notice attempt to read a FilActorId value
+    /// @param rawResp cbor encoded bytes to parse from
+    /// @param byteIdx current position to read on the cbor encoded bytes
+    /// @return a FilActorId decoded from input bytes and the byte index after moving past the value
     function readFilActorId(bytes memory rawResp, uint byteIdx) internal pure returns (CommonTypes.FilActorId, uint) {
         uint64 tmp = 0;
 
@@ -144,6 +148,10 @@ library FilecoinCBOR {
         return (CommonTypes.FilActorId.wrap(tmp), byteIdx);
     }
 
+    /// @notice write FilActorId into a cbor buffer
+    /// @dev FilActorId is just wrapping a uint64
+    /// @param buf buffer containing the actual cbor serialization process
+    /// @param id FilActorId to serialize as cbor
     function writeFilActorId(CBOR.CBORBuffer memory buf, CommonTypes.FilActorId id) internal pure {
         buf.writeUInt64(CommonTypes.FilActorId.unwrap(id));
     }
