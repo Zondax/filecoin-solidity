@@ -21,6 +21,7 @@ pragma solidity ^0.8.17;
 
 import "./utils/Misc.sol";
 import "./utils/Actor.sol";
+import "./types/CommonTypes.sol";
 
 /// @title This library is helper method to send funds to some specific address. Calling one of its methods will result in a cross-actor call being performed.
 /// @author Zondax AG
@@ -36,10 +37,10 @@ library SendAPI {
     }
 
     /// @notice send token to a specific actor
-    /// @param target The address (bytes format) you want to send funds to
+    /// @param target The address you want to send funds to
     /// @param value tokens to be transferred to the receiver
-    function send(bytes memory target, uint256 value) internal {
-        bytes memory result = Actor.callByAddress(target, 0, Misc.NONE_CODEC, new bytes(0), value, false);
+    function send(CommonTypes.FilAddress memory target, uint256 value) internal {
+        bytes memory result = Actor.callByAddress(target.data, 0, Misc.NONE_CODEC, new bytes(0), value, false);
         if (result.length != 0) {
             revert Actor.InvalidResponseLength();
         }
