@@ -19,7 +19,6 @@
 pragma solidity ^0.8.17;
 
 import "../types/CommonTypes.sol";
-import "../../../hardhat/contracts/v0.8/types/CommonTypes.sol";
 
 /// @notice This library is a set a functions that allows to handle filecoin addresses conversions and validations
 /// @author Zondax AG
