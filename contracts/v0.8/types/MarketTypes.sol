@@ -100,7 +100,7 @@ library MarketTypes {
     /// @param provider_collateral the token amount as collateral paid by the provider.
     /// @param client_collateral the token amount as collateral paid by the client.
     struct DealProposal {
-        bytes piece_cid;
+        CommonTypes.Cid piece_cid;
         uint64 piece_size;
         bool verified_deal;
         CommonTypes.FilAddress client;
