@@ -74,7 +74,7 @@ library MinerTypes {
     /// @param new_control_addresses the new controller addresses.
     struct ChangeWorkerAddressParams {
         CommonTypes.FilAddress new_worker;
-        bytes[] new_control_addresses;
+        CommonTypes.FilAddress[] new_control_addresses;
     }
 
     /// @param new_multi_addrs the new multi-signature address.
