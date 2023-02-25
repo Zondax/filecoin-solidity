@@ -19,6 +19,7 @@
 pragma solidity ^0.8.17;
 
 import "./Misc.sol";
+import "../types/CommonTypes.sol";
 
 /// @title Call actors utilities library, meant to interact with Filecoin builtin actors
 /// @author Zondax AG
@@ -42,7 +43,7 @@ library Actor {
     error NotEnoughBalance(uint256 balance, uint256 value);
 
     /// @notice the provided actor id is not valid
-    error InvalidActorID(uint64 actorId);
+    error InvalidActorID(CommonTypes.FilActorId actorId);
 
     /// @notice an error happened trying to call the actor
     error FailToCallActor();
@@ -107,7 +108,7 @@ library Actor {
     /// @param static_call indicates if the call will be allowed to change the actor state or not (just read the state)
     /// @return payload (in bytes) with the actual response data (without codec or response code)
     function callByID(
-        uint64 target,
+        CommonTypes.FilActorId target,
         uint256 method_num,
         uint64 codec,
         bytes memory raw_request,
@@ -138,14 +139,14 @@ library Actor {
     /// @param static_call indicates if the call will be allowed to change the actor state or not (just read the state)
     /// @dev it requires the id to be bigger than 99, as singleton actors are smaller than that
     function callNonSingletonByID(
-        uint64 target,
+        CommonTypes.FilActorId target,
         uint256 method_num,
         uint64 codec,
         bytes memory raw_request,
         uint256 value,
         bool static_call
     ) internal returns (bytes memory) {
-        if (target < 100) {
+        if (CommonTypes.FilActorId.unwrap(target) < 100) {
             revert InvalidActorID(target);
         }
 

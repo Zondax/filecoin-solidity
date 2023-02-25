@@ -29,7 +29,7 @@ library SendAPI {
     /// @notice send token to a specific actor
     /// @param target The id address (uint64) you want to send funds to
     /// @param value tokens to be transferred to the receiver
-    function send(uint64 target, uint256 value) internal {
+    function send(CommonTypes.FilActorId target, uint256 value) internal {
         bytes memory result = Actor.callByID(target, 0, Misc.NONE_CODEC, new bytes(0), value, false);
         if (result.length != 0) {
             revert Actor.InvalidResponseLength();

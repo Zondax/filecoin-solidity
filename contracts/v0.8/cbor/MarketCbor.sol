@@ -32,9 +32,8 @@ import "../utils/Misc.sol";
 library MarketCBOR {
     using CBOR for CBOR.CBORBuffer;
     using CBORDecoder for bytes;
-    using BigIntCBOR for CommonTypes.BigInt;
-    using BigIntCBOR for bytes;
-    using FilecoinCBOR for CBOR.CBORBuffer;
+    using BigIntCBOR for *;
+    using FilecoinCBOR for *;
 
     /// @notice serialize WithdrawBalanceParams struct to cbor in order to pass as arguments to the market actor
     /// @param params WithdrawBalanceParams to serialize as cbor
@@ -164,10 +163,10 @@ library MarketCBOR {
         assert(len == 2);
 
         (len, byteIdx) = rawResp.readFixedArray(byteIdx);
-        ret.ids = new uint64[](len);
+        ret.ids = new CommonTypes.FilActorId[](len);
 
         for (uint i = 0; i < len; i++) {
-            (ret.ids[i], byteIdx) = rawResp.readUInt64(byteIdx);
+            (ret.ids[i], byteIdx) = rawResp.readFilActorId(byteIdx);
         }
 
         (ret.valid_deals, byteIdx) = rawResp.readBytes(byteIdx);

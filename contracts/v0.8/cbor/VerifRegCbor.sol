@@ -26,14 +26,15 @@ import "../types/VerifRegTypes.sol";
 import "../utils/CborDecode.sol";
 import "../utils/Misc.sol";
 import "./BigIntCbor.sol";
+import "./FilecoinCbor.sol";
 
 /// @title This library is a set of functions meant to handle CBOR parameters serialization and return values deserialization for VerifReg actor exported methods.
 /// @author Zondax AG
 library VerifRegCBOR {
     using CBOR for CBOR.CBORBuffer;
     using CBORDecoder for bytes;
-    using BigIntCBOR for CommonTypes.BigInt;
-    using BigIntCBOR for bytes;
+    using BigIntCBOR for *;
+    using FilecoinCBOR for *;
 
     /// @notice serialize GetClaimsParams struct to cbor in order to pass as arguments to the verified registry actor
     /// @param params GetClaimsParams to serialize as cbor
@@ -44,10 +45,10 @@ library VerifRegCBOR {
         uint claimIdsLen = params.claim_ids.length;
 
         buf.startFixedArray(2);
-        buf.writeUInt64(params.provider);
+        buf.writeFilActorId(params.provider);
         buf.startFixedArray(uint64(claimIdsLen));
         for (uint i = 0; i < claimIdsLen; i++) {
-            buf.writeUInt64(params.claim_ids[i]);
+            buf.writeFilActorId(params.claim_ids[i]);
         }
 
         return buf.data();
@@ -86,14 +87,14 @@ library VerifRegCBOR {
             (len, byteIdx) = rawResp.readFixedArray(byteIdx);
             assert(len == 8);
 
-            (ret.claims[i].provider, byteIdx) = rawResp.readUInt64(byteIdx);
-            (ret.claims[i].client, byteIdx) = rawResp.readUInt64(byteIdx);
+            (ret.claims[i].provider, byteIdx) = rawResp.readFilActorId(byteIdx);
+            (ret.claims[i].client, byteIdx) = rawResp.readFilActorId(byteIdx);
             (ret.claims[i].data, byteIdx) = rawResp.readBytes(byteIdx);
             (ret.claims[i].size, byteIdx) = rawResp.readUInt64(byteIdx);
             (ret.claims[i].term_min, byteIdx) = rawResp.readInt64(byteIdx);
             (ret.claims[i].term_max, byteIdx) = rawResp.readInt64(byteIdx);
             (ret.claims[i].term_start, byteIdx) = rawResp.readInt64(byteIdx);
-            (ret.claims[i].sector, byteIdx) = rawResp.readUInt64(byteIdx);
+            (ret.claims[i].sector, byteIdx) = rawResp.readFilActorId(byteIdx);
         }
 
         return ret;
@@ -121,10 +122,10 @@ library VerifRegCBOR {
         uint allocationIdsLen = params.allocation_ids.length;
 
         buf.startFixedArray(2);
-        buf.writeUInt64(params.client);
+        buf.writeFilActorId(params.client);
         buf.startFixedArray(uint64(allocationIdsLen));
         for (uint i = 0; i < allocationIdsLen; i++) {
-            buf.writeUInt64(params.allocation_ids[i]);
+            buf.writeFilActorId(params.allocation_ids[i]);
         }
 
         return buf.data();
@@ -141,10 +142,10 @@ library VerifRegCBOR {
         assert(len == 3);
 
         (len, byteIdx) = rawResp.readFixedArray(byteIdx);
-        ret.considered = new uint64[](len);
+        ret.considered = new CommonTypes.FilActorId[](len);
 
         for (uint i = 0; i < len; i++) {
-            (ret.considered[i], byteIdx) = rawResp.readUInt64(byteIdx);
+            (ret.considered[i], byteIdx) = rawResp.readFilActorId(byteIdx);
         }
 
         (len, byteIdx) = rawResp.readFixedArray(byteIdx);
@@ -182,8 +183,8 @@ library VerifRegCBOR {
         buf.startFixedArray(uint64(termsLen));
         for (uint i = 0; i < termsLen; i++) {
             buf.startFixedArray(3);
-            buf.writeUInt64(params.terms[i].provider);
-            buf.writeUInt64(params.terms[i].claim_id);
+            buf.writeFilActorId(params.terms[i].provider);
+            buf.writeFilActorId(params.terms[i].claim_id);
             buf.writeInt64(params.terms[i].term_max);
         }
 
@@ -225,10 +226,10 @@ library VerifRegCBOR {
         uint claimIdsLen = params.claim_ids.length;
 
         buf.startFixedArray(2);
-        buf.writeUInt64(params.provider);
+        buf.writeFilActorId(params.provider);
         buf.startFixedArray(uint64(claimIdsLen));
         for (uint i = 0; i < claimIdsLen; i++) {
-            buf.writeUInt64(params.claim_ids[i]);
+            buf.writeFilActorId(params.claim_ids[i]);
         }
 
         return buf.data();
@@ -245,10 +246,10 @@ library VerifRegCBOR {
         assert(len == 2);
 
         (len, byteIdx) = rawResp.readFixedArray(byteIdx);
-        ret.considered = new uint64[](len);
+        ret.considered = new CommonTypes.FilActorId[](len);
 
         for (uint i = 0; i < len; i++) {
-            (ret.considered[i], byteIdx) = rawResp.readUInt64(byteIdx);
+            (ret.considered[i], byteIdx) = rawResp.readFilActorId(byteIdx);
         }
 
         (len, byteIdx) = rawResp.readFixedArray(byteIdx);

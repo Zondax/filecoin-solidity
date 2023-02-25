@@ -25,7 +25,7 @@ import "./CommonTypes.sol";
 /// @title Filecoin market actor types for Solidity.
 /// @author Zondax AG
 library MarketTypes {
-    uint64 constant ActorID = 5;
+    CommonTypes.FilActorId constant ActorID = CommonTypes.FilActorId.wrap(5);
     uint constant AddBalanceMethodNum = 822473126;
     uint constant WithdrawBalanceMethodNum = 2280458852;
     uint constant GetBalanceMethodNum = 726108461;
@@ -84,7 +84,7 @@ library MarketTypes {
     /// @param ids returned storage deal IDs.
     /// @param valid_deals represent all the valid deals.
     struct PublishStorageDealsReturn {
-        uint64[] ids;
+        CommonTypes.FilActorId[] ids;
         bytes valid_deals;
     }
 
