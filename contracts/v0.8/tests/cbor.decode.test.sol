@@ -111,9 +111,10 @@ contract CborDecodeTest {
         bytes memory input = hex"6a746573742076616c7565";
         uint index = 0;
         string memory value;
+        string memory expected = "test value";
 
         (value, index) = input.readString(0);
-        require(value == "test value", "value is not 'test value'");
+        require(keccak256(bytes(value)) == keccak256(bytes(expected)), "value is not 'test value'");
     }
 
     function decodeStringWithWeirdChar() public {
@@ -123,7 +124,7 @@ contract CborDecodeTest {
 
         (value, index) = input.readString(0);
         // Does solidity support this ?
-        //require(value == unicode"zoé", "value is not 1");
+        require(keccak256(bytes(value)) == keccak256(bytes(unicode"zoé")), unicode"value is not 'zoé'");
     }
 
     function decodeArrayU8() public {

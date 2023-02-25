@@ -98,4 +98,130 @@ fn cbor_decode_tests() {
         .unwrap();
 
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
+
+    println!("Calling `decodeFalse`");
+
+    let message = Message {
+            from: sender[0].1,
+            to: Address::new_id(contract_actor_id),
+            gas_limit: 1000000000,
+            method_num: EvmMethods::InvokeContract as u64,
+            sequence: 2,
+            params: RawBytes::new(hex::decode("44fdcd47b2").unwrap()),
+            ..Message::default()
+        };
+
+    let res = executor
+        .execute_message(message, ApplyKind::Explicit, 100)
+        .unwrap();
+
+    assert_eq!(res.msg_receipt.exit_code.value(), 0);
+
+    println!("Calling `decodeTrue`");
+
+    let message = Message {
+            from: sender[0].1,
+            to: Address::new_id(contract_actor_id),
+            gas_limit: 1000000000,
+            method_num: EvmMethods::InvokeContract as u64,
+            sequence: 3,
+            params: RawBytes::new(hex::decode("44dd0a0af9").unwrap()),
+            ..Message::default()
+        };
+
+    let res = executor
+        .execute_message(message, ApplyKind::Explicit, 100)
+        .unwrap();
+
+    assert_eq!(res.msg_receipt.exit_code.value(), 0);
+
+    println!("Calling `decodeNull`");
+
+    let message = Message {
+            from: sender[0].1,
+            to: Address::new_id(contract_actor_id),
+            gas_limit: 1000000000,
+            method_num: EvmMethods::InvokeContract as u64,
+            sequence: 4,
+            params: RawBytes::new(hex::decode("442adc75f2").unwrap()),
+            ..Message::default()
+        };
+
+    let res = executor
+        .execute_message(message, ApplyKind::Explicit, 100)
+        .unwrap();
+
+    assert_eq!(res.msg_receipt.exit_code.value(), 0);
+
+    println!("Calling `decodeInteger`");
+
+    let message = Message {
+            from: sender[0].1,
+            to: Address::new_id(contract_actor_id),
+            gas_limit: 1000000000,
+            method_num: EvmMethods::InvokeContract as u64,
+            sequence: 5,
+            params: RawBytes::new(hex::decode("449ad7774f").unwrap()),
+            ..Message::default()
+        };
+
+    let res = executor
+        .execute_message(message, ApplyKind::Explicit, 100)
+        .unwrap();
+
+    assert_eq!(res.msg_receipt.exit_code.value(), 0);
+
+    println!("Calling `decodeString`");
+
+    let message = Message {
+            from: sender[0].1,
+            to: Address::new_id(contract_actor_id),
+            gas_limit: 1000000000,
+            method_num: EvmMethods::InvokeContract as u64,
+            sequence: 6,
+            params: RawBytes::new(hex::decode("44a77b0360").unwrap()),
+            ..Message::default()
+        };
+
+    let res = executor
+        .execute_message(message, ApplyKind::Explicit, 100)
+        .unwrap();
+
+    assert_eq!(res.msg_receipt.exit_code.value(), 0);
+
+    println!("Calling `decodeStringWithWeirdChar`");
+
+    let message = Message {
+            from: sender[0].1,
+            to: Address::new_id(contract_actor_id),
+            gas_limit: 1000000000,
+            method_num: EvmMethods::InvokeContract as u64,
+            sequence: 7,
+            params: RawBytes::new(hex::decode("4410ed3fc5").unwrap()),
+            ..Message::default()
+        };
+
+    let res = executor
+        .execute_message(message, ApplyKind::Explicit, 100)
+        .unwrap();
+
+    assert_eq!(res.msg_receipt.exit_code.value(), 0);
+
+    println!("Calling `decodeArrayU8`");
+
+    let message = Message {
+            from: sender[0].1,
+            to: Address::new_id(contract_actor_id),
+            gas_limit: 1000000000,
+            method_num: EvmMethods::InvokeContract as u64,
+            sequence: 8,
+            params: RawBytes::new(hex::decode("44cdee5b7d").unwrap()),
+            ..Message::default()
+        };
+
+    let res = executor
+        .execute_message(message, ApplyKind::Explicit, 100)
+        .unwrap();
+
+    assert_eq!(res.msg_receipt.exit_code.value(), 0);
 }
