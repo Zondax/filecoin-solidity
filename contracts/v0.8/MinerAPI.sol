@@ -203,6 +203,6 @@ library MinerAPI {
 
         bytes memory result = Actor.callNonSingletonByID(actorId, MinerTypes.WithdrawBalanceMethodNum, Misc.CBOR_CODEC, raw_request, 0, false);
 
-        return result.deserializeArrayBigInt();
+        return result.deserializeBytesBigInt();
     }
 }
