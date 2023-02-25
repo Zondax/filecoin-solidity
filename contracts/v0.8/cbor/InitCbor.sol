@@ -40,7 +40,7 @@ library InitCBOR {
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
         buf.startFixedArray(2);
-        buf.writeCid(params.code_cid);
+        buf.writeCid(params.code_cid.data);
         buf.writeBytes(params.constructor_params);
 
         return buf.data();
@@ -69,7 +69,7 @@ library InitCBOR {
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
         buf.startFixedArray(3);
-        buf.writeCid(params.code_cid);
+        buf.writeCid(params.code_cid.data);
         buf.writeBytes(params.constructor_params);
         buf.writeBytes(params.subaddress);
 
@@ -86,8 +86,8 @@ library InitCBOR {
         (len, byteIdx) = rawResp.readFixedArray(byteIdx);
         assert(len == 2);
 
-        (ret.id_address, byteIdx) = rawResp.readBytes(byteIdx);
-        (ret.robust_address, byteIdx) = rawResp.readBytes(byteIdx);
+        (ret.id_address.data, byteIdx) = rawResp.readBytes(byteIdx);
+        (ret.robust_address.data, byteIdx) = rawResp.readBytes(byteIdx);
 
         return ret;
     }

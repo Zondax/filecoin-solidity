@@ -54,7 +54,13 @@ library CommonTypes {
         bool neg;
     }
 
+    /// @param data filecoin address in bytes format
     struct FilAddress {
+        bytes data;
+    }
+
+    /// @param data cid in bytes format
+    struct Cid {
         bytes data;
     }
 }

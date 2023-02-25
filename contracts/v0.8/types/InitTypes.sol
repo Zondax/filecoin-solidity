@@ -31,7 +31,7 @@ library InitTypes {
     /// @param code_cid cid of the actor type to create
     /// @param constructor_params parameters required to create a new actor
     struct ExecParams {
-        bytes code_cid;
+        CommonTypes.Cid code_cid;
         bytes constructor_params;
     }
 
@@ -46,7 +46,7 @@ library InitTypes {
     /// @param constructor_params parameters required to create a new actor
     /// @param subaddress sub address the new actor instance will be related to
     struct Exec4Params {
-        bytes code_cid;
+        CommonTypes.Cid code_cid;
         bytes constructor_params;
         bytes subaddress;
     }
@@ -54,7 +54,7 @@ library InitTypes {
     /// @param id_address the canonical ID-based address for the actor.
     /// @param robust_address a more expensive but re-org-safe address for the newly created actor.
     struct Exec4Return {
-        bytes id_address;
-        bytes robust_address;
+        CommonTypes.FilAddress id_address;
+        CommonTypes.FilAddress robust_address;
     }
 }

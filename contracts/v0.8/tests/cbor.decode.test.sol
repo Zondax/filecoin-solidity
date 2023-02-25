@@ -71,7 +71,7 @@ contract CborDecodeTest {
         require(keccak256(abi.encodePacked(str)) == keccak256(abi.encodePacked("test")), "str is not 'test'");
     }
 
-    function decodeFalse() public {
+    function decodeFalse() public pure {
         bytes memory input = hex"f4";
         uint index = 0;
         bool value;
@@ -80,7 +80,7 @@ contract CborDecodeTest {
         require(value == false, "value is not false");
     }
 
-    function decodeTrue() public {
+    function decodeTrue() public pure {
         bytes memory input = hex"f5";
         uint index = 0;
         bool value;
@@ -89,16 +89,15 @@ contract CborDecodeTest {
         require(value == true, "value is not true");
     }
 
-    function decodeNull() public {
+    function decodeNull() public pure {
         bytes memory input = hex"f6";
-        uint index = 0;
         bool value;
 
         value = input.isNullNext(0);
         require(value == true, "input is not null cbor");
     }
 
-    function decodeInteger() public {
+    function decodeInteger() public pure {
         bytes memory input = hex"01";
         uint index = 0;
         uint8 value;
@@ -106,8 +105,8 @@ contract CborDecodeTest {
         (value, index) = input.readUInt8(0);
         require(value == 1, "value is not 1");
     }
-    
-    function decodeString() public {
+
+    function decodeString() public pure {
         bytes memory input = hex"6a746573742076616c7565";
         uint index = 0;
         string memory value;
@@ -117,7 +116,7 @@ contract CborDecodeTest {
         require(keccak256(bytes(value)) == keccak256(bytes(expected)), "value is not 'test value'");
     }
 
-    function decodeStringWithWeirdChar() public {
+    function decodeStringWithWeirdChar() public pure {
         bytes memory input = hex"647A6FC3A9";
         uint index = 0;
         string memory value;
@@ -127,13 +126,12 @@ contract CborDecodeTest {
         require(keccak256(bytes(value)) == keccak256(bytes(unicode"zoé")), unicode"value is not 'zoé'");
     }
 
-    function decodeArrayU8() public {
+    function decodeArrayU8() public pure {
         bytes memory input = hex"8501182b184218ea186f";
 
         uint index = 0;
         uint arrayLen = 0;
         uint8 num;
-        string memory str = "";
 
         (arrayLen, index) = input.readFixedArray(index);
         require(arrayLen == 5, "array len is not 5");
@@ -153,5 +151,4 @@ contract CborDecodeTest {
         (num, index) = input.readUInt8(index);
         require(num == 111, "num is not 111");
     }
-
 }

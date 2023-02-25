@@ -135,7 +135,7 @@ library MarketCBOR {
 
             buf.startFixedArray(11);
 
-            buf.writeCid(params.deals[i].proposal.piece_cid);
+            buf.writeCid(params.deals[i].proposal.piece_cid.data);
             buf.writeUInt64(params.deals[i].proposal.piece_size);
             buf.writeBool(params.deals[i].proposal.verified_deal);
             buf.writeBytes(params.deals[i].proposal.client.data);
