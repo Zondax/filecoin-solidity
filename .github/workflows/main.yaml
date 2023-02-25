@@ -732,10 +732,10 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: gas_results_datacap.csv
-      - name: "Get gas_results_datacap.csv"
+      - name: "Get gas_results_miner.csv"
         uses: actions/download-artifact@v3
         with:
-          name: gas_results_datacap.csv
+          name: gas_results_miner.csv
       - name: "Get gas_results_init.csv"
         uses: actions/download-artifact@v3
         with:
