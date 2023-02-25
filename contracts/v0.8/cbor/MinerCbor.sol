@@ -165,7 +165,7 @@ library MinerCBOR {
         buf.startFixedArray(uint64(params.new_control_addresses.length));
 
         for (uint64 i = 0; i < params.new_control_addresses.length; i++) {
-            buf.writeBytes(params.new_control_addresses[i]);
+            buf.writeBytes(params.new_control_addresses[i].data);
         }
 
         return buf.data();
