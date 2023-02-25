@@ -25,7 +25,7 @@ import "../cbor/BigIntCbor.sol";
 /// @title Filecoin datacap actor types for Solidity.
 /// @author Zondax AG
 library DataCapTypes {
-    uint64 constant ActorID = 7;
+    CommonTypes.FilActorId constant ActorID = CommonTypes.FilActorId.wrap(7);
     uint constant NameMethodNum = 48890204;
     uint constant SymbolMethodNum = 2061153854;
     uint constant TotalSupplyMethodNum = 114981429;

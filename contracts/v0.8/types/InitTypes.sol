@@ -24,7 +24,7 @@ import "./CommonTypes.sol";
 /// @title Filecoin init actor types for Solidity.
 /// @author Zondax AG
 library InitTypes {
-    uint64 constant ActorID = 1;
+    CommonTypes.FilActorId constant ActorID = CommonTypes.FilActorId.wrap(1);
     uint constant ExecMethodNum = 81225168;
     uint constant Exec4MethodNum = 3;
 

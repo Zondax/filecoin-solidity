@@ -63,4 +63,6 @@ library CommonTypes {
     struct Cid {
         bytes data;
     }
+
+    type FilActorId is uint64;
 }
