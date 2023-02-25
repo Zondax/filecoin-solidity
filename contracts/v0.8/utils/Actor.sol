@@ -48,7 +48,7 @@ library Actor {
     error FailToCallActor();
 
     /// @notice the response received is not correct. In some case no response is expected and we received one, or a response was indeed expected and we received none.
-    error InvalidResponseLength(bytes response);
+    error InvalidResponseLength();
 
     /// @notice the codec received is not valid
     error InvalidCodec(uint64);
@@ -99,7 +99,7 @@ library Actor {
     }
 
     /// @notice allows to interact with an specific actor by its id (uint64)
-    /// @param actor_id actor id (uint64) to interact with
+    /// @param target actor id (uint64) to interact with
     /// @param method_num id of the method from the actor to call
     /// @param codec how the request data passed as argument is encoded
     /// @param raw_request encoded arguments to be passed in the call
@@ -107,7 +107,7 @@ library Actor {
     /// @param static_call indicates if the call will be allowed to change the actor state or not (just read the state)
     /// @return payload (in bytes) with the actual response data (without codec or response code)
     function callByID(
-        uint64 actor_id,
+        uint64 target,
         uint256 method_num,
         uint64 codec,
         bytes memory raw_request,
@@ -120,7 +120,7 @@ library Actor {
         }
 
         (bool success, bytes memory data) = address(CALL_ACTOR_ID).delegatecall(
-            abi.encode(uint64(method_num), value, static_call ? READ_ONLY_FLAG : DEFAULT_FLAG, codec, raw_request, actor_id)
+            abi.encode(uint64(method_num), value, static_call ? READ_ONLY_FLAG : DEFAULT_FLAG, codec, raw_request, target)
         );
         if (!success) {
             revert FailToCallActor();
@@ -130,7 +130,7 @@ library Actor {
     }
 
     /// @notice allows to interact with an non-singleton actors by its id (uint64)
-    /// @param actor_id actor id (uint64) to interact with
+    /// @param target actor id (uint64) to interact with
     /// @param method_num id of the method from the actor to call
     /// @param codec how the request data passed as argument is encoded
     /// @param raw_request encoded arguments to be passed in the call
@@ -138,18 +138,18 @@ library Actor {
     /// @param static_call indicates if the call will be allowed to change the actor state or not (just read the state)
     /// @dev it requires the id to be bigger than 99, as singleton actors are smaller than that
     function callNonSingletonByID(
-        uint64 actor_id,
+        uint64 target,
         uint256 method_num,
         uint64 codec,
         bytes memory raw_request,
         uint256 value,
         bool static_call
     ) internal returns (bytes memory) {
-        if (actor_id < 100) {
-            revert InvalidActorID(actor_id);
+        if (target < 100) {
+            revert InvalidActorID(target);
         }
 
-        return callByID(actor_id, method_num, codec, raw_request, value, static_call);
+        return callByID(target, method_num, codec, raw_request, value, static_call);
     }
 
     /// @notice parse the response an actor returned
@@ -161,11 +161,11 @@ library Actor {
 
         if (return_codec == Misc.NONE_CODEC) {
             if (return_value.length != 0) {
-                revert InvalidResponseLength(return_value);
+                revert InvalidResponseLength();
             }
         } else if (return_codec == Misc.CBOR_CODEC || return_codec == Misc.DAG_CBOR_CODEC) {
             if (return_value.length == 0) {
-                revert InvalidResponseLength(return_value);
+                revert InvalidResponseLength();
             }
         } else {
             revert InvalidCodec(return_codec);

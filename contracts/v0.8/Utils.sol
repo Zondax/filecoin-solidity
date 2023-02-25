@@ -48,11 +48,11 @@ library Utils {
         }
     }
 
-    /// @param actorId The actor id you want to interact with
-    function universalReceiverHook(uint64 actorId, CommonTypes.UniversalReceiverParams memory params) internal returns (bytes memory) {
+    /// @param target The actor id you want to interact with
+    function universalReceiverHook(uint64 target, CommonTypes.UniversalReceiverParams memory params) internal returns (bytes memory) {
         bytes memory raw_request = params.serializeUniversalReceiverParams();
 
-        bytes memory result = Actor.callByID(actorId, CommonTypes.UniversalReceiverHookMethodNum, Misc.CBOR_CODEC, raw_request, 0, false);
+        bytes memory result = Actor.callByID(target, CommonTypes.UniversalReceiverHookMethodNum, Misc.CBOR_CODEC, raw_request, 0, false);
 
         return result;
     }

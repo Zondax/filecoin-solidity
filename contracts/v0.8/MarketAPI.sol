@@ -41,7 +41,7 @@ library MarketAPI {
 
         bytes memory data = Actor.callByID(MarketTypes.ActorID, MarketTypes.AddBalanceMethodNum, Misc.CBOR_CODEC, raw_request, value, false);
         if (data.length != 0) {
-            revert Actor.InvalidResponseLength(data);
+            revert Actor.InvalidResponseLength();
         }
     }
 

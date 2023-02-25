@@ -26,22 +26,22 @@ import "./utils/Actor.sol";
 /// @author Zondax AG
 library SendAPI {
     /// @notice send token to a specific actor
-    /// @param receiverActorId The id address (uint64) you want to send funds to
+    /// @param target The id address (uint64) you want to send funds to
     /// @param value tokens to be transferred to the receiver
-    function send(uint64 receiverActorId, uint256 value) internal {
-        bytes memory result = Actor.callByID(receiverActorId, 0, Misc.NONE_CODEC, new bytes(0), value, false);
+    function send(uint64 target, uint256 value) internal {
+        bytes memory result = Actor.callByID(target, 0, Misc.NONE_CODEC, new bytes(0), value, false);
         if (result.length != 0) {
-            revert Actor.InvalidResponseLength(result);
+            revert Actor.InvalidResponseLength();
         }
     }
 
     /// @notice send token to a specific actor
-    /// @param addr The address (bytes format) you want to send funds to
+    /// @param target The address (bytes format) you want to send funds to
     /// @param value tokens to be transferred to the receiver
-    function send(bytes memory addr, uint256 value) internal {
-        bytes memory result = Actor.callByAddress(addr, 0, Misc.NONE_CODEC, new bytes(0), value, false);
+    function send(bytes memory target, uint256 value) internal {
+        bytes memory result = Actor.callByAddress(target, 0, Misc.NONE_CODEC, new bytes(0), value, false);
         if (result.length != 0) {
-            revert Actor.InvalidResponseLength(result);
+            revert Actor.InvalidResponseLength();
         }
     }
 }

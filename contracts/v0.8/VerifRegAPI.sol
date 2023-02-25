@@ -46,7 +46,7 @@ library VerifRegAPI {
 
         bytes memory result = Actor.callByID(VerifRegTypes.ActorID, VerifRegTypes.AddVerifiedClientMethodNum, Misc.CBOR_CODEC, raw_request, 0, false);
         if (result.length != 0) {
-            revert Actor.InvalidResponseLength(result);
+            revert Actor.InvalidResponseLength();
         }
     }
 
