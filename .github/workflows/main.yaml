@@ -660,6 +660,63 @@ jobs:
       - name: Check FRC0042 using rust script
         run: make frc0042
 
+  cbor-decode-integration:
+    name: "CBOR Decode Tests"
+    timeout-minutes: 20
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: 'true'
+      - name: Instal deps
+        run: make install-opencl
+      - name: Install node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16.16.0'
+      - name: Install yarn
+        run: npm install -g yarn
+      - name: Install latest stable
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: nightly
+          override: true
+      - name: Install dependencies
+        run: |
+          yarn install
+          make install_solc_linux
+      - name: Restore crates
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+          key: ${{ runner.os }}-cargo-${{ hashFiles('./testing/Cargo.lock') }}
+      - name: Restore previous compilation
+        uses: actions/cache@v3
+        with:
+          path: |
+            ./testing/target
+          key: ${{ runner.os }}-testing-${{ hashFiles('./testing/Cargo.lock') }}
+      - name: Restore builtin-actors
+        uses: actions/cache@v3
+        with:
+          path: |
+            ./testing/builtin-actors/target
+          key: ${{ runner.os }}-actors-${{ hashFiles('./testing/builtin-actors/Cargo.lock') }}
+      - name: Build builtin-actors
+        run: make build_builtin_actors
+      - name: Build contracts
+        run: make
+      - name: Run tests on cbor decode lib
+        run: |
+          cd testing
+          rustup target add wasm32-unknown-unknown
+          cargo test cbor_decode_test
+
 
   comment-result:
     name: "Comment the result on PR"
