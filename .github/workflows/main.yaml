@@ -709,7 +709,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           pip install csv2md
-          MKD=$(( echo "## Account actor"; csv2md gas_results_account.csv; echo "## Datacap actor"; csv2md gas_results_datacap.csv; echo "## Init actor"; csv2md gas_results_init.csv; echo "## Market actor"; csv2md gas_results_market.csv; echo "## Power actor"; csv2md gas_results_power.csv; echo "## Precompiles actor"; csv2md gas_results_precompiles.csv; echo "## Send actor"; csv2md gas_results_send.csv; echo "## Verifreg actor"; csv2md gas_results_verifreg.csv ) | cat)
+          MKD=$(( echo "## Account actor"; csv2md gas_results_account.csv; echo "## Miner actor"; csv2md gas_results_miner.csv; echo "## Datacap actor"; csv2md gas_results_datacap.csv; echo "## Init actor"; csv2md gas_results_init.csv; echo "## Market actor"; csv2md gas_results_market.csv; echo "## Power actor"; csv2md gas_results_power.csv; echo "## Precompiles actor"; csv2md gas_results_precompiles.csv; echo "## Send actor"; csv2md gas_results_send.csv; echo "## Verifreg actor"; csv2md gas_results_verifreg.csv ) | cat)
           BODY=$(jq --null-input --arg body "# Gas results 🚀📝
           ${MKD}" '{"body": $body}')
           curl \
