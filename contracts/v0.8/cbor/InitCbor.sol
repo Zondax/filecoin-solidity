@@ -86,8 +86,8 @@ library InitCBOR {
         (len, byteIdx) = rawResp.readFixedArray(byteIdx);
         assert(len == 2);
 
-        (ret.id_address, byteIdx) = rawResp.readBytes(byteIdx);
-        (ret.robust_address, byteIdx) = rawResp.readBytes(byteIdx);
+        (ret.id_address.data, byteIdx) = rawResp.readBytes(byteIdx);
+        (ret.robust_address.data, byteIdx) = rawResp.readBytes(byteIdx);
 
         return ret;
     }

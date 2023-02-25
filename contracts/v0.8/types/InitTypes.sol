@@ -54,7 +54,7 @@ library InitTypes {
     /// @param id_address the canonical ID-based address for the actor.
     /// @param robust_address a more expensive but re-org-safe address for the newly created actor.
     struct Exec4Return {
-        bytes id_address;
-        bytes robust_address;
+        CommonTypes.FilAddress id_address;
+        CommonTypes.FilAddress robust_address;
     }
 }
