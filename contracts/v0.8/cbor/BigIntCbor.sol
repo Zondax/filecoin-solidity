@@ -30,7 +30,7 @@ library BigIntCBOR {
     function serializeBigInt(CommonTypes.BigInt memory num) internal pure returns (bytes memory) {
         bytes memory raw = new bytes(num.val.length + 1);
 
-        raw[0] = num.neg ? 0x01 : 0x00;
+        raw[0] = num.neg == true ? bytes1(0x01) : bytes1(0x00);
 
         uint index = 1;
         for (uint i = 0; i < num.val.length; i++) {
