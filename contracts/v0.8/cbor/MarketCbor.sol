@@ -20,12 +20,12 @@
 pragma solidity ^0.8.17;
 
 import "../external/CBOR.sol";
+import "./BigIntCbor.sol";
+import "./FilecoinCbor.sol";
+import "../utils/CborDecode.sol";
 
 import "../types/MarketTypes.sol";
-import "./BigIntCbor.sol";
-import "../utils/CborDecode.sol";
 import "../utils/Misc.sol";
-import "./FilecoinCbor.sol";
 
 /// @title This library is a set of functions meant to handle CBOR parameters serialization and return values deserialization for Market actor exported methods.
 /// @author Zondax AG
@@ -43,23 +43,10 @@ library MarketCBOR {
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
         buf.startFixedArray(2);
-        buf.writeBytes(params.provider_or_client);
+        buf.writeBytes(params.provider_or_client.data);
         buf.writeBytes(params.tokenAmount.serializeBigInt());
 
         return buf.data();
-    }
-
-    /// @notice deserialize WithdrawBalanceReturn struct from cbor encoded bytes coming from a market actor call
-    /// @param rawResp cbor encoded response
-    /// @return ret new instance of WithdrawBalanceReturn created based on parsed data
-    function deserializeWithdrawBalanceReturn(bytes memory rawResp) internal pure returns (MarketTypes.WithdrawBalanceReturn memory ret) {
-        bytes memory tmp;
-        uint byteIdx = 0;
-
-        (tmp, byteIdx) = rawResp.readBytes(byteIdx);
-        ret.amount_withdrawn = tmp.deserializeBigInt();
-
-        return ret;
     }
 
     /// @notice deserialize GetBalanceReturn struct from cbor encoded bytes coming from a market actor call
@@ -102,38 +89,6 @@ library MarketCBOR {
         return ret;
     }
 
-    /// @notice deserialize GetDealClientReturn struct from cbor encoded bytes coming from a market actor call
-    /// @param rawResp cbor encoded response
-    /// @return ret new instance of GetDealClientReturn created based on parsed data
-    function deserializeGetDealClientReturn(bytes memory rawResp) internal pure returns (MarketTypes.GetDealClientReturn memory ret) {
-        uint byteIdx = 0;
-
-        (ret.client, byteIdx) = rawResp.readUInt64(byteIdx);
-
-        return ret;
-    }
-
-    /// @notice deserialize GetDealProviderReturn struct from cbor encoded bytes coming from a market actor call
-    /// @param rawResp cbor encoded response
-    /// @return ret new instance of GetDealProviderReturn created based on parsed data
-    function deserializeGetDealProviderReturn(bytes memory rawResp) internal pure returns (MarketTypes.GetDealProviderReturn memory ret) {
-        uint byteIdx = 0;
-
-        (ret.provider, byteIdx) = rawResp.readUInt64(byteIdx);
-        return ret;
-    }
-
-    /// @notice deserialize GetDealLabelReturn struct from cbor encoded bytes coming from a market actor call
-    /// @param rawResp cbor encoded response
-    /// @return ret new instance of GetDealLabelReturn created based on parsed data
-    function deserializeGetDealLabelReturn(bytes memory rawResp) internal pure returns (MarketTypes.GetDealLabelReturn memory ret) {
-        uint byteIdx = 0;
-
-        (ret.label, byteIdx) = rawResp.readString(byteIdx);
-
-        return ret;
-    }
-
     /// @notice deserialize GetDealTermReturn struct from cbor encoded bytes coming from a market actor call
     /// @param rawResp cbor encoded response
     /// @return ret new instance of GetDealTermReturn created based on parsed data
@@ -146,56 +101,6 @@ library MarketCBOR {
 
         (ret.start, byteIdx) = rawResp.readInt64(byteIdx);
         (ret.end, byteIdx) = rawResp.readInt64(byteIdx);
-
-        return ret;
-    }
-
-    /// @notice deserialize GetDealEpochPriceReturn struct from cbor encoded bytes coming from a market actor call
-    /// @param rawResp cbor encoded response
-    /// @return ret new instance of GetDealEpochPriceReturn created based on parsed data
-    function deserializeGetDealEpochPriceReturn(bytes memory rawResp) internal pure returns (MarketTypes.GetDealEpochPriceReturn memory ret) {
-        bytes memory tmp;
-        uint byteIdx = 0;
-
-        (tmp, byteIdx) = rawResp.readBytes(byteIdx);
-        ret.price_per_epoch = tmp.deserializeBigInt();
-
-        return ret;
-    }
-
-    /// @notice deserialize GetDealClientCollateralReturn struct from cbor encoded bytes coming from a market actor call
-    /// @param rawResp cbor encoded response
-    /// @return ret new instance of GetDealClientCollateralReturn created based on parsed data
-    function deserializeGetDealClientCollateralReturn(bytes memory rawResp) internal pure returns (MarketTypes.GetDealClientCollateralReturn memory ret) {
-        bytes memory tmp;
-        uint byteIdx = 0;
-
-        (tmp, byteIdx) = rawResp.readBytes(byteIdx);
-        ret.collateral = tmp.deserializeBigInt();
-
-        return ret;
-    }
-
-    /// @notice deserialize GetDealProviderCollateralReturn struct from cbor encoded bytes coming from a market actor call
-    /// @param rawResp cbor encoded response
-    /// @return ret new instance of GetDealProviderCollateralReturn created based on parsed data
-    function deserializeGetDealProviderCollateralReturn(bytes memory rawResp) internal pure returns (MarketTypes.GetDealProviderCollateralReturn memory ret) {
-        bytes memory tmp;
-        uint byteIdx = 0;
-
-        (tmp, byteIdx) = rawResp.readBytes(byteIdx);
-        ret.collateral = tmp.deserializeBigInt();
-
-        return ret;
-    }
-
-    /// @notice deserialize GetDealVerifiedReturn struct from cbor encoded bytes coming from a market actor call
-    /// @param rawResp cbor encoded response
-    /// @return ret new instance of GetDealVerifiedReturn created based on parsed data
-    function deserializeGetDealVerifiedReturn(bytes memory rawResp) internal pure returns (MarketTypes.GetDealVerifiedReturn memory ret) {
-        uint byteIdx = 0;
-
-        (ret.verified, byteIdx) = rawResp.readBool(byteIdx);
 
         return ret;
     }
@@ -233,8 +138,8 @@ library MarketCBOR {
             buf.writeCid(params.deals[i].proposal.piece_cid);
             buf.writeUInt64(params.deals[i].proposal.piece_size);
             buf.writeBool(params.deals[i].proposal.verified_deal);
-            buf.writeBytes(params.deals[i].proposal.client);
-            buf.writeBytes(params.deals[i].proposal.provider);
+            buf.writeBytes(params.deals[i].proposal.client.data);
+            buf.writeBytes(params.deals[i].proposal.provider.data);
             buf.writeString(params.deals[i].proposal.label);
             buf.writeInt64(params.deals[i].proposal.start_epoch);
             buf.writeInt64(params.deals[i].proposal.end_epoch);

@@ -26,15 +26,15 @@ import "../types/MarketTypes.sol";
 /// @notice It imports the library and create a callable method for each method in the library
 /// @author Zondax AG
 contract MarketApiTest {
-    function add_balance(bytes memory provider_or_client, uint256 value) public payable {
-        MarketAPI.addBalance(provider_or_client, value);
+    function add_balance(CommonTypes.FilAddress memory providerOrClient, uint256 value) public payable {
+        MarketAPI.addBalance(providerOrClient, value);
     }
 
-    function withdraw_balance(MarketTypes.WithdrawBalanceParams memory params) public returns (MarketTypes.WithdrawBalanceReturn memory) {
+    function withdraw_balance(MarketTypes.WithdrawBalanceParams memory params) public returns (CommonTypes.BigInt memory) {
         return MarketAPI.withdrawBalance(params);
     }
 
-    function get_balance(bytes memory addr) public returns (MarketTypes.GetBalanceReturn memory) {
+    function get_balance(CommonTypes.FilAddress memory addr) public returns (MarketTypes.GetBalanceReturn memory) {
         return MarketAPI.getBalance(addr);
     }
 
@@ -42,15 +42,15 @@ contract MarketApiTest {
         return MarketAPI.getDealDataCommitment(dealID);
     }
 
-    function get_deal_client(uint64 dealID) public returns (MarketTypes.GetDealClientReturn memory) {
+    function get_deal_client(uint64 dealID) public returns (uint64) {
         return MarketAPI.getDealClient(dealID);
     }
 
-    function get_deal_provider(uint64 dealID) public returns (MarketTypes.GetDealProviderReturn memory) {
+    function get_deal_provider(uint64 dealID) public returns (uint64) {
         return MarketAPI.getDealProvider(dealID);
     }
 
-    function get_deal_label(uint64 dealID) public returns (MarketTypes.GetDealLabelReturn memory) {
+    function get_deal_label(uint64 dealID) public returns (string memory) {
         return MarketAPI.getDealLabel(dealID);
     }
 
@@ -58,19 +58,19 @@ contract MarketApiTest {
         return MarketAPI.getDealTerm(dealID);
     }
 
-    function get_deal_total_price(uint64 dealID) public returns (MarketTypes.GetDealEpochPriceReturn memory) {
+    function get_deal_total_price(uint64 dealID) public returns (CommonTypes.BigInt memory) {
         return MarketAPI.getDealTotalPrice(dealID);
     }
 
-    function get_deal_client_collateral(uint64 dealID) public returns (MarketTypes.GetDealClientCollateralReturn memory) {
+    function get_deal_client_collateral(uint64 dealID) public returns (CommonTypes.BigInt memory) {
         return MarketAPI.getDealClientCollateral(dealID);
     }
 
-    function get_deal_provider_collateral(uint64 dealID) public returns (MarketTypes.GetDealProviderCollateralReturn memory) {
+    function get_deal_provider_collateral(uint64 dealID) public returns (CommonTypes.BigInt memory) {
         return MarketAPI.getDealProviderCollateral(dealID);
     }
 
-    function get_deal_verified(uint64 dealID) public returns (MarketTypes.GetDealVerifiedReturn memory) {
+    function get_deal_verified(uint64 dealID) public returns (bool) {
         return MarketAPI.getDealVerified(dealID);
     }
 

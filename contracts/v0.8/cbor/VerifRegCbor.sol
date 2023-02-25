@@ -106,7 +106,7 @@ library VerifRegCBOR {
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
         buf.startFixedArray(2);
-        buf.writeBytes(params.addr);
+        buf.writeBytes(params.addr.data);
         buf.writeBytes(params.allowance);
 
         return buf.data();

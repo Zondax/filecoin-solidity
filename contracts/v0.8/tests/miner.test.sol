@@ -30,19 +30,19 @@ contract MinerApiTest {
         return MinerAPI.getOwner(target);
     }
 
-    function change_owner_address(uint64 target, bytes memory addr) public {
+    function change_owner_address(uint64 target, CommonTypes.FilAddress memory addr) public {
         MinerAPI.changeOwnerAddress(target, addr);
     }
 
-    function is_controlling_address(uint64 target, bytes memory addr) public returns (MinerTypes.IsControllingAddressReturn memory) {
+    function is_controlling_address(uint64 target, CommonTypes.FilAddress memory addr) public returns (bool) {
         return MinerAPI.isControllingAddress(target, addr);
     }
 
-    function get_sector_size(uint64 target) public returns (MinerTypes.GetSectorSizeReturn memory) {
+    function get_sector_size(uint64 target) public returns (uint64) {
         return MinerAPI.getSectorSize(target);
     }
 
-    function get_available_balance(uint64 target) public returns (MinerTypes.GetAvailableBalanceReturn memory) {
+    function get_available_balance(uint64 target) public returns (CommonTypes.BigInt memory) {
         return MinerAPI.getAvailableBalance(target);
     }
 
@@ -62,8 +62,8 @@ contract MinerApiTest {
         MinerAPI.changeWorkerAddress(target, params);
     }
 
-    function change_peer_id(uint64 target, MinerTypes.ChangePeerIDParams memory params) public {
-        MinerAPI.changePeerId(target, params);
+    function change_peer_id(uint64 target, CommonTypes.FilAddress memory newId) public {
+        MinerAPI.changePeerId(target, newId);
     }
 
     function change_multiaddresses(uint64 target, MinerTypes.ChangeMultiaddrsParams memory params) public {
@@ -78,7 +78,7 @@ contract MinerApiTest {
         MinerAPI.confirmChangeWorkerAddress(target);
     }
 
-    function get_peer_id(uint64 target) public returns (MinerTypes.GetPeerIDReturn memory) {
+    function get_peer_id(uint64 target) public returns (CommonTypes.FilAddress memory) {
         return MinerAPI.getPeerId(target);
     }
 
@@ -86,7 +86,7 @@ contract MinerApiTest {
         return MinerAPI.getMultiaddresses(target);
     }
 
-    function withdraw_balance(uint64 target, MinerTypes.WithdrawBalanceParams memory params) public returns (MinerTypes.WithdrawBalanceReturn memory) {
-        return MinerAPI.withdrawBalance(target, params);
+    function withdraw_balance(uint64 target, CommonTypes.BigInt memory amount) public returns (CommonTypes.BigInt memory) {
+        return MinerAPI.withdrawBalance(target, amount);
     }
 }

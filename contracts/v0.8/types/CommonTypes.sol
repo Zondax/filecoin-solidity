@@ -53,4 +53,8 @@ library CommonTypes {
         bytes val;
         bool neg;
     }
+
+    struct FilAddress {
+        bytes data;
+    }
 }

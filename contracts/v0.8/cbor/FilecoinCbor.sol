@@ -23,27 +23,91 @@ import "../external/CBOR.sol";
 import "../external/Buffer.sol";
 import "../types/CommonTypes.sol";
 import "../utils/CborDecode.sol";
-
+import "../cbor/BigIntCbor.sol";
 
 /// @title This library is a set of functions meant to handle CBOR serialization and deserialization for general data types on the filecoin network.
 /// @author Zondax AG
 library FilecoinCBOR {
     using Buffer for Buffer.buffer;
     using CBOR for CBOR.CBORBuffer;
-    using CBORDecoder for bytes;
+    using CBORDecoder for *;
+    using BigIntCBOR for *;
 
     uint8 private constant MAJOR_TYPE_TAG = 6;
     uint8 private constant TAG_TYPE_CID_CODE = 42;
     uint8 private constant PAYLOAD_LEN_8_BITS = 24;
 
     /// @notice write CID into a cbor buffer
-    /// @dev the cbor mejor will be 6 (type tag) and the tag type is 42, as per filecoin definition
+    /// @dev the cbor major will be 6 (type tag) and the tag type is 42, as per filecoin definition
     /// @param buf buffer containing the actual cbor serialization process
     /// @param value cid data to serialize as cbor
     function writeCid(CBOR.CBORBuffer memory buf, bytes memory value) internal pure {
         buf.buf.appendUint8(uint8(((MAJOR_TYPE_TAG << 5) | PAYLOAD_LEN_8_BITS)));
         buf.buf.appendUint8(TAG_TYPE_CID_CODE);
         buf.writeBytes(value);
+    }
+
+    /// @notice serialize filecoin address to cbor encoded
+    /// @param addr filecoin address to serialize
+    /// @return cbor serialized data as bytes
+    function serializeAddress(CommonTypes.FilAddress memory addr) internal pure returns (bytes memory) {
+        CBOR.CBORBuffer memory buf = CBOR.create(64);
+
+        buf.writeBytes(addr.data);
+
+        return buf.data();
+    }
+
+    /// @notice serialize a BigInt value wrapped in a cbor fixed array.
+    /// @param value BigInt to serialize as cbor inside an
+    /// @return cbor serialized data as bytes
+    function serializeArrayBigInt(CommonTypes.BigInt memory value) internal pure returns (bytes memory) {
+        CBOR.CBORBuffer memory buf = CBOR.create(64);
+
+        buf.startFixedArray(1);
+        buf.writeBytes(value.serializeBigInt());
+
+        return buf.data();
+    }
+
+    /// @notice serialize a FilAddress value wrapped in a cbor fixed array.
+    /// @param addr FilAddress to serialize as cbor inside an
+    /// @return cbor serialized data as bytes
+    function serializeArrayFilAddress(CommonTypes.FilAddress memory addr) internal pure returns (bytes memory) {
+        CBOR.CBORBuffer memory buf = CBOR.create(64);
+
+        buf.startFixedArray(1);
+        buf.writeBytes(addr.data);
+
+        return buf.data();
+    }
+
+    /// @notice deserialize a FilAddress wrapped on a cbor fixed array coming from a actor call
+    /// @param rawResp cbor encoded response
+    /// @return ret new instance of FilAddress created based on parsed data
+    function deserializeArrayFilAddress(bytes memory rawResp) internal pure returns (CommonTypes.FilAddress memory ret) {
+        uint byteIdx = 0;
+        uint len;
+
+        (len, byteIdx) = rawResp.readFixedArray(byteIdx);
+        (ret.data, byteIdx) = rawResp.readBytes(byteIdx);
+
+        return ret;
+    }
+
+    /// @notice deserialize a BigInt wrapped on a cbor fixed array coming from a actor call
+    /// @param rawResp cbor encoded response
+    /// @return ret new instance of BigInt created based on parsed data
+    function deserializeArrayBigInt(bytes memory rawResp) internal pure returns (CommonTypes.BigInt memory) {
+        uint byteIdx = 0;
+        uint len;
+        bytes memory tmp;
+
+        (len, byteIdx) = rawResp.readFixedArray(byteIdx);
+        assert(len == 1);
+
+        (tmp, byteIdx) = rawResp.readBytes(byteIdx);
+        return tmp.deserializeBigInt();
     }
 
     /// @notice serialize UniversalReceiverParams struct to cbor in order to pass as arguments to an actor

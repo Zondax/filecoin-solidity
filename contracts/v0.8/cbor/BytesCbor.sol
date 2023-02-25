@@ -88,6 +88,18 @@ library BytesCBOR {
         return response;
     }
 
+    /// @notice deserialize cbor encoded bool
+    /// @param ret cbor encoded bool (in bytes)
+    /// @return decoded bool
+    function deserializeBool(bytes memory ret) internal pure returns (bool) {
+        bool response;
+        uint byteIdx = 0;
+
+        (response, byteIdx) = ret.readBool(byteIdx);
+
+        return response;
+    }
+
     /// @notice deserialize cbor encoded BigInt
     /// @param ret cbor encoded BigInt (in bytes)
     /// @return decoded BigInt
