@@ -25,7 +25,7 @@ import "../PrecompilesAPI.sol";
 /// @notice It imports the library and create a callable method for each method in the library
 /// @author Zondax AG
 contract PrecompilesApiTest {
-    function resolve_address(bytes memory addr) public view returns (uint64) {
+    function resolve_address(CommonTypes.FilAddress memory addr) public view returns (uint64) {
         return PrecompilesAPI.resolveAddress(addr);
     }
 

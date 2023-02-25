@@ -19,6 +19,8 @@
 // SPDX-License-Identifier: Apache-2.0
 pragma solidity ^0.8.0;
 
+import "./types/CommonTypes.sol";
+
 /// @title This library simplify the call of FEVM precompiles contracts.
 /// @author Zondax AG
 library PrecompilesAPI {
@@ -28,8 +30,8 @@ library PrecompilesAPI {
     /// @notice get the actor id from an actor address
     /// @param addr actor address you want to get id from (in bytes format, not string)
     /// @return the actor id
-    function resolveAddress(bytes memory addr) internal view returns (uint64) {
-        (bool success, bytes memory raw_response) = address(RESOLVE_ADDRESS_PRECOMPILE_ADDR).staticcall(addr);
+    function resolveAddress(CommonTypes.FilAddress memory addr) internal view returns (uint64) {
+        (bool success, bytes memory raw_response) = address(RESOLVE_ADDRESS_PRECOMPILE_ADDR).staticcall(addr.data);
         require(success == true, "resolve address error");
 
         uint256 actor_id = abi.decode(raw_response, (uint256));
