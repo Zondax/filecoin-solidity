@@ -51,7 +51,6 @@ build_leb128_test: verify_solc
 	./bin/solc  contracts/v0.8/tests/leb128.generated9.test.sol --output-dir ./build/v0.8/tests --overwrite --bin --hashes --opcodes --abi
 	./bin/solc  contracts/v0.8/tests/leb128.generated10.test.sol --output-dir ./build/v0.8/tests --overwrite --bin --hashes --opcodes --abi
 	./bin/solc  contracts/v0.8/tests/leb128.generated11.test.sol --output-dir ./build/v0.8/tests --overwrite --bin --hashes --opcodes --abi
-	./bin/solc  contracts/v0.8/tests/leb128.generated12.test.sol --output-dir ./build/v0.8/tests --overwrite --bin --hashes --opcodes --abi
 
 ################ DEPLOY ################
 
