@@ -24,18 +24,17 @@ import "../utils/FilAddresses.sol";
 import "../types/CommonTypes.sol";
 import "../external/Buffer.sol";
 
-/// @notice This file is meant to serve as a deployable contract of the Leb128 lib, as the library by itself is not.
+/// @notice This file is meant to serve as a deployable contract of the Address lib, as the library by itself is not.
 /// @notice It imports the library and create a callable method for each method in the library
 /// @author Zondax AG
-contract Leb128Test {
-    using Buffer for Buffer.buffer;
+contract AddressTest {
 
-    function unsiged_integer_leb128_encoding() public pure {
-        bytes memory expected = hex"e58e26";
-        uint64 value = 624485;
+    function actorid_conversion() public pure {
+        uint64 actorID = 1;
+        CommonTypes.FilAddress memory result = FilAddresses.fromActorID(actorID);
 
-        Buffer.buffer memory result = Leb128.encodeUnsignedLeb128FromUInt64(value);
-
-        require(keccak256(result.buf) == keccak256(expected), "'624485' is not returning 'e58e26'");
+        require(keccak256(result.data) == keccak256(hex"0001"), "'1' actorID is not returning '0001'");
     }
+
+
 }
