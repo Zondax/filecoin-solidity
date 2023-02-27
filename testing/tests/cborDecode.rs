@@ -26,17 +26,13 @@ fn cbor_decode_tests() {
 
     let (mut tester, _manifest) = setup::setup_tester();
 
-    // As the governor address for datacap is 200, we create many many address in order to initialize the ID 200 with some tokens
-    // and make it a valid address to use.
-    let sender: [Account; 300] = tester.create_accounts().unwrap();
-
+    let sender: [Account; 1] = tester.create_accounts().unwrap();
 
     // Instantiate machine
     tester.instantiate_machine(DummyExterns).unwrap();
 
     let executor = tester.executor.as_mut().unwrap();
 
-    // First we deploy the contract in order to actually have an actor running on the embryo address
     println!("Calling init actor (EVM)");
 
     let evm_bin = setup::load_evm(WASM_COMPILED_PATH);
@@ -60,24 +56,6 @@ fn cbor_decode_tests() {
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
 
     let exec_return: Return = RawBytes::deserialize(&res.msg_receipt.return_data).unwrap();
-
-    println!(
-        "Contract address ID type on decimal [{}]",
-        exec_return.actor_id
-    );
-    println!(
-        "Contract address ID type on hex [{}]",
-        hex::encode(Address::new_id(exec_return.actor_id).to_bytes())
-    );
-    match exec_return.robust_address {
-        Some(addr) => println!("Contract address robust type [{}]", addr),
-        None => (),
-    }
-
-    println!(
-        "Contract address eth address type [{}]",
-        hex::encode(exec_return.eth_address.0)
-    );
 
     let contract_actor_id = exec_return.actor_id;
 
