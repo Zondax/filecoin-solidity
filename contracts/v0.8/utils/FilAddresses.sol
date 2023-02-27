@@ -19,10 +19,14 @@
 pragma solidity ^0.8.17;
 
 import "../types/CommonTypes.sol";
+import "../utils/Leb128.sol";
+import "../external/Buffer.sol";
 
 /// @notice This library is a set a functions that allows to handle filecoin addresses conversions and validations
 /// @author Zondax AG
 library FilAddresses {
+    using Buffer for Buffer.buffer;
+
     /// @notice allow to get a delegated address (f4) from an eth address
     /// @param addr eth address to convert
     /// @return delegated filecoin address
@@ -46,5 +50,13 @@ library FilAddresses {
         }
 
         return addr.data.length <= 256;
+    }
+
+    /// @notice allow to create a Filecoin address from an actorID
+    /// @param actorID uint64 actorID
+    /// @return address filecoin address
+    function fromActorID(uint64 actorID) internal pure returns (CommonTypes.FilAddress memory) {
+        Buffer.buffer memory result = Leb128.encodeUnsignedLeb128FromUInt64(actorID);
+        return CommonTypes.FilAddress(abi.encodePacked(hex"00", result.buf));
     }
 }
