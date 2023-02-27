@@ -2,7 +2,7 @@
 ################ BUILD ################
 build: build_api build_mock_api build_tests
 
-build_tests: verify_solc
+build_tests: verify_solc build_leb128_test
 	./bin/solc  contracts/v0.8/tests/market.test.sol --output-dir ./build/v0.8/tests --overwrite --bin --hashes --opcodes --abi
 	./bin/solc  contracts/v0.8/tests/miner.test.sol --output-dir ./build/v0.8/tests --overwrite --bin --hashes --opcodes --abi
 	./bin/solc  contracts/v0.8/tests/power.test.sol --output-dir ./build/v0.8/tests --overwrite --bin --hashes --opcodes --abi
@@ -13,7 +13,6 @@ build_tests: verify_solc
 	./bin/solc  contracts/v0.8/tests/precompiles.test.sol --output-dir ./build/v0.8/tests --overwrite --bin --hashes --opcodes --abi
 	./bin/solc  contracts/v0.8/tests/send.test.sol --output-dir ./build/v0.8/tests --overwrite --bin --hashes --opcodes --abi
 	./bin/solc  contracts/v0.8/tests/cbor.decode.test.sol --output-dir ./build/v0.8/tests --overwrite --bin --hashes --opcodes --abi
-	./bin/solc  contracts/v0.8/tests/leb128.test.sol --output-dir ./build/v0.8/tests --overwrite --bin --hashes --opcodes --abi
 	./bin/solc   contracts/v0.8/mocks/tests/market.test.sol --output-dir ./build/v0.8/mocks/tests --overwrite --bin --hashes --opcodes --abi
 	./bin/solc   contracts/v0.8/mocks/tests/miner.test.sol --output-dir ./build/v0.8/mocks/tests --overwrite --bin --hashes --opcodes --abi
 
@@ -38,6 +37,21 @@ build_builtin_actors:
 
 get_method_nums:
 	cd script && cargo r
+
+build_leb128_test: verify_solc
+	./bin/solc  contracts/v0.8/tests/leb128.test.sol --output-dir ./build/v0.8/tests --overwrite --bin --hashes --opcodes --abi
+	./bin/solc  contracts/v0.8/tests/leb128.generated1.test.sol --output-dir ./build/v0.8/tests --overwrite --bin --hashes --opcodes --abi
+	./bin/solc  contracts/v0.8/tests/leb128.generated2.test.sol --output-dir ./build/v0.8/tests --overwrite --bin --hashes --opcodes --abi
+	./bin/solc  contracts/v0.8/tests/leb128.generated3.test.sol --output-dir ./build/v0.8/tests --overwrite --bin --hashes --opcodes --abi
+	./bin/solc  contracts/v0.8/tests/leb128.generated4.test.sol --output-dir ./build/v0.8/tests --overwrite --bin --hashes --opcodes --abi
+	./bin/solc  contracts/v0.8/tests/leb128.generated5.test.sol --output-dir ./build/v0.8/tests --overwrite --bin --hashes --opcodes --abi
+	./bin/solc  contracts/v0.8/tests/leb128.generated6.test.sol --output-dir ./build/v0.8/tests --overwrite --bin --hashes --opcodes --abi
+	./bin/solc  contracts/v0.8/tests/leb128.generated7.test.sol --output-dir ./build/v0.8/tests --overwrite --bin --hashes --opcodes --abi
+	./bin/solc  contracts/v0.8/tests/leb128.generated8.test.sol --output-dir ./build/v0.8/tests --overwrite --bin --hashes --opcodes --abi
+	./bin/solc  contracts/v0.8/tests/leb128.generated9.test.sol --output-dir ./build/v0.8/tests --overwrite --bin --hashes --opcodes --abi
+	./bin/solc  contracts/v0.8/tests/leb128.generated10.test.sol --output-dir ./build/v0.8/tests --overwrite --bin --hashes --opcodes --abi
+	./bin/solc  contracts/v0.8/tests/leb128.generated11.test.sol --output-dir ./build/v0.8/tests --overwrite --bin --hashes --opcodes --abi
+	./bin/solc  contracts/v0.8/tests/leb128.generated12.test.sol --output-dir ./build/v0.8/tests --overwrite --bin --hashes --opcodes --abi
 
 ################ DEPLOY ################
 
@@ -103,7 +117,7 @@ test_cbor_decode: build build_builtin_actors
 	cd testing && cargo test cbor_decode_test -- --nocapture
 
 test_leb128: build build_builtin_actors
-	cd testing && cargo test leb128_test -- --nocapture
+	cd testing && cargo test leb128 -- --nocapture
 
 ################ TESTS SECURITY ################
 
