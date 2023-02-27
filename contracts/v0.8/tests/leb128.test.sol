@@ -13,33 +13,28 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  ********************************************************************************/
+//
 // DRAFT!! THIS CODE HAS NOT BEEN AUDITED - USE ONLY FOR PROTOTYPING
 
 // SPDX-License-Identifier: Apache-2.0
 pragma solidity ^0.8.17;
 
+import "../utils/Leb128.sol";
 import "../external/Buffer.sol";
 
-/// @notice This library implement the leb128 
+/// @notice This file is meant to serve as a deployable contract of the Leb128 lib, as the library by itself is not.
+/// @notice It imports the library and create a callable method for each method in the library
 /// @author Zondax AG
-library Leb128 {
+contract Leb128Test {
     using Buffer for Buffer.buffer;
 
-    /// @notice encode a unsigned integer 64bits into bytes
-    /// @param value the actor ID to encode
-    /// @return result return the value in bytes
-    function encodeUnsignedLeb128FromUInt64(uint64 value) internal pure returns (Buffer.buffer memory) {
-        Buffer.buffer memory result;
+    function unsiged_integer_leb128_encoding() public pure {
+        bytes memory expected = hex"e58e26";
+        uint64 value = 624485;
 
-        while (true) {
-            uint64 byte_ = value & 0x7f;
-            value >>= 7;
-            if (value == 0) {
-                result.appendUint8(uint8(byte_));
-                return result;
-            }
-            result.appendUint8(uint8(byte_ | 0x80));
-        }
+        Buffer.buffer memory result = Leb128.encodeUnsignedLeb128FromUInt64(value);
+
+        require(keccak256(result.buf) == keccak256(expected), "'624485' is not returning 'e58e26'");
     }
 
 }

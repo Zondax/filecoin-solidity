@@ -13,9 +13,9 @@ build_tests: verify_solc
 	./bin/solc  contracts/v0.8/tests/precompiles.test.sol --output-dir ./build/v0.8/tests --overwrite --bin --hashes --opcodes --abi
 	./bin/solc  contracts/v0.8/tests/send.test.sol --output-dir ./build/v0.8/tests --overwrite --bin --hashes --opcodes --abi
 	./bin/solc  contracts/v0.8/tests/cbor.decode.test.sol --output-dir ./build/v0.8/tests --overwrite --bin --hashes --opcodes --abi
+	./bin/solc  contracts/v0.8/tests/leb128.test.sol --output-dir ./build/v0.8/tests --overwrite --bin --hashes --opcodes --abi
 	./bin/solc   contracts/v0.8/mocks/tests/market.test.sol --output-dir ./build/v0.8/mocks/tests --overwrite --bin --hashes --opcodes --abi
 	./bin/solc   contracts/v0.8/mocks/tests/miner.test.sol --output-dir ./build/v0.8/mocks/tests --overwrite --bin --hashes --opcodes --abi
-
 
 build_api: verify_solc
 	./bin/solc  contracts/v0.8/MarketAPI.sol --output-dir ./build/v0.8 --overwrite --bin --hashes --opcodes --abi
@@ -101,6 +101,9 @@ frc0042:
 
 test_cbor_decode: build build_builtin_actors
 	cd testing && cargo test cbor_decode_test -- --nocapture
+
+test_leb128: build build_builtin_actors
+	cd testing && cargo test leb128_test -- --nocapture
 
 ################ TESTS SECURITY ################
 
