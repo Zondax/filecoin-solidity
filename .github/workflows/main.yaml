@@ -825,7 +825,7 @@ jobs:
         run: make build_builtin_actors
       - name: Build contracts
         run: make
-      - name: Run tests for leb128
+      - name: Run tests for address
         run: |
           cd testing
           rustup target add wasm32-unknown-unknown
