@@ -27,11 +27,33 @@ import "@ensdomains/buffer/contracts/Buffer.sol";
 library FilAddresses {
     using Buffer for Buffer.buffer;
 
-    /// @notice allow to get a delegated address (f4) from an eth address
+    error InvalidAddress();
+
+    /// @notice allow to get a FilAddress from an eth address
     /// @param addr eth address to convert
-    /// @return delegated filecoin address
-    function getDelegatedAddress(address addr) internal pure returns (CommonTypes.FilAddress memory) {
+    /// @return new filecoin address
+    function fromEthAddress(address addr) internal pure returns (CommonTypes.FilAddress memory) {
         return CommonTypes.FilAddress(abi.encodePacked(hex"0410", addr));
+    }
+
+    /// @notice allow to create a Filecoin address from an actorID
+    /// @param actorID uint64 actorID
+    /// @return address filecoin address
+    function fromActorID(uint64 actorID) internal pure returns (CommonTypes.FilAddress memory) {
+        Buffer.buffer memory result = Leb128.encodeUnsignedLeb128FromUInt64(actorID);
+        return CommonTypes.FilAddress(abi.encodePacked(hex"00", result.buf));
+    }
+
+    /// @notice allow to create a Filecoin address from bytes
+    /// @param data address in bytes format
+    /// @return filecoin address
+    function fromBytes(bytes memory data) internal pure returns (CommonTypes.FilAddress memory) {
+        CommonTypes.FilAddress memory newAddr = CommonTypes.FilAddress(data);
+        if (!validate(CommonTypes.FilAddress)) {
+            revert InvalidAddress();
+        }
+
+        return newAddr;
     }
 
     /// @notice allow to validate if an address is valid or not
@@ -50,13 +72,5 @@ library FilAddresses {
         }
 
         return addr.data.length <= 256;
-    }
-
-    /// @notice allow to create a Filecoin address from an actorID
-    /// @param actorID uint64 actorID
-    /// @return address filecoin address
-    function fromActorID(uint64 actorID) internal pure returns (CommonTypes.FilAddress memory) {
-        Buffer.buffer memory result = Leb128.encodeUnsignedLeb128FromUInt64(actorID);
-        return CommonTypes.FilAddress(abi.encodePacked(hex"00", result.buf));
     }
 }
