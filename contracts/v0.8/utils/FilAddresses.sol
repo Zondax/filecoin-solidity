@@ -49,7 +49,7 @@ library FilAddresses {
     /// @return filecoin address
     function fromBytes(bytes memory data) internal pure returns (CommonTypes.FilAddress memory) {
         CommonTypes.FilAddress memory newAddr = CommonTypes.FilAddress(data);
-        if (!validate(CommonTypes.FilAddress)) {
+        if (!validate(newAddr)) {
             revert InvalidAddress();
         }
 
