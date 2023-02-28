@@ -130,6 +130,10 @@ library MarketCBOR {
         buf.startFixedArray(uint64(params.deals.length));
 
         for (uint64 i = 0; i < params.deals.length; i++) {
+            bool isLabelStr = bytes(params.deals[i].proposal.label.dataStr).length > 0;
+            bool isLabelBts = params.deals[i].proposal.label.dataBts.length > 0;
+            require((!isLabelStr && isLabelBts) || (!isLabelBts && isLabelStr), "deal label must be either string or bytes");
+
             buf.startFixedArray(2);
 
             buf.startFixedArray(11);
@@ -139,7 +143,9 @@ library MarketCBOR {
             buf.writeBool(params.deals[i].proposal.verified_deal);
             buf.writeBytes(params.deals[i].proposal.client.data);
             buf.writeBytes(params.deals[i].proposal.provider.data);
-            buf.writeString(params.deals[i].proposal.label);
+
+            isLabelStr ? buf.writeString(params.deals[i].proposal.label.dataStr) : buf.writeBytes(params.deals[i].proposal.label.dataBts);
+
             buf.writeInt64(params.deals[i].proposal.start_epoch);
             buf.writeInt64(params.deals[i].proposal.end_epoch);
             buf.writeBytes(params.deals[i].proposal.storage_price_per_epoch.serializeBigInt());
