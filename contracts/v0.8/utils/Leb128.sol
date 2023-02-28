@@ -18,7 +18,7 @@
 // SPDX-License-Identifier: Apache-2.0
 pragma solidity ^0.8.17;
 
-import "../external/Buffer.sol";
+import "@ensdomains/buffer/contracts/Buffer.sol";
 
 /// @notice This library implement the leb128
 /// @author Zondax AG

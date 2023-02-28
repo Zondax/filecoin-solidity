@@ -24,7 +24,7 @@ sol_file_header =  """
 pragma solidity ^0.8.17;
 
 import "../utils/Leb128.sol";
-import "../external/Buffer.sol";
+import "@ensdomains/buffer/contracts/Buffer.sol";
 
 /// @notice This file is meant to serve as a deployable contract of the Leb128 lib, as the library by itself is not.
 /// @notice It imports the library and create a callable method for each method in the library

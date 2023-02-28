@@ -19,7 +19,7 @@
 // SPDX-License-Identifier: Apache-2.0
 pragma solidity ^0.8.17;
 
-import "../external/CBOR.sol";
+import "solidity-cborutils/contracts/CBOR.sol";
 import "./BigIntCbor.sol";
 import "./FilecoinCbor.sol";
 import "../utils/CborDecode.sol";
@@ -132,7 +132,7 @@ library MarketCBOR {
         for (uint64 i = 0; i < params.deals.length; i++) {
             bool isLabelStr = bytes(params.deals[i].proposal.label.dataStr).length > 0;
             bool isLabelBts = params.deals[i].proposal.label.dataBts.length > 0;
-            require((!isLabelStr && isLabelBts) || (!isLabelBts && isLabelStr), "deal label must be either string or bytes");
+            require(!(isLabelStr && isLabelBts), "deal label must be either string or bytes");
 
             buf.startFixedArray(2);
 

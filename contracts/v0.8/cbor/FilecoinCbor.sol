@@ -19,8 +19,8 @@
 // SPDX-License-Identifier: Apache-2.0
 pragma solidity ^0.8.17;
 
-import "../external/CBOR.sol";
-import "../external/Buffer.sol";
+import "solidity-cborutils/contracts/CBOR.sol";
+import "@ensdomains/buffer/contracts/Buffer.sol";
 import "../types/CommonTypes.sol";
 import "../utils/CborDecode.sol";
 import "../cbor/BigIntCbor.sol";

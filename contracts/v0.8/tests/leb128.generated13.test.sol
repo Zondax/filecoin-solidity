@@ -1,4 +1,3 @@
-
 /*******************************************************************************
  *   (c) 2023 Zondax AG
  *
@@ -21,7 +20,7 @@
 pragma solidity ^0.8.17;
 
 import "../utils/Leb128.sol";
-import "../external/Buffer.sol";
+import "@ensdomains/buffer/contracts/Buffer.sol";
 
 /// @notice This file is meant to serve as a deployable contract of the Leb128 lib, as the library by itself is not.
 /// @notice It imports the library and create a callable method for each method in the library
@@ -30,7 +29,6 @@ contract Leb128Generated13Test {
     using Buffer for Buffer.buffer;
 
     function unsiged_integer_leb128_encoding_generated() public pure {
-
         bytes memory expected840 = hex"81c7f6fc90b1a8c29101";
         uint64 value840 = 10485683442469938049;
 
@@ -513,6 +511,5 @@ contract Leb128Generated13Test {
         Buffer.buffer memory result908 = Leb128.encodeUnsignedLeb128FromUInt64(value908);
 
         require(keccak256(result908.buf) == keccak256(expected908), "'6945363918775826385' is not returning 'd1efcaf3f9f5b8b160'");
-
     }
 }

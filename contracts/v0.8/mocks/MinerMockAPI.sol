@@ -19,7 +19,7 @@
 // SPDX-License-Identifier: Apache-2.0
 pragma solidity ^0.8.17;
 
-import "../external/BigNumbers.sol";
+import "@zondax/solidity-bignumber/src/BigNumbers.sol";
 
 import "../types/MinerTypes.sol";
 import "../types/CommonTypes.sol";
@@ -102,7 +102,7 @@ contract MinerMockAPI {
     /// @notice See FIP-0029, https://github.com/filecoin-project/FIPs/blob/master/FIPS/fip-0029.md
     function changeBeneficiary(MinerTypes.ChangeBeneficiaryParams memory params) public {
         if (!isBeneficiarySet) {
-            BigNumbers.BigNumber memory zero = BigNumbers.zero();
+            BigNumber memory zero = BigNumbers.zero();
             MinerTypes.BeneficiaryTerm memory term = MinerTypes.BeneficiaryTerm(
                 params.new_quota,
                 CommonTypes.BigInt(zero.val, zero.neg),
