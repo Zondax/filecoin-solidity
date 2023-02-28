@@ -132,7 +132,7 @@ library MarketCBOR {
         for (uint64 i = 0; i < params.deals.length; i++) {
             bool isLabelStr = bytes(params.deals[i].proposal.label.dataStr).length > 0;
             bool isLabelBts = params.deals[i].proposal.label.dataBts.length > 0;
-            require((!isLabelStr && isLabelBts) || (!isLabelBts && isLabelStr), "deal label must be either string or bytes");
+            require(!(isLabelStr && isLabelBts), "deal label must be either string or bytes");
 
             buf.startFixedArray(2);
 
