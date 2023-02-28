@@ -22,19 +22,16 @@ pragma solidity ^0.8.17;
 import "../utils/Leb128.sol";
 import "../utils/FilAddresses.sol";
 import "../types/CommonTypes.sol";
-import "../external/Buffer.sol";
+import "@ensdomains/buffer/contracts/Buffer.sol";
 
 /// @notice This file is meant to serve as a deployable contract of the Address lib, as the library by itself is not.
 /// @notice It imports the library and create a callable method for each method in the library
 /// @author Zondax AG
 contract AddressTest {
-
     function actorid_conversion() public pure {
         uint64 actorID = 1;
         CommonTypes.FilAddress memory result = FilAddresses.fromActorID(actorID);
 
         require(keccak256(result.data) == keccak256(hex"0001"), "'1' actorID is not returning '0001'");
     }
-
-
 }

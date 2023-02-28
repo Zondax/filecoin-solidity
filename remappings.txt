@@ -1,0 +1,3 @@
+solidity-cborutils/contracts/=lib/solidity-cborutils/contracts/
+@ensdomains/buffer=lib/buffer
+@zondax/solidity-bignumber/=lib/solidity-BigNumber/

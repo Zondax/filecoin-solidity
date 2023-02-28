@@ -19,7 +19,7 @@
 // SPDX-License-Identifier: Apache-2.0
 pragma solidity ^0.8.17;
 
-import "../external/CBOR.sol";
+import "solidity-cborutils/contracts/CBOR.sol";
 
 import "../types/MinerTypes.sol";
 import "../types/CommonTypes.sol";

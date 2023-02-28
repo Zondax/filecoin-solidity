@@ -23,14 +23,14 @@ import "../types/MarketTypes.sol";
 import "../types/CommonTypes.sol";
 import "./types/MockTypes.sol";
 
-import "../external/BigNumbers.sol";
+import "@zondax/solidity-bignumber/src/BigNumbers.sol";
 
 /// @title This library is a proxy to the singleton Storage Market actor (address: f05). Calling one of its methods will result in a cross-actor call being performed. However, in this mock library, no actual call is performed.
 /// @author Zondax AG
 /// @dev Methods prefixed with mock_ will not be available in the real library. These methods are merely used to set mock state. Note that this interface will likely break in the future as we align it
 //       with that of the real library!
 contract MarketMockAPI {
-    mapping(string => BigNumbers.BigNumber) balances;
+    mapping(string => BigNumber) balances;
     mapping(uint64 => MockTypes.Deal) deals;
 
     constructor() {
@@ -40,7 +40,7 @@ contract MarketMockAPI {
     /// @notice Deposits the received value into the balance held in escrow.
     /// @dev Because this is a mock method, no real balance is being deducted from the caller, nor incremented in the Storage Market actor (f05).
     function addBalance(bytes memory provider_or_client, uint256 value) public payable {
-        BigNumbers.BigNumber memory newValue = BigNumbers.init(value, false);
+        BigNumber memory newValue = BigNumbers.init(value, false);
         balances[string(provider_or_client)] = BigNumbers.add(balances[string(provider_or_client)], newValue);
     }
 
@@ -49,8 +49,8 @@ contract MarketMockAPI {
     /// @dev This method should be called by an approved address, but the mock does not check that the caller is an approved party.
     /// @dev Because this is a mock method, no real balance is deposited in the designated address, nor decremented from the Storage Market actor (f05).
     function withdrawBalance(MarketTypes.WithdrawBalanceParams memory params) public returns (CommonTypes.BigInt memory) {
-        BigNumbers.BigNumber memory balance = balances[string(params.provider_or_client.data)];
-        BigNumbers.BigNumber memory tokenAmount = BigNumbers.init(params.tokenAmount.val, params.tokenAmount.neg);
+        BigNumber memory balance = balances[string(params.provider_or_client.data)];
+        BigNumber memory tokenAmount = BigNumbers.init(params.tokenAmount.val, params.tokenAmount.neg);
 
         if (BigNumbers.gte(balance, tokenAmount)) {
             balances[string(params.provider_or_client.data)] = BigNumbers.sub(balance, tokenAmount);
@@ -64,8 +64,8 @@ contract MarketMockAPI {
 
     /// @return the escrow balance and locked amount for an address.
     function getBalance(bytes memory addr) public view returns (MarketTypes.GetBalanceReturn memory) {
-        BigNumbers.BigNumber memory actualBalance = balances[string(addr)];
-        BigNumbers.BigNumber memory zero = BigNumbers.zero();
+        BigNumber memory actualBalance = balances[string(addr)];
+        BigNumber memory zero = BigNumbers.zero();
 
         return MarketTypes.GetBalanceReturn(CommonTypes.BigInt(actualBalance.val, actualBalance.neg), CommonTypes.BigInt(zero.val, zero.neg));
     }
@@ -111,7 +111,7 @@ contract MarketMockAPI {
     function getDealTotalPrice(uint64 dealID) public view returns (CommonTypes.BigInt memory) {
         require(deals[dealID].id > 0);
 
-        BigNumbers.BigNumber memory price_per_epoch = BigNumbers.init(deals[dealID].price_per_epoch, false);
+        BigNumber memory price_per_epoch = BigNumbers.init(deals[dealID].price_per_epoch, false);
         return CommonTypes.BigInt(price_per_epoch.val, price_per_epoch.neg);
     }
 
@@ -119,7 +119,7 @@ contract MarketMockAPI {
     function getDealClientCollateral(uint64 dealID) public view returns (CommonTypes.BigInt memory) {
         require(deals[dealID].id > 0);
 
-        BigNumbers.BigNumber memory client_collateral = BigNumbers.init(deals[dealID].client_collateral, false);
+        BigNumber memory client_collateral = BigNumbers.init(deals[dealID].client_collateral, false);
         return CommonTypes.BigInt(client_collateral.val, client_collateral.neg);
     }
 
@@ -127,7 +127,7 @@ contract MarketMockAPI {
     function getDealProviderCollateral(uint64 dealID) public view returns (CommonTypes.BigInt memory) {
         require(deals[dealID].id > 0);
 
-        BigNumbers.BigNumber memory provider_collateral = BigNumbers.init(deals[dealID].provider_collateral, false);
+        BigNumber memory provider_collateral = BigNumbers.init(deals[dealID].provider_collateral, false);
         return CommonTypes.BigInt(provider_collateral.val, provider_collateral.neg);
     }
 

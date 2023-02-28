@@ -20,7 +20,7 @@ pragma solidity ^0.8.17;
 
 import "../types/CommonTypes.sol";
 import "../utils/Leb128.sol";
-import "../external/Buffer.sol";
+import "@ensdomains/buffer/contracts/Buffer.sol";
 
 /// @notice This library is a set a functions that allows to handle filecoin addresses conversions and validations
 /// @author Zondax AG
