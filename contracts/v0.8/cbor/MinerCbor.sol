@@ -136,6 +136,7 @@ library MinerCBOR {
 
         uint byteIdx = 0;
         uint len;
+        uint leni;
 
         (len, byteIdx) = rawResp.readFixedArray(byteIdx);
         assert(len == 1);
@@ -144,6 +145,9 @@ library MinerCBOR {
         ret.vesting_funds = new MinerTypes.VestingFunds[](len);
 
         for (uint i = 0; i < len; i++) {
+            (leni, byteIdx) = rawResp.readFixedArray(byteIdx);
+            assert(leni == 2);
+            
             (epoch, byteIdx) = rawResp.readInt64(byteIdx);
             (tmp, byteIdx) = rawResp.readBytes(byteIdx);
 

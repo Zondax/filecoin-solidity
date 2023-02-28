@@ -1,5 +1,12 @@
 use std::fs;
 
+    /*****************************************
+     *
+     *  This file is used only to generate and
+     *  compare the method num using FRC42
+     *
+     *****************************************/
+
 fn main() {
 
     /*********************************
@@ -55,7 +62,7 @@ fn main() {
     println!("GetDealActivationExported {}", GetDealActivationExported);
 
     // Verify we have the right one
-    let file = fs::read_to_string("../../contracts/v0.8/types/MarketTypes.sol").unwrap();
+    let file = fs::read_to_string("../contracts/v0.8/types/MarketTypes.sol").unwrap();
 
     'method: for (method, method_num ) in method_nums {
         for line in file.lines() {
@@ -148,7 +155,7 @@ fn main() {
     println!("GetMultiaddrsExported {}", GetMultiaddrsExported);
 
     // Verify we have the right ones
-    let file = fs::read_to_string("../../contracts/v0.8/types/MinerTypes.sol").unwrap();
+    let file = fs::read_to_string("../contracts/v0.8/types/MinerTypes.sol").unwrap();
 
     'method: for (method, method_num ) in method_nums {
         for line in file.lines() {
@@ -195,7 +202,7 @@ fn main() {
     println!("MinerConsensusCountExported {}", MinerConsensusCountExported);
 
     // Verify we have the right ones
-    let file = fs::read_to_string("../../contracts/v0.8/types/PowerTypes.sol").unwrap();
+    let file = fs::read_to_string("../contracts/v0.8/types/PowerTypes.sol").unwrap();
 
     'method: for (method, method_num ) in method_nums {
         for line in file.lines() {
@@ -242,7 +249,7 @@ fn main() {
     println!("RemoveExpiredClaimsExported {}", RemoveExpiredClaimsExported);
 
     // Verify we have the right ones
-    let file = fs::read_to_string("../../contracts/v0.8/types/VerifRegTypes.sol").unwrap();
+    let file = fs::read_to_string("../contracts/v0.8/types/VerifRegTypes.sol").unwrap();
 
     'method: for (method, method_num ) in method_nums {
         for line in file.lines() {
@@ -317,7 +324,7 @@ fn main() {
     println!("AllowanceExported {}", AllowanceExported);
 
     // Verify we have the right ones
-    let file = fs::read_to_string("../../contracts/v0.8/types/DataCapTypes.sol").unwrap();
+    let file = fs::read_to_string("../contracts/v0.8/types/DataCapTypes.sol").unwrap();
 
     'method: for (method, method_num ) in method_nums {
         for line in file.lines() {
@@ -348,7 +355,7 @@ fn main() {
     println!("ExecExported {}", ExecExported);
 
     // Verify we have the right ones
-    let file = fs::read_to_string("../../contracts/v0.8/types/InitTypes.sol").unwrap();
+    let file = fs::read_to_string("../contracts/v0.8/types/InitTypes.sol").unwrap();
 
     'method: for (method, method_num ) in method_nums {
         for line in file.lines() {
@@ -379,7 +386,7 @@ fn main() {
     println!("AuthenticateMessageExported {}", AuthenticateMessageExported);
 
     // Verify we have the right ones
-    let file = fs::read_to_string("../../contracts/v0.8/types/AccountTypes.sol").unwrap();
+    let file = fs::read_to_string("../contracts/v0.8/types/AccountTypes.sol").unwrap();
 
     'method: for (method, method_num ) in method_nums {
         for line in file.lines() {
@@ -401,16 +408,16 @@ fn main() {
 
      println!("COMMON EXPORTED METHOD NUM");
      let mut method_nums: Vec<(String, u64)> = vec![];
-
+ 
      let UniversalReceiverHook = frc42_dispatch::method_hash!("Receive");
      method_nums.push(("UniversalReceiverHookMethodNum".to_string(), UniversalReceiverHook));
-
-
+ 
+ 
      println!("UniversalReceiverHookMethodNum {}", UniversalReceiverHook);
-
+ 
      // Verify we have the right ones
-     let file = fs::read_to_string("../../contracts/v0.8/types/CommonTypes.sol").unwrap();
-
+     let file = fs::read_to_string("../contracts/v0.8/types/CommonTypes.sol").unwrap();
+ 
      'method: for (method, method_num ) in method_nums {
          for line in file.lines() {
              if line.contains(&format!(" {} ",method)) {

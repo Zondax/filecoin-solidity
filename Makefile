@@ -14,6 +14,7 @@ build_tests: verify_solc build_leb128_test
 	./bin/solc solidity-cborutils=${PWD}/node_modules/solidity-cborutils/ @ensdomains=${PWD}/node_modules/@ensdomains/ contracts/v0.8/tests/send.test.sol --output-dir ./build/v0.8/tests --overwrite --bin --hashes --opcodes --abi
 	./bin/solc solidity-cborutils=${PWD}/node_modules/solidity-cborutils/ @ensdomains=${PWD}/node_modules/@ensdomains/ contracts/v0.8/tests/cbor.decode.test.sol --output-dir ./build/v0.8/tests --overwrite --bin --hashes --opcodes --abi
 	./bin/solc solidity-cborutils=${PWD}/node_modules/solidity-cborutils/ @ensdomains=${PWD}/node_modules/@ensdomains/ contracts/v0.8/tests/address.test.sol --output-dir ./build/v0.8/tests --overwrite --bin --hashes --opcodes --abi
+	./bin/solc solidity-cborutils=${PWD}/node_modules/solidity-cborutils/ @ensdomains=${PWD}/node_modules/@ensdomains/ contracts/v0.8/tests/deserializeparams.test.sol --output-dir ./build/v0.8/tests --overwrite --bin --hashes --opcodes --abi
 	./bin/solc @zondax/solidity-bignumber=${PWD}/node_modules/@zondax/solidity-bignumber/  solidity-cborutils=${PWD}/node_modules/solidity-cborutils/ @ensdomains=${PWD}/node_modules/@ensdomains/ contracts/v0.8/mocks/tests/market.test.sol --output-dir ./build/v0.8/mocks/tests --overwrite --bin --hashes --opcodes --abi
 	./bin/solc @zondax/solidity-bignumber=${PWD}/node_modules/@zondax/solidity-bignumber/  solidity-cborutils=${PWD}/node_modules/solidity-cborutils/ @ensdomains=${PWD}/node_modules/@ensdomains/ contracts/v0.8/mocks/tests/miner.test.sol --output-dir ./build/v0.8/mocks/tests --overwrite --bin --hashes --opcodes --abi
 
@@ -114,13 +115,16 @@ test_send_integration: build build_builtin_actors
 	cd testing && cargo test send_test -- --nocapture
 
 test_frc0042:
-	cd scripts/frc42 && cargo r
+	cd testing  && cargo run --example methodnum
 
 test_cbor_decode: build build_builtin_actors
 	cd testing && cargo test cbor_decode_test -- --nocapture
 
 test_leb128: build build_builtin_actors
 	cd testing && cargo test leb128 -- --nocapture
+
+test_deserialize: build build_builtin_actors
+	cd testing && cargo test deserialize_params_tests -- --nocapture
 
 test_address: build build_builtin_actors
 	cd testing && cargo test address -- --nocapture
