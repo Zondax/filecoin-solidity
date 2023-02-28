@@ -652,6 +652,8 @@ jobs:
         uses: actions/checkout@v2
         with:
           submodules: 'false'
+      - name: Instal deps
+        run: make install-opencl
       - name: Install latest stable
         uses: actions-rs/toolchain@v1
         with:
