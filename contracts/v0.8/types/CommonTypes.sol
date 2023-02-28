@@ -64,5 +64,11 @@ library CommonTypes {
         bytes data;
     }
 
+    /// @param dataBytes deal proposal label in bytes format (it can be utf8 string or arbitray bytes string)
+    struct DealLabel {
+        bytes dataBts;
+        string dataStr;
+    }
+
     type FilActorId is uint64;
 }

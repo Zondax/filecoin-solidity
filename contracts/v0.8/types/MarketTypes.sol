@@ -105,7 +105,7 @@ library MarketTypes {
         bool verified_deal;
         CommonTypes.FilAddress client;
         CommonTypes.FilAddress provider;
-        string label;
+        CommonTypes.DealLabel label;
         int64 start_epoch;
         int64 end_epoch;
         CommonTypes.BigInt storage_price_per_epoch;
