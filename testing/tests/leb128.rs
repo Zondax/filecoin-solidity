@@ -25,6 +25,9 @@ const WASM_COMPILED_GENERATED8_PATH: &str = "../build/v0.8/tests/Leb128Generated
 const WASM_COMPILED_GENERATED9_PATH: &str = "../build/v0.8/tests/Leb128Generated9Test.bin";
 const WASM_COMPILED_GENERATED10_PATH: &str = "../build/v0.8/tests/Leb128Generated10Test.bin";
 const WASM_COMPILED_GENERATED11_PATH: &str = "../build/v0.8/tests/Leb128Generated11Test.bin";
+const WASM_COMPILED_GENERATED12_PATH: &str = "../build/v0.8/tests/Leb128Generated12Test.bin";
+const WASM_COMPILED_GENERATED13_PATH: &str = "../build/v0.8/tests/Leb128Generated13Test.bin";
+const WASM_COMPILED_GENERATED14_PATH: &str = "../build/v0.8/tests/Leb128Generated14Test.bin";
 
 #[derive(SerdeSerialize, SerdeDeserialize)]
 #[serde(transparent)]
@@ -742,14 +745,14 @@ fn leb128_generated11_tests() {
     println!("Calling `encodeUnsignedLeb128FromUInt64`");
 
     let message = Message {
-            from: sender[0].1,
-            to: Address::new_id(contract_actor_id),
-            gas_limit: 1000000000,
-            method_num: EvmMethods::InvokeContract as u64,
-            sequence: 1,
-            params: RawBytes::new(hex::decode("44cb3dcfa7").unwrap()),
-            ..Message::default()
-        };
+        from: sender[0].1,
+        to: Address::new_id(contract_actor_id),
+        gas_limit: 1000000000,
+        method_num: EvmMethods::InvokeContract as u64,
+        sequence: 1,
+        params: RawBytes::new(hex::decode("44cb3dcfa7").unwrap()),
+        ..Message::default()
+    };
 
     let res = executor
         .execute_message(message, ApplyKind::Explicit, 100)
@@ -760,3 +763,196 @@ fn leb128_generated11_tests() {
 
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
 }
+
+
+
+#[test]
+fn leb128_generated12_tests() {
+    println!("Testing Leb128 lib with more tests");
+
+    let (mut tester, _manifest) = setup::setup_tester();
+
+    let sender: [Account; 1] = tester.create_accounts().unwrap();
+
+    // Instantiate machine
+    tester.instantiate_machine(DummyExterns).unwrap();
+
+    let executor = tester.executor.as_mut().unwrap();
+
+    println!("Calling init actor (EVM)");
+
+    let evm_bin = setup::load_evm(WASM_COMPILED_GENERATED12_PATH);
+
+    let constructor_params = CreateExternalParams(evm_bin);
+
+    let message = Message {
+        from: sender[0].1,
+        to: EAM_ACTOR_ADDR,
+        gas_limit: 1000000000,
+        method_num: 4,
+        sequence: 0,
+        params: RawBytes::serialize(constructor_params).unwrap(),
+        ..Message::default()
+    };
+
+    let res = executor
+        .execute_message(message, ApplyKind::Explicit, 100)
+        .unwrap();
+
+    dbg!(&res.failure_info);
+
+    assert_eq!(res.msg_receipt.exit_code.value(), 0);
+
+    let exec_return: Return = RawBytes::deserialize(&res.msg_receipt.return_data).unwrap();
+
+    let contract_actor_id = exec_return.actor_id;
+
+    println!("Calling `encodeUnsignedLeb128FromUInt64`");
+
+    let message = Message {
+        from: sender[0].1,
+        to: Address::new_id(contract_actor_id),
+        gas_limit: 1000000000,
+        method_num: EvmMethods::InvokeContract as u64,
+        sequence: 1,
+        params: RawBytes::new(hex::decode("44cb3dcfa7").unwrap()),
+        ..Message::default()
+    };
+
+    let res = executor
+        .execute_message(message, ApplyKind::Explicit, 100)
+        .unwrap();
+
+    // show gas usage for curiosity
+    dbg!(&res.msg_receipt.gas_used);
+
+    assert_eq!(res.msg_receipt.exit_code.value(), 0);
+}
+
+#[test]
+fn leb128_generated13_tests() {
+    println!("Testing Leb128 lib with more tests");
+
+    let (mut tester, _manifest) = setup::setup_tester();
+
+    let sender: [Account; 1] = tester.create_accounts().unwrap();
+
+    // Instantiate machine
+    tester.instantiate_machine(DummyExterns).unwrap();
+
+    let executor = tester.executor.as_mut().unwrap();
+
+    println!("Calling init actor (EVM)");
+
+    let evm_bin = setup::load_evm(WASM_COMPILED_GENERATED13_PATH);
+
+    let constructor_params = CreateExternalParams(evm_bin);
+
+    let message = Message {
+        from: sender[0].1,
+        to: EAM_ACTOR_ADDR,
+        gas_limit: 1000000000,
+        method_num: 4,
+        sequence: 0,
+        params: RawBytes::serialize(constructor_params).unwrap(),
+        ..Message::default()
+    };
+
+    let res = executor
+        .execute_message(message, ApplyKind::Explicit, 100)
+        .unwrap();
+
+    dbg!(&res.failure_info);
+
+    assert_eq!(res.msg_receipt.exit_code.value(), 0);
+
+    let exec_return: Return = RawBytes::deserialize(&res.msg_receipt.return_data).unwrap();
+
+    let contract_actor_id = exec_return.actor_id;
+
+    println!("Calling `encodeUnsignedLeb128FromUInt64`");
+
+    let message = Message {
+        from: sender[0].1,
+        to: Address::new_id(contract_actor_id),
+        gas_limit: 1000000000,
+        method_num: EvmMethods::InvokeContract as u64,
+        sequence: 1,
+        params: RawBytes::new(hex::decode("44cb3dcfa7").unwrap()),
+        ..Message::default()
+    };
+
+    let res = executor
+        .execute_message(message, ApplyKind::Explicit, 100)
+        .unwrap();
+
+    // show gas usage for curiosity
+    dbg!(&res.msg_receipt.gas_used);
+
+    assert_eq!(res.msg_receipt.exit_code.value(), 0);
+}
+
+
+#[test]
+fn leb128_generated14_tests() {
+    println!("Testing Leb128 lib with more tests");
+
+    let (mut tester, _manifest) = setup::setup_tester();
+
+    let sender: [Account; 1] = tester.create_accounts().unwrap();
+
+    // Instantiate machine
+    tester.instantiate_machine(DummyExterns).unwrap();
+
+    let executor = tester.executor.as_mut().unwrap();
+
+    println!("Calling init actor (EVM)");
+
+    let evm_bin = setup::load_evm(WASM_COMPILED_GENERATED14_PATH);
+
+    let constructor_params = CreateExternalParams(evm_bin);
+
+    let message = Message {
+        from: sender[0].1,
+        to: EAM_ACTOR_ADDR,
+        gas_limit: 1000000000,
+        method_num: 4,
+        sequence: 0,
+        params: RawBytes::serialize(constructor_params).unwrap(),
+        ..Message::default()
+    };
+
+    let res = executor
+        .execute_message(message, ApplyKind::Explicit, 100)
+        .unwrap();
+
+    dbg!(&res.failure_info);
+
+    assert_eq!(res.msg_receipt.exit_code.value(), 0);
+
+    let exec_return: Return = RawBytes::deserialize(&res.msg_receipt.return_data).unwrap();
+
+    let contract_actor_id = exec_return.actor_id;
+
+    println!("Calling `encodeUnsignedLeb128FromUInt64`");
+
+    let message = Message {
+        from: sender[0].1,
+        to: Address::new_id(contract_actor_id),
+        gas_limit: 1000000000,
+        method_num: EvmMethods::InvokeContract as u64,
+        sequence: 1,
+        params: RawBytes::new(hex::decode("44cb3dcfa7").unwrap()),
+        ..Message::default()
+    };
+
+    let res = executor
+        .execute_message(message, ApplyKind::Explicit, 100)
+        .unwrap();
+
+    // show gas usage for curiosity
+    dbg!(&res.msg_receipt.gas_used);
+
+    assert_eq!(res.msg_receipt.exit_code.value(), 0);
+}
+

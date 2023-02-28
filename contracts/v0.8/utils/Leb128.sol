@@ -20,7 +20,7 @@ pragma solidity ^0.8.17;
 
 import "../external/Buffer.sol";
 
-/// @notice This library implement the leb128 
+/// @notice This library implement the leb128
 /// @author Zondax AG
 library Leb128 {
     using Buffer for Buffer.buffer;
@@ -28,9 +28,7 @@ library Leb128 {
     /// @notice encode a unsigned integer 64bits into bytes
     /// @param value the actor ID to encode
     /// @return result return the value in bytes
-    function encodeUnsignedLeb128FromUInt64(uint64 value) internal pure returns (Buffer.buffer memory) {
-        Buffer.buffer memory result;
-
+    function encodeUnsignedLeb128FromUInt64(uint64 value) internal pure returns (Buffer.buffer memory result) {
         while (true) {
             uint64 byte_ = value & 0x7f;
             value >>= 7;
@@ -41,5 +39,4 @@ library Leb128 {
             result.appendUint8(uint8(byte_ | 0x80));
         }
     }
-
 }

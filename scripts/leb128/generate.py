@@ -49,7 +49,7 @@ for line in lines:
     (value, hex) = line.split(" ")
     hex = hex.strip("\n")
 
-    if i % 86 == 0:
+    if i % 70 == 0:
         num_file += 1
         sol_file = sol_file_header.format(num_file)
 
@@ -59,13 +59,13 @@ for line in lines:
 
         Buffer.buffer memory result{i} = Leb128.encodeUnsignedLeb128FromUInt64(value{i});
 
-        require(keccak256(result{i}.buf) == keccak256(expected{i}), "'{value}' is not returning '{hex}'");    
+        require(keccak256(result{i}.buf) == keccak256(expected{i}), "'{value}' is not returning '{hex}'");
 """.format(i=i, hex=hex, value=value)
     i += 1
 
-    if i % 86 == 85:
+    if i % 70 == 69:
         sol_file += sol_file_end
 
-        file = open("../contracts/v0.8/tests/leb128.generated{}.test.sol".format(num_file), 'w')
+        file = open("../../contracts/v0.8/tests/leb128.generated{}.test.sol".format(num_file), 'w')
         file.write(sol_file)
         file.close()
