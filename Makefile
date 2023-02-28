@@ -36,9 +36,6 @@ build_mock_api: verify_solc
 build_builtin_actors:
 	cd testing/builtin-actors && make bundle-hyperspace
 
-get_method_nums:
-	cd script && cargo r
-
 build_leb128_test: verify_solc
 	./bin/solc  contracts/v0.8/tests/leb128.test.sol --output-dir ./build/v0.8/tests --overwrite --bin --hashes --opcodes --abi
 	./bin/solc  contracts/v0.8/tests/leb128.generated1.test.sol --output-dir ./build/v0.8/tests --overwrite --bin --hashes --opcodes --abi
@@ -110,8 +107,8 @@ test_precompiles_integration: build build_builtin_actors
 test_send_integration: build build_builtin_actors
 	cd testing && cargo test send_test -- --nocapture
 
-frc0042:
-	cd script && cargo r
+test_frc0042:
+	cd scripts/frc42 && cargo r
 
 test_cbor_decode: build build_builtin_actors
 	cd testing && cargo test cbor_decode_test -- --nocapture
