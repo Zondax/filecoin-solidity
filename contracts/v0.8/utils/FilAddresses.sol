@@ -33,7 +33,7 @@ library FilAddresses {
     /// @param addr eth address to convert
     /// @return new filecoin address
     function fromEthAddress(address addr) internal pure returns (CommonTypes.FilAddress memory) {
-        return CommonTypes.FilAddress(abi.encodePacked(hex"0410", addr));
+        return CommonTypes.FilAddress(abi.encodePacked(hex"040a", addr));
     }
 
     /// @notice allow to create a Filecoin address from an actorID
