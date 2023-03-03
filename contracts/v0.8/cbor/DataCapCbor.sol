@@ -19,7 +19,7 @@
 // SPDX-License-Identifier: Apache-2.0
 pragma solidity ^0.8.17;
 
-import "../external/CBOR.sol";
+import "solidity-cborutils/contracts/CBOR.sol";
 
 import "../types/CommonTypes.sol";
 import "../types/DataCapTypes.sol";
@@ -42,8 +42,8 @@ library DataCapCBOR {
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
         buf.startFixedArray(2);
-        buf.writeBytes(params.owner);
-        buf.writeBytes(params.operator);
+        buf.writeBytes(params.owner.data);
+        buf.writeBytes(params.operator.data);
 
         return buf.data();
     }
@@ -55,7 +55,7 @@ library DataCapCBOR {
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
         buf.startFixedArray(3);
-        buf.writeBytes(params.to);
+        buf.writeBytes(params.to.data);
         buf.writeBytes(params.amount.serializeBigInt());
         buf.writeBytes(params.operator_data);
 
@@ -91,8 +91,8 @@ library DataCapCBOR {
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
         buf.startFixedArray(4);
-        buf.writeBytes(params.from);
-        buf.writeBytes(params.to);
+        buf.writeBytes(params.from.data);
+        buf.writeBytes(params.to.data);
         buf.writeBytes(params.amount.serializeBigInt());
         buf.writeBytes(params.operator_data);
 
@@ -131,7 +131,7 @@ library DataCapCBOR {
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
         buf.startFixedArray(2);
-        buf.writeBytes(params.operator);
+        buf.writeBytes(params.operator.data);
         buf.writeBytes(params.increase.serializeBigInt());
 
         return buf.data();
@@ -144,51 +144,10 @@ library DataCapCBOR {
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
         buf.startFixedArray(2);
-        buf.writeBytes(params.operator);
+        buf.writeBytes(params.operator.data);
         buf.writeBytes(params.decrease.serializeBigInt());
 
         return buf.data();
-    }
-
-    /// @notice serialize RevokeAllowanceParams struct to cbor in order to pass as arguments to the datacap actor
-    /// @param params RevokeAllowanceParams to serialize as cbor
-    /// @return cbor serialized data as bytes
-    function serializeRevokeAllowanceParams(DataCapTypes.RevokeAllowanceParams memory params) internal pure returns (bytes memory) {
-        CBOR.CBORBuffer memory buf = CBOR.create(64);
-
-        buf.startFixedArray(1);
-        buf.writeBytes(params.operator);
-
-        return buf.data();
-    }
-
-    /// @notice serialize BurnParams struct to cbor in order to pass as arguments to the datacap actor
-    /// @param params BurnParams to serialize as cbor
-    /// @return cbor serialized data as bytes
-    function serializeBurnParams(DataCapTypes.BurnParams memory params) internal pure returns (bytes memory) {
-        CBOR.CBORBuffer memory buf = CBOR.create(64);
-
-        buf.startFixedArray(1);
-        buf.writeBytes(params.amount.serializeBigInt());
-
-        return buf.data();
-    }
-
-    /// @notice deserialize BurnReturn struct from cbor encoded bytes coming from a datacap actor call
-    /// @param rawResp cbor encoded response
-    /// @return ret new instance of BurnReturn created based on parsed data
-    function deserializeBurnReturn(bytes memory rawResp) internal pure returns (DataCapTypes.BurnReturn memory ret) {
-        uint byteIdx = 0;
-        uint len;
-        bytes memory tmp;
-
-        (len, byteIdx) = rawResp.readFixedArray(byteIdx);
-        assert(len == 1);
-
-        (tmp, byteIdx) = rawResp.readBytes(byteIdx);
-        ret.balance = tmp.deserializeBigInt();
-
-        return ret;
     }
 
     /// @notice serialize BurnFromParams struct to cbor in order to pass as arguments to the datacap actor
@@ -198,7 +157,7 @@ library DataCapCBOR {
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
         buf.startFixedArray(2);
-        buf.writeBytes(params.owner);
+        buf.writeBytes(params.owner.data);
         buf.writeBytes(params.amount.serializeBigInt());
 
         return buf.data();

@@ -25,19 +25,18 @@ import "./CommonTypes.sol";
 /// @title Filecoin Verified Registry actor types for Solidity.
 /// @author Zondax AG
 library VerifRegTypes {
-    uint64 constant ActorID = 6;
+    CommonTypes.FilActorId constant ActorID = CommonTypes.FilActorId.wrap(6);
     uint constant GetClaimsMethodNum = 2199871187;
-    uint constant AddVerifierClientMethodNum = 3916220144;
+    uint constant AddVerifiedClientMethodNum = 3916220144;
     uint constant RemoveExpiredAllocationsMethodNum = 2421068268;
     uint constant ExtendClaimTermsMethodNum = 1752273514;
     uint constant RemoveExpiredClaimsMethodNum = 2873373899;
-    uint constant UniversalReceiverMethodNum = 3726118371;
 
     /// @param provider the provider address.
     /// @param  claim_ids a list of Claim IDs for specific provider.
     struct GetClaimsParams {
-        uint64 provider;
-        uint64[] claim_ids;
+        CommonTypes.FilActorId provider;
+        CommonTypes.FilActorId[] claim_ids;
     }
 
     /// @param  claims list of Claims returned.
@@ -49,23 +48,23 @@ library VerifRegTypes {
 
     /// @param addr the verified client address
     /// @param allowance approved DataCap for this verified client
-    struct AddVerifierClientParams {
-        bytes addr;
+    struct AddVerifiedClientParams {
+        CommonTypes.FilAddress addr;
         bytes allowance;
     }
 
     /// @param client the client address for which to expired allocations.
     /// @param allocation_ids list of allocation IDs to attempt to remove. If empty, will remove all eligible expired allocations.
     struct RemoveExpiredAllocationsParams {
-        uint64 client;
-        uint64[] allocation_ids;
+        CommonTypes.FilActorId client;
+        CommonTypes.FilActorId[] allocation_ids;
     }
 
     /// @param considered Allocation IDs are either specified by the caller or discovered to be expired.
     /// @param results results for each processed allocation.
     /// @param datacap_recovered the amount of DataCap token reclaimed for the client.
     struct RemoveExpiredAllocationsReturn {
-        uint64[] considered;
+        CommonTypes.FilActorId[] considered;
         CommonTypes.BatchReturn results;
         CommonTypes.BigInt datacap_recovered;
     }
@@ -73,14 +72,14 @@ library VerifRegTypes {
     /// @param provider the provider address (need not be the caller)
     /// @param claim_ids a list of Claim IDs with expired term. If no claims are specified, all eligible claims will be removed.
     struct RemoveExpiredClaimsParams {
-        uint64 provider;
-        uint64[] claim_ids;
+        CommonTypes.FilActorId provider;
+        CommonTypes.FilActorId[] claim_ids;
     }
 
     /// @param considered a list of IDs of the claims that were either specified by the caller or discovered to be expired.
     /// @param results results for each processed claim.
     struct RemoveExpiredClaimsReturn {
-        uint64[] considered;
+        CommonTypes.FilActorId[] considered;
         CommonTypes.BatchReturn results;
     }
 
@@ -93,8 +92,8 @@ library VerifRegTypes {
     /// @param claim_id claim ID.
     /// @param term_max the max chain epoch to extend.
     struct ClaimTerm {
-        uint64 provider;
-        uint64 claim_id;
+        CommonTypes.FilActorId provider;
+        CommonTypes.FilActorId claim_id;
         int64 term_max;
     }
 
@@ -105,15 +104,15 @@ library VerifRegTypes {
     /// @param term_min the min period after term started which the provider must commit to storing data.
     /// @param term_max the max period after term started for which the provider can earn QA-power for the data.
     /// @param term_start the epoch at which the piece was committed.
-    /// @param sector ID of the provide's sector in which the data is committed.
+    /// @param sector ID of the provider's sector in which the data is committed.
     struct Claim {
-        uint64 provider;
-        uint64 client;
+        CommonTypes.FilActorId provider;
+        CommonTypes.FilActorId client;
         bytes data;
         uint64 size;
         int64 term_min;
         int64 term_max;
         int64 term_start;
-        uint64 sector;
+        CommonTypes.FilActorId sector;
     }
 }

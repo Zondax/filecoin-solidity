@@ -19,7 +19,7 @@
 // SPDX-License-Identifier: Apache-2.0
 pragma solidity ^0.8.17;
 
-import "../external/BigNumbers.sol";
+import "@zondax/solidity-bignumber/src/BigNumbers.sol";
 
 import "../types/MinerTypes.sol";
 import "../types/CommonTypes.sol";
@@ -59,7 +59,7 @@ contract MinerMockAPI {
 
         bytes memory proposed = "0x00";
 
-        return MinerTypes.GetOwnerReturn(owner, proposed);
+        return MinerTypes.GetOwnerReturn(CommonTypes.FilAddress(owner), CommonTypes.FilAddress(proposed));
     }
 
     /// @param addr New owner address
@@ -69,24 +69,24 @@ contract MinerMockAPI {
         owner = addr;
     }
 
-    /// @param params The "controlling" addresses are the Owner, the Worker, and all Control Addresses.
+    /// @param addr The "controlling" addresses are the Owner, the Worker, and all Control Addresses.
     /// @return Whether the provided address is "controlling".
-    function isControllingAddress(MinerTypes.IsControllingAddressParam memory params) public pure returns (MinerTypes.IsControllingAddressReturn memory) {
-        require(params.addr[0] >= 0x00);
+    function isControllingAddress(CommonTypes.FilAddress memory addr) public pure returns (bool) {
+        require(addr.data[0] >= 0x00);
 
-        return MinerTypes.IsControllingAddressReturn(false);
+        return false;
     }
 
     /// @return the miner's sector size.
-    function getSectorSize() public view returns (MinerTypes.GetSectorSizeReturn memory) {
-        return MinerTypes.GetSectorSizeReturn(sectorSizesBytes[MinerTypes.SectorSize._8MiB]);
+    function getSectorSize() public view returns (uint64) {
+        return sectorSizesBytes[MinerTypes.SectorSize._8MiB];
     }
 
     /// @notice This is calculated as actor balance - (vesting funds + pre-commit deposit + initial pledge requirement + fee debt)
     /// @notice Can go negative if the miner is in IP debt.
     /// @return the available balance of this miner.
-    function getAvailableBalance() public pure returns (MinerTypes.GetAvailableBalanceReturn memory) {
-        return MinerTypes.GetAvailableBalanceReturn(CommonTypes.BigInt(hex"021E19E0C9BAB2400000", false));
+    function getAvailableBalance() public pure returns (CommonTypes.BigInt memory) {
+        return CommonTypes.BigInt(hex"021E19E0C9BAB2400000", false);
     }
 
     /// @return the funds vesting in this miner as a list of (vesting_epoch, vesting_amount) tuples.
@@ -102,7 +102,7 @@ contract MinerMockAPI {
     /// @notice See FIP-0029, https://github.com/filecoin-project/FIPs/blob/master/FIPS/fip-0029.md
     function changeBeneficiary(MinerTypes.ChangeBeneficiaryParams memory params) public {
         if (!isBeneficiarySet) {
-            BigNumbers.BigNumber memory zero = BigNumbers.zero();
+            BigNumber memory zero = BigNumbers.zero();
             MinerTypes.BeneficiaryTerm memory term = MinerTypes.BeneficiaryTerm(
                 params.new_quota,
                 CommonTypes.BigInt(zero.val, zero.neg),

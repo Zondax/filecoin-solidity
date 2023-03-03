@@ -20,6 +20,8 @@
 pragma solidity ^0.8.17;
 
 import "./types/DataCapTypes.sol";
+import "./types/CommonTypes.sol";
+import "./cbor/FilecoinCbor.sol";
 import "./cbor/DataCapCbor.sol";
 import "./cbor/BytesCbor.sol";
 import "./utils/Actor.sol";
@@ -29,6 +31,7 @@ import "./utils/Actor.sol";
 library DataCapAPI {
     using DataCapCBOR for *;
     using BytesCBOR for *;
+    using FilecoinCBOR for *;
 
     /// @notice Return the name of DataCap token which is 'DataCap'.
     function name() internal returns (string memory) {
@@ -58,7 +61,7 @@ library DataCapAPI {
     }
 
     /// @notice Return the DataCap token balance for the wallet address.
-    function balance(bytes memory addr) internal returns (CommonTypes.BigInt memory) {
+    function balance(CommonTypes.FilAddress memory addr) internal returns (CommonTypes.BigInt memory) {
         bytes memory raw_request = addr.serializeAddress();
 
         bytes memory result = Actor.callByID(DataCapTypes.ActorID, DataCapTypes.BalanceOfMethodNum, Misc.CBOR_CODEC, raw_request, 0, true);
@@ -116,8 +119,8 @@ library DataCapAPI {
     }
 
     /// @notice Revoke the DataCap token allowance from the operator and set the operator's allowance in behave of owner/caller address to 0.
-    function revokeAllowance(DataCapTypes.RevokeAllowanceParams memory params) internal returns (CommonTypes.BigInt memory) {
-        bytes memory raw_request = params.serializeRevokeAllowanceParams();
+    function revokeAllowance(CommonTypes.FilAddress memory operator) internal returns (CommonTypes.BigInt memory) {
+        bytes memory raw_request = operator.serializeArrayFilAddress();
 
         bytes memory result = Actor.callByID(DataCapTypes.ActorID, DataCapTypes.RevokeAllowanceMethodNum, Misc.CBOR_CODEC, raw_request, 0, false);
 
@@ -125,12 +128,12 @@ library DataCapAPI {
     }
 
     /// @notice Burn an amount of DataCap token from the owner/caller address, decreasing total token supply.
-    function burn(DataCapTypes.BurnParams memory params) internal returns (DataCapTypes.BurnReturn memory) {
-        bytes memory raw_request = params.serializeBurnParams();
+    function burn(CommonTypes.BigInt memory amount) internal returns (CommonTypes.BigInt memory) {
+        bytes memory raw_request = amount.serializeArrayBigInt();
 
         bytes memory result = Actor.callByID(DataCapTypes.ActorID, DataCapTypes.BurnMethodNum, Misc.CBOR_CODEC, raw_request, 0, false);
 
-        return result.deserializeBurnReturn();
+        return result.deserializeArrayBigInt();
     }
 
     /// @notice Burn an amount of DataCap token from the specified address (owner address), decrease the allowance of operator/caller, and decrease total token supply.

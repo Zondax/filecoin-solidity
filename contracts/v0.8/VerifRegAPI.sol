@@ -41,12 +41,13 @@ library VerifRegAPI {
     }
 
     /// @notice add a verified Client address to Filecoin Plus program.
-    function addVerifiedClient(VerifRegTypes.AddVerifierClientParams memory params) internal {
-        bytes memory raw_request = params.serializeAddVerifierClientParams();
+    function addVerifiedClient(VerifRegTypes.AddVerifiedClientParams memory params) internal {
+        bytes memory raw_request = params.serializeAddVerifiedClientParams();
 
-        bytes memory result = Actor.callByID(VerifRegTypes.ActorID, VerifRegTypes.AddVerifierClientMethodNum, Misc.CBOR_CODEC, raw_request, 0, false);
-
-        require(result.length == 0, Actor.UNEXPECTED_RESPONSE_MESSAGE);
+        bytes memory result = Actor.callByID(VerifRegTypes.ActorID, VerifRegTypes.AddVerifiedClientMethodNum, Misc.CBOR_CODEC, raw_request, 0, false);
+        if (result.length != 0) {
+            revert Actor.InvalidResponseLength();
+        }
     }
 
     /// @notice remove the expired DataCap allocations and reclaimed those DataCap token back to Client. If the allocation amount is not specified, all expired DataCap allocation will be removed.
@@ -77,5 +78,4 @@ library VerifRegAPI {
 
         return result.deserializeRemoveExpiredClaimsReturn();
     }
-
 }

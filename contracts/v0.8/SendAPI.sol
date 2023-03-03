@@ -21,25 +21,28 @@ pragma solidity ^0.8.17;
 
 import "./utils/Misc.sol";
 import "./utils/Actor.sol";
+import "./types/CommonTypes.sol";
 
 /// @title This library is helper method to send funds to some specific address. Calling one of its methods will result in a cross-actor call being performed.
 /// @author Zondax AG
 library SendAPI {
     /// @notice send token to a specific actor
-    /// @param receiverActorId The id address (uint64) you want to send funds to
+    /// @param target The id address (uint64) you want to send funds to
     /// @param value tokens to be transferred to the receiver
-    function send(uint64 receiverActorId, uint256 value) internal {
-        bytes memory result = Actor.callByID(receiverActorId, 0, Misc.NONE_CODEC, new bytes(0), value, false);
-
-        require(result.length == 0, Actor.UNEXPECTED_RESPONSE_MESSAGE);
+    function send(CommonTypes.FilActorId target, uint256 value) internal {
+        bytes memory result = Actor.callByID(target, 0, Misc.NONE_CODEC, new bytes(0), value, false);
+        if (result.length != 0) {
+            revert Actor.InvalidResponseLength();
+        }
     }
 
     /// @notice send token to a specific actor
-    /// @param addr The address (bytes format) you want to send funds to
+    /// @param target The address you want to send funds to
     /// @param value tokens to be transferred to the receiver
-    function send(bytes memory addr, uint256 value) internal {
-        bytes memory result = Actor.callByAddress(addr, 0, Misc.NONE_CODEC, new bytes(0), value, false);
-
-        require(result.length == 0, Actor.UNEXPECTED_RESPONSE_MESSAGE);
+    function send(CommonTypes.FilAddress memory target, uint256 value) internal {
+        bytes memory result = Actor.callByAddress(target.data, 0, Misc.NONE_CODEC, new bytes(0), value, false);
+        if (result.length != 0) {
+            revert Actor.InvalidResponseLength();
+        }
     }
 }

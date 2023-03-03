@@ -19,7 +19,7 @@
 // SPDX-License-Identifier: Apache-2.0
 pragma solidity ^0.8.17;
 
-import "../external/CBOR.sol";
+import "solidity-cborutils/contracts/CBOR.sol";
 
 import "../types/CommonTypes.sol";
 import "../types/PowerTypes.sol";
@@ -44,13 +44,13 @@ library PowerCBOR {
         uint multiaddrsLen = params.multiaddrs.length;
 
         buf.startFixedArray(5);
-        buf.writeBytes(params.owner);
-        buf.writeBytes(params.worker);
+        buf.writeBytes(params.owner.data);
+        buf.writeBytes(params.worker.data);
         buf.writeInt64(int64(uint64(params.window_post_proof_type)));
-        buf.writeBytes(params.peer);
+        buf.writeBytes(params.peer.data);
         buf.startFixedArray(uint64(multiaddrsLen));
         for (uint i = 0; i < multiaddrsLen; i++) {
-            buf.writeBytes(params.multiaddrs[i]);
+            buf.writeBytes(params.multiaddrs[i].data);
         }
 
         return buf.data();
@@ -66,8 +66,8 @@ library PowerCBOR {
         (len, byteIdx) = rawResp.readFixedArray(byteIdx);
         assert(len == 2);
 
-        (ret.id_address, byteIdx) = rawResp.readBytes(byteIdx);
-        (ret.robust_address, byteIdx) = rawResp.readBytes(byteIdx);
+        (ret.id_address.data, byteIdx) = rawResp.readBytes(byteIdx);
+        (ret.robust_address.data, byteIdx) = rawResp.readBytes(byteIdx);
 
         return ret;
     }

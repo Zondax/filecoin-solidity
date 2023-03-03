@@ -25,11 +25,11 @@ import "../SendAPI.sol";
 /// @notice It imports the library and create a callable method for each method in the library
 /// @author Zondax AG
 contract SendApiTest {
-    function send(uint64 receiverActorId, uint256 amount) public {
-        return SendAPI.send(receiverActorId, amount);
+    function send(CommonTypes.FilActorId target, uint256 amount) public {
+        return SendAPI.send(target, amount);
     }
 
-    function send(bytes memory addr, uint256 amount) public {
-        return SendAPI.send(addr, amount);
+    function send(CommonTypes.FilAddress memory target, uint256 amount) public {
+        return SendAPI.send(target, amount);
     }
 }

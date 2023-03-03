@@ -25,7 +25,7 @@ import "./CommonTypes.sol";
 /// @title Filecoin market actor types for Solidity.
 /// @author Zondax AG
 library MarketTypes {
-    uint64 constant ActorID = 5;
+    CommonTypes.FilActorId constant ActorID = CommonTypes.FilActorId.wrap(5);
     uint constant AddBalanceMethodNum = 822473126;
     uint constant WithdrawBalanceMethodNum = 2280458852;
     uint constant GetBalanceMethodNum = 726108461;
@@ -44,13 +44,8 @@ library MarketTypes {
     /// @param provider_or_client the address of provider or client.
     /// @param tokenAmount the token amount to withdraw.
     struct WithdrawBalanceParams {
-        bytes provider_or_client;
+        CommonTypes.FilAddress provider_or_client;
         CommonTypes.BigInt tokenAmount;
-    }
-
-    /// @param amount_withdrawn the token amount withdrawn.
-    struct WithdrawBalanceReturn {
-        CommonTypes.BigInt amount_withdrawn;
     }
 
     /// @param balance the escrow balance for this address.
@@ -67,46 +62,11 @@ library MarketTypes {
         uint64 size;
     }
 
-    /// @param client the wallet address of the client.
-    struct GetDealClientReturn {
-        uint64 client;
-    }
-
-    /// @param provider the wallet address of the provider.
-    struct GetDealProviderReturn {
-        uint64 provider;
-    }
-
-    /// @param label the label of this deal.
-    struct GetDealLabelReturn {
-        string label;
-    }
-
     /// @param start the chain epoch to start the deal.
     /// @param endthe chain epoch to end the deal.
     struct GetDealTermReturn {
         int64 start;
         int64 end;
-    }
-
-    /// @param price_per_epoch the token amount that will be paid by client to provider.
-    struct GetDealEpochPriceReturn {
-        CommonTypes.BigInt price_per_epoch;
-    }
-
-    /// @param collateral the token amount as collateral paid by the client.
-    struct GetDealClientCollateralReturn {
-        CommonTypes.BigInt collateral;
-    }
-
-    /// @param collateral the token amount as collateral paid by the provider.
-    struct GetDealProviderCollateralReturn {
-        CommonTypes.BigInt collateral;
-    }
-
-    /// @param verified if the deal is verified or not.
-    struct GetDealVerifiedReturn {
-        bool verified;
     }
 
     /// @param activated Epoch at which the deal was activated, or -1.
@@ -124,7 +84,7 @@ library MarketTypes {
     /// @param ids returned storage deal IDs.
     /// @param valid_deals represent all the valid deals.
     struct PublishStorageDealsReturn {
-        uint64[] ids;
+        CommonTypes.FilActorId[] ids;
         bytes valid_deals;
     }
 
@@ -140,12 +100,12 @@ library MarketTypes {
     /// @param provider_collateral the token amount as collateral paid by the provider.
     /// @param client_collateral the token amount as collateral paid by the client.
     struct DealProposal {
-        bytes piece_cid;
+        CommonTypes.Cid piece_cid;
         uint64 piece_size;
         bool verified_deal;
-        bytes client;
-        bytes provider;
-        string label;
+        CommonTypes.FilAddress client;
+        CommonTypes.FilAddress provider;
+        CommonTypes.DealLabel label;
         int64 start_epoch;
         int64 end_epoch;
         CommonTypes.BigInt storage_price_per_epoch;

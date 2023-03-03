@@ -19,7 +19,7 @@
 // SPDX-License-Identifier: Apache-2.0
 pragma solidity ^0.8.17;
 
-import "../external/CBOR.sol";
+import "solidity-cborutils/contracts/CBOR.sol";
 
 import "../utils/CborDecode.sol";
 import "../types/CommonTypes.sol";
@@ -84,6 +84,18 @@ library BytesCBOR {
         uint byteIdx = 0;
 
         (response, byteIdx) = ret.readString(byteIdx);
+
+        return response;
+    }
+
+    /// @notice deserialize cbor encoded bool
+    /// @param ret cbor encoded bool (in bytes)
+    /// @return decoded bool
+    function deserializeBool(bytes memory ret) internal pure returns (bool) {
+        bool response;
+        uint byteIdx = 0;
+
+        (response, byteIdx) = ret.readBool(byteIdx);
 
         return response;
     }

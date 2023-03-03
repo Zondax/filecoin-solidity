@@ -26,67 +26,67 @@ import "../types/MinerTypes.sol";
 /// @notice It imports the library and create a callable method for each method in the library
 /// @author Zondax AG
 contract MinerApiTest {
-    function get_owner(uint64 target) public returns (MinerTypes.GetOwnerReturn memory) {
+    function get_owner(CommonTypes.FilActorId target) public returns (MinerTypes.GetOwnerReturn memory) {
         return MinerAPI.getOwner(target);
     }
 
-    function change_owner_address(uint64 target, bytes memory addr) public {
+    function change_owner_address(CommonTypes.FilActorId target, CommonTypes.FilAddress memory addr) public {
         MinerAPI.changeOwnerAddress(target, addr);
     }
 
-    function is_controlling_address(uint64 target, bytes memory addr) public returns (MinerTypes.IsControllingAddressReturn memory) {
+    function is_controlling_address(CommonTypes.FilActorId target, CommonTypes.FilAddress memory addr) public returns (bool) {
         return MinerAPI.isControllingAddress(target, addr);
     }
 
-    function get_sector_size(uint64 target) public returns (MinerTypes.GetSectorSizeReturn memory) {
+    function get_sector_size(CommonTypes.FilActorId target) public returns (uint64) {
         return MinerAPI.getSectorSize(target);
     }
 
-    function get_available_balance(uint64 target) public returns (MinerTypes.GetAvailableBalanceReturn memory) {
+    function get_available_balance(CommonTypes.FilActorId target) public returns (CommonTypes.BigInt memory) {
         return MinerAPI.getAvailableBalance(target);
     }
 
-    function get_vesting_funds(uint64 target) public returns (MinerTypes.GetVestingFundsReturn memory) {
+    function get_vesting_funds(CommonTypes.FilActorId target) public returns (MinerTypes.GetVestingFundsReturn memory) {
         return MinerAPI.getVestingFunds(target);
     }
 
-    function change_beneficiary(uint64 target, MinerTypes.ChangeBeneficiaryParams memory params) public {
+    function change_beneficiary(CommonTypes.FilActorId target, MinerTypes.ChangeBeneficiaryParams memory params) public {
         return MinerAPI.changeBeneficiary(target, params);
     }
 
-    function get_beneficiary(uint64 target) public returns (MinerTypes.GetBeneficiaryReturn memory) {
+    function get_beneficiary(CommonTypes.FilActorId target) public returns (MinerTypes.GetBeneficiaryReturn memory) {
         return MinerAPI.getBeneficiary(target);
     }
 
-    function change_worker_address(uint64 target, MinerTypes.ChangeWorkerAddressParams memory params) public {
+    function change_worker_address(CommonTypes.FilActorId target, MinerTypes.ChangeWorkerAddressParams memory params) public {
         MinerAPI.changeWorkerAddress(target, params);
     }
 
-    function change_peer_id(uint64 target, MinerTypes.ChangePeerIDParams memory params) public {
-        MinerAPI.changePeerId(target, params);
+    function change_peer_id(CommonTypes.FilActorId target, CommonTypes.FilAddress memory newId) public {
+        MinerAPI.changePeerId(target, newId);
     }
 
-    function change_multiaddresses(uint64 target, MinerTypes.ChangeMultiaddrsParams memory params) public {
+    function change_multiaddresses(CommonTypes.FilActorId target, MinerTypes.ChangeMultiaddrsParams memory params) public {
         MinerAPI.changeMultiaddresses(target, params);
     }
 
-    function repay_debt(uint64 target) public {
+    function repay_debt(CommonTypes.FilActorId target) public {
         MinerAPI.repayDebt(target);
     }
 
-    function confirm_change_worker_address(uint64 target) public {
+    function confirm_change_worker_address(CommonTypes.FilActorId target) public {
         MinerAPI.confirmChangeWorkerAddress(target);
     }
 
-    function get_peer_id(uint64 target) public returns (MinerTypes.GetPeerIDReturn memory) {
+    function get_peer_id(CommonTypes.FilActorId target) public returns (CommonTypes.FilAddress memory) {
         return MinerAPI.getPeerId(target);
     }
 
-    function get_multiaddresses(uint64 target) public returns (MinerTypes.GetMultiaddrsReturn memory) {
+    function get_multiaddresses(CommonTypes.FilActorId target) public returns (MinerTypes.GetMultiaddrsReturn memory) {
         return MinerAPI.getMultiaddresses(target);
     }
 
-    function withdraw_balance(uint64 target, MinerTypes.WithdrawBalanceParams memory params) public returns (MinerTypes.WithdrawBalanceReturn memory) {
-        return MinerAPI.withdrawBalance(target, params);
+    function withdraw_balance(CommonTypes.FilActorId target, CommonTypes.BigInt memory amount) public returns (CommonTypes.BigInt memory) {
+        return MinerAPI.withdrawBalance(target, amount);
     }
 }

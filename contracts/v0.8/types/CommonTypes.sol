@@ -53,4 +53,22 @@ library CommonTypes {
         bytes val;
         bool neg;
     }
+
+    /// @param data filecoin address in bytes format
+    struct FilAddress {
+        bytes data;
+    }
+
+    /// @param data cid in bytes format
+    struct Cid {
+        bytes data;
+    }
+
+    /// @param dataBytes deal proposal label in bytes format (it can be utf8 string or arbitrary bytes string). If both are empty, its default value will be empty bytes.
+    struct DealLabel {
+        bytes dataBts;
+        string dataStr;
+    }
+
+    type FilActorId is uint64;
 }
