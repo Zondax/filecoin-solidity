@@ -62,14 +62,71 @@ fn bigints_tests() {
     println!("Calling `to_uint256`");
 
     let message = Message {
-            from: sender[0].1,
-            to: Address::new_id(contract_actor_id),
-            gas_limit: 1000000000,
-            method_num: EvmMethods::InvokeContract as u64,
-            sequence: 1,
-            params: RawBytes::new(hex::decode("44C91A35AF").unwrap()),
-            ..Message::default()
-        };
+        from: sender[0].1,
+        to: Address::new_id(contract_actor_id),
+        gas_limit: 1000000000,
+        method_num: EvmMethods::InvokeContract as u64,
+        sequence: 1,
+        params: RawBytes::new(hex::decode("44C91A35AF").unwrap()),
+        ..Message::default()
+    };
+
+    let res = executor
+        .execute_message(message, ApplyKind::Explicit, 100)
+        .unwrap();
+
+    assert_eq!(res.msg_receipt.exit_code.value(), 0);
+
+
+    println!("Calling `to_int256_negative`");
+
+    let message = Message {
+        from: sender[0].1,
+        to: Address::new_id(contract_actor_id),
+        gas_limit: 1000000000,
+        method_num: EvmMethods::InvokeContract as u64,
+        sequence: 2,
+        params: RawBytes::new(hex::decode("44A7579D7A").unwrap()),
+        ..Message::default()
+    };
+
+    let res = executor
+        .execute_message(message, ApplyKind::Explicit, 100)
+        .unwrap();
+
+    assert_eq!(res.msg_receipt.exit_code.value(), 0);
+
+
+    println!("Calling `to_int256_positive`");
+
+    let message = Message {
+        from: sender[0].1,
+        to: Address::new_id(contract_actor_id),
+        gas_limit: 1000000000,
+        method_num: EvmMethods::InvokeContract as u64,
+        sequence: 3,
+        params: RawBytes::new(hex::decode("44F807127B").unwrap()),
+        ..Message::default()
+    };
+
+    let res = executor
+        .execute_message(message, ApplyKind::Explicit, 100)
+        .unwrap();
+
+    assert_eq!(res.msg_receipt.exit_code.value(), 0);
+
+
+    println!("Calling `from_uint256`");
+
+    let message = Message {
+        from: sender[0].1,
+        to: Address::new_id(contract_actor_id),
+        gas_limit: 1000000000,
+        method_num: EvmMethods::InvokeContract as u64,
+        sequence: 4,
+        params: RawBytes::new(hex::decode("44ED98A8D4").unwrap()),
+        ..Message::default()
+    };
 
     let res = executor
         .execute_message(message, ApplyKind::Explicit, 100)
