@@ -83,6 +83,11 @@ contract BigIntsTest {
             "'(2 ** 256) - 1' should be '115792089237316195423570985008687907853269984665640564039457584007913129639935'"
         );
 
+        value = CommonTypes.BigInt(hex"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff", false);
+        (converted, isOverflow) = value.toUint256();
+        require(isOverflow, "it should not be valid");
+        require(converted == 0, "overflow should have happened");
+
         value = CommonTypes.BigInt(hex"00", false);
         (converted, isOverflow) = value.toUint256();
         require(!isOverflow, "it should be valid");
@@ -142,6 +147,11 @@ contract BigIntsTest {
             "'(2 ** 256) / 2 - 1' should be '57896044618658097711785492504343953926634992332820282019728792003956564819967'"
         );
 
+        value = CommonTypes.BigInt(hex"7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF", false);
+        (converted, isOverflow) = value.toInt256();
+        require(isOverflow, "it should not be valid");
+        require(converted == 0, "overflow should have happened");
+
         value = CommonTypes.BigInt(hex"00", false);
         (converted, isOverflow) = value.toInt256();
         require(!isOverflow, "it should be valid");
@@ -200,6 +210,11 @@ contract BigIntsTest {
             converted == -57896044618658097711785492504343953926634992332820282019728792003956564819967,
             "'(2 ** 256) / 2 - 1' should be '-57896044618658097711785492504343953926634992332820282019728792003956564819967'"
         );
+
+        value = CommonTypes.BigInt(hex"FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF", true);
+        (converted, isOverflow) = value.toInt256();
+        require(isOverflow, "it should not be valid");
+        require(converted == 0, "overflow should have happened");
     }
 
     function from_uint256() public view {
