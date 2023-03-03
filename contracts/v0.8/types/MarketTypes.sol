@@ -119,4 +119,9 @@ library MarketTypes {
         DealProposal proposal;
         bytes client_signature;
     }
+
+    struct MarketDealNotifyParams {
+        bytes dealProposal;
+        uint64 dealId;
+    }
 }

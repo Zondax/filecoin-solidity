@@ -26,6 +26,9 @@ import "../utils/CborDecode.sol";
 
 import "../types/MarketTypes.sol";
 import "../utils/Misc.sol";
+import "./FilecoinCbor.sol";
+import "../types/CommonTypes.sol";
+import "../utils/FilAddresses.sol";
 
 /// @title This library is a set of functions meant to handle CBOR parameters serialization and return values deserialization for Market actor exported methods.
 /// @author Zondax AG
@@ -189,5 +192,85 @@ library MarketCBOR {
         buf.writeUInt64(id);
 
         return buf.data();
+    }
+
+    function deserializeMarketDealNotifyParams(bytes memory rawResp) internal pure returns (MarketTypes.MarketDealNotifyParams memory ret) {
+        uint byteIdx = 0;
+        uint len;
+
+        (len, byteIdx) = rawResp.readFixedArray(byteIdx);
+        assert(len == 2);
+
+        (ret.dealProposal, byteIdx) = rawResp.readBytes(byteIdx);
+        (ret.dealId, byteIdx) = rawResp.readUInt64(byteIdx);
+
+    }
+
+    function serializeDealProposal(MarketTypes.DealProposal memory dealProposal) internal pure returns (bytes memory) {
+        CBOR.CBORBuffer memory buf = CBOR.create(64);
+
+        bool isLabelStr = bytes(dealProposal.label.dataStr).length > 0;
+        bool isLabelBts = dealProposal.label.dataBts.length > 0;
+        require(!(isLabelStr && isLabelBts), "deal label must be either string or bytes");
+
+
+        buf.startFixedArray(11);
+
+        buf.writeCid(dealProposal.piece_cid.data);
+        buf.writeUInt64(dealProposal.piece_size);
+        buf.writeBool(dealProposal.verified_deal);
+        buf.writeBytes(dealProposal.client.data);
+        buf.writeBytes(dealProposal.provider.data);
+
+        isLabelStr ? buf.writeString(dealProposal.label.dataStr) : buf.writeBytes(dealProposal.label.dataBts);
+
+        buf.writeInt64(dealProposal.start_epoch);
+        buf.writeInt64(dealProposal.end_epoch);
+        buf.writeBytes(dealProposal.storage_price_per_epoch.serializeBigInt());
+        buf.writeBytes(dealProposal.provider_collateral.serializeBigInt());
+        buf.writeBytes(dealProposal.client_collateral.serializeBigInt());
+
+        return buf.data();
+    }
+
+
+    function deserializeDealProposal(bytes memory rawResp) internal pure returns (MarketTypes.DealProposal memory ret) {
+        uint byteIdx = 0;
+        uint len;
+        bytes memory tmp;
+        string memory tmpString;
+
+        (len, byteIdx) = rawResp.readFixedArray(byteIdx);
+        assert(len == 11);
+
+        (tmp, byteIdx) = rawResp.readBytes(byteIdx);
+        ret.piece_cid = CommonTypes.Cid(tmp);
+
+        (ret.piece_size, byteIdx) = rawResp.readUInt64(byteIdx);
+        (ret.verified_deal, byteIdx) = rawResp.readBool(byteIdx);
+        (tmp, byteIdx) = rawResp.readBytes(byteIdx);
+        ret.client = FilAddresses.fromBytes(tmp);
+
+        (tmp, byteIdx) = rawResp.readBytes(byteIdx);
+        ret.provider = FilAddresses.fromBytes(tmp);
+
+        (tmpString, byteIdx) = rawResp.readString(byteIdx);
+        ret.label = CommonTypes.DealLabel(new bytes(0), tmpString);
+
+        (ret.start_epoch, byteIdx) = rawResp.readInt64(byteIdx);
+        (ret.end_epoch, byteIdx) = rawResp.readInt64(byteIdx);
+
+        bytes memory storage_price_per_epoch_bytes;
+        (storage_price_per_epoch_bytes, byteIdx) = rawResp.readBytes(byteIdx);
+        ret.storage_price_per_epoch = storage_price_per_epoch_bytes.deserializeBigInt();
+
+        bytes memory provider_collateral_bytes;
+        (provider_collateral_bytes, byteIdx) = rawResp.readBytes(byteIdx);
+        ret.provider_collateral = provider_collateral_bytes.deserializeBigInt();
+
+        bytes memory client_collateral_bytes;
+        (client_collateral_bytes, byteIdx) = rawResp.readBytes(byteIdx);
+        ret.client_collateral = client_collateral_bytes.deserializeBigInt();
+
     }
 }
