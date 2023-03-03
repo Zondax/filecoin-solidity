@@ -219,4 +219,122 @@ contract BigIntsTest {
         );
         require(converted_9.neg == false, "'neg flag should be false'");
     }
+
+    function from_int256_positive() public view {
+        CommonTypes.BigInt memory converted_1 = BigInts.fromInt256(255);
+        require(keccak256(converted_1.val) == keccak256(hex"00000000000000000000000000000000000000000000000000000000000000ff"), "'255' should be '0xff'");
+        require(converted_1.neg == false, "'neg flag should be false'");
+
+        CommonTypes.BigInt memory converted_2 = BigInts.fromInt256(65535);
+        require(keccak256(converted_2.val) == keccak256(hex"000000000000000000000000000000000000000000000000000000000000ffff"), "'65535' should be '0xffff'");
+        require(converted_2.neg == false, "'neg flag should be false'");
+
+        CommonTypes.BigInt memory converted_3 = BigInts.fromInt256(16777215);
+        require(
+            keccak256(converted_3.val) == keccak256(hex"0000000000000000000000000000000000000000000000000000000000ffffff"),
+            "'16777215' should be '0xffffff'"
+        );
+        require(converted_3.neg == false, "'neg flag should be false'");
+
+        CommonTypes.BigInt memory converted_4 = BigInts.fromInt256(4294967295);
+        require(
+            keccak256(converted_4.val) == keccak256(hex"00000000000000000000000000000000000000000000000000000000ffffffff"),
+            "'4294967295' should be '0xffffffff'"
+        );
+        require(converted_4.neg == false, "'neg flag should be false'");
+
+        CommonTypes.BigInt memory converted_5 = BigInts.fromInt256(1099511627775);
+        require(
+            keccak256(converted_5.val) == keccak256(hex"000000000000000000000000000000000000000000000000000000ffffffffff"),
+            "'1099511627775' should be '0xffffffffff'"
+        );
+        require(converted_5.neg == false, "'neg flag should be false'");
+
+        CommonTypes.BigInt memory converted_6 = BigInts.fromInt256(281474976710655);
+        require(
+            keccak256(converted_6.val) == keccak256(hex"0000000000000000000000000000000000000000000000000000ffffffffffff"),
+            "'281474976710655' should be '0xffffffffffff'"
+        );
+        require(converted_6.neg == false, "'neg flag should be false'");
+
+        CommonTypes.BigInt memory converted_7 = BigInts.fromInt256(72057594037927935);
+        require(
+            keccak256(converted_7.val) == keccak256(hex"00000000000000000000000000000000000000000000000000ffffffffffffff"),
+            "'72057594037927935' should be '0xffffffffffffff'"
+        );
+        require(converted_7.neg == false, "'neg flag should be false'");
+
+        CommonTypes.BigInt memory converted_8 = BigInts.fromInt256(18446744073709551615);
+        require(
+            keccak256(converted_8.val) == keccak256(hex"000000000000000000000000000000000000000000000000ffffffffffffffff"),
+            "'18446744073709551615' should be '0xffffffffffffffff'"
+        );
+        require(converted_8.neg == false, "'neg flag should be false'");
+
+        CommonTypes.BigInt memory converted_9 = BigInts.fromInt256(57896044618658097711785492504343953926634992332820282019728792003956564819967);
+        require(
+            keccak256(converted_9.val) == keccak256(hex"7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"),
+            "'57896044618658097711785492504343953926634992332820282019728792003956564819967' should be '0x7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'"
+        );
+        require(converted_9.neg == false, "'neg flag should be false'");
+    }
+
+    function from_int256_negative() public view {
+        CommonTypes.BigInt memory converted_1 = BigInts.fromInt256(-255);
+        require(keccak256(converted_1.val) == keccak256(hex"00000000000000000000000000000000000000000000000000000000000000ff"), "'255' should be '0xff'");
+        require(converted_1.neg == true, "'neg flag should be false'");
+
+        CommonTypes.BigInt memory converted_2 = BigInts.fromInt256(-65535);
+        require(keccak256(converted_2.val) == keccak256(hex"000000000000000000000000000000000000000000000000000000000000ffff"), "'65535' should be '0xffff'");
+        require(converted_2.neg == true, "'neg flag should be false'");
+
+        CommonTypes.BigInt memory converted_3 = BigInts.fromInt256(-16777215);
+        require(
+            keccak256(converted_3.val) == keccak256(hex"0000000000000000000000000000000000000000000000000000000000ffffff"),
+            "'16777215' should be '0xffffff'"
+        );
+        require(converted_3.neg == true, "'neg flag should be false'");
+
+        CommonTypes.BigInt memory converted_4 = BigInts.fromInt256(-4294967295);
+        require(
+            keccak256(converted_4.val) == keccak256(hex"00000000000000000000000000000000000000000000000000000000ffffffff"),
+            "'4294967295' should be '0xffffffff'"
+        );
+        require(converted_4.neg == true, "'neg flag should be false'");
+
+        CommonTypes.BigInt memory converted_5 = BigInts.fromInt256(-1099511627775);
+        require(
+            keccak256(converted_5.val) == keccak256(hex"000000000000000000000000000000000000000000000000000000ffffffffff"),
+            "'1099511627775' should be '0xffffffffff'"
+        );
+        require(converted_5.neg == true, "'neg flag should be false'");
+
+        CommonTypes.BigInt memory converted_6 = BigInts.fromInt256(-281474976710655);
+        require(
+            keccak256(converted_6.val) == keccak256(hex"0000000000000000000000000000000000000000000000000000ffffffffffff"),
+            "'281474976710655' should be '0xffffffffffff'"
+        );
+        require(converted_6.neg == true, "'neg flag should be false'");
+
+        CommonTypes.BigInt memory converted_7 = BigInts.fromInt256(-72057594037927935);
+        require(
+            keccak256(converted_7.val) == keccak256(hex"00000000000000000000000000000000000000000000000000ffffffffffffff"),
+            "'72057594037927935' should be '0xffffffffffffff'"
+        );
+        require(converted_7.neg == true, "'neg flag should be false'");
+
+        CommonTypes.BigInt memory converted_8 = BigInts.fromInt256(-18446744073709551615);
+        require(
+            keccak256(converted_8.val) == keccak256(hex"000000000000000000000000000000000000000000000000ffffffffffffffff"),
+            "'18446744073709551615' should be '0xffffffffffffffff'"
+        );
+        require(converted_8.neg == true, "'neg flag should be false'");
+
+        CommonTypes.BigInt memory converted_9 = BigInts.fromInt256(-57896044618658097711785492504343953926634992332820282019728792003956564819967);
+        require(
+            keccak256(converted_9.val) == keccak256(hex"7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"),
+            "'57896044618658097711785492504343953926634992332820282019728792003956564819967' should be '0x7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'"
+        );
+        require(converted_9.neg == true, "'neg flag should be false'");
+    }
 }
