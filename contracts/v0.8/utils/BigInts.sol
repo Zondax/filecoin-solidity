@@ -29,7 +29,6 @@ library BigInts {
     uint256 constant MAX_UINT = (2 ** 256) - 1;
     uint256 constant MAX_INT = ((2 ** 256) / 2) - 1;
 
-    error Overflow();
     error NegativeValueNotAllowed();
 
     /// @notice allow to get a BigInt from a uint256 value
