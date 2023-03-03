@@ -50,11 +50,10 @@ library BigInts {
     }
 
     /// @notice allow to get a uint256 from a BigInt value.
-    /// @notice If the value is grater than what a uint256 can store, it will generate an error.
     /// @notice If the value is negative, it will generate an error.
     /// @param value BigInt number
-    /// @return new uint256 from BigInt
-    function toUint256(CommonTypes.BigInt memory value) internal view returns (uint256) {
+    /// @return a uint256 value and flog that indicates whether it was possible to convert or not (the value overflows uint256 type)
+    function toUint256(CommonTypes.BigInt memory value) internal view returns (uint256, bool) {
         if (value.neg) {
             revert NegativeValueNotAllowed();
         }
@@ -62,24 +61,24 @@ library BigInts {
         BigNumber memory max = BigNumbers.init(MAX_UINT, false);
         BigNumber memory bigNumValue = BigNumbers.init(value.val, value.neg);
         if (BigNumbers.gt(bigNumValue, max)) {
-            revert Overflow();
+            return (0, true);
         }
 
-        return uint256(bytes32(bigNumValue.val));
+        return (uint256(bytes32(bigNumValue.val)), false);
     }
 
     /// @notice allow to get a int256 from a BigInt value.
     /// @notice If the value is grater than what a int256 can store, it will generate an error.
     /// @param value BigInt number
-    /// @return new int256 from BigInt
-    function toInt256(CommonTypes.BigInt memory value) internal view returns (int256) {
+    /// @return a int256 value and flog that indicates whether it was possible to convert or not (the value overflows int256 type)
+    function toInt256(CommonTypes.BigInt memory value) internal view returns (int256, bool) {
         BigNumber memory max = BigNumbers.init(MAX_INT, false);
         BigNumber memory bigNumValue = BigNumbers.init(value.val, false);
         if (BigNumbers.gt(bigNumValue, max)) {
-            revert Overflow();
+            return (0, true);
         }
 
         int256 parsedValue = int256(uint256(bytes32(bigNumValue.val)));
-        return value.neg ? -1 * parsedValue : parsedValue;
+        return (value.neg ? -1 * parsedValue : parsedValue, false);
     }
 }
