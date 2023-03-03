@@ -33,169 +33,169 @@ contract BigIntsTest {
     function to_uint256() public view {
         CommonTypes.BigInt memory value;
         uint256 converted;
-        bool isValid;
+        bool isOverflow;
 
         value = CommonTypes.BigInt(hex"ff", false);
-        (converted, isValid) = value.toUint256();
-        require(isValid, "it should be valid");
+        (converted, isOverflow) = value.toUint256();
+        require(!isOverflow, "it should be valid");
         require(converted == 255, "'0xff' should be '255'");
 
         value = CommonTypes.BigInt(hex"ffff", false);
-        (converted, isValid) = value.toUint256();
-        require(isValid, "it should be valid");
+        (converted, isOverflow) = value.toUint256();
+        require(!isOverflow, "it should be valid");
         require(converted == 65535, "'0xffff' should be '65535'");
 
         value = CommonTypes.BigInt(hex"ffffff", false);
-        (converted, isValid) = value.toUint256();
-        require(isValid, "it should be valid");
+        (converted, isOverflow) = value.toUint256();
+        require(!isOverflow, "it should be valid");
         require(converted == 16777215, "'0xffffff' should be '16777215'");
 
         value = CommonTypes.BigInt(hex"ffffffff", false);
-        (converted, isValid) = value.toUint256();
-        require(isValid, "it should be valid");
+        (converted, isOverflow) = value.toUint256();
+        require(!isOverflow, "it should be valid");
         require(converted == 4294967295, "'0xffffffff' should be '4294967295'");
 
         value = CommonTypes.BigInt(hex"ffffffffff", false);
-        (converted, isValid) = value.toUint256();
-        require(isValid, "it should be valid");
+        (converted, isOverflow) = value.toUint256();
+        require(!isOverflow, "it should be valid");
         require(converted == 1099511627775, "'0xffffffffff' should be '1099511627775'");
 
         value = CommonTypes.BigInt(hex"ffffffffffff", false);
-        (converted, isValid) = value.toUint256();
-        require(isValid, "it should be valid");
+        (converted, isOverflow) = value.toUint256();
+        require(!isOverflow, "it should be valid");
         require(converted == 281474976710655, "'0xffffffffffff' should be '281474976710655'");
 
         value = CommonTypes.BigInt(hex"ffffffffffffff", false);
-        (converted, isValid) = value.toUint256();
-        require(isValid, "it should be valid");
+        (converted, isOverflow) = value.toUint256();
+        require(!isOverflow, "it should be valid");
         require(converted == 72057594037927935, "'0xffffffffffffff' should be '72057594037927935'");
 
         value = CommonTypes.BigInt(hex"ffffffffffffffff", false);
-        (converted, isValid) = value.toUint256();
-        require(isValid, "it should be valid");
+        (converted, isOverflow) = value.toUint256();
+        require(!isOverflow, "it should be valid");
         require(converted == 18446744073709551615, "'0xffffffffffffffff' should be '18446744073709551615'");
 
         value = CommonTypes.BigInt(hex"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff", false);
-        (converted, isValid) = value.toUint256();
-        require(isValid, "it should be valid");
+        (converted, isOverflow) = value.toUint256();
+        require(!isOverflow, "it should be valid");
         require(
             converted == 115792089237316195423570985008687907853269984665640564039457584007913129639935,
             "'(2 ** 256) - 1' should be '115792089237316195423570985008687907853269984665640564039457584007913129639935'"
         );
 
         value = CommonTypes.BigInt(hex"00", false);
-        (converted, isValid) = value.toUint256();
-        require(isValid, "it should be valid");
+        (converted, isOverflow) = value.toUint256();
+        require(!isOverflow, "it should be valid");
         require(converted == 0, "'0x00' should be '0'");
     }
 
     function to_int256_positive() public view {
         CommonTypes.BigInt memory value;
         int256 converted;
-        bool isValid;
+        bool isOverflow;
 
         value = CommonTypes.BigInt(hex"ff", false);
-        (converted, isValid) = value.toInt256();
-        require(isValid, "it should be valid");
+        (converted, isOverflow) = value.toInt256();
+        require(!isOverflow, "it should be valid");
         require(converted == 255, "'0xff' should be '255'");
 
         value = CommonTypes.BigInt(hex"ffff", false);
-        (converted, isValid) = value.toInt256();
-        require(isValid, "it should be valid");
+        (converted, isOverflow) = value.toInt256();
+        require(!isOverflow, "it should be valid");
         require(converted == 65535, "'0xffff' should be '65535'");
 
         value = CommonTypes.BigInt(hex"ffffff", false);
-        (converted, isValid) = value.toInt256();
-        require(isValid, "it should be valid");
+        (converted, isOverflow) = value.toInt256();
+        require(!isOverflow, "it should be valid");
         require(converted == 16777215, "'0xffffff' should be '16777215'");
 
         value = CommonTypes.BigInt(hex"ffffffff", false);
-        (converted, isValid) = value.toInt256();
-        require(isValid, "it should be valid");
+        (converted, isOverflow) = value.toInt256();
+        require(!isOverflow, "it should be valid");
         require(converted == 4294967295, "'0xffffffff' should be '4294967295'");
 
         value = CommonTypes.BigInt(hex"ffffffffff", false);
-        (converted, isValid) = value.toInt256();
-        require(isValid, "it should be valid");
+        (converted, isOverflow) = value.toInt256();
+        require(!isOverflow, "it should be valid");
         require(converted == 1099511627775, "'0xffffffffff' should be '1099511627775'");
 
         value = CommonTypes.BigInt(hex"ffffffffffff", false);
-        (converted, isValid) = value.toInt256();
-        require(isValid, "it should be valid");
+        (converted, isOverflow) = value.toInt256();
+        require(!isOverflow, "it should be valid");
         require(converted == 281474976710655, "'0xffffffffffff' should be '281474976710655'");
 
         value = CommonTypes.BigInt(hex"ffffffffffffff", false);
-        (converted, isValid) = value.toInt256();
-        require(isValid, "it should be valid");
+        (converted, isOverflow) = value.toInt256();
+        require(!isOverflow, "it should be valid");
         require(converted == 72057594037927935, "'0xffffffffffffff' should be '72057594037927935'");
 
         value = CommonTypes.BigInt(hex"ffffffffffffffff", false);
-        (converted, isValid) = value.toInt256();
-        require(isValid, "it should be valid");
+        (converted, isOverflow) = value.toInt256();
+        require(!isOverflow, "it should be valid");
         require(converted == 18446744073709551615, "'0xffffffffffffffff' should be '18446744073709551615'");
 
         value = CommonTypes.BigInt(hex"7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF", false);
-        (converted, isValid) = value.toInt256();
-        require(isValid, "it should be valid");
+        (converted, isOverflow) = value.toInt256();
+        require(!isOverflow, "it should be valid");
         require(
             converted == 57896044618658097711785492504343953926634992332820282019728792003956564819967,
             "'(2 ** 256) / 2 - 1' should be '57896044618658097711785492504343953926634992332820282019728792003956564819967'"
         );
 
         value = CommonTypes.BigInt(hex"00", false);
-        (converted, isValid) = value.toInt256();
-        require(isValid, "it should be valid");
+        (converted, isOverflow) = value.toInt256();
+        require(!isOverflow, "it should be valid");
         require(converted == 0, "'0x00' should be '0'");
     }
 
     function to_int256_negative() public view {
         CommonTypes.BigInt memory value;
         int256 converted;
-        bool isValid;
+        bool isOverflow;
 
         value = CommonTypes.BigInt(hex"ff", true);
-        (converted, isValid) = value.toInt256();
-        require(isValid, "it should be valid");
+        (converted, isOverflow) = value.toInt256();
+        require(!isOverflow, "it should be valid");
         require(converted == -255, "'0xff' should be '-255'");
 
         value = CommonTypes.BigInt(hex"ffff", true);
-        (converted, isValid) = value.toInt256();
-        require(isValid, "it should be valid");
+        (converted, isOverflow) = value.toInt256();
+        require(!isOverflow, "it should be valid");
         require(converted == -65535, "'0xffff' should be '-65535'");
 
         value = CommonTypes.BigInt(hex"ffffff", true);
-        (converted, isValid) = value.toInt256();
-        require(isValid, "it should be valid");
+        (converted, isOverflow) = value.toInt256();
+        require(!isOverflow, "it should be valid");
         require(converted == -16777215, "'0xffffff' should be '-16777215'");
 
         value = CommonTypes.BigInt(hex"ffffffff", true);
-        (converted, isValid) = value.toInt256();
-        require(isValid, "it should be valid");
+        (converted, isOverflow) = value.toInt256();
+        require(!isOverflow, "it should be valid");
         require(converted == -4294967295, "'0xffffffff' should be '-4294967295'");
 
         value = CommonTypes.BigInt(hex"ffffffffff", true);
-        (converted, isValid) = value.toInt256();
-        require(isValid, "it should be valid");
+        (converted, isOverflow) = value.toInt256();
+        require(!isOverflow, "it should be valid");
         require(converted == -1099511627775, "'0xffffffffff' should be '-1099511627775'");
 
         value = CommonTypes.BigInt(hex"ffffffffffff", true);
-        (converted, isValid) = value.toInt256();
-        require(isValid, "it should be valid");
+        (converted, isOverflow) = value.toInt256();
+        require(!isOverflow, "it should be valid");
         require(converted == -281474976710655, "'0xffffffffffff' should be '-281474976710655'");
 
         value = CommonTypes.BigInt(hex"ffffffffffffff", true);
-        (converted, isValid) = value.toInt256();
-        require(isValid, "it should be valid");
+        (converted, isOverflow) = value.toInt256();
+        require(!isOverflow, "it should be valid");
         require(converted == -72057594037927935, "'0xffffffffffffff' should be '-72057594037927935'");
 
         value = CommonTypes.BigInt(hex"ffffffffffffffff", true);
-        (converted, isValid) = value.toInt256();
-        require(isValid, "it should be valid");
+        (converted, isOverflow) = value.toInt256();
+        require(!isOverflow, "it should be valid");
         require(converted == -18446744073709551615, "'0xffffffffffffffff' should be '-18446744073709551615'");
 
         value = CommonTypes.BigInt(hex"7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF", true);
-        (converted, isValid) = value.toInt256();
-        require(isValid, "it should be valid");
+        (converted, isOverflow) = value.toInt256();
+        require(!isOverflow, "it should be valid");
         require(
             converted == -57896044618658097711785492504343953926634992332820282019728792003956564819967,
             "'(2 ** 256) / 2 - 1' should be '-57896044618658097711785492504343953926634992332820282019728792003956564819967'"
