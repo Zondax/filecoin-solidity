@@ -120,6 +120,7 @@ test_frc0042:
 
 test_cbor_decode: build build_builtin_actors
 	cd testing && cargo test cbor_decode_test -- --nocapture
+	cd testing && cargo test market_cbor_tests -- --nocapture
 
 test_leb128: build build_builtin_actors
 	cd testing && cargo test leb128 -- --nocapture

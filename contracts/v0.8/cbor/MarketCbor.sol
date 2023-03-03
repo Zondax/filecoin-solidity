@@ -28,7 +28,7 @@ import "../types/MarketTypes.sol";
 import "../utils/Misc.sol";
 import "./FilecoinCbor.sol";
 import "../types/CommonTypes.sol";
-
+import "../utils/FilAddresses.sol";
 
 /// @title This library is a set of functions meant to handle CBOR parameters serialization and return values deserialization for Market actor exported methods.
 /// @author Zondax AG
@@ -207,17 +207,23 @@ library MarketCBOR {
     }
 
     function serializeDealProposal(MarketTypes.DealProposal memory dealProposal) internal pure returns (bytes memory) {
-        // FIXME what should the max length be on the buffer?
         CBOR.CBORBuffer memory buf = CBOR.create(64);
+
+        bool isLabelStr = bytes(dealProposal.label.dataStr).length > 0;
+        bool isLabelBts = dealProposal.label.dataBts.length > 0;
+        require(!(isLabelStr && isLabelBts), "deal label must be either string or bytes");
+
 
         buf.startFixedArray(11);
 
-        buf.writeCid(dealProposal.piece_cid);
+        buf.writeCid(dealProposal.piece_cid.data);
         buf.writeUInt64(dealProposal.piece_size);
         buf.writeBool(dealProposal.verified_deal);
-        buf.writeBytes(dealProposal.client);
-        buf.writeBytes(dealProposal.provider);
-        buf.writeString(dealProposal.label);
+        buf.writeBytes(dealProposal.client.data);
+        buf.writeBytes(dealProposal.provider.data);
+
+        isLabelStr ? buf.writeString(dealProposal.label.dataStr) : buf.writeBytes(dealProposal.label.dataBts);
+
         buf.writeInt64(dealProposal.start_epoch);
         buf.writeInt64(dealProposal.end_epoch);
         buf.writeBytes(dealProposal.storage_price_per_epoch.serializeBigInt());
@@ -231,17 +237,26 @@ library MarketCBOR {
     function deserializeDealProposal(bytes memory rawResp) internal pure returns (MarketTypes.DealProposal memory ret) {
         uint byteIdx = 0;
         uint len;
+        bytes memory tmp;
+        string memory tmpString;
 
         (len, byteIdx) = rawResp.readFixedArray(byteIdx);
         assert(len == 11);
 
-        (ret.piece_cid, byteIdx) = rawResp.readBytes(byteIdx);
+        (tmp, byteIdx) = rawResp.readBytes(byteIdx);
+        ret.piece_cid = CommonTypes.Cid(tmp);
+
         (ret.piece_size, byteIdx) = rawResp.readUInt64(byteIdx);
         (ret.verified_deal, byteIdx) = rawResp.readBool(byteIdx);
-        (ret.client, byteIdx) = rawResp.readBytes(byteIdx);
-        (ret.provider, byteIdx) = rawResp.readBytes(byteIdx);
+        (tmp, byteIdx) = rawResp.readBytes(byteIdx);
+        ret.client = FilAddresses.fromBytes(tmp);
 
-        (ret.label, byteIdx) = rawResp.readString(byteIdx);
+        (tmp, byteIdx) = rawResp.readBytes(byteIdx);
+        ret.provider = FilAddresses.fromBytes(tmp);
+
+        (tmpString, byteIdx) = rawResp.readString(byteIdx);
+        ret.label = CommonTypes.DealLabel(new bytes(0), tmpString);
+
         (ret.start_epoch, byteIdx) = rawResp.readInt64(byteIdx);
         (ret.end_epoch, byteIdx) = rawResp.readInt64(byteIdx);
 
