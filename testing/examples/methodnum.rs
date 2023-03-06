@@ -345,36 +345,6 @@ fn main() {
 
     /*********************************
      *
-     *      INIT ACTOR
-     *
-     *********************************/
-
-    println!("INIT EXPORTED METHOD NUM");
-    let mut method_nums: Vec<(String, u64)> = vec![];
-
-    let ExecExported = frc42_dispatch::method_hash!("Exec");
-    method_nums.push(("ExecMethodNum".to_string(), ExecExported));
-
-    println!("ExecExported {}", ExecExported);
-
-    // Verify we have the right ones
-    let file = fs::read_to_string("../contracts/v0.8/types/InitTypes.sol").unwrap();
-
-    'method: for (method, method_num ) in method_nums {
-        for line in file.lines() {
-            if line.contains(&format!(" {} ",method)) {
-                if !line.contains(&method_num.to_string()) {
-                    panic!("Wrong method num for {}", method);
-                }
-                continue 'method;
-            }
-        }
-        panic!("Missing method : {}", method);
-    }
-
-
-    /*********************************
-     *
      *      ACCOUNT ACTOR
      *
      *********************************/
