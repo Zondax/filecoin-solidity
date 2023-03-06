@@ -34,7 +34,7 @@ library MarketTypes {
     uint constant GetDealProviderMethodNum = 935081690;
     uint constant GetDealLabelMethodNum = 46363526;
     uint constant GetDealTermMethodNum = 163777312;
-    uint constant GetDealEpochPriceMethodNum = 4287162428;
+    uint constant GetDealTotalPriceMethodNum = 4287162428;
     uint constant GetDealClientCollateralMethodNum = 200567895;
     uint constant GetDealProviderCollateralMethodNum = 2986712137;
     uint constant GetDealVerifiedMethodNum = 2627389465;
