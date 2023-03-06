@@ -36,4 +36,16 @@ library Misc {
             return uint256(n >= 0 ? n : -n);
         }
     }
+
+    /// @notice validate if an address exists or not
+    /// @dev read this article for more information https://blog.finxter.com/how-to-find-out-if-an-ethereum-address-is-a-contract/
+    /// @param addr address to check
+    /// @return whether the address exists or not
+    function addressExists(address addr) internal view returns (bool) {
+        bytes32 codehash;
+        assembly {
+            codehash := extcodehash(addr)
+        }
+        return codehash != 0x0;
+    }
 }

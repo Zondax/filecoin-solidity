@@ -120,7 +120,7 @@ library MarketAPI {
     function getDealTotalPrice(uint64 dealID) internal returns (CommonTypes.BigInt memory) {
         bytes memory raw_request = dealID.serializeDealID();
 
-        bytes memory result = Actor.callByID(MarketTypes.ActorID, MarketTypes.GetDealEpochPriceMethodNum, Misc.CBOR_CODEC, raw_request, 0, true);
+        bytes memory result = Actor.callByID(MarketTypes.ActorID, MarketTypes.GetDealTotalPriceMethodNum, Misc.CBOR_CODEC, raw_request, 0, true);
 
         return result.deserializeBytesBigInt();
     }
