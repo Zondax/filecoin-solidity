@@ -10,7 +10,7 @@ use fvm_integration_tests::dummy::DummyExterns;
 
 pub fn setup_tester() -> (Tester<MemoryBlockstore, DummyExterns>, Manifest) {
     let bs = MemoryBlockstore::default();
-    let actors = std::fs::read("./builtin-actors/output/builtin-actors-hyperspace.car")
+    let actors = std::fs::read("./builtin-actors/output/builtin-actors-mainnet.car")
         .expect("Unable to read actor devnet file");
     let bundle_root = bundle::import_bundle(&bs, &actors).unwrap();
 
@@ -31,6 +31,6 @@ pub fn load_evm(path: &str) -> Vec<u8> {
         .canonicalize()
         .unwrap();
     let evm_hex = std::fs::read(wasm_path).expect("Unable to read file");
-    
+
     hex::decode(evm_hex).unwrap()
 }
