@@ -166,7 +166,7 @@ fn miner_tests() {
     let constructor_params = CreateMinerParams {
         owner: Address::new_id(103),
         worker,
-        window_post_proof_type: fvm_shared::sector::RegisteredPoStProof::StackedDRGWindow512MiBV1,
+        window_post_proof_type: fvm_shared::sector::RegisteredPoStProof::StackedDRGWindow32GiBV1,
         peer: vec![1, 2, 3],
         multiaddrs: vec![BytesDe(vec![1, 2, 3])],
     };
@@ -184,6 +184,7 @@ fn miner_tests() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
+    dbg!(&res);
     let exec_return: ExecReturn = RawBytes::deserialize(&res.msg_receipt.return_data).unwrap();
 
     dbg!(hex::encode(&exec_return.id_address.to_bytes()));
@@ -482,7 +483,7 @@ fn miner_tests() {
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
     assert_eq!(
         hex::encode(res.msg_receipt.return_data.bytes()),
-        "58200000000000000000000000000000000000000000000000000000000020000000"
+        "58200000000000000000000000000000000000000000000000000000000800000000"
     );
 
     println!("Calling `change_multiaddresses`");
