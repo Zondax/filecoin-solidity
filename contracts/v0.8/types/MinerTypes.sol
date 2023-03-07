@@ -60,7 +60,7 @@ library MinerTypes {
     struct ChangeBeneficiaryParams {
         CommonTypes.FilAddress new_beneficiary;
         CommonTypes.BigInt new_quota;
-        uint64 new_expiration;
+        CommonTypes.ChainEpoch new_expiration;
     }
 
     /// @param active current active beneficiary.
@@ -90,7 +90,7 @@ library MinerTypes {
     /// @param epoch the epoch of funds vested.
     /// @param amount the amount of funds vested.
     struct VestingFunds {
-        int64 epoch;
+        CommonTypes.ChainEpoch epoch;
         CommonTypes.BigInt amount;
     }
 
@@ -100,7 +100,7 @@ library MinerTypes {
     struct BeneficiaryTerm {
         CommonTypes.BigInt quota;
         CommonTypes.BigInt used_quota;
-        uint64 expiration;
+        CommonTypes.ChainEpoch expiration;
     }
 
     /// @param beneficiary the address of the beneficiary.
@@ -118,7 +118,7 @@ library MinerTypes {
     struct PendingBeneficiaryChange {
         CommonTypes.FilAddress new_beneficiary;
         CommonTypes.BigInt new_quota;
-        uint64 new_expiration;
+        CommonTypes.ChainEpoch new_expiration;
         bool approved_by_beneficiary;
         bool approved_by_nominee;
     }

@@ -71,4 +71,6 @@ library CommonTypes {
     }
 
     type FilActorId is uint64;
+
+    type ChainEpoch is int64;
 }

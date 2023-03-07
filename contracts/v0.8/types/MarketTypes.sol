@@ -65,15 +65,15 @@ library MarketTypes {
     /// @param start the chain epoch to start the deal.
     /// @param endthe chain epoch to end the deal.
     struct GetDealTermReturn {
-        int64 start;
-        int64 end;
+        CommonTypes.ChainEpoch start;
+        CommonTypes.ChainEpoch end;
     }
 
     /// @param activated Epoch at which the deal was activated, or -1.
     /// @param terminated Epoch at which the deal was terminated abnormally, or -1.
     struct GetDealActivationReturn {
-        int64 activated;
-        int64 terminated;
+        CommonTypes.ChainEpoch activated;
+        CommonTypes.ChainEpoch terminated;
     }
 
     /// @param deals list of deal proposals signed by a client
@@ -106,8 +106,8 @@ library MarketTypes {
         CommonTypes.FilAddress client;
         CommonTypes.FilAddress provider;
         CommonTypes.DealLabel label;
-        int64 start_epoch;
-        int64 end_epoch;
+        CommonTypes.ChainEpoch start_epoch;
+        CommonTypes.ChainEpoch end_epoch;
         CommonTypes.BigInt storage_price_per_epoch;
         CommonTypes.BigInt provider_collateral;
         CommonTypes.BigInt client_collateral;

@@ -101,8 +101,8 @@ library MarketCBOR {
         (len, byteIdx) = rawResp.readFixedArray(byteIdx);
         assert(len == 2);
 
-        (ret.start, byteIdx) = rawResp.readInt64(byteIdx);
-        (ret.end, byteIdx) = rawResp.readInt64(byteIdx);
+        (ret.start, byteIdx) = rawResp.readChainEpoch(byteIdx);
+        (ret.end, byteIdx) = rawResp.readChainEpoch(byteIdx);
 
         return ret;
     }
@@ -117,8 +117,8 @@ library MarketCBOR {
         (len, byteIdx) = rawResp.readFixedArray(byteIdx);
         assert(len == 2);
 
-        (ret.activated, byteIdx) = rawResp.readInt64(byteIdx);
-        (ret.terminated, byteIdx) = rawResp.readInt64(byteIdx);
+        (ret.activated, byteIdx) = rawResp.readChainEpoch(byteIdx);
+        (ret.terminated, byteIdx) = rawResp.readChainEpoch(byteIdx);
 
         return ret;
     }
@@ -149,8 +149,8 @@ library MarketCBOR {
 
             isLabelStr ? buf.writeString(params.deals[i].proposal.label.dataStr) : buf.writeBytes(params.deals[i].proposal.label.dataBts);
 
-            buf.writeInt64(params.deals[i].proposal.start_epoch);
-            buf.writeInt64(params.deals[i].proposal.end_epoch);
+            buf.writeChainEpoch(params.deals[i].proposal.start_epoch);
+            buf.writeChainEpoch(params.deals[i].proposal.end_epoch);
             buf.writeBytes(params.deals[i].proposal.storage_price_per_epoch.serializeBigInt());
             buf.writeBytes(params.deals[i].proposal.provider_collateral.serializeBigInt());
             buf.writeBytes(params.deals[i].proposal.client_collateral.serializeBigInt());
@@ -203,7 +203,6 @@ library MarketCBOR {
 
         (ret.dealProposal, byteIdx) = rawResp.readBytes(byteIdx);
         (ret.dealId, byteIdx) = rawResp.readUInt64(byteIdx);
-
     }
 
     function serializeDealProposal(MarketTypes.DealProposal memory dealProposal) internal pure returns (bytes memory) {
@@ -212,7 +211,6 @@ library MarketCBOR {
         bool isLabelStr = bytes(dealProposal.label.dataStr).length > 0;
         bool isLabelBts = dealProposal.label.dataBts.length > 0;
         require(!(isLabelStr && isLabelBts), "deal label must be either string or bytes");
-
 
         buf.startFixedArray(11);
 
@@ -224,15 +222,14 @@ library MarketCBOR {
 
         isLabelStr ? buf.writeString(dealProposal.label.dataStr) : buf.writeBytes(dealProposal.label.dataBts);
 
-        buf.writeInt64(dealProposal.start_epoch);
-        buf.writeInt64(dealProposal.end_epoch);
+        buf.writeChainEpoch(dealProposal.start_epoch);
+        buf.writeChainEpoch(dealProposal.end_epoch);
         buf.writeBytes(dealProposal.storage_price_per_epoch.serializeBigInt());
         buf.writeBytes(dealProposal.provider_collateral.serializeBigInt());
         buf.writeBytes(dealProposal.client_collateral.serializeBigInt());
 
         return buf.data();
     }
-
 
     function deserializeDealProposal(bytes memory rawResp) internal pure returns (MarketTypes.DealProposal memory ret) {
         uint byteIdx = 0;
@@ -257,8 +254,8 @@ library MarketCBOR {
         (tmpString, byteIdx) = rawResp.readString(byteIdx);
         ret.label = CommonTypes.DealLabel(new bytes(0), tmpString);
 
-        (ret.start_epoch, byteIdx) = rawResp.readInt64(byteIdx);
-        (ret.end_epoch, byteIdx) = rawResp.readInt64(byteIdx);
+        (ret.start_epoch, byteIdx) = rawResp.readChainEpoch(byteIdx);
+        (ret.end_epoch, byteIdx) = rawResp.readChainEpoch(byteIdx);
 
         bytes memory storage_price_per_epoch_bytes;
         (storage_price_per_epoch_bytes, byteIdx) = rawResp.readBytes(byteIdx);
@@ -271,6 +268,5 @@ library MarketCBOR {
         bytes memory client_collateral_bytes;
         (client_collateral_bytes, byteIdx) = rawResp.readBytes(byteIdx);
         ret.client_collateral = client_collateral_bytes.deserializeBigInt();
-
     }
 }
