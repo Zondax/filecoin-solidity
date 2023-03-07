@@ -299,6 +299,8 @@ func WithdrawBalance(params WithdrawBalanceParams) WithdrawBalanceReturn {}
 
 Withdraw the token balance for this miner.
 
+`uint` WithdrawBalanceMethodNum = 2280458852.
+
 **Params**:
 
 + `struct` WithdrawBalanceParams
