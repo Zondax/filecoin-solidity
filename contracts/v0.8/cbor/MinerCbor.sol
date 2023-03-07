@@ -21,19 +21,21 @@ pragma solidity ^0.8.17;
 
 import "solidity-cborutils/contracts/CBOR.sol";
 
+import "./BigIntCbor.sol";
+import "./FilecoinCbor.sol";
+
 import "../types/MinerTypes.sol";
 import "../types/CommonTypes.sol";
 import "../utils/CborDecode.sol";
 import "../utils/Misc.sol";
-import "./BigIntCbor.sol";
 
 /// @title This library is a set of functions meant to handle CBOR parameters serialization and return values deserialization for Miner actor exported methods.
 /// @author Zondax AG
 library MinerCBOR {
     using CBOR for CBOR.CBORBuffer;
     using CBORDecoder for bytes;
-    using BigIntCBOR for CommonTypes.BigInt;
-    using BigIntCBOR for bytes;
+    using BigIntCBOR for *;
+    using FilecoinCBOR for *;
 
     /// @notice serialize ChangeBeneficiaryParams struct to cbor in order to pass as arguments to the miner actor
     /// @param params ChangeBeneficiaryParams to serialize as cbor
@@ -44,7 +46,7 @@ library MinerCBOR {
         buf.startFixedArray(3);
         buf.writeBytes(params.new_beneficiary.data);
         buf.writeBytes(params.new_quota.serializeBigInt());
-        buf.writeUInt64(params.new_expiration);
+        buf.writeChainEpoch(params.new_expiration);
 
         return buf.data();
     }
@@ -103,7 +105,7 @@ library MinerCBOR {
             ret.active.term.used_quota = CommonTypes.BigInt(new bytes(0), false);
         }
 
-        (ret.active.term.expiration, byteIdx) = rawResp.readUInt64(byteIdx);
+        (ret.active.term.expiration, byteIdx) = rawResp.readChainEpoch(byteIdx);
 
         if (!rawResp.isNullNext(byteIdx)) {
             (len, byteIdx) = rawResp.readFixedArray(byteIdx);
@@ -118,7 +120,7 @@ library MinerCBOR {
                 ret.proposed.new_quota = CommonTypes.BigInt(new bytes(0), false);
             }
 
-            (ret.proposed.new_expiration, byteIdx) = rawResp.readUInt64(byteIdx);
+            (ret.proposed.new_expiration, byteIdx) = rawResp.readChainEpoch(byteIdx);
             (ret.proposed.approved_by_beneficiary, byteIdx) = rawResp.readBool(byteIdx);
             (ret.proposed.approved_by_nominee, byteIdx) = rawResp.readBool(byteIdx);
         }
@@ -130,7 +132,7 @@ library MinerCBOR {
     /// @param rawResp cbor encoded response
     /// @return ret new instance of GetVestingFundsReturn created based on parsed data
     function deserializeGetVestingFundsReturn(bytes memory rawResp) internal pure returns (MinerTypes.GetVestingFundsReturn memory ret) {
-        int64 epoch;
+        CommonTypes.ChainEpoch epoch;
         CommonTypes.BigInt memory amount;
         bytes memory tmp;
 
@@ -147,8 +149,8 @@ library MinerCBOR {
         for (uint i = 0; i < len; i++) {
             (leni, byteIdx) = rawResp.readFixedArray(byteIdx);
             assert(leni == 2);
-            
-            (epoch, byteIdx) = rawResp.readInt64(byteIdx);
+
+            (epoch, byteIdx) = rawResp.readChainEpoch(byteIdx);
             (tmp, byteIdx) = rawResp.readBytes(byteIdx);
 
             amount = tmp.deserializeBigInt();

@@ -92,7 +92,7 @@ contract MinerMockAPI {
     /// @return the funds vesting in this miner as a list of (vesting_epoch, vesting_amount) tuples.
     function getVestingFunds() public pure returns (MinerTypes.GetVestingFundsReturn memory) {
         MinerTypes.VestingFunds[] memory vesting_funds = new MinerTypes.VestingFunds[](1);
-        vesting_funds[0] = MinerTypes.VestingFunds(1668514825, CommonTypes.BigInt(hex"6C6B935B8BBD400000", false));
+        vesting_funds[0] = MinerTypes.VestingFunds(CommonTypes.ChainEpoch.wrap(1668514825), CommonTypes.BigInt(hex"6C6B935B8BBD400000", false));
 
         return MinerTypes.GetVestingFundsReturn(vesting_funds);
     }

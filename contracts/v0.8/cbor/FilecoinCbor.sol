@@ -155,4 +155,23 @@ library FilecoinCBOR {
     function writeFilActorId(CBOR.CBORBuffer memory buf, CommonTypes.FilActorId id) internal pure {
         buf.writeUInt64(CommonTypes.FilActorId.unwrap(id));
     }
+
+    /// @notice attempt to read a ChainEpoch value
+    /// @param rawResp cbor encoded bytes to parse from
+    /// @param byteIdx current position to read on the cbor encoded bytes
+    /// @return a ChainEpoch decoded from input bytes and the byte index after moving past the value
+    function readChainEpoch(bytes memory rawResp, uint byteIdx) internal pure returns (CommonTypes.ChainEpoch, uint) {
+        int64 tmp = 0;
+
+        (tmp, byteIdx) = rawResp.readInt64(byteIdx);
+        return (CommonTypes.ChainEpoch.wrap(tmp), byteIdx);
+    }
+
+    /// @notice write ChainEpoch into a cbor buffer
+    /// @dev ChainEpoch is just wrapping a int64
+    /// @param buf buffer containing the actual cbor serialization process
+    /// @param id ChainEpoch to serialize as cbor
+    function writeChainEpoch(CBOR.CBORBuffer memory buf, CommonTypes.ChainEpoch id) internal pure {
+        buf.writeInt64(CommonTypes.ChainEpoch.unwrap(id));
+    }
 }
