@@ -19,6 +19,8 @@
 // SPDX-License-Identifier: Apache-2.0
 pragma solidity ^0.8.17;
 
+import "../../types/CommonTypes.sol";
+
 /// @title Filecoin market actor types for Solidity.
 /// @author Zondax AG
 library MockTypes {
@@ -30,12 +32,12 @@ library MockTypes {
         uint64 client;
         uint64 provider;
         string label;
-        int64 start;
-        int64 end;
+        CommonTypes.ChainEpoch start;
+        CommonTypes.ChainEpoch end;
         uint256 price_per_epoch;
         uint256 provider_collateral;
         uint256 client_collateral;
-        int64 activated;
-        int64 terminated;
+        CommonTypes.ChainEpoch activated;
+        CommonTypes.ChainEpoch terminated;
     }
 }
