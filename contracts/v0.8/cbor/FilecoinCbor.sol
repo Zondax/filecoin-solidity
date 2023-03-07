@@ -90,6 +90,8 @@ library FilecoinCBOR {
         uint len;
 
         (len, byteIdx) = rawResp.readFixedArray(byteIdx);
+        require(len == 1, "Wrong numbers of parameters (should find 1)");
+
         (ret.data, byteIdx) = rawResp.readBytes(byteIdx);
 
         return ret;
@@ -173,5 +175,38 @@ library FilecoinCBOR {
     /// @param id ChainEpoch to serialize as cbor
     function writeChainEpoch(CBOR.CBORBuffer memory buf, CommonTypes.ChainEpoch id) internal pure {
         buf.writeInt64(CommonTypes.ChainEpoch.unwrap(id));
+    }
+
+    /// @notice deserialize DealLabel cbor to struct when receiving a message
+    /// @param rawResp cbor encoded response
+    /// @return ret new instance of DealLabel created based on parsed data
+    function deserializeDealLabel(bytes memory rawResp) internal pure returns (CommonTypes.DealLabel memory) {
+        uint byteIdx = 0;
+        CommonTypes.DealLabel memory label;
+
+        (label, byteIdx) = readDealLabel(rawResp, byteIdx);
+        return label;
+    }
+
+    /// @notice attempt to read a DealLabel value
+    /// @param rawResp cbor encoded bytes to parse from
+    /// @param byteIdx current position to read on the cbor encoded bytes
+    /// @return a DealLabel decoded from input bytes and the byte index after moving past the value
+    function readDealLabel(bytes memory rawResp, uint byteIdx) internal pure returns (CommonTypes.DealLabel memory, uint) {
+        uint8 maj;
+        uint len;
+
+        (maj, len, byteIdx) = CBORDecoder.parseCborHeader(rawResp, byteIdx);
+        require(maj == MajByteString || maj == MajTextString, "invalid maj (expected MajByteString or MajTextString)");
+
+        uint max_len = byteIdx + len;
+        bytes memory slice = new bytes(len);
+        uint slice_index = 0;
+        for (uint256 i = byteIdx; i < max_len; i++) {
+            slice[slice_index] = rawResp[i];
+            slice_index++;
+        }
+
+        return (CommonTypes.DealLabel(slice, maj == MajTextString), byteIdx + len);
     }
 }
