@@ -47,7 +47,7 @@ library Utils {
     /// @param params raw data (in bytes) passed as arguments to the method call
     function handleFilecoinMethod(uint64 method, uint64 codec, bytes calldata params) internal pure returns (CommonTypes.UniversalReceiverParams memory) {
         if (method == CommonTypes.UniversalReceiverHookMethodNum) {
-            if (codec == Misc.CBOR_CODEC) {
+            if (codec != Misc.CBOR_CODEC) {
                 revert InvalidCodec(codec);
             }
 
