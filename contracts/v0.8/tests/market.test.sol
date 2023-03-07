@@ -50,7 +50,7 @@ contract MarketApiTest {
         return MarketAPI.getDealProvider(dealID);
     }
 
-    function get_deal_label(uint64 dealID) public returns (string memory) {
+    function get_deal_label(uint64 dealID) public returns (CommonTypes.DealLabel memory) {
         return MarketAPI.getDealLabel(dealID);
     }
 

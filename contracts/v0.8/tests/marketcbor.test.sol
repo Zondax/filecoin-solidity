@@ -22,7 +22,7 @@ contract MarketCBORTest {
         proposal.verified_deal = true;
         proposal.client = FilAddresses.fromBytes(hex"001234");
         proposal.provider = FilAddresses.fromBytes(hex"005678");
-        proposal.label = CommonTypes.DealLabel(new bytes(0), "test");
+        proposal.label = CommonTypes.DealLabel(bytes("test"), true);
         proposal.start_epoch = CommonTypes.ChainEpoch.wrap(20000);
         proposal.end_epoch = CommonTypes.ChainEpoch.wrap(40000);
         proposal.storage_price_per_epoch = CommonTypes.BigInt(hex"50", false);
@@ -37,7 +37,8 @@ contract MarketCBORTest {
         require(proposal.verified_deal == deserProposal.verified_deal, "unequal verified_deal");
         require(keccak256(proposal.client.data) == keccak256(deserProposal.client.data), "unequal client");
         require(keccak256(proposal.provider.data) == keccak256(deserProposal.provider.data), "unequal provider");
-        require(keccak256(abi.encodePacked(proposal.label.dataStr)) == keccak256(abi.encodePacked(deserProposal.label.dataStr)), "unequal label");
+        require(keccak256(abi.encodePacked(proposal.label.data)) == keccak256(abi.encodePacked(deserProposal.label.data)), "unequal label");
+        require(proposal.label.isString == deserProposal.label.isString, "unequal label type");
         require(CommonTypes.ChainEpoch.unwrap(proposal.start_epoch) == CommonTypes.ChainEpoch.unwrap(deserProposal.start_epoch), "unequal start_epoch");
         require(CommonTypes.ChainEpoch.unwrap(proposal.end_epoch) == CommonTypes.ChainEpoch.unwrap(deserProposal.end_epoch), "unequal end_epoch");
         bigIntEqual(proposal.storage_price_per_epoch, deserProposal.storage_price_per_epoch);

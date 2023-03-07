@@ -97,12 +97,12 @@ library MarketAPI {
 
     /// @notice Get the label of a deal proposal.
     /// @return the label of a deal proposal.
-    function getDealLabel(uint64 dealID) internal returns (string memory) {
+    function getDealLabel(uint64 dealID) internal returns (CommonTypes.DealLabel memory) {
         bytes memory raw_request = dealID.serializeDealID();
 
         bytes memory result = Actor.callByID(MarketTypes.ActorID, MarketTypes.GetDealLabelMethodNum, Misc.CBOR_CODEC, raw_request, 0, true);
 
-        return result.deserializeString();
+        return result.deserializeDealLabel();
     }
 
     /// @notice Get the start epoch and duration(in epochs) of a deal proposal.

@@ -133,10 +133,6 @@ library MarketCBOR {
         buf.startFixedArray(uint64(params.deals.length));
 
         for (uint64 i = 0; i < params.deals.length; i++) {
-            bool isLabelStr = bytes(params.deals[i].proposal.label.dataStr).length > 0;
-            bool isLabelBts = params.deals[i].proposal.label.dataBts.length > 0;
-            require(!(isLabelStr && isLabelBts), "deal label must be either string or bytes");
-
             buf.startFixedArray(2);
 
             buf.startFixedArray(11);
@@ -147,7 +143,9 @@ library MarketCBOR {
             buf.writeBytes(params.deals[i].proposal.client.data);
             buf.writeBytes(params.deals[i].proposal.provider.data);
 
-            isLabelStr ? buf.writeString(params.deals[i].proposal.label.dataStr) : buf.writeBytes(params.deals[i].proposal.label.dataBts);
+            params.deals[i].proposal.label.isString
+                ? buf.writeString(string(params.deals[i].proposal.label.data))
+                : buf.writeBytes(params.deals[i].proposal.label.data);
 
             buf.writeChainEpoch(params.deals[i].proposal.start_epoch);
             buf.writeChainEpoch(params.deals[i].proposal.end_epoch);
@@ -208,10 +206,6 @@ library MarketCBOR {
     function serializeDealProposal(MarketTypes.DealProposal memory dealProposal) internal pure returns (bytes memory) {
         CBOR.CBORBuffer memory buf = CBOR.create(64);
 
-        bool isLabelStr = bytes(dealProposal.label.dataStr).length > 0;
-        bool isLabelBts = dealProposal.label.dataBts.length > 0;
-        require(!(isLabelStr && isLabelBts), "deal label must be either string or bytes");
-
         buf.startFixedArray(11);
 
         buf.writeCid(dealProposal.piece_cid.data);
@@ -220,7 +214,7 @@ library MarketCBOR {
         buf.writeBytes(dealProposal.client.data);
         buf.writeBytes(dealProposal.provider.data);
 
-        isLabelStr ? buf.writeString(dealProposal.label.dataStr) : buf.writeBytes(dealProposal.label.dataBts);
+        dealProposal.label.isString ? buf.writeString(string(dealProposal.label.data)) : buf.writeBytes(dealProposal.label.data);
 
         buf.writeChainEpoch(dealProposal.start_epoch);
         buf.writeChainEpoch(dealProposal.end_epoch);
@@ -235,7 +229,6 @@ library MarketCBOR {
         uint byteIdx = 0;
         uint len;
         bytes memory tmp;
-        string memory tmpString;
 
         (len, byteIdx) = rawResp.readFixedArray(byteIdx);
         assert(len == 11);
@@ -251,8 +244,7 @@ library MarketCBOR {
         (tmp, byteIdx) = rawResp.readBytes(byteIdx);
         ret.provider = FilAddresses.fromBytes(tmp);
 
-        (tmpString, byteIdx) = rawResp.readString(byteIdx);
-        ret.label = CommonTypes.DealLabel(new bytes(0), tmpString);
+        (ret.label, byteIdx) = rawResp.readDealLabel(byteIdx);
 
         (ret.start_epoch, byteIdx) = rawResp.readChainEpoch(byteIdx);
         (ret.end_epoch, byteIdx) = rawResp.readChainEpoch(byteIdx);

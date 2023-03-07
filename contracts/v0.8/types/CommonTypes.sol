@@ -64,10 +64,11 @@ library CommonTypes {
         bytes data;
     }
 
-    /// @param dataBytes deal proposal label in bytes format (it can be utf8 string or arbitrary bytes string). If both are empty, its default value will be empty bytes.
+    /// @param data deal proposal label in bytes format (it can be utf8 string or arbitrary bytes string).
+    /// @param isString indicates if the data is string or raw bytes
     struct DealLabel {
-        bytes dataBts;
-        string dataStr;
+        bytes data;
+        bool isString;
     }
 
     type FilActorId is uint64;
