@@ -108,7 +108,7 @@ library VerifRegCBOR {
 
         buf.startFixedArray(2);
         buf.writeBytes(params.addr.data);
-        buf.writeBytes(params.allowance);
+        buf.writeBytes(params.allowance.serializeBigInt());
 
         return buf.data();
     }
