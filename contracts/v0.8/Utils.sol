@@ -36,15 +36,24 @@ library Utils {
     using FilecoinCBOR for *;
     using BytesCBOR for bytes;
 
+    /// @notice the codec received is not valid
+    error InvalidCodec(uint64);
+
+    /// @notice filecoin method not handled
+    error MethodNotHandled(uint64);
+
     /// @notice utility function meant to handle calls from other builtin actors. Arguments are passed as cbor serialized data (in filecoin native format)
     /// @param method the filecoin method id that is being called
     /// @param params raw data (in bytes) passed as arguments to the method call
     function handleFilecoinMethod(uint64 method, uint64 codec, bytes calldata params) internal pure returns (CommonTypes.UniversalReceiverParams memory) {
         if (method == CommonTypes.UniversalReceiverHookMethodNum) {
-            require(codec == Misc.CBOR_CODEC, "Incorrect codec (expected DAG_CBOR_CODEC)");
+            if (codec != Misc.CBOR_CODEC) {
+                revert InvalidCodec(codec);
+            }
+
             return params.deserializeUniversalReceiverParams();
         } else {
-            revert("the filecoin method that was called is not handled");
+            revert MethodNotHandled(method);
         }
     }
 

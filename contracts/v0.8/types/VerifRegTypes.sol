@@ -50,7 +50,7 @@ library VerifRegTypes {
     /// @param allowance approved DataCap for this verified client
     struct AddVerifiedClientParams {
         CommonTypes.FilAddress addr;
-        bytes allowance;
+        CommonTypes.BigInt allowance;
     }
 
     /// @param client the client address for which to expired allocations.
