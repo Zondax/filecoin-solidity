@@ -94,7 +94,7 @@ library VerifRegTypes {
     struct ClaimTerm {
         CommonTypes.FilActorId provider;
         CommonTypes.FilActorId claim_id;
-        int64 term_max;
+        CommonTypes.ChainEpoch term_max;
     }
 
     /// @param provider the provider storing the data.
@@ -110,9 +110,9 @@ library VerifRegTypes {
         CommonTypes.FilActorId client;
         bytes data;
         uint64 size;
-        int64 term_min;
-        int64 term_max;
-        int64 term_start;
+        CommonTypes.ChainEpoch term_min;
+        CommonTypes.ChainEpoch term_max;
+        CommonTypes.ChainEpoch term_start;
         CommonTypes.FilActorId sector;
     }
 }

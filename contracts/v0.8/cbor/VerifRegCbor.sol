@@ -91,9 +91,9 @@ library VerifRegCBOR {
             (ret.claims[i].client, byteIdx) = rawResp.readFilActorId(byteIdx);
             (ret.claims[i].data, byteIdx) = rawResp.readBytes(byteIdx);
             (ret.claims[i].size, byteIdx) = rawResp.readUInt64(byteIdx);
-            (ret.claims[i].term_min, byteIdx) = rawResp.readInt64(byteIdx);
-            (ret.claims[i].term_max, byteIdx) = rawResp.readInt64(byteIdx);
-            (ret.claims[i].term_start, byteIdx) = rawResp.readInt64(byteIdx);
+            (ret.claims[i].term_min, byteIdx) = rawResp.readChainEpoch(byteIdx);
+            (ret.claims[i].term_max, byteIdx) = rawResp.readChainEpoch(byteIdx);
+            (ret.claims[i].term_start, byteIdx) = rawResp.readChainEpoch(byteIdx);
             (ret.claims[i].sector, byteIdx) = rawResp.readFilActorId(byteIdx);
         }
 
@@ -185,7 +185,7 @@ library VerifRegCBOR {
             buf.startFixedArray(3);
             buf.writeFilActorId(params.terms[i].provider);
             buf.writeFilActorId(params.terms[i].claim_id);
-            buf.writeInt64(params.terms[i].term_max);
+            buf.writeChainEpoch(params.terms[i].term_max);
         }
 
         return buf.data();
