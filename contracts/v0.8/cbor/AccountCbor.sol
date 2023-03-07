@@ -43,4 +43,20 @@ library AccountCBOR {
 
         return buf.data();
     }
+
+    /// @notice deserialize AuthenticateMessageParams struct from cbor encoded bytes coming from an account actor call
+    /// @param rawResp cbor encoded response
+    /// @return ret new instance of AuthenticateMessageParams created based on parsed data
+    function deserializeAuthenticateMessageParams(bytes memory rawResp) internal pure returns (AccountTypes.AuthenticateMessageParams memory ret) {
+        uint byteIdx = 0;
+        uint len;
+
+        (len, byteIdx) = rawResp.readFixedArray(byteIdx);
+        assert(len == 2);
+
+        (ret.signature, byteIdx) = rawResp.readBytes(byteIdx);
+        (ret.message, byteIdx) = rawResp.readBytes(byteIdx);
+
+        return ret;
+    }
 }
