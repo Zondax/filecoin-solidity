@@ -21,8 +21,12 @@ pragma solidity ^0.8.17;
 
 import "solidity-cborutils/contracts/CBOR.sol";
 import "@ensdomains/buffer/contracts/Buffer.sol";
-import "../types/CommonTypes.sol";
+
 import "../utils/CborDecode.sol";
+import "../utils/Misc.sol";
+
+import "../types/CommonTypes.sol";
+
 import "../cbor/BigIntCbor.sol";
 
 /// @title This library is a set of functions meant to handle CBOR serialization and deserialization for general data types on the filecoin network.
@@ -51,7 +55,8 @@ library FilecoinCBOR {
     /// @param addr filecoin address to serialize
     /// @return cbor serialized data as bytes
     function serializeAddress(CommonTypes.FilAddress memory addr) internal pure returns (bytes memory) {
-        CBOR.CBORBuffer memory buf = CBOR.create(64);
+        uint256 capacity = Misc.getBytesSize(addr.data);
+        CBOR.CBORBuffer memory buf = CBOR.create(capacity);
 
         buf.writeBytes(addr.data);
 
@@ -62,7 +67,12 @@ library FilecoinCBOR {
     /// @param value BigInt to serialize as cbor inside an
     /// @return cbor serialized data as bytes
     function serializeArrayBigInt(CommonTypes.BigInt memory value) internal pure returns (bytes memory) {
-        CBOR.CBORBuffer memory buf = CBOR.create(64);
+        uint256 capacity = 0;
+        bytes memory valueBigInt = value.serializeBigInt();
+
+        capacity += Misc.getPrefixSize(1);
+        capacity += Misc.getBytesSize(valueBigInt);
+        CBOR.CBORBuffer memory buf = CBOR.create(capacity);
 
         buf.startFixedArray(1);
         buf.writeBytes(value.serializeBigInt());
@@ -74,7 +84,11 @@ library FilecoinCBOR {
     /// @param addr FilAddress to serialize as cbor inside an
     /// @return cbor serialized data as bytes
     function serializeArrayFilAddress(CommonTypes.FilAddress memory addr) internal pure returns (bytes memory) {
-        CBOR.CBORBuffer memory buf = CBOR.create(64);
+        uint256 capacity = 0;
+
+        capacity += Misc.getPrefixSize(1);
+        capacity += Misc.getBytesSize(addr.data);
+        CBOR.CBORBuffer memory buf = CBOR.create(capacity);
 
         buf.startFixedArray(1);
         buf.writeBytes(addr.data);
@@ -116,7 +130,12 @@ library FilecoinCBOR {
     /// @param params UniversalReceiverParams to serialize as cbor
     /// @return cbor serialized data as bytes
     function serializeUniversalReceiverParams(CommonTypes.UniversalReceiverParams memory params) internal pure returns (bytes memory) {
-        CBOR.CBORBuffer memory buf = CBOR.create(64);
+        uint256 capacity = 0;
+
+        capacity += Misc.getPrefixSize(2);
+        capacity += Misc.getPrefixSize(params.type_);
+        capacity += Misc.getBytesSize(params.payload);
+        CBOR.CBORBuffer memory buf = CBOR.create(capacity);
 
         buf.startFixedArray(2);
         buf.writeUInt64(params.type_);
@@ -175,6 +194,13 @@ library FilecoinCBOR {
     /// @param id ChainEpoch to serialize as cbor
     function writeChainEpoch(CBOR.CBORBuffer memory buf, CommonTypes.ChainEpoch id) internal pure {
         buf.writeInt64(CommonTypes.ChainEpoch.unwrap(id));
+    }
+
+    /// @notice write DealLabel into a cbor buffer
+    /// @param buf buffer containing the actual cbor serialization process
+    /// @param label DealLabel to serialize as cbor
+    function writeDealLabel(CBOR.CBORBuffer memory buf, CommonTypes.DealLabel memory label) internal pure {
+        label.isString ? buf.writeString(string(label.data)) : buf.writeBytes(label.data);
     }
 
     /// @notice deserialize DealLabel cbor to struct when receiving a message

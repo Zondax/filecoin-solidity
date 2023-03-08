@@ -26,6 +26,7 @@ import "./FilecoinCbor.sol";
 
 import "../types/MinerTypes.sol";
 import "../types/CommonTypes.sol";
+
 import "../utils/CborDecode.sol";
 import "../utils/Misc.sol";
 
@@ -41,11 +42,18 @@ library MinerCBOR {
     /// @param params ChangeBeneficiaryParams to serialize as cbor
     /// @return cbor serialized data as bytes
     function serializeChangeBeneficiaryParams(MinerTypes.ChangeBeneficiaryParams memory params) internal pure returns (bytes memory) {
-        CBOR.CBORBuffer memory buf = CBOR.create(64);
+        uint256 capacity = 0;
+        bytes memory new_quota = params.new_quota.serializeBigInt();
+
+        capacity += Misc.getPrefixSize(3);
+        capacity += Misc.getBytesSize(params.new_beneficiary.data);
+        capacity += Misc.getBytesSize(new_quota);
+        capacity += Misc.getChainEpochSize(params.new_expiration);
+        CBOR.CBORBuffer memory buf = CBOR.create(capacity);
 
         buf.startFixedArray(3);
         buf.writeBytes(params.new_beneficiary.data);
-        buf.writeBytes(params.new_quota.serializeBigInt());
+        buf.writeBytes(new_quota);
         buf.writeChainEpoch(params.new_expiration);
 
         return buf.data();
@@ -164,7 +172,15 @@ library MinerCBOR {
     /// @param params ChangeWorkerAddressParams to serialize as cbor
     /// @return cbor serialized data as bytes
     function serializeChangeWorkerAddressParams(MinerTypes.ChangeWorkerAddressParams memory params) internal pure returns (bytes memory) {
-        CBOR.CBORBuffer memory buf = CBOR.create(64);
+        uint256 capacity = 0;
+
+        capacity += Misc.getPrefixSize(2);
+        capacity += Misc.getBytesSize(params.new_worker.data);
+        capacity += Misc.getPrefixSize(uint256(params.new_control_addresses.length));
+        for (uint64 i = 0; i < params.new_control_addresses.length; i++) {
+            capacity += Misc.getBytesSize(params.new_control_addresses[i].data);
+        }
+        CBOR.CBORBuffer memory buf = CBOR.create(capacity);
 
         buf.startFixedArray(2);
         buf.writeBytes(params.new_worker.data);
@@ -181,7 +197,14 @@ library MinerCBOR {
     /// @param params ChangeMultiaddrsParams to serialize as cbor
     /// @return cbor serialized data as bytes
     function serializeChangeMultiaddrsParams(MinerTypes.ChangeMultiaddrsParams memory params) internal pure returns (bytes memory) {
-        CBOR.CBORBuffer memory buf = CBOR.create(64);
+        uint256 capacity = 0;
+
+        capacity += Misc.getPrefixSize(1);
+        capacity += Misc.getPrefixSize(uint256(params.new_multi_addrs.length));
+        for (uint64 i = 0; i < params.new_multi_addrs.length; i++) {
+            capacity += Misc.getBytesSize(params.new_multi_addrs[i].data);
+        }
+        CBOR.CBORBuffer memory buf = CBOR.create(capacity);
 
         buf.startFixedArray(1);
         buf.startFixedArray(uint64(params.new_multi_addrs.length));

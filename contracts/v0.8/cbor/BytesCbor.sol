@@ -22,7 +22,10 @@ pragma solidity ^0.8.17;
 import "solidity-cborutils/contracts/CBOR.sol";
 
 import "../utils/CborDecode.sol";
+import "../utils/Misc.sol";
+
 import "../types/CommonTypes.sol";
+
 import "./BigIntCbor.sol";
 
 /// @title This library is a set of functions meant to handle CBOR serialization and deserialization for bytes
@@ -36,7 +39,9 @@ library BytesCBOR {
     /// @param data raw data in bytes
     /// @return encoded cbor bytes
     function serializeBytes(bytes memory data) internal pure returns (bytes memory) {
-        CBOR.CBORBuffer memory buf = CBOR.create(64);
+        uint256 capacity = Misc.getBytesSize(data);
+
+        CBOR.CBORBuffer memory buf = CBOR.create(capacity);
 
         buf.writeBytes(data);
 
@@ -47,17 +52,13 @@ library BytesCBOR {
     /// @param addr raw address in bytes
     /// @return encoded address as cbor bytes
     function serializeAddress(bytes memory addr) internal pure returns (bytes memory) {
-        CBOR.CBORBuffer memory buf = CBOR.create(64);
-
-        buf.writeBytes(addr);
-
-        return buf.data();
+        return serializeBytes(addr);
     }
 
     /// @notice encoded null value as cbor
     /// @return cbor encoded null
     function serializeNull() internal pure returns (bytes memory) {
-        CBOR.CBORBuffer memory buf = CBOR.create(64);
+        CBOR.CBORBuffer memory buf = CBOR.create(1);
 
         buf.writeNull();
 

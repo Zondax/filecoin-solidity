@@ -18,6 +18,8 @@
 // SPDX-License-Identifier: Apache-2.0
 pragma solidity ^0.8.17;
 
+import "../types/CommonTypes.sol";
+
 /// @title Library containing miscellaneous functions used on the project
 /// @author Zondax AG
 library Misc {
@@ -47,5 +49,45 @@ library Misc {
             codehash := extcodehash(addr)
         }
         return codehash != 0x0;
+    }
+
+    /// Returns the data size required by CBOR.writeFixedNumeric
+    function getPrefixSize(uint256 data_size) internal pure returns (uint256) {
+        if (data_size <= 23) {
+            return 1;
+        } else if (data_size <= 0xFF) {
+            return 2;
+        } else if (data_size <= 0xFFFF) {
+            return 3;
+        } else if (data_size <= 0xFFFFFFFF) {
+            return 5;
+        }
+        return 9;
+    }
+
+    function getBytesSize(bytes memory value) internal pure returns (uint256) {
+        return getPrefixSize(value.length) + value.length;
+    }
+
+    function getCidSize(bytes memory value) internal pure returns (uint256) {
+        return getPrefixSize(2) + value.length;
+    }
+
+    function getFilActorIdSize(CommonTypes.FilActorId value) internal pure returns (uint256) {
+        uint64 val = CommonTypes.FilActorId.unwrap(value);
+        return getPrefixSize(uint256(val));
+    }
+
+    function getChainEpochSize(CommonTypes.ChainEpoch value) internal pure returns (uint256) {
+        int64 val = CommonTypes.ChainEpoch.unwrap(value);
+        if (val >= 0) {
+            return getPrefixSize(uint256(uint64(val)));
+        } else {
+            return getPrefixSize(uint256(uint64(-1 - val)));
+        }
+    }
+
+    function getBoolSize() internal pure returns (uint256) {
+        return getPrefixSize(1);
     }
 }

@@ -62,16 +62,16 @@ generate_leb128_tests:
 deploy_api: deploy_miner_api deploy_market_api deploy_verifreg_api deploy_power_api
 
 deploy_miner_api:
-	mkdir -p hardhat/contracts && cp -rf contracts/* hardhat/contracts/. && cd hardhat && yarn hardhat deploy --tags MinerAPI
+	mkdir -p hardhat/contracts && rm -rf hardhat/contracts/v0.8 && cp -rf contracts/* hardhat/contracts/. && cd hardhat && yarn hardhat deploy --tags MinerAPI
 
 deploy_market_api:
-	mkdir -p hardhat/contracts && cp -rf contracts/* hardhat/contracts/. && cd hardhat && yarn hardhat deploy --tags MarketAPI
+	mkdir -p hardhat/contracts && rm -rf hardhat/contracts/v0.8 && cp -rf contracts/* hardhat/contracts/. && cd hardhat && yarn hardhat deploy --tags MarketAPI
 
 deploy_verifreg_api:
-	mkdir -p hardhat/contracts && cp -rf contracts/* hardhat/contracts/. && cd hardhat && yarn hardhat deploy --tags VerifRegAPI
+	mkdir -p hardhat/contracts && rm -rf hardhat/contracts/v0.8 && cp -rf contracts/* hardhat/contracts/. && cd hardhat && yarn hardhat deploy --tags VerifRegAPI
 
 deploy_power_api:
-	mkdir -p hardhat/contracts && cp -rf contracts/* hardhat/contracts/. && cd hardhat && yarn hardhat deploy --tags PowerAPI
+	mkdir -p hardhat/contracts && rm -rf hardhat/contracts/v0.8 && cp -rf contracts/* hardhat/contracts/. && cd hardhat && yarn hardhat deploy --tags PowerAPI
 
 deploy_simple_coin:
 	cd hardhat && yarn hardhat deploy --tags SimpleCoin
