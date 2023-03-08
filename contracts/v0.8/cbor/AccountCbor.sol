@@ -35,7 +35,13 @@ library AccountCBOR {
     /// @param params AuthenticateMessageParams to serialize as cbor
     /// @return cbor serialized data as bytes
     function serializeAuthenticateMessageParams(AccountTypes.AuthenticateMessageParams memory params) internal pure returns (bytes memory) {
-        CBOR.CBORBuffer memory buf = CBOR.create(64);
+        uint256 capacity = 0;
+
+        capacity += Misc.getPrefixSize(2);
+        capacity += Misc.getBytesSize(params.signature);
+        capacity += Misc.getBytesSize(params.message);
+
+        CBOR.CBORBuffer memory buf = CBOR.create(capacity);
 
         buf.startFixedArray(2);
         buf.writeBytes(params.signature);

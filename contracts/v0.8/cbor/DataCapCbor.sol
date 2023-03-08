@@ -39,7 +39,13 @@ library DataCapCBOR {
     /// @param params GetAllowanceParams to serialize as cbor
     /// @return cbor serialized data as bytes
     function serializeGetAllowanceParams(DataCapTypes.GetAllowanceParams memory params) internal pure returns (bytes memory) {
-        CBOR.CBORBuffer memory buf = CBOR.create(64);
+        uint256 capacity = 0;
+
+        capacity += Misc.getPrefixSize(2);
+        capacity += Misc.getBytesSize(params.owner.data);
+        capacity += Misc.getBytesSize(params.operator.data);
+
+        CBOR.CBORBuffer memory buf = CBOR.create(capacity);
 
         buf.startFixedArray(2);
         buf.writeBytes(params.owner.data);
@@ -52,11 +58,19 @@ library DataCapCBOR {
     /// @param params TransferParams to serialize as cbor
     /// @return cbor serialized data as bytes
     function serializeTransferParams(DataCapTypes.TransferParams memory params) internal pure returns (bytes memory) {
-        CBOR.CBORBuffer memory buf = CBOR.create(64);
+        uint256 capacity = 0;
+        bytes memory amount = params.amount.serializeBigInt();
+
+        capacity += Misc.getPrefixSize(3);
+        capacity += Misc.getBytesSize(params.to.data);
+        capacity += Misc.getBytesSize(amount);
+        capacity += Misc.getBytesSize(params.operator_data);
+
+        CBOR.CBORBuffer memory buf = CBOR.create(capacity);
 
         buf.startFixedArray(3);
         buf.writeBytes(params.to.data);
-        buf.writeBytes(params.amount.serializeBigInt());
+        buf.writeBytes(amount);
         buf.writeBytes(params.operator_data);
 
         return buf.data();
@@ -88,12 +102,21 @@ library DataCapCBOR {
     /// @param params TransferFromParams to serialize as cbor
     /// @return cbor serialized data as bytes
     function serializeTransferFromParams(DataCapTypes.TransferFromParams memory params) internal pure returns (bytes memory) {
-        CBOR.CBORBuffer memory buf = CBOR.create(64);
+        uint256 capacity = 0;
+        bytes memory amount = params.amount.serializeBigInt();
+
+        capacity += Misc.getPrefixSize(4);
+        capacity += Misc.getBytesSize(params.from.data);
+        capacity += Misc.getBytesSize(params.to.data);
+        capacity += Misc.getBytesSize(amount);
+        capacity += Misc.getBytesSize(params.operator_data);
+
+        CBOR.CBORBuffer memory buf = CBOR.create(capacity);
 
         buf.startFixedArray(4);
         buf.writeBytes(params.from.data);
         buf.writeBytes(params.to.data);
-        buf.writeBytes(params.amount.serializeBigInt());
+        buf.writeBytes(amount);
         buf.writeBytes(params.operator_data);
 
         return buf.data();
@@ -128,11 +151,18 @@ library DataCapCBOR {
     /// @param params IncreaseAllowanceParams to serialize as cbor
     /// @return cbor serialized data as bytes
     function serializeIncreaseAllowanceParams(DataCapTypes.IncreaseAllowanceParams memory params) internal pure returns (bytes memory) {
-        CBOR.CBORBuffer memory buf = CBOR.create(64);
+        uint256 capacity = 0;
+        bytes memory increase = params.increase.serializeBigInt();
+
+        capacity += Misc.getPrefixSize(2);
+        capacity += Misc.getBytesSize(params.operator.data);
+        capacity += Misc.getBytesSize(increase);
+
+        CBOR.CBORBuffer memory buf = CBOR.create(capacity);
 
         buf.startFixedArray(2);
         buf.writeBytes(params.operator.data);
-        buf.writeBytes(params.increase.serializeBigInt());
+        buf.writeBytes(increase);
 
         return buf.data();
     }
@@ -141,11 +171,18 @@ library DataCapCBOR {
     /// @param params DecreaseAllowanceParams to serialize as cbor
     /// @return cbor serialized data as bytes
     function serializeDecreaseAllowanceParams(DataCapTypes.DecreaseAllowanceParams memory params) internal pure returns (bytes memory) {
-        CBOR.CBORBuffer memory buf = CBOR.create(64);
+        uint256 capacity = 0;
+        bytes memory decrease = params.decrease.serializeBigInt();
+
+        capacity += Misc.getPrefixSize(2);
+        capacity += Misc.getBytesSize(params.operator.data);
+        capacity += Misc.getBytesSize(decrease);
+
+        CBOR.CBORBuffer memory buf = CBOR.create(capacity);
 
         buf.startFixedArray(2);
         buf.writeBytes(params.operator.data);
-        buf.writeBytes(params.decrease.serializeBigInt());
+        buf.writeBytes(decrease);
 
         return buf.data();
     }
@@ -154,11 +191,17 @@ library DataCapCBOR {
     /// @param params BurnFromParams to serialize as cbor
     /// @return cbor serialized data as bytes
     function serializeBurnFromParams(DataCapTypes.BurnFromParams memory params) internal pure returns (bytes memory) {
-        CBOR.CBORBuffer memory buf = CBOR.create(64);
+        uint256 capacity = 0;
+        bytes memory amount = params.amount.serializeBigInt();
+
+        capacity += Misc.getPrefixSize(2);
+        capacity += Misc.getBytesSize(params.owner.data);
+        capacity += Misc.getBytesSize(amount);
+        CBOR.CBORBuffer memory buf = CBOR.create(capacity);
 
         buf.startFixedArray(2);
         buf.writeBytes(params.owner.data);
-        buf.writeBytes(params.amount.serializeBigInt());
+        buf.writeBytes(amount);
 
         return buf.data();
     }

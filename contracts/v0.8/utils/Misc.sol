@@ -48,4 +48,22 @@ library Misc {
         }
         return codehash != 0x0;
     }
+
+    /// Returns the data size required by CBOR.writeFixedNumeric
+    function getPrefixSize(uint256 data_size) internal pure returns (uint256) {
+        if (data_size <= 23) {
+            return 1;
+        } else if (data_size <= 0xFF) {
+            return 2;
+        } else if (data_size <= 0xFFFF) {
+            return 3;
+        } else if (data_size <= 0xFFFFFFFF) {
+            return 5;
+        }
+        return 9;
+    }
+
+    function getBytesSize(bytes memory value) internal pure returns (uint256) {
+        return getPrefixSize(value.length) + value.length;
+    }
 }

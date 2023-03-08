@@ -21,8 +21,10 @@ pragma solidity ^0.8.17;
 
 import "solidity-cborutils/contracts/CBOR.sol";
 import "@ensdomains/buffer/contracts/Buffer.sol";
+
 import "../types/CommonTypes.sol";
 import "../utils/CborDecode.sol";
+import "../utils/Misc.sol";
 import "../cbor/BigIntCbor.sol";
 
 /// @title This library is a set of functions meant to handle CBOR serialization and deserialization for general data types on the filecoin network.
@@ -51,7 +53,8 @@ library FilecoinCBOR {
     /// @param addr filecoin address to serialize
     /// @return cbor serialized data as bytes
     function serializeAddress(CommonTypes.FilAddress memory addr) internal pure returns (bytes memory) {
-        CBOR.CBORBuffer memory buf = CBOR.create(64);
+        uint256 capacity = Misc.getBytesSize(addr.data);
+        CBOR.CBORBuffer memory buf = CBOR.create(capacity);
 
         buf.writeBytes(addr.data);
 
@@ -62,7 +65,12 @@ library FilecoinCBOR {
     /// @param value BigInt to serialize as cbor inside an
     /// @return cbor serialized data as bytes
     function serializeArrayBigInt(CommonTypes.BigInt memory value) internal pure returns (bytes memory) {
-        CBOR.CBORBuffer memory buf = CBOR.create(64);
+        uint256 capacity = 0;
+        bytes memory valueBigInt = value.serializeBigInt();
+
+        capacity += Misc.getPrefixSize(1);
+        capacity += Misc.getBytesSize(valueBigInt);
+        CBOR.CBORBuffer memory buf = CBOR.create(capacity);
 
         buf.startFixedArray(1);
         buf.writeBytes(value.serializeBigInt());
@@ -74,7 +82,11 @@ library FilecoinCBOR {
     /// @param addr FilAddress to serialize as cbor inside an
     /// @return cbor serialized data as bytes
     function serializeArrayFilAddress(CommonTypes.FilAddress memory addr) internal pure returns (bytes memory) {
-        CBOR.CBORBuffer memory buf = CBOR.create(64);
+        uint256 capacity = 0;
+
+        capacity += Misc.getPrefixSize(1);
+        capacity += Misc.getBytesSize(addr.data);
+        CBOR.CBORBuffer memory buf = CBOR.create(capacity);
 
         buf.startFixedArray(1);
         buf.writeBytes(addr.data);
