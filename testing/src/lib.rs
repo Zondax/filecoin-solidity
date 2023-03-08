@@ -1,10 +1,15 @@
+use fvm::trace::ExecutionTrace;
+use fvm_shared::bigint::Zero;
+use prettytable::Table;
+use fvm::trace::ExecutionEvent;
+use fvm::gas::Gas;
+
 #[macro_use]
 extern crate prettytable;
 
 pub mod helpers;
 pub mod setup;
 
-use prettytable::Table;
 
 pub type GasResult = Vec<(String, i64)>;
 
@@ -29,4 +34,24 @@ pub fn save_gas_table(table: &Table, actor_name: &str) {
     };
 
     table.to_csv(out).expect("table cannot be written to csv");
+}
+
+pub fn parse_gas(exec_trace: ExecutionTrace) -> i64 {
+    let mut depth = -1; // start at -1 because we have the on chain message gas and then the call to our solidity contract
+    let mut gas_usage = Gas::new(0);
+
+    for exec in exec_trace {
+        let gas = match &exec {
+            ExecutionEvent::GasCharge(gc) => gc.total(),
+            ExecutionEvent::Call{..} => { depth += 1; Gas::zero() },
+            ExecutionEvent::CallReturn(..) => { depth -= 1; Gas::zero() },
+            _ => Gas::zero(),
+        };
+
+        if depth <= 0 {
+            gas_usage += gas;
+        }
+    }
+
+    return gas_usage.round_down();
 }

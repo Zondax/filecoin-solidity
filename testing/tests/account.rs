@@ -19,6 +19,7 @@ use serde::{Deserialize as SerdeDeserialize, Serialize as SerdeSerialize};
 
 use testing::setup;
 use testing::GasResult;
+use testing::parse_gas;
 
 const WASM_COMPILED_PATH: &str = "../build/v0.8/tests/AccountApiTest.bin";
 
@@ -128,7 +129,9 @@ fn account_tests() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
-    gas_result.push(("authenticate_message".into(),  res.msg_receipt.gas_used));
+    let gas_used = parse_gas(res.exec_trace);
+
+    gas_result.push(("authenticate_message".into(),  gas_used));
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
 
     println!("Calling `universal_receiver_hook`");
@@ -148,7 +151,9 @@ fn account_tests() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
-    gas_result.push(("universal_receiver_hook".into(),  res.msg_receipt.gas_used));
+    let gas_used = parse_gas(res.exec_trace);
+
+    gas_result.push(("universal_receiver_hook".into(),  gas_used));
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
 
     let table = testing::create_gas_table(gas_result);

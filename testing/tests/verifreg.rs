@@ -18,6 +18,7 @@ use serde::{Deserialize as SerdeDeserialize, Serialize as SerdeSerialize};
 use testing::helpers;
 use testing::setup;
 use testing::GasResult;
+use testing::parse_gas;
 
 const WASM_COMPILED_PATH: &str = "../build/v0.8/tests/VerifRegApiTest.bin";
 
@@ -167,8 +168,8 @@ fn verifreg_tests() {
     let res = executor
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
-
-    gas_result.push(("add_verified_client".into(), res.msg_receipt.gas_used));
+    let gas_used = parse_gas(res.exec_trace);
+    gas_result.push(("add_verified_client".into(), gas_used));
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
 
     println!("Calling `get_claims`");
@@ -187,8 +188,8 @@ fn verifreg_tests() {
     let res = executor
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
-
-    gas_result.push(("get_claims".into(), res.msg_receipt.gas_used));
+    let gas_used = parse_gas(res.exec_trace);
+    gas_result.push(("get_claims".into(), gas_used));
     // Should not fail as actor would return an empty list of claims
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
 
@@ -206,8 +207,8 @@ fn verifreg_tests() {
     let res = executor
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
-
-    gas_result.push(("extend_claim_term".into(), res.msg_receipt.gas_used));
+    let gas_used = parse_gas(res.exec_trace);
+    gas_result.push(("extend_claim_term".into(), gas_used));
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
 
     println!("Calling `remove_expired_allocations`");
@@ -226,10 +227,10 @@ fn verifreg_tests() {
     let res = executor
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
-
+    let gas_used = parse_gas(res.exec_trace);
     gas_result.push((
         "remove_expired_allocations".into(),
-        res.msg_receipt.gas_used,
+        gas_used,
     ));
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
 
@@ -247,8 +248,8 @@ fn verifreg_tests() {
     let res = executor
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
-
-    gas_result.push(("remove_expired_claims".into(), res.msg_receipt.gas_used));
+    let gas_used = parse_gas(res.exec_trace);
+    gas_result.push(("remove_expired_claims".into(), gas_used));
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
 
     let table = testing::create_gas_table(gas_result);

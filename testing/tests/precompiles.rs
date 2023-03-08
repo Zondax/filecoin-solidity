@@ -13,6 +13,7 @@ use serde::{Deserialize as SerdeDeserialize, Serialize as SerdeSerialize};
 
 use testing::setup;
 use testing::GasResult;
+use testing::parse_gas;
 
 const WASM_COMPILED_PATH: &str = "../build/v0.8/tests/PrecompilesApiTest.bin";
 
@@ -148,8 +149,8 @@ fn precompiles_tests() {
     let res = executor
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
-
-    gas_result.push(("resolve_address".into(), res.msg_receipt.gas_used));
+    let gas_used = parse_gas(res.exec_trace);
+    gas_result.push(("resolve_address".into(), gas_used));
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
     assert_eq!(
         hex::encode(res.msg_receipt.return_data.bytes()),
@@ -177,11 +178,10 @@ fn precompiles_tests() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
-    dbg!(&res);
-
+    let gas_used = parse_gas(res.exec_trace);
     gas_result.push((
         "lookup_delegated_address (empty response)".into(),
-        res.msg_receipt.gas_used,
+        gas_used,
     ));
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
     assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "584000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000000");
@@ -206,10 +206,10 @@ fn precompiles_tests() {
     let res = executor
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
-
+    let gas_used = parse_gas(res.exec_trace);
     gas_result.push((
         "lookup_delegated_address (address found)".into(),
-        res.msg_receipt.gas_used,
+        gas_used,
     ));
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
     assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "586000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000016040adafea492d9c6733ae3d56b7ed1adb60692c98bc500000000000000000000");
@@ -229,8 +229,8 @@ fn precompiles_tests() {
     let res = executor
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
-
-    gas_result.push(("resolve_eth_address".into(), res.msg_receipt.gas_used));
+    let gas_used = parse_gas(res.exec_trace);
+    gas_result.push(("resolve_eth_address".into(), gas_used));
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
     assert_eq!(
         hex::encode(res.msg_receipt.return_data.bytes()),
