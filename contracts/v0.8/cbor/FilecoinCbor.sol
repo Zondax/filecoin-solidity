@@ -189,6 +189,13 @@ library FilecoinCBOR {
         buf.writeInt64(CommonTypes.ChainEpoch.unwrap(id));
     }
 
+    /// @notice write DealLabel into a cbor buffer
+    /// @param buf buffer containing the actual cbor serialization process
+    /// @param label DealLabel to serialize as cbor
+    function writeDealLabel(CBOR.CBORBuffer memory buf, CommonTypes.DealLabel memory label) internal pure {
+        label.isString ? buf.writeString(string(label.data)) : buf.writeBytes(label.data);
+    }
+
     /// @notice deserialize DealLabel cbor to struct when receiving a message
     /// @param rawResp cbor encoded response
     /// @return ret new instance of DealLabel created based on parsed data

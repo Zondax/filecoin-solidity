@@ -42,11 +42,17 @@ library MarketCBOR {
     /// @param params WithdrawBalanceParams to serialize as cbor
     /// @return response cbor serialized data as bytes
     function serializeWithdrawBalanceParams(MarketTypes.WithdrawBalanceParams memory params) internal pure returns (bytes memory) {
-        CBOR.CBORBuffer memory buf = CBOR.create(64);
+        uint256 capacity = 0;
+        bytes memory tokenAmount = params.tokenAmount.serializeBigInt();
+
+        capacity += Misc.getPrefixSize(2);
+        capacity += Misc.getBytesSize(params.provider_or_client.data);
+        capacity += Misc.getBytesSize(tokenAmount);
+        CBOR.CBORBuffer memory buf = CBOR.create(capacity);
 
         buf.startFixedArray(2);
         buf.writeBytes(params.provider_or_client.data);
-        buf.writeBytes(params.tokenAmount.serializeBigInt());
+        buf.writeBytes(tokenAmount);
 
         return buf.data();
     }
@@ -127,7 +133,31 @@ library MarketCBOR {
     /// @param params PublishStorageDealsParams to serialize as cbor
     /// @return cbor serialized data as bytes
     function serializePublishStorageDealsParams(MarketTypes.PublishStorageDealsParams memory params) internal pure returns (bytes memory) {
-        CBOR.CBORBuffer memory buf = CBOR.create(64);
+        uint256 capacity = 0;
+
+        capacity += Misc.getPrefixSize(1);
+        capacity += Misc.getPrefixSize(params.deals.length);
+
+        for (uint64 i = 0; i < params.deals.length; i++) {
+            capacity += Misc.getPrefixSize(2);
+            capacity += Misc.getPrefixSize(11);
+
+            capacity += Misc.getCidSize(params.deals[i].proposal.piece_cid.data);
+            capacity += Misc.getPrefixSize(params.deals[i].proposal.piece_size);
+            capacity += Misc.getBoolSize();
+            capacity += Misc.getBytesSize(params.deals[i].proposal.client.data);
+            capacity += Misc.getBytesSize(params.deals[i].proposal.provider.data);
+            capacity += Misc.getBytesSize(params.deals[i].proposal.label.data);
+            capacity += Misc.getChainEpochSize(params.deals[i].proposal.start_epoch);
+            capacity += Misc.getChainEpochSize(params.deals[i].proposal.end_epoch);
+            capacity += Misc.getBytesSize(params.deals[i].proposal.storage_price_per_epoch.serializeBigInt());
+            capacity += Misc.getBytesSize(params.deals[i].proposal.provider_collateral.serializeBigInt());
+            capacity += Misc.getBytesSize(params.deals[i].proposal.client_collateral.serializeBigInt());
+
+            capacity += Misc.getBytesSize(params.deals[i].client_signature);
+        }
+
+        CBOR.CBORBuffer memory buf = CBOR.create(capacity);
 
         buf.startFixedArray(1);
         buf.startFixedArray(uint64(params.deals.length));
@@ -142,11 +172,7 @@ library MarketCBOR {
             buf.writeBool(params.deals[i].proposal.verified_deal);
             buf.writeBytes(params.deals[i].proposal.client.data);
             buf.writeBytes(params.deals[i].proposal.provider.data);
-
-            params.deals[i].proposal.label.isString
-                ? buf.writeString(string(params.deals[i].proposal.label.data))
-                : buf.writeBytes(params.deals[i].proposal.label.data);
-
+            buf.writeDealLabel(params.deals[i].proposal.label);
             buf.writeChainEpoch(params.deals[i].proposal.start_epoch);
             buf.writeChainEpoch(params.deals[i].proposal.end_epoch);
             buf.writeBytes(params.deals[i].proposal.storage_price_per_epoch.serializeBigInt());
@@ -185,7 +211,8 @@ library MarketCBOR {
     /// @param id deal id to serialize as cbor
     /// @return cbor serialized data as bytes
     function serializeDealID(uint64 id) internal pure returns (bytes memory) {
-        CBOR.CBORBuffer memory buf = CBOR.create(64);
+        uint256 capacity = Misc.getPrefixSize(uint256(id));
+        CBOR.CBORBuffer memory buf = CBOR.create(capacity);
 
         buf.writeUInt64(id);
 
@@ -204,7 +231,24 @@ library MarketCBOR {
     }
 
     function serializeDealProposal(MarketTypes.DealProposal memory dealProposal) internal pure returns (bytes memory) {
-        CBOR.CBORBuffer memory buf = CBOR.create(64);
+        uint256 capacity = 0;
+        bytes memory storage_price_per_epoch = dealProposal.storage_price_per_epoch.serializeBigInt();
+        bytes memory provider_collateral = dealProposal.provider_collateral.serializeBigInt();
+        bytes memory client_collateral = dealProposal.client_collateral.serializeBigInt();
+
+        capacity += Misc.getPrefixSize(11);
+        capacity += Misc.getCidSize(dealProposal.piece_cid.data);
+        capacity += Misc.getPrefixSize(dealProposal.piece_size);
+        capacity += Misc.getBoolSize();
+        capacity += Misc.getBytesSize(dealProposal.client.data);
+        capacity += Misc.getBytesSize(dealProposal.provider.data);
+        capacity += Misc.getBytesSize(dealProposal.label.data);
+        capacity += Misc.getChainEpochSize(dealProposal.start_epoch);
+        capacity += Misc.getChainEpochSize(dealProposal.end_epoch);
+        capacity += Misc.getBytesSize(storage_price_per_epoch);
+        capacity += Misc.getBytesSize(provider_collateral);
+        capacity += Misc.getBytesSize(client_collateral);
+        CBOR.CBORBuffer memory buf = CBOR.create(capacity);
 
         buf.startFixedArray(11);
 
@@ -213,14 +257,12 @@ library MarketCBOR {
         buf.writeBool(dealProposal.verified_deal);
         buf.writeBytes(dealProposal.client.data);
         buf.writeBytes(dealProposal.provider.data);
-
-        dealProposal.label.isString ? buf.writeString(string(dealProposal.label.data)) : buf.writeBytes(dealProposal.label.data);
-
+        buf.writeDealLabel(dealProposal.label);
         buf.writeChainEpoch(dealProposal.start_epoch);
         buf.writeChainEpoch(dealProposal.end_epoch);
-        buf.writeBytes(dealProposal.storage_price_per_epoch.serializeBigInt());
-        buf.writeBytes(dealProposal.provider_collateral.serializeBigInt());
-        buf.writeBytes(dealProposal.client_collateral.serializeBigInt());
+        buf.writeBytes(storage_price_per_epoch);
+        buf.writeBytes(provider_collateral);
+        buf.writeBytes(client_collateral);
 
         return buf.data();
     }
