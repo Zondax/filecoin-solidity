@@ -23,8 +23,10 @@ import "solidity-cborutils/contracts/CBOR.sol";
 
 import "../types/CommonTypes.sol";
 import "../types/DataCapTypes.sol";
+
 import "../utils/CborDecode.sol";
 import "../utils/Misc.sol";
+
 import "./BigIntCbor.sol";
 
 /// @title This library is a set of functions meant to handle CBOR parameters serialization and return values deserialization for DataCap actor exported methods.

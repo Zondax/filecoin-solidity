@@ -26,6 +26,7 @@ import "./FilecoinCbor.sol";
 
 import "../types/MinerTypes.sol";
 import "../types/CommonTypes.sol";
+
 import "../utils/CborDecode.sol";
 import "../utils/Misc.sol";
 

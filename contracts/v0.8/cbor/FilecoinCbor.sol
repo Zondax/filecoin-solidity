@@ -22,9 +22,11 @@ pragma solidity ^0.8.17;
 import "solidity-cborutils/contracts/CBOR.sol";
 import "@ensdomains/buffer/contracts/Buffer.sol";
 
-import "../types/CommonTypes.sol";
 import "../utils/CborDecode.sol";
 import "../utils/Misc.sol";
+
+import "../types/CommonTypes.sol";
+
 import "../cbor/BigIntCbor.sol";
 
 /// @title This library is a set of functions meant to handle CBOR serialization and deserialization for general data types on the filecoin network.
@@ -128,7 +130,12 @@ library FilecoinCBOR {
     /// @param params UniversalReceiverParams to serialize as cbor
     /// @return cbor serialized data as bytes
     function serializeUniversalReceiverParams(CommonTypes.UniversalReceiverParams memory params) internal pure returns (bytes memory) {
-        CBOR.CBORBuffer memory buf = CBOR.create(64);
+        uint256 capacity = 0;
+
+        capacity += Misc.getPrefixSize(2);
+        capacity += Misc.getPrefixSize(params.type_);
+        capacity += Misc.getBytesSize(params.payload);
+        CBOR.CBORBuffer memory buf = CBOR.create(capacity);
 
         buf.startFixedArray(2);
         buf.writeUInt64(params.type_);

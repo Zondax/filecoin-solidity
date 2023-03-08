@@ -23,7 +23,9 @@ import "solidity-cborutils/contracts/CBOR.sol";
 
 import "../utils/CborDecode.sol";
 import "../utils/Misc.sol";
+
 import "../types/CommonTypes.sol";
+
 import "./BigIntCbor.sol";
 
 /// @title This library is a set of functions meant to handle CBOR serialization and deserialization for bytes

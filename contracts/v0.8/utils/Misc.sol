@@ -73,6 +73,11 @@ library Misc {
         return getPrefixSize(2) + value.length;
     }
 
+    function getFilActorIdSize(CommonTypes.FilActorId value) internal pure returns (uint256) {
+        uint64 val = CommonTypes.FilActorId.unwrap(value);
+        return getPrefixSize(uint256(val));
+    }
+
     function getChainEpochSize(CommonTypes.ChainEpoch value) internal pure returns (uint256) {
         int64 val = CommonTypes.ChainEpoch.unwrap(value);
         if (val >= 0) {
