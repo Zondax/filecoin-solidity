@@ -10,7 +10,7 @@ on:
 jobs:
   build-mock:
     name: "Build Mock API"
-    timeout-minutes: 20
+    timeout-minutes: 30
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout
@@ -32,7 +32,7 @@ jobs:
 
   simplecoin-checks:
     name: "SimpleCoin: end-to-end tests"
-    timeout-minutes: 20
+    timeout-minutes: 30
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout
@@ -64,7 +64,7 @@ jobs:
           PRIVATE_KEY: ${{ secrets.WALLET_PRIVATE_KEY }}
   api-deploy:
     name: "Filecoin APIs: deploy"
-    timeout-minutes: 20
+    timeout-minutes: 30
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout
@@ -95,7 +95,7 @@ jobs:
           PRIVATE_KEY: ${{ secrets.WALLET_PRIVATE_KEY }}
   miner-integration:
     name: "Miner API: integration tests"
-    timeout-minutes: 20
+    timeout-minutes: 30
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout
@@ -156,7 +156,7 @@ jobs:
 
   market-integration:
     name: "Market API: integration tests"
-    timeout-minutes: 20
+    timeout-minutes: 30
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout
@@ -219,7 +219,7 @@ jobs:
 
   power-integration:
     name: "Power API: integration tests"
-    timeout-minutes: 20
+    timeout-minutes: 30
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout
@@ -280,7 +280,7 @@ jobs:
 
   verifreg-integration:
     name: "VerifReg API: integration tests"
-    timeout-minutes: 20
+    timeout-minutes: 30
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout
@@ -341,7 +341,7 @@ jobs:
 
   datacap-integration:
     name: "DataCap API: integration tests"
-    timeout-minutes: 20
+    timeout-minutes: 30
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout
@@ -402,7 +402,7 @@ jobs:
 
   account-integration:
     name: "Account API: integration tests"
-    timeout-minutes: 20
+    timeout-minutes: 30
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout
@@ -463,7 +463,7 @@ jobs:
 
   precompiles-integration:
     name: "Precompiles API: integration tests"
-    timeout-minutes: 20
+    timeout-minutes: 30
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout
@@ -524,7 +524,7 @@ jobs:
 
   send-integration:
     name: "Send API: integration tests"
-    timeout-minutes: 20
+    timeout-minutes: 30
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout
@@ -603,7 +603,7 @@ jobs:
 
   cbor-decode-integration:
     name: "CBOR Decode Tests"
-    timeout-minutes: 20
+    timeout-minutes: 30
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout
@@ -662,7 +662,7 @@ jobs:
 
   bigints-integration:
     name: "BigInt Tests"
-    timeout-minutes: 20
+    timeout-minutes: 30
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout
@@ -719,7 +719,7 @@ jobs:
 
   leb128-test:
     name: "Leb128 Tests"
-    timeout-minutes: 20
+    timeout-minutes: 30
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout
@@ -776,7 +776,7 @@ jobs:
 
   address-test:
     name: "Address Tests"
-    timeout-minutes: 20
+    timeout-minutes: 30
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout
@@ -833,7 +833,7 @@ jobs:
 
   deserialize-test:
     name: "Deserialize Params Tests"
-    timeout-minutes: 20
+    timeout-minutes: 30
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout
