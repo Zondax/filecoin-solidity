@@ -9,8 +9,8 @@ The account actor is responsible for user account. If you want to call these met
 
 #### **AuthenticateMessage**
 
-```go
-func AuthenticateMessage(params AuthenticateMessage) EmptyValue ()
+```solidity
+function authenticateMessage(CommonTypes.FilActorId target, AccountTypes.AuthenticateMessageParams memory params) internal returns (bool) {}
 ```
 
 Authenticates whether the provided signature is valid for the provided message. 
@@ -19,30 +19,11 @@ Authenticates whether the provided signature is valid for the provided message.
 
 **Params**:
 
++ `FilActorId` FilActorId - account actor id to interact with
 +  `struct` AuthenticateMessageParams
-
-  + `bytes` AuthenticateMessageParamsSignature - it should be a raw byte of signature, NOT a serialized signature object with a signatureType.
-
-  + ` bytes` Message -  The message which is signed by the corresponding account address.
+  + `bytes` Signature - it should be a raw byte of signature, NOT a serialized signature object with a signatureType.
+  + `bytes` Message -  The message which is signed by the corresponding account address.
 
 **Results**:
 
-+  `struct` EmptyValue.
-
-#### **UniversalReceiverHook** 
-
-```go
-func AuthenticateMessage(params RawBytes) EmptyValue ()
-```
-
-Whenever the account receives transfers, this method will be invoked.
-
-`uint`  UniversalReceiverHookMethodNum = 3726118371.
-
-**Params**:
-
-+ `bytes[]` RawBytes - passes the bytes through how it is received.
-
-**Results**:
-
-+ `struct` EmptyValue - always success.
++  `bool` whether the signature is valid or not.

@@ -198,10 +198,10 @@ library MarketCBOR {
         assert(len == 2);
 
         (len, byteIdx) = rawResp.readFixedArray(byteIdx);
-        ret.ids = new CommonTypes.FilActorId[](len);
+        ret.ids = new uint64[](len);
 
         for (uint i = 0; i < len; i++) {
-            (ret.ids[i], byteIdx) = rawResp.readFilActorId(byteIdx);
+            (ret.ids[i], byteIdx) = rawResp.readUInt64(byteIdx);
         }
 
         (ret.valid_deals, byteIdx) = rawResp.readBytes(byteIdx);
