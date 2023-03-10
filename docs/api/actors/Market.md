@@ -11,8 +11,8 @@ The ActorCode for storage market actor is `hex"0005"` which will be used to call
 
 ### AddBalance
 
-```go
-func AddBalance(address Address, uint256 value) EmptyValue {}
+```solidity
+function addBalance(CommonTypes.FilAddress memory providerOrClient, uint256 value) internal {}
 ```
 
 Deposit the received FIL token, which is received along with this message,  into the balance held in escrow address of the provider or client address.
@@ -21,7 +21,7 @@ Deposit the received FIL token, which is received along with this message,  into
 
 **Params**:
 
-+ `bytes` Address - the address of provider or client.
++ `FilAddress` Address - the address of provider or client.
 + `uint256` value - the amount of FIL token you want to deposit into the balance 
 
 **Results**:
@@ -30,8 +30,8 @@ Deposit the received FIL token, which is received along with this message,  into
 
 ### GetBalance
 
-```go
-func GetBalance(address Address) GetBalanceReturn {}
+```solidity
+function getBalance(CommonTypes.FilAddress memory addr) internal returns (MarketTypes.GetBalanceReturn memory) {}
 ```
 
 Return the escrow balance and locked amount for an address.
@@ -40,18 +40,18 @@ Return the escrow balance and locked amount for an address.
 
 **Params**:
 
-+ `bytes` address - the wallet address to request balance.
++ `FilAddress` address - the wallet address to request balance.
 
 **Results**:
 
 + `struct` GetBalanceReturn
-  + `int256` Balance - the escrow balance for this address.
-  + `int256` Locked - the escrow locked amount for this address.
+  + `BigInt` Balance - the escrow balance for this address.
+  + `BigInt` Locked - the escrow locked amount for this address.
 
 ### WithdrawBalance
 
-```go
-func WithdrawBalance(params WithdrawBalanceParams) WithdrawBalanceReturn {}
+```solidity
+function withdrawBalance(MarketTypes.WithdrawBalanceParams memory params) internal returns (CommonTypes.BigInt memory) {}
 ```
 
 Withdraw the specified amount from the balance held in escrow.
@@ -61,20 +61,19 @@ Withdraw the specified amount from the balance held in escrow.
 **Params**:
 
 + `struct` WithdrawBalanceParams
-  + `bytes` ProviderOrClientAddress - the address of provider or client.
-  + `int256` TokenAmount - the token amount to withdraw.
+  + `FilAddress` ProviderOrClientAddress - the address of provider or client.
+  + `BigInt` TokenAmount - the token amount to withdraw.
 
 
 **Results**:
 
-+ `struct` WithdrawBalanceReturn
-  + `int256` AmountWithdraw - the token amount withdrawn.
++ `BigInt` AmountWithdraw - the token amount withdrawn.
 
 
 ### PublishStorageDeals
 
-```go
-func PublishStorageDeals(params PublishStorageDealsParams) PublishStorageDealsReturn {}
+```solidity
+function publishStorageDeals(MarketTypes.PublishStorageDealsParams memory params) internal returns (MarketTypes.PublishStorageDealsReturn memory) {}
 ```
 
 Publish a new set of storage deals which are not yet included in a sector.
@@ -86,17 +85,17 @@ Publish a new set of storage deals which are not yet included in a sector.
 + `struct` PublishStorageDealsParams
   + `struct ClientDealProposal[]` Deals - list of deal proposals signed by a client
     + `struct DealProposal` Proposal 
-      + `bytes` PieceCID.
+      + `Cid` PieceCID.
       + `uint64` PieceSize - the size of the piece.
       + `bool` VerifiedDeal - if the deal is verified or not.
-      + `bytes` Client - the address of the storage client.
-      + `bytes` Provider - the address of the storage provider.
-      + `string` Label - any label that client choose for the deal.
-      + `int64` StartEpoch - the chain epoch to start the deal.
-      + `int64` EndEpoch - the chain epoch to end the deal.
-      +  `int256` StoragePricePerEpoch -  the token amount to pay to provider per epoch.
-      + `int256` ProviderCollateral - the token amount as collateral paid by the provider.
-      + `int256` ClientCollateral - the token amount as collateral paid by the client.
+      + `FilAddress` Client - the address of the storage client.
+      + `FilAddress` Provider - the address of the storage provider.
+      + `DealLabel` Label - any label that client choose for the deal.
+      + `ChainEpoch` StartEpoch - the chain epoch to start the deal.
+      + `ChainEpoch` EndEpoch - the chain epoch to end the deal.
+      + `BigInt` StoragePricePerEpoch -  the token amount to pay to provider per epoch.
+      + `BigInt` ProviderCollateral - the token amount as collateral paid by the provider.
+      + `BigInt` ClientCollateral - the token amount as collateral paid by the client.
 
     + `bytes` ClientSignature - the signature signed by the client.
 
@@ -109,8 +108,8 @@ Publish a new set of storage deals which are not yet included in a sector.
 
 ### GetDealDataCommitment
 
-```go
-func GetDealDataCommitment(params GetDealDataCommitmentParams) GetDealDataCommitmentReturn {}
+```solidity
+function getDealDataCommitment(uint64 dealID) internal returns (MarketTypes.GetDealDataCommitmentReturn memory) {}
 ```
 
 Return the data commitment and size of a deal proposal.
@@ -130,8 +129,8 @@ Return the data commitment and size of a deal proposal.
 
 ### GetDealClient
 
-```go
-func GetDealClient(params GetDealClientParams) GetDealClientReturn {}
+```solidity
+function getDealClient(uint64 dealID) internal returns (uint64) {}
 ```
 
 Return the client of the deal proposal.
@@ -144,12 +143,12 @@ Return the client of the deal proposal.
 
 **Results**:
 
-+ `bytes` GetDealClientReturn - the wallet address of the client.
++ `uint64` GetDealClientReturn - the wallet address of the client.
 
 ### GetDealProvider
 
-```go
-func GetDealProvider(params GetDealProviderParams) GetDealProviderReturn {}
+```solidity
+function getDealProvider(uint64 dealID) internal returns (uint64) {}
 ```
 
 Return the provider of a deal proposal.
@@ -162,12 +161,12 @@ Return the provider of a deal proposal.
 
 **Results**:
 
-+ `bytes` GetDealProviderReturn - the wallet address of the provider.
++ `uint64` GetDealProviderReturn - the wallet address of the provider.
 
 ### GetDealLabel
 
-```go
-func GetDealLabel(params GetDealLabelParams) GetDealLabelReturn {}
+```solidity
+function getDealLabel(uint64 dealID) internal returns (CommonTypes.DealLabel memory) {}
 ```
 
 Return the label of a deal proposal.
@@ -180,12 +179,12 @@ Return the label of a deal proposal.
 
 **Results**:
 
-+ `string` GetDealLabelReturn - the label of this deal.
++ `DealLabel` GetDealLabelReturn - the label of this deal.
 
 ### GetDealTerm
 
-```go
-func GetDealTerm(params GetDealTermParams) GetDealTermReturn {}
+```solidity
+function getDealTerm(uint64 dealID) internal returns (MarketTypes.GetDealTermReturn memory) {}
 ```
 
 Return the start epoch and duration(in epochs) of a deal proposal. 
@@ -199,14 +198,14 @@ Return the start epoch and duration(in epochs) of a deal proposal.
 **Results**:
 
 + `struct`GetDealTermReturn
-  + `int64` Start - the chain epoch to start the deal.
-  + `int64` End - the chain epoch to end the deal.
+  + `ChainEpoch` Start - the chain epoch to start the deal.
+  + `ChainEpoch` End - the chain epoch to end the deal.
 
 
 ### GetDealTotalPrice
 
-```
-func GetDealTotalPrice(params GetDealTotalPriceParams) GetDealTotalPriceReturn {}
+```solidity
+function getDealTotalPrice(uint64 dealID) internal returns (CommonTypes.BigInt memory) {}
 ```
 
 Return the total price that will be paid from the client to the provider for this deal.
@@ -219,12 +218,12 @@ Return the total price that will be paid from the client to the provider for thi
 
 **Results**:
 
-+ `int256 ` GetDealTotalPriceReturn - the token amount that will be paid by client to provider.
++ `BigInt ` GetDealTotalPriceReturn - the token amount that will be paid by client to provider.
 
 ### GetDealClientCollateral
 
-```
-func GetDealClientCollateral(params GetDealClientCollateralParams) GetDealClientCollateralReturn {}
+```solidity
+function getDealClientCollateral(uint64 dealID) internal returns (CommonTypes.BigInt memory) {}
 ```
 
 Return the client collateral requirement for a deal proposal.
@@ -237,12 +236,12 @@ Return the client collateral requirement for a deal proposal.
 
 **Results**:
 
-+ `int256` GetDealClientCollateralReturn - the token amount as collateral paid by the client.
++ `BigInt` GetDealClientCollateralReturn - the token amount as collateral paid by the client.
 
 ### GetDealProviderCollateral
 
-```
-func GetDealProviderCollateral(params GetDealProviderCollateralParams) GetDealProviderCollateralReturn {}
+```solidity
+function getDealProviderCollateral(uint64 dealID) internal returns (CommonTypes.BigInt memory) {}
 ```
 
 Return the provide collateral requirement for a deal proposal.
@@ -255,12 +254,12 @@ Return the provide collateral requirement for a deal proposal.
 
 **Results**:
 
-+ `int256` GetDealProviderCollateralReturn - the token amount as collateral paid by the provider.
++ `BigInt` GetDealProviderCollateralReturn - the token amount as collateral paid by the provider.
 
 ### GetDealVerified
 
-```
-func GetDealVerified(params GetDealVerifiedParams) GetDealVerifiedReturn {}
+```solidity
+function getDealVerified(uint64 dealID) internal returns (bool) {}
 ```
 
 Return the verified flag for a deal proposal.
@@ -277,8 +276,8 @@ Return the verified flag for a deal proposal.
 
 ### GetDealActivation
 
-```
-func GetDealActivation(params GetDealActivationParams) GetDealActivationReturn {}
+```solidity
+function getDealActivation(uint64 dealID) internal returns (MarketTypes.GetDealActivationReturn memory) {}
 ```
 
 Return the activation state for a deal.
@@ -292,5 +291,5 @@ Return the activation state for a deal.
 **Results**:
 
 + `struct` GetDealActivationReturn
-  + `int64` Activated - Epoch at which the deal was activated, or -1.
-  + `int64` Terminated -Epoch at which the deal was terminated abnormally, or -1.
+  + `ChainEpoch` Activated - Epoch at which the deal was activated, or -1.
+  + `ChainEpoch` Terminated -Epoch at which the deal was terminated abnormally, or -1.

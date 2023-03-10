@@ -11,8 +11,8 @@ The ActorCode for verified registry built-in actor is `hex"0006"` which will be 
 
 ### AddVerifiedClient
 
-```go
-func AddVerifiedClient(params AddVerifiedClientParams) EmptyValue {}
+```solidity
+function addVerifiedClient(VerifRegTypes.AddVerifiedClientParams memory params) internal {}
 ```
 
 To add a verified Client address to Filecoin Plus program.
@@ -22,8 +22,8 @@ To add a verified Client address to Filecoin Plus program.
 **Params**:
 
 + `struct` AddVerifierClientParams
-  + `bytes` Address - the verified client address
-  + `int256` Allowance - approved DataCap for this verified client
+  + `FilAddress` Address - the verified client address
+  + `BigInt` Allowance - approved DataCap for this verified client
 
 **Results**:
 
@@ -31,8 +31,10 @@ To add a verified Client address to Filecoin Plus program.
 
 ### RemoveExpiredAllocations
 
-```go
-func RemoveExpiredAllocations(params RemoveExpiredAllocationsParams) RemoveExpiredAllocationsReturn {}
+```solidity
+function removeExpiredAllocations(
+        VerifRegTypes.RemoveExpiredAllocationsParams memory params
+    ) internal returns (VerifRegTypes.RemoveExpiredAllocationsReturn memory) {}
 ```
 
 Remove the expired DataCap allocations and reclaimed those DataCap token back to Client. If the allocation amount is not specified, all expired DataCap allocation will be removed.
@@ -42,22 +44,22 @@ Remove the expired DataCap allocations and reclaimed those DataCap token back to
 **Params**:
 
 + `struct` RemoveExpiredAllocationsParams
-  + `uint64` Client - the client address for which to expired allocations.
-  + `uint64[]` AllocationIDs - List of allocation IDs to attempt to remove. If empty, will remove all eligible expired allocations.
+  + `FilActorId` Client - the client address for which to expired allocations.
+  + `FilActorId[]` AllocationIDs - List of allocation IDs to attempt to remove. If empty, will remove all eligible expired allocations.
 
 
 **Results**:
 
 + `struct` RemoveExpiredAllocationsReturn
-  + `unit64[] `Considered - Allocation IDs are either specified by the caller or discovered to be expired.
+  + `FilActorId[] `Considered - Allocation IDs are either specified by the caller or discovered to be expired.
   + `BatachReturn` Results - results for each processed allocation.
-  + `int256` DataCapRecoverd - The amount of DataCap token reclaimed for the client.
+  + `BigInt` DataCapRecoverd - The amount of DataCap token reclaimed for the client.
 
 
 ### GetClaims
 
-```go
-func GetClaims(params GetClaimsParams) GetClaimsReturn {}
+```solidity
+function getClaims(VerifRegTypes.GetClaimsParams memory params) internal returns (VerifRegTypes.GetClaimsReturn memory) {}
 ```
 
 Return a list of claims corresponding to the requested claim ID for specific provider.
@@ -67,8 +69,8 @@ Return a list of claims corresponding to the requested claim ID for specific pro
 **Params**:
 
 + `struct`GetClaimsParams
-  + `uint64` Provider - the provider address.
-  + `unit64[]` ClaimIDs - A list of Claim IDs for specific provider.
+  + `FilActorId` Provider - the provider address.
+  + `FilActorId[]` ClaimIDs - A list of Claim IDs for specific provider.
 
 
 **Results**:
@@ -79,20 +81,20 @@ Return a list of claims corresponding to the requested claim ID for specific pro
     + `struct ` FailCode[] {`uint32` idx, `uint32` code} -  list of failure code and index for all failures in batch.
 
   + `struct Claim[]` Claims - list of Claims returned.
-    + `uint64` Provider - The provider storing the data.
-    + `uint64` Client - The client which allocated the DataCap.
+    + `FilActorId` Provider - The provider storing the data.
+    + `FilActorId` Client - The client which allocated the DataCap.
     + `bytes` Data - Identifier for the data committed.
     + `uint64` Size - The size of the data.
-    + `int64` TermMin - The min period after term started which the provider must commit to storing data.
-    + `int64` TermMax - The max period after term started for which the provider can earn QA-power for the data.
-    + `int64` TermStart - the epoch at which the piece was committed.
-    + `unit64` Sector - ID of the provide's sector in which the data is committed.
+    + `ChainEpoch` TermMin - The min period after term started which the provider must commit to storing data.
+    + `ChainEpoch` TermMax - The max period after term started for which the provider can earn QA-power for the data.
+    + `ChainEpoch` TermStart - the epoch at which the piece was committed.
+    + `FilActorId` Sector - ID of the provider's sector in which the data is committed.
 
 
 ### ExtendClaimTerms
 
-```go
-func ExtendClaimTerms(params ExtendClaimTermsParams) ExtendClaimTermsReturn {}
+```solidity
+function extendClaimTerms(VerifRegTypes.ExtendClaimTermsParams memory params) internal returns (CommonTypes.BatchReturn memory) {}
 ```
 
 Extends the  maximum term of some claims up to the largest value they could have been originally allocated. This method can only be called by the claims' client.
@@ -103,9 +105,9 @@ Extends the  maximum term of some claims up to the largest value they could have
 
 + `struct` ExtendClaimTermsParams
   + `struct ClaimTerm[]` Terms
-    + `uint64 ` Provider - The provider address which storing the data.
-    + `uint64 ` CliamID - Claim ID.
-    + `int64` TermMax - The max chain epoch to extend.
+    + `FilActorId ` Provider - The provider address which storing the data.
+    + `FilActorId ` CliamID - Claim ID.
+    + `ChainEpoch` TermMax - The max chain epoch to extend.
 
 
 **Results**:
@@ -117,8 +119,8 @@ Extends the  maximum term of some claims up to the largest value they could have
 
 ### RemoveExpiredClaims
 
-``` go
-func RemoveExpiredClaims(params: RemoveExpiredClaimsParams) RemoveExpiredClaimsReturn {}
+```solidity
+function removeExpiredClaims(VerifRegTypes.RemoveExpiredClaimsParams memory params) internal returns (VerifRegTypes.RemoveExpiredClaimsReturn memory) {}
 ```
 
 To remove a claim with its maximum term has elapsed.
@@ -128,13 +130,13 @@ To remove a claim with its maximum term has elapsed.
 **Params**:
 
 + `struct` RemoveExpiredClaimsParams
-  + `uint64` Provider - the provider address.
-  + `unit64[]` ClaimIDs - A list of Claim IDs with expired term. If no claims are specified, all eligible claims will be removed.
+  + `FilActorId` Provider - the provider address.
+  + `FilActorId[]` ClaimIDs - A list of Claim IDs with expired term. If no claims are specified, all eligible claims will be removed.
 
 **Results**:
 
 + `struct` RemoveExpiredClaimsReturn
-  + `uint64[]` Considered - a list of IDs of the claims that were either specified by the caller or discovered to be expired.
+  + `FilActorId[]` Considered - a list of IDs of the claims that were either specified by the caller or discovered to be expired.
   + `struct` BatchReturn
     + `uint32` SuccessCount - total successes in the batch
     + `struct ` FailCodes[] {`uint32` idx, `uint32` code} -  list of failure code and index for all failures in batch.
