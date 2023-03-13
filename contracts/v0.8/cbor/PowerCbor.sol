@@ -14,7 +14,7 @@
  *  limitations under the License.
  ********************************************************************************/
 //
-// DRAFT!! THIS CODE HAS NOT BEEN AUDITED - USE ONLY FOR PROTOTYPING
+// THIS CODE WAS SECURITY REVIEWED BY KUDELSKI SECURITY, BUT NOT FORMALLY AUDITED
 
 // SPDX-License-Identifier: Apache-2.0
 pragma solidity ^0.8.17;
@@ -39,9 +39,19 @@ library PowerCBOR {
     /// @param params CreateMinerParams to serialize as cbor
     /// @return cbor serialized data as bytes
     function serializeCreateMinerParams(PowerTypes.CreateMinerParams memory params) internal pure returns (bytes memory) {
-        CBOR.CBORBuffer memory buf = CBOR.create(64);
-
+        uint256 capacity = 0;
         uint multiaddrsLen = params.multiaddrs.length;
+
+        capacity += Misc.getPrefixSize(5);
+        capacity += Misc.getBytesSize(params.owner.data);
+        capacity += Misc.getBytesSize(params.worker.data);
+        capacity += Misc.getPrefixSize(uint256(params.window_post_proof_type));
+        capacity += Misc.getBytesSize(params.peer.data);
+        capacity += Misc.getPrefixSize(multiaddrsLen);
+        for (uint i = 0; i < multiaddrsLen; i++) {
+            capacity += Misc.getBytesSize(params.multiaddrs[i].data);
+        }
+        CBOR.CBORBuffer memory buf = CBOR.create(capacity);
 
         buf.startFixedArray(5);
         buf.writeBytes(params.owner.data);

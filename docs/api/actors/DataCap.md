@@ -7,12 +7,12 @@ sidebar_position: 2
 
 DataCap Actor is responsible for DataCap token management.  
 
-The ActorCode for DataCap actor is `hex"0007"` which will be used to call DataCap actor APIs. You also need to specify method number of which method you want to invoke. Please refer the each method for its method number.
+The ActorCode for DataCap actor is `hex"0007"` which will be used to call DataCap actor APIs. You also need to specify method number of which method you want to invoke. Please refer each method for its method number.
 
 ### Name
 
-```go
-func Name() String {}
+```solidity
+function name() internal returns (string memory) {}
 ```
 
 Return the name of DataCap token which is 'DataCap'.
@@ -29,8 +29,8 @@ Return the name of DataCap token which is 'DataCap'.
 
 ### Symbol
 
-```go
-func Symbol() String {}
+```solidity
+function symbol() internal returns (string memory) {}
 ```
 
 Return the symbol of DataCap token which is 'DCAP'.
@@ -47,8 +47,8 @@ Return the symbol of DataCap token which is 'DCAP'.
 
 ### TotalSupply
 
-```go
-func TotalSupply() TokenAmount {}
+```solidity
+function totalSupply() internal returns (CommonTypes.BigInt memory) {}
 ```
 
 Return the total supply of DataCap token.
@@ -61,12 +61,12 @@ Return the total supply of DataCap token.
 
 **Results**:
 
-+ `int256` TokenAmount - Total DataCap token supply.
++ `BigInt` TokenAmount - Total DataCap token supply.
 
 ### Balance
 
-```go
-func Balance(params Address) TokenAmount {}
+```solidity
+function balance(CommonTypes.FilAddress memory addr) internal returns (CommonTypes.BigInt memory) {}
 ```
 
 Return the DataCap token balance for the wallet address.
@@ -79,12 +79,12 @@ Return the DataCap token balance for the wallet address.
 
 **Results**:
 
-+ `int256` TokenAmount - the DataCap token balance for the specified wallet address.
++ `BigInt` TokenAmount - the DataCap token balance for the specified wallet address.
 
 ### Transfer
 
-```go
-func Transfer(params TransferParams) TransferReturn {}
+```solidity
+function transfer(DataCapTypes.TransferParams memory params) internal returns (DataCapTypes.TransferReturn memory) {}
 ```
 
 Transfers DataCap tokens from caller address to the to address.
@@ -94,22 +94,22 @@ Transfers DataCap tokens from caller address to the to address.
 **Params**:
 
 + `struct` TransferParams
-  + `bytes` To -  the address to receive DataCap token.
-  + `int256` Amount -  A non-negative amount to transfer.
+  + `FilAddress` To -  the address to receive DataCap token.
+  + `BigInt` Amount -  A non-negative amount to transfer.
   + `bytes[]` OperatorData - Arbitrary data to pass on via the receiver hook.
 
 
 **Results**:
 
 + `struct` TransferReturn
-  + `int256` FromBalance - the balance of from_address.
-  + `int256` ToBalance - the balance of to_address.
+  + `BigInt` FromBalance - the balance of from_address.
+  + `BigInt` ToBalance - the balance of to_address.
   + `bytes` RecipientData: data returned from receive hook.
 
 ### TransferFrom
 
-```go
-func TransferFrom(params TransferFromParams) TransferFromReturn {}
+```solidity
+function transferFrom(DataCapTypes.TransferFromParams memory params) internal returns (DataCapTypes.TransferFromReturn memory) {}
 ```
 
 Transfers DataCap tokens between from the from_address to the to_address.
@@ -118,25 +118,25 @@ Transfers DataCap tokens between from the from_address to the to_address.
 
 **Params**:
 
-+ `bytes` TransferFromParams 
-  + `bytes` From - the address to send DataCap Token.
-  + `bytes` To - the address to receive DataCap Token.
-  + `int256` Amount - A non-negative amount to transfer.
++ `struct` TransferFromParams 
+  + `FilAddress` From - the address to send DataCap Token.
+  + `FilAddress` To - the address to receive DataCap Token.
+  + `BigInt` Amount - A non-negative amount to transfer.
   + `bytes` OperatorData: Arbitrary data to pass on via the receiver hook.
 
 **Results**:
 
 + `struct` TransferFromReturn
-  + `int256` FromBalance - the balance of from_address.
-  + `int256` ToBalance -  the balance of to_address.
-  + `int256` Allowance - the remaining allowance of owner address.
+  + `BigInt` FromBalance - the balance of from_address.
+  + `BigInt` ToBalance -  the balance of to_address.
+  + `BigInt` Allowance - the remaining allowance of owner address.
   + `bytes` RecipientData - data returned from receive hook.
 
 
 ### IncreaseAllowance
 
-```go
-func IncreaseAllowance(params IncreaseAllowanceParams) TokenAmount {}
+```solidity
+function increaseAllowance(DataCapTypes.IncreaseAllowanceParams memory params) internal returns (CommonTypes.BigInt memory) {}
 ```
 
 Increase the DataCap token allowance that an operator can control of the owner's balance by the requested amount.
@@ -146,18 +146,18 @@ Increase the DataCap token allowance that an operator can control of the owner's
 **Params**:
 
 + `struct` IncreaseAllowanceParams
-  +  `bytes` Operator - the  wallet address of the operator.
-  +  `int256` increaseAmount - increase DataCap token allowance for the operator address.
+  +  `FilAddress` Operator - the  wallet address of the operator.
+  +  `BigInt` increaseAmount - increase DataCap token allowance for the operator address.
 
 
 **Results**:
 
-+ `int256` TokenAmount - the new DataCap allowance of the operator address.
++ `BigInt` TokenAmount - the new DataCap allowance of the operator address.
 
 ### DecreaseAllowance
 
-```go
-func DecreaseAllowance(params DecreaseAllowanceParams) TokenAmount {}
+```solidity
+function decreaseAllowance(DataCapTypes.DecreaseAllowanceParams memory params) internal returns (CommonTypes.BigInt memory) {}
 ```
 
 Decrease the DataCap token allowance that an operator controls of the owner's balance by the requested amount.
@@ -167,17 +167,17 @@ Decrease the DataCap token allowance that an operator controls of the owner's ba
 **Params**:
 
 +  `struct` DecreaseAllowanceParams
-  +  `bytes` Operator - the  wallet address of the operator.
-  +  `int256` IncreaseAmount - the decreased DataCap token allowance of the operator address.
+  +  `FilAddress` Operator - the  wallet address of the operator.
+  +  `BigInt` IncreaseAmount - the decreased DataCap token allowance of the operator address.
 
 **Results**:
 
-+ `int256` TokenAmount - the new DataCap allowance of the operator address.
++ `BigInt` TokenAmount - the new DataCap allowance of the operator address.
 
 ### RevokeAllowance
 
-```go
-func RevokeAllowance(params RevokeAllowanceParams) TokenAmount {}
+```solidity
+function revokeAllowance(CommonTypes.FilAddress memory operator) internal returns (CommonTypes.BigInt memory) {}
 ```
 
 Revoke the DataCap token allowance from the operator and set the operator's allowance in behave of owner/caller address to 0. 
@@ -186,18 +186,17 @@ Revoke the DataCap token allowance from the operator and set the operator's allo
 
 **Params**:
 
-+ `struct`  RevokeAllowanceParams
-  +  `bytes` Operator - the wallet address of the operator.
++  `FilAddress` Operator - the wallet address of the operator.
 
 
 **Results**:
 
-+ `int256` TokenAmount - the old Allowance amount of the operator address.
++ `BigInt` TokenAmount - the old Allowance amount of the operator address.
 
 ### Burn
 
-```go
-func Burn(params BurnParams) TokenAmount {}
+```solidity
+function burn(CommonTypes.BigInt memory amount) internal returns (CommonTypes.BigInt memory) {}
 ```
 
 Burn an amount of DataCap token from the owner/caller address, decreasing total token supply.
@@ -206,18 +205,17 @@ Burn an amount of DataCap token from the owner/caller address, decreasing total 
 
 **Params**:
 
-+ `struct` BurnParams
-  + `int256` Amount - the amount the DataCap token to be burned.
++ `BigInt` Amount - the amount the DataCap token to be burned.
 
 
 **Results**:
 
-+ `int256` TokenAmount - the updated DataCap token balance of the owner/caller address.
++ `BigInt` TokenAmount - the updated DataCap token balance of the owner/caller address.
 
 ### BurnFrom
 
-```go
-func BurnFrom(params BurnFromParams) BurnFromReturn {}
+```solidity
+function burnFrom(DataCapTypes.BurnFromParams memory params) internal returns (DataCapTypes.BurnFromReturn memory) {}
 ```
 
 Burn an amount of DataCap token from the specified address (owner address), decrease the allowance of operator/caller, and decrease total token supply.
@@ -227,8 +225,8 @@ Burn an amount of DataCap token from the specified address (owner address), decr
 **Params**:
 
 + `struct` BurnFromParams
-  + `bytes` Owner - the wallet address of the owner.
-  + `int256` Amount - the amount of DataCap token to be burned.
+  + `FilAddress` Owner - the wallet address of the owner.
+  + `BigInt` Amount - the amount of DataCap token to be burned.
 
 
 **Results**:
@@ -240,8 +238,8 @@ Burn an amount of DataCap token from the specified address (owner address), decr
 
 ### Allowance
 
-```go
-func Allowance(params GetAllowanceParams) TokenAmount {}
+```solidity
+function allowance(DataCapTypes.GetAllowanceParams memory params) internal returns (CommonTypes.BigInt memory) {}
 ```
 
 Return the allowance between owner and operator address.
@@ -251,10 +249,10 @@ Return the allowance between owner and operator address.
 **Params**:
 
 + `struct` GetAllowanceParams
-  + `bytes` Owner : the wallet address of the owner.
-  + `bytes` Operator : the wallet address of the owner.
+  + `FilAddress` Owner : the wallet address of the owner.
+  + `FilAddress` Operator : the wallet address of the owner.
 
 
 **Results**:
 
-+ `int256`  TokenAmount - the allowance that an operator can control of an owner's allowance.
++ `BigInt`  TokenAmount - the allowance that an operator can control of an owner's allowance.

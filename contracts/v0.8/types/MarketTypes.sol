@@ -14,7 +14,7 @@
  *  limitations under the License.
  ********************************************************************************/
 //
-// DRAFT!! THIS CODE HAS NOT BEEN AUDITED - USE ONLY FOR PROTOTYPING
+// THIS CODE WAS SECURITY REVIEWED BY KUDELSKI SECURITY, BUT NOT FORMALLY AUDITED
 
 // SPDX-License-Identifier: Apache-2.0
 pragma solidity ^0.8.17;
@@ -34,7 +34,7 @@ library MarketTypes {
     uint constant GetDealProviderMethodNum = 935081690;
     uint constant GetDealLabelMethodNum = 46363526;
     uint constant GetDealTermMethodNum = 163777312;
-    uint constant GetDealEpochPriceMethodNum = 4287162428;
+    uint constant GetDealTotalPriceMethodNum = 4287162428;
     uint constant GetDealClientCollateralMethodNum = 200567895;
     uint constant GetDealProviderCollateralMethodNum = 2986712137;
     uint constant GetDealVerifiedMethodNum = 2627389465;
@@ -65,15 +65,15 @@ library MarketTypes {
     /// @param start the chain epoch to start the deal.
     /// @param endthe chain epoch to end the deal.
     struct GetDealTermReturn {
-        int64 start;
-        int64 end;
+        CommonTypes.ChainEpoch start;
+        CommonTypes.ChainEpoch end;
     }
 
     /// @param activated Epoch at which the deal was activated, or -1.
     /// @param terminated Epoch at which the deal was terminated abnormally, or -1.
     struct GetDealActivationReturn {
-        int64 activated;
-        int64 terminated;
+        CommonTypes.ChainEpoch activated;
+        CommonTypes.ChainEpoch terminated;
     }
 
     /// @param deals list of deal proposals signed by a client
@@ -84,7 +84,7 @@ library MarketTypes {
     /// @param ids returned storage deal IDs.
     /// @param valid_deals represent all the valid deals.
     struct PublishStorageDealsReturn {
-        CommonTypes.FilActorId[] ids;
+        uint64[] ids;
         bytes valid_deals;
     }
 
@@ -106,8 +106,8 @@ library MarketTypes {
         CommonTypes.FilAddress client;
         CommonTypes.FilAddress provider;
         CommonTypes.DealLabel label;
-        int64 start_epoch;
-        int64 end_epoch;
+        CommonTypes.ChainEpoch start_epoch;
+        CommonTypes.ChainEpoch end_epoch;
         CommonTypes.BigInt storage_price_per_epoch;
         CommonTypes.BigInt provider_collateral;
         CommonTypes.BigInt client_collateral;
@@ -118,5 +118,10 @@ library MarketTypes {
     struct ClientDealProposal {
         DealProposal proposal;
         bytes client_signature;
+    }
+
+    struct MarketDealNotifyParams {
+        bytes dealProposal;
+        uint64 dealId;
     }
 }

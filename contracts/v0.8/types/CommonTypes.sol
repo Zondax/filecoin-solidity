@@ -14,7 +14,7 @@
  *  limitations under the License.
  ********************************************************************************/
 //
-// DRAFT!! THIS CODE HAS NOT BEEN AUDITED - USE ONLY FOR PROTOTYPING
+// THIS CODE WAS SECURITY REVIEWED BY KUDELSKI SECURITY, BUT NOT FORMALLY AUDITED
 
 // SPDX-License-Identifier: Apache-2.0
 pragma solidity ^0.8.17;
@@ -64,11 +64,14 @@ library CommonTypes {
         bytes data;
     }
 
-    /// @param dataBytes deal proposal label in bytes format (it can be utf8 string or arbitrary bytes string). If both are empty, its default value will be empty bytes.
+    /// @param data deal proposal label in bytes format (it can be utf8 string or arbitrary bytes string).
+    /// @param isString indicates if the data is string or raw bytes
     struct DealLabel {
-        bytes dataBts;
-        string dataStr;
+        bytes data;
+        bool isString;
     }
 
     type FilActorId is uint64;
+
+    type ChainEpoch is int64;
 }

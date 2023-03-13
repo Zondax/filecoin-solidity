@@ -5,13 +5,13 @@ sidebar_position: 3
 
 The libraries have been developed under the following set of assumptions:
 
-- The libraries have not been audited yet
+- The libraries were security reviewed by Kudelski security, but not formally audited.
 
-- Filecoin actors API has been tested through the rust integration module located in the ref-fvm repository [:link:](https://github.com/Zondax/ref-fvm/tree/lola/fixes).
+- Filecoin actors API has been tested through the rust integration module located in the ref-fvm repository [:link:](https://github.com/Zondax/ref-fvm).
 
 - The builtin-actors submodule [:link:](https://github.com/Zondax/filecoin-solidity/tree/master/testing) in this repository is the latest version tested on.
 
-- FEVM and Wallaby are still under development. It makes happen that newer versions could break or introduce issues in this library.
+- FEVM and hyperspace are still under development. It makes happen that newer versions could break or introduce issues in this library.
 
 - Given the immutability of contracts, changes upstreams or in external dependencies may affect the current functionality.
 

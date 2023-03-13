@@ -14,7 +14,7 @@
  *  limitations under the License.
  ********************************************************************************/
 //
-// DRAFT!! THIS CODE HAS NOT BEEN AUDITED - USE ONLY FOR PROTOTYPING
+// THIS CODE WAS SECURITY REVIEWED BY KUDELSKI SECURITY, BUT NOT FORMALLY AUDITED
 
 // SPDX-License-Identifier: Apache-2.0
 pragma solidity ^0.8.17;
@@ -40,8 +40,6 @@ library AccountAPI {
         bytes memory raw_request = params.serializeAuthenticateMessageParams();
 
         bytes memory data = Actor.callNonSingletonByID(target, AccountTypes.AuthenticateMessageMethodNum, Misc.CBOR_CODEC, raw_request, 0, true);
-        if (data.length != 0) {
-            revert Actor.InvalidResponseLength();
-        }
+        require(data.deserializeBool());
     }
 }

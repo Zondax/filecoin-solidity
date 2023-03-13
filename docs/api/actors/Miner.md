@@ -11,8 +11,8 @@ To interact with specific miner, you need to use this miner address to invoke th
 
 ### GetPeerID
 
-```go
-func GetPeerID() GetPeerIDReturn {}
+```solidity
+function getPeerId(CommonTypes.FilActorId FilActorId) internal returns (CommonTypes.FilAddress memory) {}
 ```
 
 Return the Peer ID for the caller/miner address.
@@ -21,18 +21,17 @@ Return the Peer ID for the caller/miner address.
 
 **Params**:
 
-+ null
++ `FilActorId` FilActorId - miner actor id to interact with
 
 **Results**:
 
-+ `struct` GetPeerIDReturn
-  + `bytes` PeerID - the peer ID for the specified storage provider/miner.
++ `FilAddress` PeerID - the peer ID for the specified storage provider/miner.
 
 
 ### ChangePeerID
 
-```go
-func ChangePeerID(params ChangePeerIDParams) EmptyValue {}
+```solidity
+function changePeerId(CommonTypes.FilActorId target, CommonTypes.FilAddress memory newId) internal {}
 ```
 
 Change the peer ID for the caller/miner address.
@@ -41,8 +40,8 @@ Change the peer ID for the caller/miner address.
 
 **Params**:
 
-+ `struct` ChangePeerIDParams
-  + `bytes` NewID - the new peer ID.
++ `FilActorId` FilActorId - miner actor id to interact with
++ `FilAddress` NewID - the new peer ID.
 
 **Results**:
 
@@ -50,8 +49,8 @@ Change the peer ID for the caller/miner address.
 
 ### GetMultiaddrs
 
-```go
-func GetMultiaddrs() GetMultiAddrsReturn {}
+```solidity
+function getMultiaddresses(CommonTypes.FilActorId target) internal returns (MinerTypes.GetMultiaddrsReturn memory) {}
 ```
 
 Returns the multi-signature address for this caller/miner address.
@@ -60,17 +59,17 @@ Returns the multi-signature address for this caller/miner address.
 
 **Params**:
 
-+ null
++ `FilActorId` FilActorId - miner actor id to interact with
 
 **Results**:
 
-+ `struct` GetMultiAddrsReturn
-  + `byte[]` MultiAddrs - the multi-signature address.
++ `struct` GetMultiaddrsReturn
+  + `FilAddress[]` MultiAddrs - the multi-signature address.
 
 ### ChangeMultiaddrs
 
-```go
-func ChangeMultiaddrs(params ChangeMultiaddrsParams) EmptyValue {}
+```solidity
+function changeMultiaddresses(CommonTypes.FilActorId target, MinerTypes.ChangeMultiaddrsParams memory params) internal {}
 ```
 
 Change the multi-signature address for this caller/miner address.
@@ -79,8 +78,9 @@ Change the multi-signature address for this caller/miner address.
 
 **Params**:
 
++ `FilActorId` FilActorId - miner actor id to interact with
 + `struct` ChangeMultiaddrsParams
-  + `byte[]` NewMultiaddrs - the new multi-signature address.
+  + `FilAddress[]` NewMultiaddrs - the new multi-signature address.
 
 **Results**:
 
@@ -88,8 +88,8 @@ Change the multi-signature address for this caller/miner address.
 
 ### ChangeWorkerAddress
 
-```go
-func ChangeWorkerAddress(params ChangeWorkerAddressParams) EmptyValue {}
+```solidity
+function changeWorkerAddress(CommonTypes.FilActorId target, MinerTypes.ChangeWorkerAddressParams memory params) internal {}
 ```
 
 Change the worker address for the caller/miner address, and overwrite the existing addresses with the new control addresses passed in the params.
@@ -98,9 +98,10 @@ Change the worker address for the caller/miner address, and overwrite the existi
 
 **Params**:
 
++ `FilActorId` FilActorId - miner actor id to interact with
 + `struct` ChangeWorkerAddressParams
-  + `byte` NewWorker - the new worker address.
-  + `byte[]` NewControlAddrs - the new controller addresses.
+  + `FilAddress` NewWorker - the new worker address.
+  + `FilAddress[]` NewControlAddrs - the new controller addresses.
 
 
 **Results**:
@@ -109,8 +110,8 @@ Change the worker address for the caller/miner address, and overwrite the existi
 
 ### ConfirmChangeWorkerAddress
 
-```go
-func ConfirmChangeWorkerAddress() EmptyValue {}
+```solidity
+function confirmChangeWorkerAddress(CommonTypes.FilActorId target) internal {}
 ```
 
 Confirm the worker address has been changed for the caller/miner address.
@@ -119,7 +120,7 @@ Confirm the worker address has been changed for the caller/miner address.
 
 **Params**:
 
-+ null
++ `FilActorId` FilActorId - miner actor id to interact with
 
 **Results**:
 
@@ -127,8 +128,8 @@ Confirm the worker address has been changed for the caller/miner address.
 
 ### RepayDebt
 
-```go
-func RepayDebt() EmptyValue {}
+```solidity
+function repayDebt(CommonTypes.FilActorId target) internal {}
 ```
 
 Repay as much fee debt as possible for the caller/miner address.
@@ -137,7 +138,7 @@ Repay as much fee debt as possible for the caller/miner address.
 
 **Params**:
 
-+ null
++ `FilActorId` FilActorId - miner actor id to interact with
 
 **Results**:
 
@@ -145,28 +146,29 @@ Repay as much fee debt as possible for the caller/miner address.
 
 ### GetOwner
 
-```go
-func GetOwner() GetOwnerReturn {}
+```solidity
+function getOwner(CommonTypes.FilActorId target) internal returns (MinerTypes.GetOwnerReturn memory){}
 ```
 
-Return the the owner address of the caller/miner address.
+Return the owner address of the caller/miner address.
 
 `uint` GetOwnerMethodNum = 3275365574.
 
 **Params**:
 
-+ null
++ `FilActorId` FilActorId - miner actor id to interact with
 
 **Results**:
 
-+ `struct` GetOwnerReturn
-  + `byte` Owner - owner address.
++ `GetOwnerReturn` GetOwnerReturn
+  + `FilAddress` Owner - owner address.
+  + `FilAddress` Proposed - proposed owner address.
 
 
 ### ChangeOwnerAddress
 
-```go
-func ChangeOwnerAddress(bytes address) {}
+```solidity
+function changeOwnerAddress(CommonTypes.FilActorId target, CommonTypes.FilAddress memory addr) internal {}
 ```
 
 Proposes or confirms a change of owner address.
@@ -175,7 +177,8 @@ Proposes or confirms a change of owner address.
 
 **Params**:
 
-+ `bytes` Address - the new owner address.
++ `FilActorId` FilActorId - miner actor id to interact with
++ `FilAddress` Address - the new owner address.
 
 **Results**:
 
@@ -183,8 +186,8 @@ Proposes or confirms a change of owner address.
 
 ### GetBeneficiary
 
-```go
-func GetBeneficiary() GetBeneficiaryReturn {}
+```solidity
+function getBeneficiary(CommonTypes.FilActorId target) internal returns (MinerTypes.GetBeneficiaryReturn memory) {}
 ```
 
 Return the currently active and proposed beneficiary information.
@@ -193,30 +196,30 @@ Return the currently active and proposed beneficiary information.
 
 **Params**:
 
-+ null
++ `FilActorId` FilActorId - miner actor id to interact with
 
 **Results**:
 
 + `struct` GetBeneficiaryReturn
   + `struct` ActiveBeneficiary - current active beneficiary.
-    + `byte` Beneficiary - the address of the beneficiary.
+    + `FilAddress` Beneficiary - the address of the beneficiary.
     + `struct` BeneficiaryTerm
-      + `int256` Quota - the quota token amount.
-      + `int256` UsedQuota - the used quota token amount.
-      + `uint64` Expiration - the epoch that the quota will be expired.
+      + `BigInt` Quota - the quota token amount.
+      + `BigInt` UsedQuota - the used quota token amount.
+      + `ChainEpoch` Expiration - the epoch that the quota will be expired.
 
   + `struct` PendingBeneficiaryChange - the proposed and pending beneficiary.
-    + `bytes` newBeneficiary - the new beneficiary address.
-    + `int256` NewQuota - the new quota token amount.
-    + `uint64` NewExpiration - the epoch that the new quota will be expired. 
+    + `FilAddress` newBeneficiary - the new beneficiary address.
+    + `BigInt` NewQuota - the new quota token amount.
+    + `ChainEpoch` NewExpiration - the epoch that the new quota will be expired. 
     + `bool` ApprovedByBeneficiary - if this proposal is approved by beneficiary or not.
     + `bool` ApprovedByNominee -  if this proposal is approved by nominee or not.
 
 
 ### ChangeBeneficiary
 
-```go
-func ChangeBeneficiary(params ChangeBeneficiaryParams) EmptyValue {}
+```solidity
+function changeBeneficiary(CommonTypes.FilActorId target, MinerTypes.ChangeBeneficiaryParams memory params) internal {}
 ```
 
 Propose or confirm a change of beneficiary information.
@@ -225,10 +228,11 @@ Propose or confirm a change of beneficiary information.
 
 **Params**:
 
++ `FilActorId` FilActorId - miner actor id to interact with
 + `struct` ChangeBeneficiaryParams
-  + `bytes` newBeneficiary - the new beneficiary address.
-  + `int256` NewQuota - the new quota token amount.
-  + `uint64` NewExpiration - the epoch that the new quota will be expired. 
+  + `FilActorId` newBeneficiary - the new beneficiary address.
+  + `BigInt` NewQuota - the new quota token amount.
+  + `ChainEpoch` NewExpiration - the epoch that the new quota will be expired. 
 
 
 **Results**:
@@ -237,8 +241,8 @@ Propose or confirm a change of beneficiary information.
 
 ### IsControllingAddress
 
-```go
-func IsControllingAddress(params IsControllingAddressParams) IsControllingAddressReturn {}
+```solidity
+ function isControllingAddress(CommonTypes.FilActorId target, CommonTypes.FilAddress memory addr) internal returns (bool) {}
 ```
 
 Returns whether the provided address is the Owner, the Worker, or any of the control addresses.
@@ -247,7 +251,8 @@ Returns whether the provided address is the Owner, the Worker, or any of the con
 
 **Params**:
 
-+ `byte` IsControllingAddressParams - the address to be verified.
++ `FilActorId` FilActorId - miner actor id to interact with
++ `FilAddress` Address - the address to be verified.
 
 **Results**:
 
@@ -255,8 +260,8 @@ Returns whether the provided address is the Owner, the Worker, or any of the con
 
 ### GetSectorSize
 
-```go
-func GetSectorSize() GetSectorSizeReturn {}
+```solidity
+function getSectorSize(CommonTypes.FilActorId target) internal returns (uint64) {}
 ```
 
 Returns the miner's sector size.
@@ -265,18 +270,17 @@ Returns the miner's sector size.
 
 **Params**:
 
-+ null
++ `FilActorId` FilActorId - miner actor id to interact with
 
 **Results**:
 
-+ `struct` GetSectorSizeReturn
-  + `unit64` SectorSize - the sector size of this miner.
++ `unit64` SectorSize - the sector size of this miner.
 
 
 ### GetAvailableBalance
 
-```go
-func GetAvailableBalance() GetAvailableBalanceReturn {}
+```solidity
+function getAvailableBalance(CommonTypes.FilActorId target) internal returns (CommonTypes.BigInt memory) {}
 ```
 
 Returns the available balance of this miner.
@@ -285,34 +289,33 @@ Returns the available balance of this miner.
 
 **Params**:
 
-+ null
++ `FilActorId` FilActorId - miner actor id to interact with
 
 **Results**:
 
-+ `int256` GetAvailableBalanceReturn - the available token balance amount.
++ `BigInt` GetAvailableBalanceReturn - the available token balance amount.
 
 ### WithdrawBalance
 
-```go
-func WithdrawBalance(params WithdrawBalanceParams) WithdrawBalanceReturn {}
+```solidity
+function withdrawBalance(CommonTypes.FilActorId target, CommonTypes.BigInt memory amount) internal returns (CommonTypes.BigInt memory) {}
 ```
 
 Withdraw the token balance for this miner.
 
 **Params**:
 
-+ `struct` WithdrawBalanceParams
-  + `int256` AmountRequested - withdraw token amount.
-
++ `FilActorId` FilActorId - miner actor id to interact with
++ `BigInt` AmountRequested - withdraw token amount.
 
 **Results**:
 
-+ `int256`  WithdrawBalanceReturn - the token amount withdraw.
++ `BigInt`  WithdrawBalanceReturn - the token amount withdraw.
 
 ### GetVestingFunds
 
-```go
-func GetVestingFunds() GetVestingFundsReturn {}
+```solidity
+function getVestingFunds(CommonTypes.FilActorId target) internal returns (MinerTypes.GetVestingFundsReturn memory) {}
 ```
 
 Return the funds vesting in this miner as a list of (vesting_epoch, vesting_amount) tuples.
@@ -321,11 +324,11 @@ Return the funds vesting in this miner as a list of (vesting_epoch, vesting_amou
 
 **Params**:
 
-+ null
++ `FilActorId` FilActorId - miner actor id to interact with
 
 **Results**:
 
 + `struct` GetVestingFundsReturn 
   + `struct VestingFunds[]` Funds
-    + `int64` Epoch - the epoch of funds vested.
-    + `int256` Amount - the amount of funds vested.
+    + `ChainEpoch` Epoch - the epoch of funds vested.
+    + `BigInt` Amount - the amount of funds vested.

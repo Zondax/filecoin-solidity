@@ -14,7 +14,7 @@
  *  limitations under the License.
  ********************************************************************************/
 //
-// DRAFT!! THIS CODE HAS NOT BEEN AUDITED - USE ONLY FOR PROTOTYPING
+// THIS CODE WAS SECURITY REVIEWED BY KUDELSKI SECURITY, BUT NOT FORMALLY AUDITED
 
 // SPDX-License-Identifier: Apache-2.0
 pragma solidity ^0.8.17;
@@ -22,7 +22,7 @@ pragma solidity ^0.8.17;
 import "../types/MinerTypes.sol";
 import "../cbor/MinerCbor.sol";
 
-/// @notice This file is meant to serve as a deployable contract to test 
+/// @notice This file is meant to serve as a deployable contract to test
 /// @author Zondax AG
 contract DeserializeParamsTest {
     using MinerCBOR for *;

@@ -14,7 +14,7 @@
  *  limitations under the License.
  ********************************************************************************/
 //
-// DRAFT!! THIS CODE HAS NOT BEEN AUDITED - USE ONLY FOR PROTOTYPING
+// THIS CODE WAS SECURITY REVIEWED BY KUDELSKI SECURITY, BUT NOT FORMALLY AUDITED
 
 // SPDX-License-Identifier: Apache-2.0
 pragma solidity ^0.8.17;
@@ -50,7 +50,7 @@ contract MarketApiTest {
         return MarketAPI.getDealProvider(dealID);
     }
 
-    function get_deal_label(uint64 dealID) public returns (string memory) {
+    function get_deal_label(uint64 dealID) public returns (CommonTypes.DealLabel memory) {
         return MarketAPI.getDealLabel(dealID);
     }
 

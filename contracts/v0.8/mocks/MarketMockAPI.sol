@@ -14,7 +14,7 @@
  *  limitations under the License.
  ********************************************************************************/
 //
-// DRAFT!! THIS CODE HAS NOT BEEN AUDITED - USE ONLY FOR PROTOTYPING
+// THIS CODE WAS SECURITY REVIEWED BY KUDELSKI SECURITY, BUT NOT FORMALLY AUDITED
 
 // SPDX-License-Identifier: Apache-2.0
 pragma solidity ^0.8.17;
@@ -166,13 +166,13 @@ contract MarketMockAPI {
         deal_67.client = 101;
         deal_67.provider = 103;
         deal_67.label = "mAXCg5AIg8YBXbFjtdBy1iZjpDYAwRSt0elGLF5GvTqulEii1VcM";
-        deal_67.start = 25245;
-        deal_67.end = 545150;
+        deal_67.start = CommonTypes.ChainEpoch.wrap(25245);
+        deal_67.end = CommonTypes.ChainEpoch.wrap(545150);
         deal_67.price_per_epoch = 1100000000000;
         deal_67.provider_collateral = 0;
         deal_67.client_collateral = 0;
-        deal_67.activated = 1;
-        deal_67.terminated = 0;
+        deal_67.activated = CommonTypes.ChainEpoch.wrap(1);
+        deal_67.terminated = CommonTypes.ChainEpoch.wrap(0);
 
         deals[deal_67.id] = deal_67;
 

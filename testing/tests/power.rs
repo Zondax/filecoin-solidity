@@ -23,6 +23,7 @@ use serde::{Deserialize as SerdeDeserialize, Serialize as SerdeSerialize};
 use testing::helpers::set_storagepower_actor;
 use testing::setup;
 use testing::GasResult;
+use testing::parse_gas;
 
 const WASM_COMPILED_PATH: &str = "../build/v0.8/tests/PowerApiTest.bin";
 
@@ -112,7 +113,7 @@ fn power_tests() {
     let constructor_params = CreateMinerParams {
         owner: sender[0].1,
         worker,
-        window_post_proof_type: fvm_shared::sector::RegisteredPoStProof::StackedDRGWindow512MiBV1,
+        window_post_proof_type: fvm_shared::sector::RegisteredPoStProof::StackedDRGWindow32GiBV1,
         peer: vec![1, 2, 3],
         multiaddrs: vec![BytesDe(vec![1, 2, 3])],
     };
@@ -171,8 +172,8 @@ fn power_tests() {
     let res = executor
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
-
-    gas_result.push(("miner_count".into(), res.msg_receipt.gas_used));
+    let gas_used = parse_gas(res.exec_trace);
+    gas_result.push(("miner_count".into(), gas_used));
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
     assert_eq!(
         hex::encode(res.msg_receipt.return_data.bytes()),
@@ -194,8 +195,8 @@ fn power_tests() {
     let res = executor
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
-
-    gas_result.push(("network_raw_power".into(), res.msg_receipt.gas_used));
+    let gas_used = parse_gas(res.exec_trace);
+    gas_result.push(("network_raw_power".into(), gas_used));
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
     assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "58800000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000");
 
@@ -219,8 +220,8 @@ fn power_tests() {
     let res = executor
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
-
-    gas_result.push(("miner_raw_power".into(), res.msg_receipt.gas_used));
+    let gas_used = parse_gas(res.exec_trace);
+    gas_result.push(("miner_raw_power".into(), gas_used));
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
     assert_eq!(hex::encode(res.msg_receipt.return_data.bytes()), "58c0000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000");
 
@@ -239,8 +240,8 @@ fn power_tests() {
     let res = executor
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
-
-    gas_result.push(("miner_consensus_count".into(), res.msg_receipt.gas_used));
+    let gas_used = parse_gas(res.exec_trace);
+    gas_result.push(("miner_consensus_count".into(), gas_used));
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
     assert_eq!(
         hex::encode(res.msg_receipt.return_data.bytes()),

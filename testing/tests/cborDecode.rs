@@ -7,12 +7,10 @@ use fvm_integration_tests::tester::Account;
 use fvm_ipld_encoding::strict_bytes;
 use fvm_ipld_encoding::RawBytes;
 use fvm_shared::address::Address;
-use fvm_shared::econ::TokenAmount;
 use fvm_shared::message::Message;
 use serde::{Deserialize as SerdeDeserialize, Serialize as SerdeSerialize};
 
 use testing::setup;
-use testing::GasResult;
 
 const WASM_COMPILED_PATH: &str = "../build/v0.8/tests/CborDecodeTest.bin";
 

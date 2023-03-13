@@ -14,37 +14,47 @@
  *  limitations under the License.
  ********************************************************************************/
 //
-// DRAFT!! THIS CODE HAS NOT BEEN AUDITED - USE ONLY FOR PROTOTYPING
+// THIS CODE WAS SECURITY REVIEWED BY KUDELSKI SECURITY, BUT NOT FORMALLY AUDITED
 
 // SPDX-License-Identifier: Apache-2.0
 pragma solidity ^0.8.17;
 
 import "solidity-cborutils/contracts/CBOR.sol";
 
+import "./BigIntCbor.sol";
+import "./FilecoinCbor.sol";
+
 import "../types/MinerTypes.sol";
 import "../types/CommonTypes.sol";
+
 import "../utils/CborDecode.sol";
 import "../utils/Misc.sol";
-import "./BigIntCbor.sol";
 
 /// @title This library is a set of functions meant to handle CBOR parameters serialization and return values deserialization for Miner actor exported methods.
 /// @author Zondax AG
 library MinerCBOR {
     using CBOR for CBOR.CBORBuffer;
     using CBORDecoder for bytes;
-    using BigIntCBOR for CommonTypes.BigInt;
-    using BigIntCBOR for bytes;
+    using BigIntCBOR for *;
+    using FilecoinCBOR for *;
 
     /// @notice serialize ChangeBeneficiaryParams struct to cbor in order to pass as arguments to the miner actor
     /// @param params ChangeBeneficiaryParams to serialize as cbor
     /// @return cbor serialized data as bytes
     function serializeChangeBeneficiaryParams(MinerTypes.ChangeBeneficiaryParams memory params) internal pure returns (bytes memory) {
-        CBOR.CBORBuffer memory buf = CBOR.create(64);
+        uint256 capacity = 0;
+        bytes memory new_quota = params.new_quota.serializeBigInt();
+
+        capacity += Misc.getPrefixSize(3);
+        capacity += Misc.getBytesSize(params.new_beneficiary.data);
+        capacity += Misc.getBytesSize(new_quota);
+        capacity += Misc.getChainEpochSize(params.new_expiration);
+        CBOR.CBORBuffer memory buf = CBOR.create(capacity);
 
         buf.startFixedArray(3);
         buf.writeBytes(params.new_beneficiary.data);
-        buf.writeBytes(params.new_quota.serializeBigInt());
-        buf.writeUInt64(params.new_expiration);
+        buf.writeBytes(new_quota);
+        buf.writeChainEpoch(params.new_expiration);
 
         return buf.data();
     }
@@ -103,7 +113,7 @@ library MinerCBOR {
             ret.active.term.used_quota = CommonTypes.BigInt(new bytes(0), false);
         }
 
-        (ret.active.term.expiration, byteIdx) = rawResp.readUInt64(byteIdx);
+        (ret.active.term.expiration, byteIdx) = rawResp.readChainEpoch(byteIdx);
 
         if (!rawResp.isNullNext(byteIdx)) {
             (len, byteIdx) = rawResp.readFixedArray(byteIdx);
@@ -118,7 +128,7 @@ library MinerCBOR {
                 ret.proposed.new_quota = CommonTypes.BigInt(new bytes(0), false);
             }
 
-            (ret.proposed.new_expiration, byteIdx) = rawResp.readUInt64(byteIdx);
+            (ret.proposed.new_expiration, byteIdx) = rawResp.readChainEpoch(byteIdx);
             (ret.proposed.approved_by_beneficiary, byteIdx) = rawResp.readBool(byteIdx);
             (ret.proposed.approved_by_nominee, byteIdx) = rawResp.readBool(byteIdx);
         }
@@ -130,7 +140,7 @@ library MinerCBOR {
     /// @param rawResp cbor encoded response
     /// @return ret new instance of GetVestingFundsReturn created based on parsed data
     function deserializeGetVestingFundsReturn(bytes memory rawResp) internal pure returns (MinerTypes.GetVestingFundsReturn memory ret) {
-        int64 epoch;
+        CommonTypes.ChainEpoch epoch;
         CommonTypes.BigInt memory amount;
         bytes memory tmp;
 
@@ -147,8 +157,8 @@ library MinerCBOR {
         for (uint i = 0; i < len; i++) {
             (leni, byteIdx) = rawResp.readFixedArray(byteIdx);
             assert(leni == 2);
-            
-            (epoch, byteIdx) = rawResp.readInt64(byteIdx);
+
+            (epoch, byteIdx) = rawResp.readChainEpoch(byteIdx);
             (tmp, byteIdx) = rawResp.readBytes(byteIdx);
 
             amount = tmp.deserializeBigInt();
@@ -162,7 +172,15 @@ library MinerCBOR {
     /// @param params ChangeWorkerAddressParams to serialize as cbor
     /// @return cbor serialized data as bytes
     function serializeChangeWorkerAddressParams(MinerTypes.ChangeWorkerAddressParams memory params) internal pure returns (bytes memory) {
-        CBOR.CBORBuffer memory buf = CBOR.create(64);
+        uint256 capacity = 0;
+
+        capacity += Misc.getPrefixSize(2);
+        capacity += Misc.getBytesSize(params.new_worker.data);
+        capacity += Misc.getPrefixSize(uint256(params.new_control_addresses.length));
+        for (uint64 i = 0; i < params.new_control_addresses.length; i++) {
+            capacity += Misc.getBytesSize(params.new_control_addresses[i].data);
+        }
+        CBOR.CBORBuffer memory buf = CBOR.create(capacity);
 
         buf.startFixedArray(2);
         buf.writeBytes(params.new_worker.data);
@@ -179,7 +197,14 @@ library MinerCBOR {
     /// @param params ChangeMultiaddrsParams to serialize as cbor
     /// @return cbor serialized data as bytes
     function serializeChangeMultiaddrsParams(MinerTypes.ChangeMultiaddrsParams memory params) internal pure returns (bytes memory) {
-        CBOR.CBORBuffer memory buf = CBOR.create(64);
+        uint256 capacity = 0;
+
+        capacity += Misc.getPrefixSize(1);
+        capacity += Misc.getPrefixSize(uint256(params.new_multi_addrs.length));
+        for (uint64 i = 0; i < params.new_multi_addrs.length; i++) {
+            capacity += Misc.getBytesSize(params.new_multi_addrs[i].data);
+        }
+        CBOR.CBORBuffer memory buf = CBOR.create(capacity);
 
         buf.startFixedArray(1);
         buf.startFixedArray(uint64(params.new_multi_addrs.length));

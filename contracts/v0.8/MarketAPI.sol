@@ -14,7 +14,7 @@
  *  limitations under the License.
  ********************************************************************************/
 //
-// DRAFT!! THIS CODE HAS NOT BEEN AUDITED - USE ONLY FOR PROTOTYPING
+// THIS CODE WAS SECURITY REVIEWED BY KUDELSKI SECURITY, BUT NOT FORMALLY AUDITED
 
 // SPDX-License-Identifier: Apache-2.0
 pragma solidity ^0.8.17;
@@ -97,12 +97,12 @@ library MarketAPI {
 
     /// @notice Get the label of a deal proposal.
     /// @return the label of a deal proposal.
-    function getDealLabel(uint64 dealID) internal returns (string memory) {
+    function getDealLabel(uint64 dealID) internal returns (CommonTypes.DealLabel memory) {
         bytes memory raw_request = dealID.serializeDealID();
 
         bytes memory result = Actor.callByID(MarketTypes.ActorID, MarketTypes.GetDealLabelMethodNum, Misc.CBOR_CODEC, raw_request, 0, true);
 
-        return result.deserializeString();
+        return result.deserializeDealLabel();
     }
 
     /// @notice Get the start epoch and duration(in epochs) of a deal proposal.
@@ -120,7 +120,7 @@ library MarketAPI {
     function getDealTotalPrice(uint64 dealID) internal returns (CommonTypes.BigInt memory) {
         bytes memory raw_request = dealID.serializeDealID();
 
-        bytes memory result = Actor.callByID(MarketTypes.ActorID, MarketTypes.GetDealEpochPriceMethodNum, Misc.CBOR_CODEC, raw_request, 0, true);
+        bytes memory result = Actor.callByID(MarketTypes.ActorID, MarketTypes.GetDealTotalPriceMethodNum, Misc.CBOR_CODEC, raw_request, 0, true);
 
         return result.deserializeBytesBigInt();
     }

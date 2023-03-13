@@ -46,6 +46,8 @@ fn main() {
     method_nums.push(("GetDealVerifiedMethodNum".to_string(), GetDealVerifiedExported));
     let GetDealActivationExported = frc42_dispatch::method_hash!("GetDealActivation");
     method_nums.push(("GetDealActivationMethodNum".to_string(), GetDealActivationExported));
+    let GetDealTotalPriceExported = frc42_dispatch::method_hash!("GetDealTotalPrice");
+    method_nums.push(("GetDealTotalPriceMethodNum".to_string(), GetDealTotalPriceExported));
 
     println!("AddBalanceExported {}", AddBalanceExported);
     println!("WithdrawBalanceExported {}", WithdrawBalanceExported);
@@ -60,6 +62,7 @@ fn main() {
     println!("GetDealProviderCollateralExported {}", GetDealProviderCollateralExported);
     println!("GetDealVerifiedExported {}", GetDealVerifiedExported);
     println!("GetDealActivationExported {}", GetDealActivationExported);
+    println!("GetDealTotalPriceExported {}", GetDealTotalPriceExported);
 
     // Verify we have the right one
     let file = fs::read_to_string("../contracts/v0.8/types/MarketTypes.sol").unwrap();
@@ -342,36 +345,6 @@ fn main() {
 
     /*********************************
      *
-     *      INIT ACTOR
-     *
-     *********************************/
-
-    println!("INIT EXPORTED METHOD NUM");
-    let mut method_nums: Vec<(String, u64)> = vec![];
-
-    let ExecExported = frc42_dispatch::method_hash!("Exec");
-    method_nums.push(("ExecMethodNum".to_string(), ExecExported));
-
-    println!("ExecExported {}", ExecExported);
-
-    // Verify we have the right ones
-    let file = fs::read_to_string("../contracts/v0.8/types/InitTypes.sol").unwrap();
-
-    'method: for (method, method_num ) in method_nums {
-        for line in file.lines() {
-            if line.contains(&format!(" {} ",method)) {
-                if !line.contains(&method_num.to_string()) {
-                    panic!("Wrong method num for {}", method);
-                }
-                continue 'method;
-            }
-        }
-        panic!("Missing method : {}", method);
-    }
-
-
-    /*********************************
-     *
      *      ACCOUNT ACTOR
      *
      *********************************/
@@ -408,16 +381,16 @@ fn main() {
 
      println!("COMMON EXPORTED METHOD NUM");
      let mut method_nums: Vec<(String, u64)> = vec![];
- 
+
      let UniversalReceiverHook = frc42_dispatch::method_hash!("Receive");
      method_nums.push(("UniversalReceiverHookMethodNum".to_string(), UniversalReceiverHook));
- 
- 
+
+
      println!("UniversalReceiverHookMethodNum {}", UniversalReceiverHook);
- 
+
      // Verify we have the right ones
      let file = fs::read_to_string("../contracts/v0.8/types/CommonTypes.sol").unwrap();
- 
+
      'method: for (method, method_num ) in method_nums {
          for line in file.lines() {
              if line.contains(&format!(" {} ",method)) {
