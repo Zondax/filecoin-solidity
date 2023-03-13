@@ -18,6 +18,19 @@ The libraries have been developed under the following set of assumptions. Take a
 
 ---
 
+## Security notice
+This is experimental software and is provided on an “as is” and “as available” basis.
+This [commit](https://github.com/Zondax/filecoin-solidity/commit/d6f20ea11b25e66b9a4fb94d0bb0d913edeb5873) was security-reviewed by Kudelski security
+
+Things to keep in mind, while using this library:
+- There are implicit invariants these contracts expect to hold.
+- **You can easily “shoot yourself in the foot” if you’re not careful with how you use the library.**
+- You should exhaustively read each contract you plan to use, top to bottom.
+
+We **do not give any warranties** and **will not be liable for any loss** incurred through any use of this codebase.”
+
+---
+
 ## Introduction
 
 ### Filecoin Virtual Machine (FVM)
