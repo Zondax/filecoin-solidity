@@ -471,9 +471,8 @@ fn market_tests() {
         .execute_message(message, ApplyKind::Explicit, 100)
         .unwrap();
 
-    //let gas_used = parse_gas(res.exec_trace);
-    //gas_result.push(("publish_storage_deals".into(), gas_used));
-    dbg!(&res);
+    let gas_used = parse_gas(res.exec_trace);
+    gas_result.push(("publish_storage_deals".into(), gas_used));
     assert_eq!(res.msg_receipt.exit_code.value(), 0);
 
     println!("Calling `add_balance`");
