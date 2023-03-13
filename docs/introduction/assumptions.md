@@ -5,8 +5,6 @@ sidebar_position: 3
 
 The libraries have been developed under the following set of assumptions:
 
-- The libraries were security reviewed by Kudelski security, but not formally audited.
-
 - Filecoin actors API has been tested through the rust integration module located in the ref-fvm repository [:link:](https://github.com/Zondax/ref-fvm).
 
 - The builtin-actors submodule [:link:](https://github.com/Zondax/filecoin-solidity/tree/master/testing) in this repository is the latest version tested on.
