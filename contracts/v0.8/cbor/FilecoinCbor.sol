@@ -41,14 +41,39 @@ library FilecoinCBOR {
     uint8 private constant TAG_TYPE_CID_CODE = 42;
     uint8 private constant PAYLOAD_LEN_8_BITS = 24;
 
-    /// @notice write CID into a cbor buffer
-    /// @dev the cbor major will be 6 (type tag) and the tag type is 42, as per filecoin definition
-    /// @param buf buffer containing the actual cbor serialization process
-    /// @param value cid data to serialize as cbor
+    /// @notice Write a CID into a CBOR buffer.
+    /// @dev The CBOR major will be 6 (type 'tag') and the tag type value is 42, as per CBOR tag assignments.
+    /// @dev https://www.iana.org/assignments/cbor-tags/cbor-tags.xhtml
+    /// @param buf buffer containing the actual CBOR serialization process
+    /// @param value CID value to serialize as CBOR
     function writeCid(CBOR.CBORBuffer memory buf, bytes memory value) internal pure {
         buf.buf.appendUint8(uint8(((MAJOR_TYPE_TAG << 5) | PAYLOAD_LEN_8_BITS)));
         buf.buf.appendUint8(TAG_TYPE_CID_CODE);
-        buf.writeBytes(value);
+        // See https://ipld.io/specs/codecs/dag-cbor/spec/#links for explanation on 0x00 prefix.
+        buf.writeBytes(bytes.concat(hex'00', value));
+    }
+
+    function readCid(bytes memory cborData, uint byteIdx) internal pure returns (CommonTypes.Cid memory, uint) {
+        uint8 maj;
+        uint value;
+
+        (maj, value, byteIdx) = cborData.parseCborHeader(byteIdx);
+        require(maj == MAJOR_TYPE_TAG, "expected major type tag when parsing cid");
+        require(value == TAG_TYPE_CID_CODE, "expected tag 42 when parsing cid");
+
+        bytes memory raw;
+        (raw, byteIdx) = cborData.readBytes(byteIdx);
+        require(raw[0] == 0x00, "expected first byte to be 0 when parsing cid");
+
+        // Pop off the first byte, which corresponds to the historical multibase 0x00 byte.
+        // https://ipld.io/specs/codecs/dag-cbor/spec/#links
+        CommonTypes.Cid memory ret;
+        ret.data = new bytes(raw.length - 1);
+        for (uint256 i = 1; i < raw.length; i++) {
+            ret.data[i-1] = raw[i];
+        }
+
+        return (ret, byteIdx);
     }
 
     /// @notice serialize filecoin address to cbor encoded
