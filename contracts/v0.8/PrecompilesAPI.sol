@@ -28,7 +28,7 @@ library PrecompilesAPI {
     address constant LOOKUP_DELEGATED_ADDRESS_PRECOMPILE_ADDR = 0xfE00000000000000000000000000000000000002;
 
     /// @notice an error happened trying to call the actor
-    error FailToCallActor();
+    error PrecompilesAPIFailtoCallActor();
 
     /// @notice get the actor id from an actor address
     /// @param addr actor address you want to get id from (in bytes format, not string)
@@ -36,7 +36,7 @@ library PrecompilesAPI {
     function resolveAddress(CommonTypes.FilAddress memory addr) internal view returns (uint64) {
         (bool success, bytes memory raw_response) = address(RESOLVE_ADDRESS_PRECOMPILE_ADDR).staticcall(addr.data);
         if (!success) {
-            revert FailToCallActor();
+            revert PrecompilesAPIFailtoCallActor();
         }
 
         uint256 actor_id = abi.decode(raw_response, (uint256));
@@ -52,7 +52,7 @@ library PrecompilesAPI {
 
         (bool success, bytes memory raw_response) = address(RESOLVE_ADDRESS_PRECOMPILE_ADDR).staticcall(delegatedAddr);
         if (!success) {
-            revert FailToCallActor();
+            revert PrecompilesAPIFailtoCallActor();
         }
 
         uint256 actor_id = abi.decode(raw_response, (uint256));
@@ -66,7 +66,7 @@ library PrecompilesAPI {
     function lookupDelegatedAddress(uint64 actor_id) internal view returns (bytes memory) {
         (bool success, bytes memory raw_response) = address(LOOKUP_DELEGATED_ADDRESS_PRECOMPILE_ADDR).staticcall(abi.encodePacked(uint256(actor_id)));
         if (!success) {
-            revert FailToCallActor();
+            revert PrecompilesAPIFailtoCallActor();
         }
 
         return raw_response;
