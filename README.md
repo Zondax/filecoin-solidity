@@ -12,22 +12,22 @@ _Please visit our website at [zondax.ch](https://www.zondax.ch)_
 
 ---
 
-## :warning::warning: DISCLAIMER :warning::warning:
+## Notice
 
-The libraries have been developed under the following set of assumptions. Take a look at them [here :link:](https://docs.zondax.ch/fevm/filecoin-solidity/introduction/assumptions)
-
----
-
-## Security notice
-This is experimental software and is provided on an “as is” and “as available” basis.
-This [commit](https://github.com/Zondax/filecoin-solidity/commit/d6f20ea11b25e66b9a4fb94d0bb0d913edeb5873) was security-reviewed by Kudelski security
+This is software is available under Apache 2.0 License. Use of this library implies your acceptance of these terms and conditions
+This source code at this commit hash (https://github.com/Zondax/filecoin-solidity/commit/d6f20ea11b25e66b9a4fb94d0bb0d913edeb5873) was security-reviewed by Kudelski security (Not fully audited)
 
 Things to keep in mind, while using this library:
 - There are implicit invariants these contracts expect to hold.
-- **You can easily “shoot yourself in the foot” if you’re not careful with how you use the library.**
 - You should exhaustively read each contract you plan to use, top to bottom.
+- **You can easily “shoot yourself in the foot” if you’re not careful with how you use the library.**
 
-We **do not give any warranties** and **will not be liable for any loss** incurred through any use of this codebase.”
+---
+
+## Disclaimer :warning:
+
+The libraries have been developed under the following set of assumptions. Take a look at them [here :link:](https://docs.zondax.ch/fevm/filecoin-solidity/introduction/assumptions)
+
 
 ---
 
@@ -112,6 +112,13 @@ If you’re starting totally new, we got you! Here’s a 101 conceptual read on 
 ### Community Discussions [:link:](https://github.com/filecoin-project/community/discussions)
 
 Find nice articles with rich and valuable content about different topics related to Filecoin network.
+
+## Looking for a JS library to interact with Filecoin? :wrench::hammer:
+
+We have been working hard to create a complete library that covers every aspect you may need in order to interact with 
+the Filecoin blockchain. [Let's go to library](https://www.npmjs.com/package/@zondax/izari-tools) :arrow_upper_right:
+
+
 
 ## Looking for the complete documentation? :books::books:
 
