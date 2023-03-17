@@ -12,12 +12,6 @@ _Please visit our website at [zondax.ch](https://www.zondax.ch)_
 
 ---
 
-## Disclaimer :warning:
-
-The libraries have been developed under the following set of assumptions. Take a look at them [here :link:](https://docs.zondax.ch/fevm/filecoin-solidity/introduction/assumptions)
-
----
-
 ## Notice
 
 This is software is available under Apache 2.0 License. Use of this library implies your acceptance of these terms and conditions
@@ -27,6 +21,12 @@ Things to keep in mind, while using this library:
 - There are implicit invariants these contracts expect to hold.
 - You should exhaustively read each contract you plan to use, top to bottom.
 - **You can easily “shoot yourself in the foot” if you’re not careful with how you use the library.**
+
+---
+
+## Disclaimer :warning:
+
+The libraries have been developed under the following set of assumptions. Take a look at them [here :link:](https://docs.zondax.ch/fevm/filecoin-solidity/introduction/assumptions)
 
 
 ---
