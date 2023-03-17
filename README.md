@@ -12,7 +12,7 @@ _Please visit our website at [zondax.ch](https://www.zondax.ch)_
 
 ---
 
-## DISCLAIMER :warning:
+## Disclaimer :warning:
 
 The libraries have been developed under the following set of assumptions. Take a look at them [here :link:](https://docs.zondax.ch/fevm/filecoin-solidity/introduction/assumptions)
 
@@ -20,7 +20,7 @@ The libraries have been developed under the following set of assumptions. Take a
 
 ## Notice
 
-This is software is available under Apache 2.0 License. Use of this library implies your acceptance of this terms and conditions
+This is software is available under Apache 2.0 License. Use of this library implies your acceptance of these terms and conditions
 This source code at this commit hash (https://github.com/Zondax/filecoin-solidity/commit/d6f20ea11b25e66b9a4fb94d0bb0d913edeb5873) was security-reviewed by Kudelski security (Not fully audited)
 
 Things to keep in mind, while using this library:
