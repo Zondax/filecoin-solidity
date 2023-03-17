@@ -113,6 +113,13 @@ If you’re starting totally new, we got you! Here’s a 101 conceptual read on 
 
 Find nice articles with rich and valuable content about different topics related to Filecoin network.
 
+## Looking for a JS library to interact with Filecoin? :wrench::hammer:
+
+We have been working hard to create a complete library that covers every aspect you may need in order to interact with 
+the Filecoin blockchain. [Let's go to library](https://www.npmjs.com/package/@zondax/izari-tools) :arrow_upper_right:
+
+
+
 ## Looking for the complete documentation? :books::books:
 
 We have built this beautiful website for you!
