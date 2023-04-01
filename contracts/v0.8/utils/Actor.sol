@@ -33,7 +33,7 @@ library Actor {
     /// @notice flag used to indicate that the call_actor or call_actor_id should perform a static_call to the desired actor
     uint64 constant READ_ONLY_FLAG = 0x00000001;
 
-    /// @notice flag used to indicate that the call_actor or call_actor_id should perform a delegate_call to the desired actor
+    /// @notice flag used to indicate that the call_actor or call_actor_id should perform a call to the desired actor
     uint64 constant DEFAULT_FLAG = 0x00000000;
 
     /// @notice the provided address is not valid
@@ -117,7 +117,8 @@ library Actor {
     ) internal returns (bytes memory) {
         validatePrecompileCall(CALL_ACTOR_ID, value);
 
-        (bool success, bytes memory data) = address(CALL_ACTOR_ID).delegatecall(
+        (bool success, bytes memory data) = address(CALL_ACTOR_ID).
+        call(
             abi.encode(uint64(method_num), value, static_call ? READ_ONLY_FLAG : DEFAULT_FLAG, codec, raw_request, target)
         );
         if (!success) {
