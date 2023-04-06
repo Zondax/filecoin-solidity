@@ -303,6 +303,8 @@ function withdrawBalance(CommonTypes.FilActorId target, CommonTypes.BigInt memor
 
 Withdraw the token balance for this miner.
 
+`uint` WithdrawBalanceMethodNum = 2280458852.
+
 **Params**:
 
 + `FilActorId` FilActorId - miner actor id to interact with
