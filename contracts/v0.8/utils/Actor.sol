@@ -117,8 +117,7 @@ library Actor {
     ) internal returns (bytes memory) {
         validatePrecompileCall(CALL_ACTOR_ID, value);
 
-        (bool success, bytes memory data) = address(CALL_ACTOR_ID).
-        call(
+        (bool success, bytes memory data) = address(CALL_ACTOR_ID).delegatecall(
             abi.encode(uint64(method_num), value, static_call ? READ_ONLY_FLAG : DEFAULT_FLAG, codec, raw_request, target)
         );
         if (!success) {
