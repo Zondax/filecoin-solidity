@@ -277,9 +277,7 @@ library MarketCBOR {
         (len, byteIdx) = rawResp.readFixedArray(byteIdx);
         assert(len == 11);
 
-        (tmp, byteIdx) = rawResp.readBytes(byteIdx);
-        ret.piece_cid = CommonTypes.Cid(tmp);
-
+        (ret.piece_cid, byteIdx) = rawResp.readCid(byteIdx);
         (ret.piece_size, byteIdx) = rawResp.readUInt64(byteIdx);
         (ret.verified_deal, byteIdx) = rawResp.readBool(byteIdx);
         (tmp, byteIdx) = rawResp.readBytes(byteIdx);
