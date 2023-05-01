@@ -89,7 +89,7 @@ library MarketCBOR {
         (len, byteIdx) = rawResp.readFixedArray(byteIdx);
 
         if (len > 0) {
-            (ret.data, byteIdx) = rawResp.readCid(byteIdx);
+            (ret.piece_cid, byteIdx) = rawResp.readCid(byteIdx);
             (ret.size, byteIdx) = rawResp.readUInt64(byteIdx);
         } else {
             ret.data = new bytes(0);
