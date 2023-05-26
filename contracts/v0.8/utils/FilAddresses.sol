@@ -36,6 +36,17 @@ library FilAddresses {
         return CommonTypes.FilAddress(abi.encodePacked(hex"040a", addr));
     }
 
+    /// @notice allow to get a eth address from a FilAddress
+    /// @param addr FilAddress to convert
+    /// @return new eth address
+    function toEthAddress(CommonTypes.FilAddress calldata addr) internal pure returns (address) {
+        if (addr.data.length != 22) {
+            revert InvalidAddress();
+        }
+        bytes20 ethAddress = bytes20(bytes(addr.data)[2:]);
+        return address(ethAddress);
+    }
+
     /// @notice allow to create a Filecoin address from an actorID
     /// @param actorID uint64 actorID
     /// @return address filecoin address
