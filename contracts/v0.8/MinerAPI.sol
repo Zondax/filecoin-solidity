@@ -40,10 +40,10 @@ library MinerAPI {
     /// @notice This address is also allowed to change the worker address for the miner
     /// @param target The miner actor id you want to interact with
     /// @return the owner address of a Miner
-    function getOwner(CommonTypes.FilActorId target) internal returns (MinerTypes.GetOwnerReturn memory) {
+    function getOwner(CommonTypes.FilActorId target) internal view returns (MinerTypes.GetOwnerReturn memory) {
         bytes memory raw_request = new bytes(0);
 
-        bytes memory result = Actor.callNonSingletonByID(target, MinerTypes.GetOwnerMethodNum, Misc.NONE_CODEC, raw_request, 0, true);
+        bytes memory result = Actor.callNonSingletonByIDReadOnly(target, MinerTypes.GetOwnerMethodNum, Misc.NONE_CODEC, raw_request);
 
         return result.deserializeGetOwnerReturn();
     }
@@ -64,10 +64,10 @@ library MinerAPI {
     /// @param target  The miner actor id you want to interact with
     /// @param addr The "controlling" addresses are the Owner, the Worker, and all Control Addresses.
     /// @return Whether the provided address is "controlling".
-    function isControllingAddress(CommonTypes.FilActorId target, CommonTypes.FilAddress memory addr) internal returns (bool) {
+    function isControllingAddress(CommonTypes.FilActorId target, CommonTypes.FilAddress memory addr) internal view returns (bool) {
         bytes memory raw_request = addr.serializeAddress();
 
-        bytes memory result = Actor.callNonSingletonByID(target, MinerTypes.IsControllingAddressMethodNum, Misc.CBOR_CODEC, raw_request, 0, true);
+        bytes memory result = Actor.callNonSingletonByIDReadOnly(target, MinerTypes.IsControllingAddressMethodNum, Misc.CBOR_CODEC, raw_request);
 
         return result.deserializeBool();
     }
@@ -75,10 +75,10 @@ library MinerAPI {
     /// @return the miner's sector size.
     /// @param target The miner actor id you want to interact with
     /// @dev For more information about sector sizes, please refer to https://spec.filecoin.io/systems/filecoin_mining/sector/#section-systems.filecoin_mining.sector
-    function getSectorSize(CommonTypes.FilActorId target) internal returns (uint64) {
+    function getSectorSize(CommonTypes.FilActorId target) internal view returns (uint64) {
         bytes memory raw_request = new bytes(0);
 
-        bytes memory result = Actor.callNonSingletonByID(target, MinerTypes.GetSectorSizeMethodNum, Misc.NONE_CODEC, raw_request, 0, true);
+        bytes memory result = Actor.callNonSingletonByIDReadOnly(target, MinerTypes.GetSectorSizeMethodNum, Misc.NONE_CODEC, raw_request);
 
         return result.deserializeUint64();
     }
@@ -87,20 +87,20 @@ library MinerAPI {
     /// @notice This is calculated as actor balance - (vesting funds + pre-commit deposit + initial pledge requirement + fee debt)
     /// @notice Can go negative if the miner is in IP debt.
     /// @return the available balance of this miner.
-    function getAvailableBalance(CommonTypes.FilActorId target) internal returns (CommonTypes.BigInt memory) {
+    function getAvailableBalance(CommonTypes.FilActorId target) internal view returns (CommonTypes.BigInt memory) {
         bytes memory raw_request = new bytes(0);
 
-        bytes memory result = Actor.callNonSingletonByID(target, MinerTypes.GetAvailableBalanceMethodNum, Misc.NONE_CODEC, raw_request, 0, true);
+        bytes memory result = Actor.callNonSingletonByIDReadOnly(target, MinerTypes.GetAvailableBalanceMethodNum, Misc.NONE_CODEC, raw_request);
 
         return result.deserializeBytesBigInt();
     }
 
     /// @param target The miner actor id you want to interact with
     /// @return the funds vesting in this miner as a list of (vesting_epoch, vesting_amount) tuples.
-    function getVestingFunds(CommonTypes.FilActorId target) internal returns (MinerTypes.GetVestingFundsReturn memory) {
+    function getVestingFunds(CommonTypes.FilActorId target) internal view returns (MinerTypes.GetVestingFundsReturn memory) {
         bytes memory raw_request = new bytes(0);
 
-        bytes memory result = Actor.callNonSingletonByID(target, MinerTypes.GetVestingFundsMethodNum, Misc.NONE_CODEC, raw_request, 0, true);
+        bytes memory result = Actor.callNonSingletonByIDReadOnly(target, MinerTypes.GetVestingFundsMethodNum, Misc.NONE_CODEC, raw_request);
 
         return result.deserializeGetVestingFundsReturn();
     }
@@ -121,10 +121,10 @@ library MinerAPI {
     /// @param target The miner actor id you want to interact with
     /// @notice This method is for use by other actors (such as those acting as beneficiaries), and to abstract the state representation for clients.
     /// @notice Retrieves the currently active and proposed beneficiary information.
-    function getBeneficiary(CommonTypes.FilActorId target) internal returns (MinerTypes.GetBeneficiaryReturn memory) {
+    function getBeneficiary(CommonTypes.FilActorId target) internal view returns (MinerTypes.GetBeneficiaryReturn memory) {
         bytes memory raw_request = new bytes(0);
 
-        bytes memory result = Actor.callNonSingletonByID(target, MinerTypes.GetBeneficiaryMethodNum, Misc.NONE_CODEC, raw_request, 0, true);
+        bytes memory result = Actor.callNonSingletonByIDReadOnly(target, MinerTypes.GetBeneficiaryMethodNum, Misc.NONE_CODEC, raw_request);
 
         return result.deserializeGetBeneficiaryReturn();
     }
@@ -180,19 +180,19 @@ library MinerAPI {
     }
 
     /// @param target The miner actor id you want to interact with
-    function getPeerId(CommonTypes.FilActorId target) internal returns (CommonTypes.FilAddress memory) {
+    function getPeerId(CommonTypes.FilActorId target) internal view returns (CommonTypes.FilAddress memory) {
         bytes memory raw_request = new bytes(0);
 
-        bytes memory result = Actor.callNonSingletonByID(target, MinerTypes.GetPeerIDMethodNum, Misc.NONE_CODEC, raw_request, 0, true);
+        bytes memory result = Actor.callNonSingletonByIDReadOnly(target, MinerTypes.GetPeerIDMethodNum, Misc.NONE_CODEC, raw_request);
 
         return result.deserializeArrayFilAddress();
     }
 
     /// @param target The miner actor id you want to interact with
-    function getMultiaddresses(CommonTypes.FilActorId target) internal returns (MinerTypes.GetMultiaddrsReturn memory) {
+    function getMultiaddresses(CommonTypes.FilActorId target) internal view returns (MinerTypes.GetMultiaddrsReturn memory) {
         bytes memory raw_request = new bytes(0);
 
-        bytes memory result = Actor.callNonSingletonByID(target, MinerTypes.GetMultiaddrsMethodNum, Misc.NONE_CODEC, raw_request, 0, true);
+        bytes memory result = Actor.callNonSingletonByIDReadOnly(target, MinerTypes.GetMultiaddrsMethodNum, Misc.NONE_CODEC, raw_request);
 
         return result.deserializeGetMultiaddrsReturn();
     }

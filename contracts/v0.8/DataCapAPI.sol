@@ -34,46 +34,46 @@ library DataCapAPI {
     using FilecoinCBOR for *;
 
     /// @notice Return the name of DataCap token which is 'DataCap'.
-    function name() internal returns (string memory) {
+    function name() internal view returns (string memory) {
         bytes memory raw_request = new bytes(0);
 
-        bytes memory result = Actor.callByID(DataCapTypes.ActorID, DataCapTypes.NameMethodNum, Misc.NONE_CODEC, raw_request, 0, true);
+        bytes memory result = Actor.callByIDReadOnly(DataCapTypes.ActorID, DataCapTypes.NameMethodNum, Misc.NONE_CODEC, raw_request);
 
         return result.deserializeString();
     }
 
     /// @notice Return the symbol of DataCap token which is 'DCAP'.
-    function symbol() internal returns (string memory) {
+    function symbol() internal view returns (string memory) {
         bytes memory raw_request = new bytes(0);
 
-        bytes memory result = Actor.callByID(DataCapTypes.ActorID, DataCapTypes.SymbolMethodNum, Misc.NONE_CODEC, raw_request, 0, true);
+        bytes memory result = Actor.callByIDReadOnly(DataCapTypes.ActorID, DataCapTypes.SymbolMethodNum, Misc.NONE_CODEC, raw_request);
 
         return result.deserializeString();
     }
 
     /// @notice Return the total supply of DataCap token.
-    function totalSupply() internal returns (CommonTypes.BigInt memory) {
+    function totalSupply() internal view returns (CommonTypes.BigInt memory) {
         bytes memory raw_request = new bytes(0);
 
-        bytes memory result = Actor.callByID(DataCapTypes.ActorID, DataCapTypes.TotalSupplyMethodNum, Misc.NONE_CODEC, raw_request, 0, true);
+        bytes memory result = Actor.callByIDReadOnly(DataCapTypes.ActorID, DataCapTypes.TotalSupplyMethodNum, Misc.NONE_CODEC, raw_request);
 
         return result.deserializeBytesBigInt();
     }
 
     /// @notice Return the DataCap token balance for the wallet address.
-    function balance(CommonTypes.FilAddress memory addr) internal returns (CommonTypes.BigInt memory) {
+    function balance(CommonTypes.FilAddress memory addr) internal view returns (CommonTypes.BigInt memory) {
         bytes memory raw_request = addr.serializeAddress();
 
-        bytes memory result = Actor.callByID(DataCapTypes.ActorID, DataCapTypes.BalanceOfMethodNum, Misc.CBOR_CODEC, raw_request, 0, true);
+        bytes memory result = Actor.callByIDReadOnly(DataCapTypes.ActorID, DataCapTypes.BalanceOfMethodNum, Misc.CBOR_CODEC, raw_request);
 
         return result.deserializeBytesBigInt();
     }
 
     /// @notice Return the allowance between owner and operator address.
-    function allowance(DataCapTypes.GetAllowanceParams memory params) internal returns (CommonTypes.BigInt memory) {
+    function allowance(DataCapTypes.GetAllowanceParams memory params) internal view returns (CommonTypes.BigInt memory) {
         bytes memory raw_request = params.serializeGetAllowanceParams();
 
-        bytes memory result = Actor.callByID(DataCapTypes.ActorID, DataCapTypes.AllowanceMethodNum, Misc.CBOR_CODEC, raw_request, 0, true);
+        bytes memory result = Actor.callByIDReadOnly(DataCapTypes.ActorID, DataCapTypes.AllowanceMethodNum, Misc.CBOR_CODEC, raw_request);
 
         return result.deserializeBytesBigInt();
     }
