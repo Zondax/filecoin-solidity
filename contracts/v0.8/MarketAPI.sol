@@ -85,20 +85,6 @@ library MarketAPI {
         return result.deserializeUint64();
     }
 
-    // function getReadOnlyDealClient(uint64 dealID) internal view returns (uint64) {
-    //     bytes memory raw_request = dealID.serializeDealID();
-
-    //     bytes memory result = Actor.callByIdReadonly(
-    //         MarketTypes.ActorID,
-    //         MarketTypes.GetDealClientMethodNum,
-    //         Misc.CBOR_CODEC,
-    //         raw_request,
-    //         0
-    //     );
-
-    //     return result.deserializeUint64();
-    // }
-
     /// @notice get the provider of a deal proposal.
     /// @return the provider of a deal proposal.
     function getDealProvider(uint64 dealID) internal view returns (uint64) {
