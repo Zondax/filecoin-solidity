@@ -127,6 +127,21 @@ library Actor {
         return readRespData(data);
     }
 
+    /// @notice Readonly version of CallByID
+    /// @param target actor id (uint64) to interact with
+    /// @param method_num id of the method from the actor to call
+    /// @param codec how the request data passed as argument is encoded
+    /// @param raw_request encoded arguments to be passed in the call
+    /// @return payload (in bytes) with the actual response data (without codec or response code)
+    function callByIDReadOnly(CommonTypes.FilActorId target, uint256 method_num, uint64 codec, bytes memory raw_request) internal view returns (bytes memory) {
+        function(CommonTypes.FilActorId, uint256, uint64, bytes memory, uint256, bool) internal view returns (bytes memory) callFn;
+        function(CommonTypes.FilActorId, uint256, uint64, bytes memory, uint256, bool) internal returns (bytes memory) helper = callByID;
+        assembly {
+            callFn := helper
+        }
+        return callFn(target, method_num, codec, raw_request, 0, true);
+    }
+
     /// @notice allows to run some generic validations before calling the precompile actor
     /// @param addr precompile actor address to run check to
     /// @param value tokens to be transferred to the called actor
@@ -163,6 +178,25 @@ library Actor {
         }
 
         return callByID(target, method_num, codec, raw_request, value, static_call);
+    }
+
+    /// @notice Readonly version of CallNonSingletonByID
+    /// @param target actor id (uint64) to interact with
+    /// @param method_num id of the method from the actor to call
+    /// @param codec how the request data passed as argument is encoded
+    /// @param raw_request encoded arguments to be passed in the call
+    /// @dev it requires the id to be bigger than 99, as singleton actors are smaller than that
+    function callNonSingletonByIDReadOnly(
+        CommonTypes.FilActorId target,
+        uint256 method_num,
+        uint64 codec,
+        bytes memory raw_request
+    ) internal view returns (bytes memory) {
+        if (CommonTypes.FilActorId.unwrap(target) < 100) {
+            revert InvalidActorID(target);
+        }
+
+        return callByIDReadOnly(target, method_num, codec, raw_request);
     }
 
     /// @notice parse the response an actor returned

@@ -46,38 +46,38 @@ library PowerAPI {
     }
 
     /// @notice get the total number of miners created, regardless of whether or not they have any pledged storage.
-    function minerCount() internal returns (uint64) {
+    function minerCount() internal view returns (uint64) {
         bytes memory raw_request = new bytes(0);
 
-        bytes memory result = Actor.callByID(PowerTypes.ActorID, PowerTypes.MinerCountMethodNum, Misc.NONE_CODEC, raw_request, 0, true);
+        bytes memory result = Actor.callByIDReadOnly(PowerTypes.ActorID, PowerTypes.MinerCountMethodNum, Misc.NONE_CODEC, raw_request);
 
         return result.deserializeUint64();
     }
 
     /// @notice get the total number of miners that have more than the consensus minimum amount of storage active.
-    function minerConsensusCount() internal returns (int64) {
+    function minerConsensusCount() internal view returns (int64) {
         bytes memory raw_request = new bytes(0);
 
-        bytes memory result = Actor.callByID(PowerTypes.ActorID, PowerTypes.MinerConsensusCountMethodNum, Misc.NONE_CODEC, raw_request, 0, true);
+        bytes memory result = Actor.callByIDReadOnly(PowerTypes.ActorID, PowerTypes.MinerConsensusCountMethodNum, Misc.NONE_CODEC, raw_request);
 
         return result.deserializeInt64();
     }
 
     /// @notice get the total raw power of the network.
-    function networkRawPower() internal returns (CommonTypes.BigInt memory) {
+    function networkRawPower() internal view returns (CommonTypes.BigInt memory) {
         bytes memory raw_request = new bytes(0);
 
-        bytes memory result = Actor.callByID(PowerTypes.ActorID, PowerTypes.NetworkRawPowerMethodNum, Misc.NONE_CODEC, raw_request, 0, true);
+        bytes memory result = Actor.callByIDReadOnly(PowerTypes.ActorID, PowerTypes.NetworkRawPowerMethodNum, Misc.NONE_CODEC, raw_request);
 
         return result.deserializeBytesBigInt();
     }
 
     /// @notice get the raw power claimed by the specified miner, and whether the miner has more than the consensus minimum amount of storage active.
     /// @param minerID the miner id you want to get information from
-    function minerRawPower(uint64 minerID) internal returns (PowerTypes.MinerRawPowerReturn memory) {
+    function minerRawPower(uint64 minerID) internal view returns (PowerTypes.MinerRawPowerReturn memory) {
         bytes memory raw_request = minerID.serialize();
 
-        bytes memory result = Actor.callByID(PowerTypes.ActorID, PowerTypes.MinerRawPowerMethodNum, Misc.CBOR_CODEC, raw_request, 0, true);
+        bytes memory result = Actor.callByIDReadOnly(PowerTypes.ActorID, PowerTypes.MinerRawPowerMethodNum, Misc.CBOR_CODEC, raw_request);
 
         return result.deserializeMinerRawPowerReturn();
     }

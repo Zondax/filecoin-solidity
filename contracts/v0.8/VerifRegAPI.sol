@@ -32,10 +32,10 @@ library VerifRegAPI {
     using VerifRegCBOR for *;
 
     /// @notice get a list of claims corresponding to the requested claim ID for specific provider.
-    function getClaims(VerifRegTypes.GetClaimsParams memory params) internal returns (VerifRegTypes.GetClaimsReturn memory) {
+    function getClaims(VerifRegTypes.GetClaimsParams memory params) internal view returns (VerifRegTypes.GetClaimsReturn memory) {
         bytes memory raw_request = params.serializeGetClaimsParams();
 
-        bytes memory result = Actor.callByID(VerifRegTypes.ActorID, VerifRegTypes.GetClaimsMethodNum, Misc.CBOR_CODEC, raw_request, 0, true);
+        bytes memory result = Actor.callByIDReadOnly(VerifRegTypes.ActorID, VerifRegTypes.GetClaimsMethodNum, Misc.CBOR_CODEC, raw_request);
 
         return result.deserializeGetClaimsReturn();
     }
