@@ -36,11 +36,11 @@ library FilAddresses {
         return CommonTypes.FilAddress(abi.encodePacked(hex"040a", addr));
     }
 
-    /// @notice allow to get a eth address from a FilAddress
+    /// @notice allow to get a eth address from 040a type FilAddress made above
     /// @param addr FilAddress to convert
     /// @return new eth address
     function toEthAddress(CommonTypes.FilAddress calldata addr) internal pure returns (address) {
-        if (addr.data.length != 22) {
+        if (addr.data[0] != 0x04 || addr.data[1] != 0x0a || addr.data.length != 22) {
             revert InvalidAddress();
         }
         bytes20 ethAddress = bytes20(bytes(addr.data)[2:]);
