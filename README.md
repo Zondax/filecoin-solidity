@@ -5,8 +5,8 @@
 
 ---
 
-Protocol Labs are now the owners of this library, and they will maintain it moving forward.
-Please, go to their [repository](https://github.com/filecoin-project/filecoin-solidity).
+:warning::warning: Protocol Labs are now the owners of this library, and they will maintain it moving forward.
+Please, go to their [repository](https://github.com/filecoin-project/filecoin-solidity). :warning::warning:
 
 ---
 
