@@ -9,9 +9,11 @@ This project combines two different approaches: a **mocked version** of the API,
 
 ## Libraries
 
-The project repository for the Solidity API can be found [here :link:](https://github.com/Zondax/filecoin-solidity).
+⚠️⚠️ Protocol Labs are now the owners of this library, and they will maintain it moving forward. Please, go to their repository. ⚠️⚠️
 
-We have also created a public NPM package to facilitate its integration. Check it out [here :link:](https://www.npmjs.com/package/@zondax/filecoin-solidity).
+The project repository for the Solidity API can be found ~[here :link:](https://github.com/Zondax/filecoin-solidity).~ [here :link:](https://github.com/filecoin-project/filecoin-solidity) 
+
+We have also created a public NPM package to facilitate its integration. Check it out ~[here :link:](https://www.npmjs.com/package/@zondax/filecoin-solidity).~ (NPM package is no longer being maintained)
 
 ### Mock
 
@@ -23,4 +25,5 @@ If you have used the mocked library before, you won't find many changes, so it i
 
 ## Disclaimer :warning::warning:
 
-The project is actually in **beta**. Please, feel free to report any possible bug you encounter while you make use of it.
+⚠️⚠️ Protocol Labs are now the owners of this library, and they will maintain it moving forward. Please, go to their repository. ⚠️⚠️
+[here :link:](https://github.com/filecoin-project/filecoin-solidity) 
